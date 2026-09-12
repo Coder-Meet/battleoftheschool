@@ -10,11 +10,11 @@ handle the questions. Figures come from `ROBUSTNESS_PROTOCOL.md`.
 > You get a CT scan and a mask of the aorta — nothing else. The branches are
 > visible in the image but deliberately unlabelled. We anchor to the aortic wall,
 > ask which tube-shaped bright structures touch it, and trace each one outward
-> until it either survives 5 mm or forks. The hard part is that a branch is always
-> dimmer than the aorta simply because it's thinner, and contrast varies
+> until it either survives 5 mm or forks. Small branches can be affected by
+> partial-volume averaging, and contrast varies
 > seven-fold between patients — so we set our brightness threshold from each
 > scan's own measured contrast instead of a fixed number. That one change took F1
-> from 0.84 to 0.93 on 26 adversarial test cases. One second a case, CPU only.
+> from 0.84 to 0.93 on 26 synthetic stress cases. About one second per synthetic case, CPU only.
 
 ---
 
@@ -22,10 +22,10 @@ handle the questions. Figures come from `ROBUSTNESS_PROTOCOL.md`.
 
 **1. Partial volume averaging.**
 A CT voxel that is half vessel and half fat reports the *average* of the two. A
-branch is narrower than the aorta, so more of each of its voxels is surrounding
-tissue. **A daughter branch is always dimmer than its parent purely because it is
-thinner** — not because it holds less dye. This governs every threshold in the
-project, and mishandling it was the biggest bug we found and fixed.
+small branch can occupy only part of a voxel. **Partial-volume averaging can
+make small branches appear dimmer than the aorta.** This is not universal:
+resolution, contrast timing, flow and reconstruction also affect the measured
+brightness. Our thresholds account for the scan's measured contrast.
 
 **2. The mask is an anchor, not an answer.**
 The supplied mask contains only the parent aorta. It tells you where to look, not
@@ -137,14 +137,14 @@ direction 10.6°.
 | Hardware | 4 CPU cores, no GPU | CPU only, 4 threads |
 | Network | None | No downloads, no CDNs, fonts bundled |
 
-### Fixed by the spec
+### Required geometry and current implementation defaults
 
 | Quantity | Value |
 |---|---|
 | Seed distance | 5 mm |
 | Trace length | 10 mm (or first bifurcation) |
-| Minimum radius | 0.7 mm |
-| Working grid | 1.0 mm isotropic |
+| Minimum radius | Implementation default 0.7 mm; organizer minimum still pending |
+| Working grid | Implementation default 1.0 mm isotropic |
 | Dev cases | 25 CT + mask pairs, no branch labels |
 
 ---
