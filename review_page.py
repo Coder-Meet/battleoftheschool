@@ -234,7 +234,10 @@ kbd{background:#21262d;border:1px solid #30363d;border-radius:4px;padding:0 5px;
 def _page(title: str, body: str) -> bytes:
     document = (
         f"<!doctype html><html><head><meta charset='utf-8'><title>{html.escape(title)}</title>"
-        f"<meta name='viewport' content='width=device-width'><style>{STYLE}</style></head><body>{body}</body></html>"
+        f"<meta name='viewport' content='width=device-width'><style>{STYLE}</style></head><body>{body}"
+        "<script>window.addEventListener('pageshow',e=>{"
+        "if(e.persisted||performance.getEntriesByType('navigation')[0]?.type==='back_forward')location.reload();"
+        "});</script></body></html>"
     )
     return document.encode()
 
@@ -304,7 +307,6 @@ def page_case(store: "CaseStore", ledger: ReviewLedger, case: "CaseData") -> byt
         "Keys: <kbd>c</kbd> confirm · <kbd>r</kbd> reject · <kbd>x</kbd> clear · <kbd>j</kbd>/<kbd>k</kbd> next/previous.</div>"
         + "".join(cards) + "</main>"
         "<script>"
-        "window.addEventListener('pageshow',e=>{if(e.persisted)location.reload();});"
         "const cards=[...document.querySelectorAll('.card')];let current=0;"
         "function focusCard(i){current=Math.max(0,Math.min(cards.length-1,i));cards.forEach((c,j)=>c.classList.toggle('current',j===current));"
         "cards[current].scrollIntoView({behavior:'smooth',block:'start'});}"
