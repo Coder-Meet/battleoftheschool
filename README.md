@@ -57,6 +57,42 @@ tracked with **Git LFS**, not raw git. See setup below.
 
 ## Setup
 
+### Windows submission quick start
+
+The organizer confirmed **Windows, four CPU cores, 8 GB RAM, no GPU and no
+internet during evaluation**. Install 64-bit Python **3.13.3** before setup
+(confirm the organizer's CPU architecture; the prepared wheel bundle targets
+Windows x64). In a terminal where `python --version` reports that interpreter,
+the single online dependency-setup command is:
+
+```powershell
+python -m pip install --only-binary=:all: -r requirements.txt
+```
+
+The required run command works without a shell-specific interpreter path:
+
+```powershell
+python run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz --output prediction.json
+```
+
+To prepare a fresh Windows machine for installation without internet, run
+`python -m pip download --only-binary=:all: -r requirements.txt --dest wheelhouse`
+on a matching Windows/Python machine while online, then copy the wheels and
+source. Install offline with:
+
+```powershell
+python -m pip install --no-index --find-links wheelhouse -r requirements.txt
+```
+
+Do not copy a Linux virtual environment onto Windows. SimpleITK defaults to
+four threads in the CLI. In PowerShell, cap numerical-library thread pools
+before execution with `$env:OPENBLAS_NUM_THREADS="4"` and
+`$env:OMP_NUM_THREADS="4"`. The Windows CI job checks native installation and
+Python tests; the Linux network-denied test separately checks offline execution.
+Neither replaces a timed run on the organizer's actual 8 GB machine.
+
+### Linux/macOS development setup
+
 Submission quick start (Git checkout, `uv` and package access already available):
 
 ```bash

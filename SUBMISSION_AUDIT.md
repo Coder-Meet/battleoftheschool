@@ -12,6 +12,51 @@ The detailed selection and failure record is in [ROBUSTNESS_PROTOCOL.md](ROBUSTN
 The [native-contrast supplement](#native-contrast-release-supplement--09f753b)
 records the latest results and the incomplete final browser checks.
 
+## Recheck against the organizer's latest brief
+
+The organizer has confirmed **Windows, four CPU cores, 8 GB RAM, no GPU,
+offline evaluation**. Previous CPU/RAM measurements below were made on
+**Linux**, not Windows. The README now has Windows setup, the exact required run
+command and offline wheel installation. CI includes a native Windows Python
+suite and offline package installation; its status must be checked before
+claiming a Windows pass. Actual Windows 8 GB runtime is still unmeasured.
+Windows x64 wheels do not establish Windows ARM support; CPU architecture
+remains to be confirmed.
+
+**Development-set predictions mean our algorithm's outputs for the supplied
+development inputs.** They are not ground truth, do not require annotations to
+generate, and are separate from the hidden test set. Submit all 25 frozen
+production JSONs in `frozen/2a40d10-production/` unless the organizer explicitly
+names a smaller required subset. Do not substitute the experimental
+wall-parallel outputs, synthetic references or unreviewed proposal worksheets.
+The five announced example references are for checking predictions, not a
+reason to omit the other supplied cases.
+
+### Current status
+
+| Item | Status and remaining gap |
+|---|---|
+| Source and pinned dependency file | Present; CPU inference uses `requirements.txt` |
+| One setup command, exact `python run.py ...` command | Documented for Windows and Unix; setup precedes offline evaluation |
+| One prediction per development case | 25 frozen production JSONs; 151 proposed daughters, including three empty cases |
+| At least three visual checks | Regenerate subjects001/002/003 from those same frozen production JSONs |
+| Physical coordinates, variable counts and parent/instance IDs | Validated by automated tests and all frozen JSONs |
+| Five-minute demo | Existing eight-slide deck, four 75-second roles, film inside that time; native laptop playback still needs checking |
+| Clinician-useful display | Explorer exists; Subject018's final 3D/selection/export interaction remains unverified |
+| Hidden cases without manual edits | Required CLI is generic; hidden-case accuracy cannot be guaranteed |
+| 5 mm daughter path, up to 10 mm or first downstream split | Implemented for accepted traces; strict candidate search can still miss wall-parallel branches, with the opt-in alternative deliberately unpromoted |
+| Caps, common trunks, adjacent ostia and daughter-of-daughter | Regression coverage exists; exact real-case eligibility needs expert adjudication |
+| Minimum eligible origin size | Not supplied; current minimum-radius setting is not an organizer-confirmed size rule |
+| Runtime | Initial target is average ≤60 s/case; final limit and native Windows measurement outstanding |
+| Ground truth | Five new hard synthetic development cases have 12 analytic daughters; five real-case packets remain unreviewed |
+
+The refreshed Python suite passed **100 tests with one expected network-sandbox
+skip** after adding review-packet and scorer-provenance tests. No detector
+threshold was changed for the new synthetic seed. At a local 3 mm matching
+tolerance, the new five-case development bundle scored 10 TP / 0 FP / 2 FN:
+one thick-slice miss and one wall-parallel miss remain. This is synthetic
+development evidence, not real-scan accuracy.
+
 ## Challenge contract and evidence
 
 | Requirement | Implementation / verification |
@@ -27,7 +72,7 @@ records the latest results and the incomplete final browser checks.
 | Nearby ostia separate; common trunk one origin | Dedicated topology regressions and procedural families |
 | CPU-only, offline | Network syscalls denied during 54 passing inference/training tests; no runtime API or model download |
 | Four CPU cores, 8 GB target | 25 fresh CLI processes with four-core affinity, four threads and 8 GiB process limit; maximum 23.35 s elapsed and 1.43 GiB RSS |
-| Development predictions | All 25 real JSON outputs plus five analytic training cases in delivered evidence bundles |
+| Development predictions | All 25 real JSON outputs; synthetic training/reference cases are a separate artifact |
 | Three visual checks | Subjects 001/002/003: CT, parent outline, predicted ostia and direction arrows; included in presentation and evidence |
 | Useful visual interface | Local Explorer: 3D, linked CT, wall map, tour and JSON export; separate candidate-review workflow |
 | Five-minute demo | Eight slides, four 75-second speaking slots; 60-second actual Explorer film inside Speaker 3's slot |
