@@ -323,6 +323,24 @@ seed, radius, and direction errors. Undefined metrics are JSON `null`. This is
 a transparent local metric, not a claim to reproduce the organizer's scoring.
 Do not evaluate against the detector's own outputs as if they were ground truth.
 
+When organizer reference files arrive, freeze the current predictions first
+(`python batch.py --output-dir predictions/frozen-<commit>`), then score the
+whole set in one command regardless of their exact field names:
+
+```bash
+python score_references.py --references organizer-refs/ \
+  --predictions predictions/frozen-<commit> --data-root data \
+  --output outputs/reference-score.json
+```
+
+It accepts one JSON per case, a list of cases, or a directory; maps common
+aliases (`ostium`/`origin`, `branches`/`daughters`, `diameter_mm`, case ids
+like `18` or `orig18`); converts voxel indices to millimetres with the case
+image when `coordinate_space` says so; derives a missing seed or direction;
+reports TP/FP/FN at 2, 3 and 5 mm; and warns when an LPS/RAS mirror would match
+far better. Every normalization it applied is listed in the report JSON, so
+check that list before quoting any number.
+
 ## Verification
 
 ```bash
