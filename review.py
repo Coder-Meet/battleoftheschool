@@ -5,7 +5,7 @@ then open the Aorta Explorer so an engineer can confirm or reject each one.
 
     python review.py --cases subject001 subject002        # detect, record, open the Explorer
     python review.py --all                                # every available case
-    python review.py --status branchseed-reviews.json     # progress of an exported review file
+    python review.py --status                             # per-case progress of labels/reviews.json
 
 The submission CLI (run.py) is untouched: the review profile exists only to build labels.
 """
@@ -37,7 +37,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--no-browser", action="store_true")
     parser.add_argument("--skip-detect", action="store_true", help="Open the Explorer without re-recording the pool.")
-    parser.add_argument("--status", type=Path, help="Exported reviews JSON; print per-case progress and exit.")
+    parser.add_argument("--reviews", type=Path, default=ROOT / "labels" / "reviews.json",
+                        help="Verdict file, git-tracked so labels are shared; written on every click.")
+    parser.add_argument("--status", action="store_true", help="Print per-case progress of --reviews and exit.")
     return parser.parse_args()
 
 
@@ -98,7 +100,10 @@ def print_status(reviews_path: Path, output_dir: Path) -> None:
 def main() -> int:
     args = parse_args()
     if args.status:
-        print_status(args.status, args.output_dir)
+        if not args.reviews.is_file():
+            print(f"No verdicts yet at {args.reviews}.", file=sys.stderr)
+            return 1
+        print_status(args.reviews, args.output_dir)
         return 0
     if not args.data_root.is_dir():
         print("The data directory does not exist.", file=sys.stderr)
@@ -121,13 +126,13 @@ def main() -> int:
     if not args.skip_detect:
         record_pool([args.data_root / c for c in selected], args.output_dir, config)
         print(f"Candidate pool recorded under {args.output_dir}", flush=True)
-    ledger = ReviewLedger(args.output_dir / "reviews.json")
+    ledger = ReviewLedger(args.reviews)
     server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(store, ROOT / "web" / "dist", ledger))
     url = f"http://127.0.0.1:{args.port}/review/{selected[0]}"
     print(f"\nReview {len(selected)} case(s) at {url}", flush=True)
     print(f"Verdicts save to {ledger.path} as you click; the 3D explorer stays at http://127.0.0.1:{args.port}/", flush=True)
     print("Ctrl+C stops the server.", flush=True)
-    print(f"Progress: python review.py --status {ledger.path} --output-dir {args.output_dir}", flush=True)
+    print("Progress: python review.py --status   ·   share labels: git add labels/reviews.json && git commit", flush=True)
     if not args.no_browser:
         Timer(1.0, webbrowser.open, [url]).start()
     try:

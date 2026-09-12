@@ -248,7 +248,7 @@ def main() -> None:
         help="Run the loose review-profile detector so weak candidates reach human review.",
     )
     parser.add_argument(
-        "--reviews", type=Path, default=ROOT / "outputs" / "review" / "reviews.json",
+        "--reviews", type=Path, default=ROOT / "labels" / "reviews.json",
         help="Where /review verdicts are saved (Explorer export schema).",
     )
     args = parser.parse_args()
