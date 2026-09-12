@@ -10,6 +10,9 @@ Full problem statement: see the [Branchseed challenge doc](https://docs.google.c
 
 New teammates: start with the [setup, backend API and training handoff guide](TEAMMATE_GUIDE.md).
 
+Research: see the [ML implementation plan](RESEARCH_IMPLEMENTATION.md) and the
+[three additional paper experiments and measured limitations](ADDITIONAL_PAPERS.md).
+
 Presenters: use the [five-minute presentation guide](presentation/README.md)
 and [live demo cues](presentation/LIVE_DEMO_CUES.md). The authoring source builds
 an offline HTML deck, editable PowerPoint and PDF; the Explorer segment runs live.

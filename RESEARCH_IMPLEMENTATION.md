@@ -15,6 +15,11 @@ scoring weights and eligibility rules quoted there therefore need organizer
 confirmation. Public evidence below was checked through primary papers, official
 dataset pages, repositories, and API documentation; no patient data was downloaded.
 
+The three additional user-supplied papers now have a
+[separate implementation audit and development comparison](ADDITIONAL_PAPERS.md).
+Their contact-growth, border-cleaning and PCA-direction adaptations are opt-in;
+none passed the first synthetic promotion check.
+
 ## 1. Decision and current application
 
 Keep the classical proposal pipeline as the backbone and **measure its recall

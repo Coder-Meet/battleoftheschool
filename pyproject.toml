@@ -9,7 +9,7 @@ select = ["E4", "E7", "E9", "F"]
 python_version = "3.13"
 ignore_missing_imports = true
 check_untyped_defs = true
-files = ["detector.py", "run.py", "nifti_io.py", "explorer.py", "batch.py", "evaluate.py", "learning.py", "synthetic.py", "benchmark.py", "stress.py", "score_references.py", "prepare_annotations.py", "autolabel.py", "synthetic_reviews.py", "labels_to_references.py", "compare_e2e.py"]
+files = ["detector.py", "run.py", "nifti_io.py", "explorer.py", "batch.py", "evaluate.py", "learning.py", "synthetic.py", "benchmark.py", "stress.py", "score_references.py", "prepare_annotations.py", "autolabel.py", "synthetic_reviews.py", "labels_to_references.py", "compare_e2e.py", "paper_methods.py"]
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
