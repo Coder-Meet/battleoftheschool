@@ -9,7 +9,7 @@ import pytest
 
 from explorer import CaseData, CaseStore, make_handler
 from learning import FEATURE_NAMES
-from review_page import ReviewLedger, page_case, render_candidate
+from review_page import ReviewLedger, _orientation, page_case, render_candidate
 
 
 def branch(instance="branch_001", radius=2.0):
@@ -74,6 +74,15 @@ def test_pending_counts_ignore_changed_and_removed_candidates(tmp_path):
     ledger.set("subject_test", branch("branch_002"), "rejected")
     assert ledger.counts("subject_test", [branch(radius=3)]) == {"confirmed": 0, "rejected": 0}
     assert ledger.counts("subject_test", [branch()]) == {"confirmed": 1, "rejected": 0}
+
+
+@pytest.mark.parametrize("basis,expected", [
+    (np.eye(3), {"x_right": "L", "y_up": "P", "z_up": "S"}),
+    (np.diag([-2, -2, -2]), {"x_right": "R", "y_up": "A", "z_up": "I"}),
+    (np.array([[0, -2, 0], [2, 0, 0], [0, 0, 2]]), {"x_right": "P", "y_up": "R", "z_up": "S"}),
+])
+def test_review_orientation_respects_rotated_and_reflected_headers(basis, expected):
+    assert _orientation({"basis": basis.tolist()}) == expected
 
 
 def test_failed_disk_commit_preserves_previous_verdicts(tmp_path, monkeypatch):

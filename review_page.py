@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING, Any
 
 import matplotlib
 import numpy as np
+import SimpleITK as sitk
 
 from learning import FEATURE_NAMES
 
@@ -117,13 +118,10 @@ OPPOSITE = {"A": "P", "P": "A", "L": "R", "R": "L", "S": "I", "I": "S"}
 
 
 def _orientation(meta: dict) -> dict[str, str]:
-    # Image axes follow the header's direction matrix; LPS means +x = left, +y = posterior, +z = superior.
     basis = np.asarray(meta["basis"], dtype=float)
-    return {
-        "x_right": "L" if basis[0, 0] > 0 else "R",
-        "y_up": "P" if basis[1, 1] > 0 else "A",
-        "z_up": "S" if basis[2, 2] > 0 else "I",
-    }
+    direction = basis / np.linalg.norm(basis, axis=0)
+    orientation = sitk.DICOMOrientImageFilter_GetOrientationFromDirectionCosines(direction.ravel().tolist())
+    return dict(zip(("x_right", "y_up", "z_up"), orientation))
 
 
 def _panel(ax: Any, image: np.ndarray, mask: np.ndarray, point: tuple[float, float] | None,
@@ -178,9 +176,9 @@ def render_candidate(case: "CaseData", branch: dict) -> bytes:
         grid = fig.add_gridspec(2, 20, hspace=0.28, wspace=0.18)
         # Whole-aorta locators: where along the aorta, and on which wall, this candidate sits.
         _panel(fig.add_subplot(grid[0, 0:4]), ct.max(axis=1), mask.max(axis=1), (ost[2], ost[0]),
-               path[:, [2, 0]], "locator · coronal MIP", (axes_of["z_up"], axes_of["x_right"]), mip_window)
+               path[:, [2, 0]], "locator · acquisition XZ MIP", (axes_of["z_up"], axes_of["x_right"]), mip_window)
         _panel(fig.add_subplot(grid[1, 0:4]), ct.max(axis=2), mask.max(axis=2), (ost[1], ost[0]),
-               path[:, [1, 0]], "locator · sagittal MIP", (axes_of["z_up"], axes_of["y_up"]), mip_window)
+               path[:, [1, 0]], "locator · acquisition YZ MIP", (axes_of["z_up"], axes_of["y_up"]), mip_window)
         offset = np.asarray([lo[0], lo[1], lo[2]], dtype=float)
         local = path - offset
         views = [
@@ -292,9 +290,9 @@ def page_case(store: "CaseStore", ledger: ReviewLedger, case: "CaseData") -> byt
         f"<header><strong>{html.escape(case_id)}</strong><span class='pill'>{len(branches)} candidates</span>"
         f"<span class='pill' id='progress'>{pending} pending</span><a href='/review'>all cases</a>"
         f"<a href='/#case={case_id}'>3D explorer</a><a href='/review/export'>download reviews JSON</a></header><main>"
-        "<div class='hint'>Confirm when a bright tube leaves the green aorta outline at the yellow dot, along the red arrow, "
+        "<div class='hint'>Confirm when a bright tube leaves the green aorta outline at the yellow dot, along the red path, "
         "and keeps going for about 5 mm in at least one panel. The bottom row walks through consecutive axial slices around the origin. "
-        "Views follow the acquisition axes; rotated scans are not anatomical reformats. "
+        "Views follow acquisition axes; edge letters indicate the nearest anatomical directions from the header. "
         "Keys: <kbd>c</kbd> confirm · <kbd>r</kbd> reject · <kbd>x</kbd> clear · <kbd>j</kbd>/<kbd>k</kbd> next/previous.</div>"
         + "".join(cards) + "</main>"
         "<script>"
