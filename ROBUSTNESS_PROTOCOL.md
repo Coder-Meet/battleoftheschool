@@ -72,6 +72,73 @@ regressions on seeds 582743/904117. Do not retune either model after viewing
 these outcomes. Scores on AI verdicts are candidate-label agreement; only
 the analytic cases measure complete branch discovery here.
 
+### Measured outcomes
+
+**Decision: keep the production detector unchanged.** The blended weights
+are a safer optional experiment than the supplied weights on these synthetic
+cases, but neither has established real branch-discovery accuracy.
+
+At 3 mm, the new 14-case seed 557891 produced:
+
+| Pipeline | TP | FP | FN | F1 |
+|---|---:|---:|---:|---:|
+| Strict production | 26 | 1 | 5 | 0.8966 |
+| Strict + Steven filter | 25 | 1 | 6 | 0.8772 |
+| Strict + blended filter | 26 | 1 | 5 | 0.8966 |
+| Review union, unfiltered | 28 | 0 | 3 | 0.9492 |
+| Review union + Steven filter | 27 | 0 | 4 | 0.9310 |
+| Review union + blended filter | 28 | 0 | 3 | 0.9492 |
+
+The additional discoveries come from the broader proposal stage, not the
+filter. The supplied filter removes a true thick-slice branch. The blended
+model keeps it. All coefficients and thresholds remained frozen.
+
+Strict regression results, reported as TP/FP/FN:
+
+| Seed | Production | Steven filter | Blended filter |
+|---|---|---|---|
+| 582743 | 26/1/6 | 25/1/7 | 26/1/6 |
+| 904117 | 27/0/4 | 26/0/5 | 27/0/4 |
+
+Across these 40 cases, adding synthetic training labels avoids all three
+true-branch losses caused by Steven's filter. The blended strict pipeline
+keeps every production prediction, including its two false positives.
+This is an improvement over the supplied filter, not over production
+branch discovery.
+
+The attractive fresh-seed result does not justify switching to the review
+union. Additional regression checks with the frozen blended model found:
+
+| Seed | Strict production TP/FP/FN | Blended review union TP/FP/FN |
+|---|---|---|
+| 864203 (now development) | 31/0/3 | 31/2/3 |
+| 582743 | 26/1/6 | 28/3/4 |
+| 904117 | 27/0/4 | 28/1/3 |
+
+It recovers some branches but adds false positives, including dense-field
+and curved-daughter distractors. These follow-up results were inspected
+without further tuning. The broader mode remains a benchmark experiment.
+
+On the five held-out **AI-labelled candidate pools**, both expanded models
+retain 20/21 AI-confirmed candidates and reject 45/47 AI-rejected candidates
+(candidate F1 0.9302). The blended model removes one additional false
+positive on the validation labels (F1 0.8293 → 0.8500), but has no test
+classification-count improvement. These incomplete pseudo-labels cannot
+measure branches absent from the pool or establish clinical accuracy.
+
+Rerunning all 25 supplied scans reproduced every frozen production JSON
+after JSON serialization: **151 daughters**. Applying the optional filters
+to strict proposals yields **98** (Steven) or **93** (blended) daughters.
+Those removals are unadjudicated. In particular, both filters remove the
+only production proposal in subject020; do not interpret that empty output
+as proof that the case contains no eligible branch.
+
+The detailed per-case synthetic metrics, 2/3/5 mm sensitivity, source/model
+hashes and split-overlap checks are in `labels/evaluation-summary.json`.
+Source checks passed: Ruff, mypy, 105 tests plus one expected skip, and
+19 selected tests with network calls denied. Native organizer Windows
+runtime and real-reference accuracy remain unmeasured.
+
 ## Evaluation audit
 
 The evaluator uses maximum-cardinality, minimum-distance one-to-one ostium

@@ -158,3 +158,26 @@ overlap and full TP/FP/FN, including every reference removed by the model.
 For a separate experiment with the broader candidate pool, add
 `--candidate-pool --variant review`. This does not change the production CLI
 or promote the pool to default inference.
+
+## Checked-in experimental models
+
+`labels/candidate-model.json` is Steven's supplied model trained on 237
+Claude verdicts. `labels/candidate-model-synthetic.json` adds 40 analytic
+candidate labels to training and applies the 95% training-retention
+constraint. Both keep the same five validation and five test patients.
+The candidate labels, splits, and training reports are committed separately
+from predictions; neither model is enabled by default.
+
+Reproduce the blended fit offline:
+
+```bash
+python learning.py train --reviews labels/reviews.json \
+  labels/synthetic/development-reviews.json labels/synthetic/hard-five-reviews.json \
+  --split labels/split-synthetic.json --minimum-training-recall 0.95 \
+  --model outputs/reproduced-model.json --report outputs/reproduced-training.json
+```
+
+For an explicit inference experiment, append
+`--candidate-model labels/candidate-model-synthetic.json` to the required
+`run.py` command. Preserve the unfiltered development submission. See
+`ROBUSTNESS_PROTOCOL.md` for the frozen comparison and promotion decision.
