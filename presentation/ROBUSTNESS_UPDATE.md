@@ -32,3 +32,21 @@ experiment; the supplement is the source for the later results.
   reproduce full patient anatomy, scanner artifacts or clinical adjudication.
 - **What is next?** Complete expert references, a frozen patient-level split,
   independent baselines and confirmation of the organizer's final thresholds.
+
+## Current default: native-resolution support at `09f753b`
+
+Use this narration in the **same 30-second slot** when demonstrating the current
+default. The film and original slide metrics remain historical evidence.
+
+> We tested our teammate's contrast proposal on newly frozen procedural cases.
+> The conservative version recovered two additional origins without adding
+> false positives: fifty-three of sixty-three references, with one false
+> detection. Ten misses remain. All twenty-five real scans completed locally
+> under the CPU and memory limits. These are engineering checks; real accuracy
+> still needs complete expert annotations.
+
+This is a different 26-case draw from the earlier frozen set, not a replacement
+of its score. Stronger threshold relaxation produced false positives and was
+rejected. Before presenting, finish the coarse-scan 3D/selection/export smoke
+on the demo laptop: the final cloud-browser run stalled after rendering the
+Subject018 CT panels. See [the submission audit](../SUBMISSION_AUDIT.md).

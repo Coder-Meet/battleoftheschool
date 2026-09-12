@@ -9,6 +9,8 @@ organizer scoring remain unknown.
 
 Sources: the supplied **Branchseed challenge.pdf** and **Hacker Guide – WIP.pdf**.
 The detailed selection and failure record is in [ROBUSTNESS_PROTOCOL.md](ROBUSTNESS_PROTOCOL.md).
+The [native-contrast supplement](#native-contrast-release-supplement--09f753b)
+records the latest results and the incomplete final browser checks.
 
 ## Challenge contract and evidence
 
@@ -36,7 +38,7 @@ organizers. The local 3 mm matching threshold is a disclosed proxy, not an
 official tolerance. Terminal iliac division is an optional extension and is
 not claimed as a separately validated feature.
 
-## Release checks
+## Initial release checks (before the native-contrast update)
 
 - Full Python suite: **77 passed, 1 skipped**. The skip is the test requiring
   an externally enforced network sandbox; it passed in the denied-network run.
@@ -95,3 +97,49 @@ on Devpost or with organizers.
 Independent, complete expert daughter references are the next accuracy step.
 Candidate review alone, synthetic ground truth, plausible screenshots and
 successful execution cannot establish real-scan precision or recall.
+
+## Native-contrast release supplement — `09f753b`
+
+The teammate's contrast proposal was compared at three scales before selecting
+1.2. New frozen procedural cases recovered **53/63 references with one FP**
+(F1 **0.9060**), versus **51/63 with one FP** for the previous midpoint.
+Both negative controls stayed empty. The more aggressive scales were rejected
+because they introduced development false positives. The primary outcome is
+this new frozen comparison; older sets were used only for regression checks.
+
+- Full Python suite: **81 passed, 1 expected network-sandbox skip**.
+- Enforced network-denied subset: **58 passed**, including an attempted socket.
+- Ruff, mypy, frontend lint, six frontend tests, build and typecheck: passed.
+- Five training phantoms: **10 TP / 0 FP / 0 FN**.
+- Prior frozen sets, now regression data: **57 TP / 0 FP / 7 FN**.
+- All 25 real cases: valid physical JSON, no batch failures; every prediction
+  exactly matched the preselected experimental implementation.
+- Real batch: mean detector time **5.191 s**, maximum **21.427 s**; total process
+  elapsed **135.39 s**; maximum RSS **1,505,824 KiB (1.44 GiB)**.
+- Fresh required-CLI tail checks: subject018 **22.74 s / 1,495,688 KiB**;
+  subject025 **22.47 s / 1,456,464 KiB**. Four-core affinity and an 8 GiB
+  address-space limit were enforced.
+
+### Final browser status
+
+Review history freshness, stale-label counts, empty cases, persistence,
+save failures, export validation, and modified keyboard shortcuts passed.
+Subjects001/002/003 also passed the recovered 3D/linked-CT regression on the
+unchanged frontend. A fresh backend at `09f753b` passed Subject001 and showed
+Subject018's 16 candidates and three CT planes.
+
+**The final Subject018 3D/changed-selection/browser-download checks remain
+untested:** Chrome stopped responding; the permitted fresh-tab recovery failed.
+Earlier investigation observed SwiftShader GPU crashes, but the final stall
+did not increment the crash count, so its cause is unproven. The shell/backend
+and automated API tests remained operational. This is reported as an
+environment blocker, not silently counted as a browser pass. The intended demo
+laptop must still complete these checks.
+
+### Remaining teammate dependency
+
+The supplied fix note says the stray-mask-island `cap_mask` change and
+`test_a_stray_mask_island_does_not_blank_the_surrounding_wall` already exist.
+Neither was present in fetched main during this investigation. The teammate
+was asked to push or identify that commit; it was not recreated or marked
+verified. Do not present this change as included until it is integrated and tested.

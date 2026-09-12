@@ -209,7 +209,8 @@ The formula approximates partial volume; it is not a calibrated scanner PSF.
 At nonpositive parent/background contrast the existing conservative fallback
 remains. The old midpoint clamp is absent from the experimental path.
 `native_contrast_scale=0` preserves the existing detector; the benchmark's
-`native-contrast` variant selects scale 1.2. It is opt-in until frozen evaluation.
+`native-contrast` variant selects scale 1.2. It remained opt-in until frozen
+evaluation; the promotion is recorded below.
 
 Development seed 4001, before any new frozen predictions:
 
@@ -240,6 +241,23 @@ are no real reference counts, and anatomy, crop coverage and acquisition
 protocol are confounded. In particular, neither more detections nor zero
 correlation proves improvement. The aggressive scale's eight false positives
 on an empty control disqualify it despite its increased candidate recovery.
+
+| Real-scan variant | HU/count correlation | Mean count | Count range | Mean / max detector seconds | Peak RSS, KiB |
+|---|---:|---:|---:|---:|---:|
+| Existing midpoint | -0.6399 | 5.84 | 0–14 | 4.990 / 21.093 | 1,505,784 |
+| Native 1.2 | -0.5727 | 6.04 | 0–16 | 5.018 / 21.316 | 1,505,676 |
+| Native 0.9 | -0.6067 | 6.32 | 0–19 | 5.713 / 24.616 | 1,539,784 |
+| Native 0.6 | -0.5092 | 9.32 | 0–24 | 5.840 / 24.164 | 1,500,416 |
+
+The midpoint timing is from an explicit `native_contrast_scale=0` replay at
+`09f753b`; all 25 predictions exactly matched the initial midpoint run.
+The original initial-run checksum was sampled after execution, so the replay
+also pins an unchanged source checksum across the run. These are single
+local sequential sweeps, not replicated speed comparisons. The final
+production batch and fresh required-CLI tail checks are in the submission
+audit; all production predictions exactly matched the selected experiment.
+Per-case counts, diagnostics, predictions, resource measurements and frozen
+reports are supplied in the native-evidence archive.
 
 Diagnostics now expose background MAD and parent/background contrast divided
 by that MAD, and warn when their intensity distributions overlap. This MAD
@@ -274,3 +292,24 @@ commands remain reproducible. The controlled contrast regressions and
 voxel-integrated phantoms test separate photometric and sampling behavior.
 The point-sampled, one-voxel-width development probe still exposes subvoxel
 phase sensitivity; it is not evidence of complete small-vessel recovery.
+
+Matched-pair mean errors for the new frozen comparison:
+
+| Metric | Prior midpoint | Native 1.2 |
+|---|---:|---:|
+| Ostium, mm | 0.863 | 0.878 |
+| Seed, mm | 0.546 | 0.551 |
+| Absolute radius, mm | 0.190 | 0.182 |
+| Direction, degrees | 10.163 | 10.440 |
+
+Matched populations differ; do not claim every geometric measurement improved.
+The older frozen seeds were rerun only after selection: native results were
+30 TP / 0 FP / 3 FN for 90817 and 27 TP / 0 FP / 4 FN for 112213.
+The five training cases retained 10 TP / 0 FP / 0 FN.
+
+The photometric regression keeps anatomy/background fixed and gives daughters
+65% of the parent/background contrast. The historical gate detects two origins
+at parent 150 HU and zero at 550 HU; the selected detector detects both at each
+level. This is a targeted synthetic regression, not a general invariance proof.
+The absolute 30 HU floor, upper intensity bound, noise, calcification and
+partial-volume sampling can still affect detection.
