@@ -1,0 +1,13 @@
+{
+  "name": "branchseed-presentation",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:pptx": "node build-pptx.cjs",
+    "lint": "node --check build-pptx.cjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/fraunces": "5.2.5",
+    "pptxgenjs": "4.0.1"
+  }
+}

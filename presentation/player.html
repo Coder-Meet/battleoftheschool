@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>Branchseed — Find the branch. Keep the evidence.</title>
+    <style>
+      @font-face {
+        font-family: Manrope;
+        src: url(assets/body.woff2);
+        font-weight: 200 800;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: Fraunces;
+        src: url(assets/display.woff2);
+        font-weight: 100 900;
+        font-display: swap;
+      }
+      :root {
+        --stage-bg: #080e12;
+        --slide-bg: #101c23;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: var(--stage-bg, #000);
+      }
+      .deck-viewport {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        background: var(--stage-bg, #000);
+      }
+      .deck-stage {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        transform-origin: 0 0;
+        background: var(--slide-bg, #fff);
+      }
+      .slide {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        display: block;
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+        background: var(--slide-bg, #fff);
+      }
+      .slide.active,
+      .slide.visible {
+        visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
+        z-index: 1;
+      }
+      img,
+      video,
+      canvas,
+      svg {
+        max-width: 100%;
+        max-height: 100%;
+      }
+      .deck-controls {
+        position: fixed;
+        left: 50%;
+        bottom: 22px;
+        transform: translateX(-50%);
+        z-index: 1000;
+      }
+      @media print {
+        html,
+        body {
+          width: 1920px;
+          height: auto;
+          overflow: visible;
+          background: #fff;
+        }
+        .deck-viewport {
+          position: static;
+          overflow: visible;
+          background: #fff;
+        }
+        .deck-stage {
+          position: static;
+          width: auto;
+          height: auto;
+          transform: none !important;
+          background: none;
+        }
+        .slide {
+          position: relative;
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          pointer-events: auto !important;
+          width: 1920px;
+          height: 1080px;
+          break-after: page;
+          page-break-after: always;
+        }
+        .slide:last-child {
+          break-after: auto;
+          page-break-after: auto;
+        }
+        .deck-controls {
+          display: none !important;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.2s !important;
+        }
+      }
+      body {
+        font-family: Manrope, sans-serif;
+      }
+      .slide {
+        transition: opacity 0.45s ease;
+      }
+      .element {
+        position: absolute;
+        box-sizing: border-box;
+        white-space: pre-wrap;
+        line-height: 1.25;
+        font-weight: 500;
+      }
+      .slide.active .text {
+        animation: arrive 0.8s both;
+      }
+      @keyframes arrive {
+        from {
+          opacity: 0;
+          transform: translateY(15px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .deck-controls {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 7px;
+        background: #101c23ee;
+        border: 1px solid #566b65;
+        border-radius: 12px;
+        white-space: nowrap;
+        transition: opacity 0.25s;
+      }
+      .deck-controls.idle:not(:focus-within) {
+        opacity: 0;
+        pointer-events: none;
+      }
+      button {
+        font: inherit;
+        font-size: 14px;
+        color: #f1ede3;
+        background: transparent;
+        border: 0;
+        padding: 8px 10px;
+        cursor: pointer;
+        border-radius: 6px;
+      }
+      button:hover,
+      button:focus-visible {
+        background: #34444a;
+        outline: 2px solid #7be7c2;
+        outline-offset: 1px;
+      }
+      button:disabled {
+        opacity: 0.3;
+        cursor: default;
+      }
+      #status {
+        font-size: 13px;
+        padding: 0 8px;
+        color: #7be7c2;
+      }
+      #film-layer {
+        position: absolute;
+        inset: 0;
+        background: #080e12;
+        z-index: 20;
+        display: none;
+      }
+      #film-layer.open {
+        display: block;
+      }
+      #film {
+        width: 1920px;
+        height: 1080px;
+        object-fit: contain;
+      }
+      #film-close {
+        position: absolute;
+        right: 35px;
+        top: 25px;
+        font-size: 24px;
+        background: #101c23;
+      }
+      #play-film {
+        position: absolute;
+        left: 780px;
+        top: 600px;
+        z-index: 3;
+        font-size: 30px;
+        background: #101c23ed;
+        color: #7be7c2;
+        padding: 25px 40px;
+        border: 1px solid #7be7c2;
+      }
+      dialog {
+        width: min(820px, 85vw);
+        border: 1px solid #566b65;
+        background: #101c23;
+        color: #f1ede3;
+        padding: 28px;
+        border-radius: 12px;
+        font-size: 18px;
+        line-height: 1.7;
+      }
+      dialog::backdrop {
+        background: #0009;
+      }
+      dialog h2 {
+        font-family: Fraunces, serif;
+        font-size: 32px;
+        margin: 0;
+      }
+      #notes-copy {
+        white-space: pre-line;
+      }
+      .hint {
+        font-size: 14px;
+        color: #9facaa;
+      }
+      @media (max-width: 620px) {
+        .deck-controls {
+          bottom: 8px;
+          gap: 0;
+          padding: 3px;
+        }
+        button {
+          font-size: 12px;
+          padding: 7px;
+        }
+        .optional {
+          display: none;
+        }
+        #status {
+          font-size: 11px;
+          padding: 0 4px;
+        }
+      }
+      @page {
+        size: 13.333333in 7.5in;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="deck-viewport" aria-label="Branchseed presentation">
+      <div class="deck-stage" id="stage"></div>
+    </main>
+    <nav class="deck-controls" aria-label="Presentation controls">
+      <button
+        id="previous"
+        title="Previous slide (Left arrow)"
+        aria-label="Previous slide"
+      >
+        ←
+      </button>
+      <span id="status" aria-live="polite"></span>
+      <button
+        id="next"
+        title="Next slide (Right arrow)"
+        aria-label="Next slide"
+      >
+        →
+      </button>
+      <button id="auto" title="Timed rehearsal (A)">Rehearse</button>
+      <button id="notes" title="Speaker notes (N)">Notes</button>
+      <button id="fullscreen" title="Fullscreen (F)" class="optional">
+        Fullscreen
+      </button>
+    </nav>
+    <dialog id="notes-dialog">
+      <h2 id="notes-title"></h2>
+      <p id="notes-copy"></p>
+      <p class="hint">
+        ← / → slides · A timed rehearsal · V film on slide 5 · F fullscreen ·
+        Esc close
+      </p>
+      <button id="close-notes">Close notes</button>
+    </dialog>
+    <script>
+      "use strict";
+      const deck = __DECK_DATA__;
+      const stage = document.getElementById("stage");
+      const nodes = [];
+      for (let i = 0; i < deck.length; i++) {
+        const model = deck[i];
+        const section = document.createElement("section");
+        section.className = "slide";
+        section.style.background = "#" + model.background;
+        section.setAttribute("aria-label", `Slide ${i + 1}: ${model.title}`);
+        section.setAttribute("aria-hidden", "true");
+        let textIndex = 0;
+        for (const e of model.elements) {
+          let element;
+          if (e.kind === "line") {
+            element = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "svg",
+            );
+            element.setAttribute("width", "1920");
+            element.setAttribute("height", "1080");
+            element.style.position = "absolute";
+            element.style.pointerEvents = "none";
+            const line = document.createElementNS(element.namespaceURI, "line");
+            for (const [name, value] of Object.entries({
+              x1: e.x,
+              y1: e.y,
+              x2: e.x + e.w,
+              y2: e.y + e.h,
+              stroke: "#" + e.color,
+              "stroke-width": e.stroke,
+            })) {
+              line.setAttribute(name, String(value));
+            }
+            element.append(line);
+          } else {
+            element = document.createElement(
+              e.kind === "image" ? "img" : "div",
+            );
+            element.className = "element";
+            Object.assign(element.style, {
+              left: e.x + "px",
+              top: e.y + "px",
+              width: e.w + "px",
+              height: e.h + "px",
+            });
+            if (e.kind === "text") {
+              element.classList.add("text");
+              element.textContent = e.text;
+              Object.assign(element.style, {
+                fontSize: e.size + "px",
+                color: "#" + e.color,
+                fontFamily: e.font === "display" ? "Fraunces" : "Manrope",
+                animationDelay: Math.min(textIndex++ * 0.055, 0.45) + "s",
+              });
+            } else if (e.kind === "image") {
+              element.src = e.source;
+              element.alt = e.source.includes("check-")
+                ? "Actual CT projection with parent contour and predicted origins/directions"
+                : model.title;
+              element.style.objectFit = "contain";
+            } else {
+              element.style.background = e.stroke
+                ? "transparent"
+                : "#" + e.color;
+              if (e.stroke)
+                element.style.border = `${e.stroke}px solid #${e.color}`;
+              if (e.kind === "circle") element.style.borderRadius = "50%";
+            }
+          }
+          section.append(element);
+        }
+        if (i === 4) {
+          const play = document.createElement("button");
+          play.id = "play-film";
+          play.textContent = "Play 60-second film";
+          play.addEventListener("click", playFilm);
+          section.append(play);
+        }
+        stage.append(section);
+        nodes.push(section);
+      }
+      const layer = document.createElement("div");
+      layer.id = "film-layer";
+      layer.innerHTML =
+        '<video id="film" src="branchseed-film.mp4" controls playsinline preload="metadata"></video><button id="film-close" aria-label="Close film">Close film ×</button>';
+      stage.append(layer);
+      const film = document.getElementById("film");
+      const dialog = document.getElementById("notes-dialog");
+      const controls = document.querySelector(".deck-controls");
+      let current = 0,
+        automatic = false,
+        began = performance.now(),
+        idleTimer = 0,
+        filmStarted = false,
+        elapsedBeforePause = 0;
+      const clock = (value) =>
+        `${Math.floor(value / 60)}:${String(Math.floor(value % 60)).padStart(2, "0")}`;
+      const elapsedNow = () =>
+        elapsedBeforePause +
+        (automatic ? (performance.now() - began) / 1000 : 0);
+      function resize() {
+        const scale = Math.min(innerWidth / 1920, innerHeight / 1080);
+        stage.style.transform = `translate(${(innerWidth - 1920 * scale) / 2}px,${(innerHeight - 1080 * scale) / 2}px) scale(${scale})`;
+      }
+      function status() {
+        const elapsed = Math.min(elapsedNow(), deck[current].seconds);
+        const prior = deck
+          .slice(0, current)
+          .reduce((sum, s) => sum + s.seconds, 0);
+        document.getElementById("status").textContent =
+          `${current + 1}/8 · S${deck[current].speaker} · ${clock(prior + elapsed)} / 5:00`;
+      }
+      function show(index) {
+        closeFilm();
+        current = Math.max(0, Math.min(deck.length - 1, index));
+        nodes.forEach((node, i) => {
+          node.classList.toggle("active", i === current);
+          node.setAttribute("aria-hidden", String(i !== current));
+          node.inert = i !== current;
+        });
+        began = performance.now();
+        elapsedBeforePause = 0;
+        filmStarted = false;
+        history.replaceState(null, "", "#slide-" + (current + 1));
+        document.getElementById("previous").disabled = current === 0;
+        document.getElementById("next").disabled = current === deck.length - 1;
+        document.getElementById("notes-title").textContent =
+          `Speaker ${deck[current].speaker} · ${deck[current].seconds}s · ${deck[current].title}`;
+        document.getElementById("notes-copy").textContent = deck[current].notes;
+        status();
+      }
+      async function playFilm() {
+        if (current !== 4) return;
+        filmStarted = true;
+        layer.classList.add("open");
+        film.controls = !automatic;
+        film.currentTime = 0;
+        try {
+          await film.play();
+        } catch {
+          film.controls = true;
+        }
+      }
+      function closeFilm() {
+        film.pause();
+        layer.classList.remove("open");
+      }
+      function toggleAuto() {
+        if (automatic) {
+          elapsedBeforePause = elapsedNow();
+          automatic = false;
+          if (layer.classList.contains("open")) film.pause();
+        } else {
+          if (current === 7 && elapsedBeforePause >= deck[current].seconds)
+            show(0);
+          began = performance.now();
+          automatic = true;
+          if (layer.classList.contains("open")) {
+            film.controls = false;
+            film.play().catch(() => {
+              film.controls = true;
+            });
+          }
+        }
+        document.getElementById("auto").textContent = automatic
+          ? "Pause"
+          : "Resume";
+      }
+      function activity() {
+        controls.classList.remove("idle");
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => controls.classList.add("idle"), 3500);
+      }
+      document.getElementById("previous").onclick = () => show(current - 1);
+      document.getElementById("next").onclick = () => show(current + 1);
+      document.getElementById("auto").onclick = toggleAuto;
+      document.getElementById("notes").onclick = () => dialog.showModal();
+      document.getElementById("close-notes").onclick = () => dialog.close();
+      document.getElementById("film-close").onclick = closeFilm;
+      document.getElementById("fullscreen").onclick = async () => {
+        if (document.fullscreenElement) await document.exitFullscreen();
+        else await document.documentElement.requestFullscreen();
+      };
+      film.addEventListener("ended", closeFilm);
+      window.addEventListener("resize", resize);
+      window.addEventListener("pointermove", activity);
+      window.addEventListener("keydown", (event) => {
+        activity();
+        if (dialog.open) return;
+        if (event.key === "Escape") {
+          closeFilm();
+          return;
+        }
+        const key = event.key.toLowerCase();
+        if (key === "a") {
+          event.preventDefault();
+          toggleAuto();
+          return;
+        }
+        if (key === "f") {
+          event.preventDefault();
+          document.getElementById("fullscreen").click();
+          return;
+        }
+        if (layer.classList.contains("open")) return;
+        if (["arrowright", "pagedown", " "].includes(key)) {
+          event.preventDefault();
+          show(current + 1);
+        }
+        if (["arrowleft", "pageup"].includes(key)) {
+          event.preventDefault();
+          show(current - 1);
+        }
+        if (key === "home") show(0);
+        if (key === "end") show(7);
+        if (key === "n") dialog.showModal();
+        if (key === "v") playFilm();
+      });
+      setInterval(() => {
+        if (!automatic) return;
+        const elapsed = elapsedNow();
+        if (current === 4 && elapsed >= 6 && !filmStarted) playFilm();
+        if (elapsed >= deck[current].seconds) {
+          if (current === 7) {
+            elapsedBeforePause = deck[current].seconds;
+            automatic = false;
+            document.getElementById("auto").textContent = "Rehearse";
+            status();
+            return;
+          }
+          show(current + 1);
+        }
+        status();
+      }, 100);
+      resize();
+      const initial = /^#slide-(\d+)$/.exec(location.hash);
+      show(initial ? Number(initial[1]) - 1 : 0);
+      activity();
+    </script>
+  </body>
+</html>
