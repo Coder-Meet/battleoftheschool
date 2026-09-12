@@ -304,6 +304,7 @@ def page_case(store: "CaseStore", ledger: ReviewLedger, case: "CaseData") -> byt
         "Keys: <kbd>c</kbd> confirm · <kbd>r</kbd> reject · <kbd>x</kbd> clear · <kbd>j</kbd>/<kbd>k</kbd> next/previous.</div>"
         + "".join(cards) + "</main>"
         "<script>"
+        "window.addEventListener('pageshow',e=>{if(e.persisted)location.reload();});"
         "const cards=[...document.querySelectorAll('.card')];let current=0;"
         "function focusCard(i){current=Math.max(0,Math.min(cards.length-1,i));cards.forEach((c,j)=>c.classList.toggle('current',j===current));"
         "cards[current].scrollIntoView({behavior:'smooth',block:'start'});}"
