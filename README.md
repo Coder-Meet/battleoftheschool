@@ -173,6 +173,12 @@ need localhost networking. Bundled frontend assets are served by the local serve
 
 ### Labelling workflow: AI verdicts on detector candidates, then train the filter
 
+**AI verdicts are provisional pseudo-labels, not expert ground truth.** A
+`confirmed` status describes that reviewer's decision, not clinical validation.
+Keep the `labeller` provenance, hold out patients, and do not report evaluation
+against these decisions as real branch-detection accuracy. The default
+submission CLI does not load these reviews or an optional candidate model.
+
 There are no branch annotations for the 25 scans, so labels come from judging the
 detector's own proposals against the CT. This is done by an AI reviewer reading
 rendered evidence, not by a web page. `autolabel.py render` runs the loose

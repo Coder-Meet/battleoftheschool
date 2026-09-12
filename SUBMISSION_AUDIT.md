@@ -67,6 +67,13 @@ The [presentation release](https://github.com/Coder-Meet/battleoftheschool/relea
 now hosts both the MP4 and complete offline kit. Publishing these assets does
 not submit the team to Devpost.
 
+Concurrent teammate commit `7515009` replaced the server-side `/review` pages
+with `autolabel.py` and imported AI verdicts for subject001. The historical
+review-page browser results below apply to the older implementation. These
+AI verdicts are provisional pseudo-labels, not expert annotations. The default
+detector and frozen production predictions were not changed by that commit.
+Use the independent five-case review packets for expert adjudication.
+
 ## Challenge contract and evidence
 
 | Requirement | Implementation / verification |
