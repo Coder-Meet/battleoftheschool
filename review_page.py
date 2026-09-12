@@ -23,6 +23,7 @@ if TYPE_CHECKING:
 
 HALF_MM = 15.0
 STRIP_OFFSETS_MM = (-4, -2, 0, 2, 4)
+SLAB_MM = 2.0
 WINDOW = (-100.0, 600.0)
 LABELS = ("confirmed", "rejected", "unreviewed")
 CASE_ID = re.compile(r"[A-Za-z0-9_-]+")
@@ -181,12 +182,19 @@ def render_candidate(case: "CaseData", branch: dict) -> bytes:
                path[:, [1, 0]], "locator · acquisition YZ MIP", (axes_of["z_up"], axes_of["y_up"]), mip_window)
         offset = np.asarray([lo[0], lo[1], lo[2]], dtype=float)
         local = path - offset
+        # Thin-slab projections: a 1 mm vessel leaves any single slice at once, so show the brightest
+        # voxel across ±SLAB_MM around each plane instead.
+        slab = max(1, int(round(SLAB_MM / spacing)))
+        z0, z1 = max(0, iz - slab), min(ct.shape[0], iz + slab + 1)
+        y0, y1 = max(0, iy - slab), min(ct.shape[1], iy + slab + 1)
+        x0, x1 = max(0, ix - slab), min(ct.shape[2], ix + slab + 1)
+        title = f"±{SLAB_MM:g} mm slab at the origin"
         views = [
-            ("acquisition XY at the origin", ct[iz, lo[1]:hi[1], lo[2]:hi[2]], mask[iz, lo[1]:hi[1], lo[2]:hi[2]],
+            (f"acquisition XY · {title}", ct[z0:z1, lo[1]:hi[1], lo[2]:hi[2]].max(axis=0), mask[iz, lo[1]:hi[1], lo[2]:hi[2]],
              (ost[2] - lo[2], ost[1] - lo[1]), local[:, [2, 1]], (axes_of["y_up"], axes_of["x_right"])),
-            ("acquisition XZ at the origin", ct[lo[0]:hi[0], iy, lo[2]:hi[2]], mask[lo[0]:hi[0], iy, lo[2]:hi[2]],
+            (f"acquisition XZ · {title}", ct[lo[0]:hi[0], y0:y1, lo[2]:hi[2]].max(axis=1), mask[lo[0]:hi[0], iy, lo[2]:hi[2]],
              (ost[2] - lo[2], ost[0] - lo[0]), local[:, [2, 0]], (axes_of["z_up"], axes_of["x_right"])),
-            ("acquisition YZ at the origin", ct[lo[0]:hi[0], lo[1]:hi[1], ix], mask[lo[0]:hi[0], lo[1]:hi[1], ix],
+            (f"acquisition YZ · {title}", ct[lo[0]:hi[0], lo[1]:hi[1], x0:x1].max(axis=2), mask[lo[0]:hi[0], lo[1]:hi[1], ix],
              (ost[1] - lo[1], ost[0] - lo[0]), local[:, [1, 0]], (axes_of["z_up"], axes_of["y_up"])),
         ]
         for column, (title, image, outline, point, trace, edges) in enumerate(views):
@@ -197,7 +205,7 @@ def render_candidate(case: "CaseData", branch: dict) -> bytes:
             marker: tuple[float, float] | None = (ost[2] - lo[2], ost[1] - lo[1]) if offset_mm == 0 else None
             start = 5 + column * 3
             _panel(fig.add_subplot(grid[1, start:start + 3]), ct[z, lo[1]:hi[1], lo[2]:hi[2]],
-                   mask[z, lo[1]:hi[1], lo[2]:hi[2]], marker, None, f"axial {offset_mm:+d} mm",
+                   mask[z, lo[1]:hi[1], lo[2]:hi[2]], marker, None, f"XY {offset_mm:+d} mm",
                    (axes_of["y_up"], axes_of["x_right"]))
         buffer = io.BytesIO()
         fig.savefig(buffer, format="png", facecolor=fig.get_facecolor())
