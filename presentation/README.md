@@ -56,7 +56,8 @@ notes are in PowerPoint and the HTML notes dialog. Slide durations are
 ## PowerPoint, PDF and media
 
 `branchseed-editable.pptx` contains editable text and geometric shapes,
-speaker notes, CT images and the embedded film. Install `assets/body.ttf`
+speaker notes, CT images and the embedded film. Click the film to play it in
+PowerPoint slideshow mode; HTML keyboard shortcuts do not apply. Install `assets/body.ttf`
 and `assets/display.ttf` before opening PowerPoint; they are static instances
 named **Branchseed Text** and **Branchseed Display**. Restart PowerPoint after
 installing fonts. Their original OFL licenses are included. The HTML does
@@ -201,3 +202,8 @@ The PowerPoint generator permits PNG inputs only. The locked PptxGenJS
 dependency has upstream `image-size` parser advisories for other image formats;
 the build uses generated PNGs and does not process uploaded/untrusted images.
 No audit settings or repository security controls were disabled.
+
+The exporter sets the embedded video's generated cover relationship to the
+local poster file before writing the package. This adapter targets the pinned
+PptxGenJS 4.0.1 data model and checks its expected media type. Revalidate the
+video cover and embedded MP4 if upgrading that dependency.
