@@ -146,7 +146,7 @@ $("#app").innerHTML = `
         <div class="evidence-panel" id="evidence-panel"><div class="section-heading"><h3>${icon("crosshair")} CT evidence <span>LINKED TO SELECTION</span></h3><label>Window <select id="ct-window" aria-label="CT window"><option value="cta">Angiography</option><option value="soft">Soft tissue</option><option value="bone">Bone</option></select></label></div><div class="slices" id="slices"></div></div>
       </div>
       <aside class="inspector"><div class="inspector-heading"><div><h3>Branch instances <span id="branch-count" class="count">0</span></h3><p>Direct daughters of the parent aorta</p></div>${icon("git-branch")}</div>
-        <div class="review-toolbar"><label>Show <select id="branch-filter" aria-label="Filter branch reviews"><option value="all">All candidates</option><option value="unreviewed">Needs review</option><option value="confirmed">Confirmed</option><option value="rejected">Rejected</option></select></label><button id="export-reviews" class="icon-button" title="Export training reviews for all cases" aria-label="Export training reviews">${icon("download")}</button><span id="review-progress" role="status"></span></div>
+        <div class="review-toolbar"><label>Show <select id="branch-filter" aria-label="Filter branch reviews"><option value="all">All candidates</option><option value="unreviewed">Needs review</option><option value="confirmed">Confirmed</option><option value="rejected">Rejected</option></select></label><button id="export-reviews" class="icon-button" title="Export training reviews for all cases" aria-label="Export training reviews">${icon("arrow-down-to-line")}</button><span id="review-progress" role="status"></span></div>
         <div class="branch-list" id="branch-list"><div class="empty-branches">Analyze a case to discover branches.</div></div>
         <div class="branch-details" id="branch-details"><div class="no-selection">${icon("crosshair")}<h4>Follow an origin</h4><p>Select a branch to inspect its coordinates and proximal path.</p></div></div>
         <div class="inspector-note">${icon("circle-help")}<p>Detections are candidates for review.<br>Evidence scores are not probabilities.</p></div>
@@ -267,6 +267,7 @@ async function loadCase(id: string) {
   const deadline = Date.now() + 180000;
   selectedCase = id;
   data = undefined;
+  $("#case-subtitle").textContent = "Loading CT and parent mask…";
   renderCases();
   if (window.matchMedia("(max-width: 1080px)").matches)
     document.body.classList.remove("library-collapsed");
@@ -311,6 +312,11 @@ async function loadCase(id: string) {
     ]);
     if (sequence !== loadSequence) return;
     data = metadata;
+    const removed = reviews.reconcile(id, data.branches);
+    if (removed)
+      toast(
+        `${removed} outdated review(s) removed. Please review the updated candidates.`,
+      );
     viewer?.load(data);
     slices.load(data, ct, mask);
     history.replaceState(null, "", `#case=${encodeURIComponent(id)}`);

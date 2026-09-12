@@ -82,6 +82,36 @@ tracked with **Git LFS**, not raw git. See setup below.
 
 ## Run
 
+### Offline operation
+
+Inference, candidate-model training and the Explorer run **without internet**.
+There are no hosted models, inference APIs, runtime weight downloads, CDNs or
+remote font requests. First install the pinned Python/frontend dependencies,
+resolve Git LFS scans and build `web/dist` while connected. Preserve that
+environment and local data before disconnecting; setup commands such as
+`npm install` and `git lfs pull` require the relevant packages/data to be available.
+The Explorer still needs its local Python server running; disconnecting the
+internet must not block loopback/localhost.
+
+```bash
+npm --prefix web run build
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 .venv313/bin/python explorer.py
+```
+
+On Linux, reproduce the network-denied algorithm/training regression check
+with `strace` installed:
+
+```bash
+BRANCHSEED_NETWORK_BLOCKED=1 strace -f -e trace=%network \
+  -e inject=%network:error=ENETUNREACH -o offline-network.log \
+  .venv313/bin/python -m pytest -q tests/test_offline.py tests/test_detector.py \
+  tests/test_input_validation.py tests/test_learning.py
+```
+
+The sandbox test verifies sockets are actually blocked, and the trace applies to
+child CLI processes too. API/server tests are excluded because they deliberately
+need localhost networking. Bundled frontend assets are served by the local server.
+
 ### Human review and optional ML
 
 The Explorer now supports **Confirm**, **Reject**, **Clear**, **Next unreviewed**,

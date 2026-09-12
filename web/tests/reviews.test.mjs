@@ -61,3 +61,13 @@ test("malformed saved records are ignored", () => {
   localStorage.setItem("branchseed.reviews.v1", JSON.stringify([null, { label: "confirmed" }, 1]));
   assert.deepEqual(new ReviewStore().export().records, []);
 });
+
+test("reconciliation removes stale or disappeared candidates from training export", () => {
+  const store = new ReviewStore();
+  store.set("case1", branch, "confirmed");
+  store.set("case1", { ...branch, instance_id: "branch_002" }, "rejected");
+  store.set("case2", branch, "confirmed");
+  assert.equal(store.reconcile("case1", [{ ...branch, radius_mm: 3 }]), 2);
+  assert.deepEqual(store.export().records.map((r) => r.case_id), ["case2"]);
+  assert.deepEqual(new ReviewStore().export(), store.export());
+});

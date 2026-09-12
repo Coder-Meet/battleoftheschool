@@ -88,6 +88,20 @@ export class ReviewStore {
       )?.label || "unreviewed"
     );
   }
+  reconcile(caseId: string, branches: Branch[]) {
+    const current = new Map(
+      branches.map((branch) => [branch.instance_id, fingerprint(branch)]),
+    );
+    const before = this.rows.length;
+    this.rows = this.rows.filter(
+      (row) =>
+        row.case_id !== caseId ||
+        current.get(row.instance_id) === row.fingerprint,
+    );
+    const removed = before - this.rows.length;
+    if (removed) this.persist();
+    return removed;
+  }
   set(caseId: string, branch: Branch, label: ReviewLabel | "unreviewed") {
     this.rows = this.rows.filter(
       (row) => row.case_id !== caseId || row.instance_id !== branch.instance_id,
@@ -101,6 +115,9 @@ export class ReviewStore {
         fingerprint: fingerprint(branch),
         reviewed_at: new Date().toISOString(),
       });
+    return this.persist();
+  }
+  private persist() {
     try {
       localStorage.setItem(this.key, JSON.stringify(this.rows));
       return true;
