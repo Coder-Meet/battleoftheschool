@@ -38,7 +38,13 @@ import type { ReviewLabel } from "./reviews";
 import { AortaViewer } from "./viewer";
 import { SliceViews } from "./slices";
 import type { Branch, Case, Point } from "./types";
-import { branchName, COLORS } from "./types";
+import {
+  branchName,
+  COLORS,
+  UNSCORED_COLOR,
+  diameterGradientCSS,
+  viridisGradientCSS,
+} from "./types";
 import "./style.css";
 
 const icons = {
@@ -137,12 +143,16 @@ $("#app").innerHTML = `
             <div class="model-caption"><span class="small-label">PARENT AORTA + DAUGHTER INSTANCES</span><div><span class="live-dot"></span>CT-derived surface</div></div>
             <div class="model-tools"><button class="tool-button" id="reset-camera" title="Reset camera" aria-label="Reset camera">${icon("rotate-ccw")}</button><button class="tool-button" id="zoom-in" title="Zoom in" aria-label="Zoom in">${icon("zoom-in")}</button><button class="tool-button" id="zoom-out" title="Zoom out" aria-label="Zoom out">${icon("zoom-out")}</button><div></div><button class="tool-button" id="rotate" title="Auto rotate" aria-label="Auto rotate">${icon("orbit")}</button></div>
             <div class="orientation"><canvas width="90" height="90" aria-label="Camera-linked anatomical orientation"></canvas><small>LPS · camera-linked axes</small></div>
+            <div class="legend-stack">
+              <div class="color-legend" id="diameter-legend" aria-label="Vessel diameter color scale"><span class="small-label">VESSEL DIAMETER</span><div class="legend-bar" id="diameter-legend-bar"></div><div class="legend-current" id="diameter-current-row" hidden><span>At this position</span><strong id="diameter-current">— mm</strong></div><div class="legend-values"><span id="diameter-min">— mm</span><span id="diameter-max">— mm</span></div><div class="legend-ticks"><span>Thinnest</span><span>Widest</span></div></div>
+              <div class="color-legend" id="evidence-legend" aria-label="Detection evidence color scale"><span class="small-label">DETECTION EVIDENCE</span><div class="legend-bar" id="legend-bar"></div><div class="legend-ticks"><span>0.0 low</span><span>1.0 high</span></div><div class="legend-unscored"><span class="legend-swatch" id="legend-swatch"></span>Unscored</div></div>
+            </div>
             <div class="model-bottom"><span>${icon("orbit")} Drag to orbit <b>·</b> Scroll to zoom</span><button class="fly-button" id="flythrough">${icon("play")} Enter aorta <span>3D TOUR</span></button></div>
             <div class="flight-controls" id="flight-controls" hidden><button class="icon-button" id="play-flight" aria-label="Play or pause fly-through">${icon("play")}</button><span>Endoluminal view</span><input type="range" id="flight-position" min="2" max="98" value="10" aria-label="Position inside aorta" /><select id="flight-speed" aria-label="Fly-through speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select><button class="icon-button" id="exit-flight" aria-label="Exit fly-through">${icon("x")}</button></div>
           </div>
           <div class="wall-map" id="wall-map" hidden></div>
           <div class="ct-mode-heading" id="ct-mode-heading" hidden><strong>Linked multiplanar review</strong><span>Scroll through slices or click to move the crosshair. Select a branch to locate its ostium.</span></div>
-          <div class="layers-bar"><span>${icon("layers")} Layers</span><label><input id="parent-layer" type="checkbox" checked /><span class="swatch aorta"></span>Parent aorta</label><label><input id="labels-layer" type="checkbox" checked /><span class="swatch daughters"></span>Branch labels</label><label><input id="centerline-layer" type="checkbox" /><span class="swatch line"></span>Centerline</label><div class="opacity"><span>Opacity</span><input id="opacity" type="range" min="15" max="100" value="92" aria-label="Aorta opacity" /></div></div>
+          <div class="layers-bar"><span>${icon("layers")} Layers</span><label><input id="parent-layer" type="checkbox" checked /><span class="swatch aorta"></span>Parent aorta</label><label><input id="labels-layer" type="checkbox" checked /><span class="swatch daughters"></span>Branch labels</label><label><input id="centerline-layer" type="checkbox" /><span class="swatch line"></span>Centerline</label><label><input id="diameter-layer" type="checkbox" checked /><span class="swatch diameter"></span>Diameter color</label><div class="opacity"><span>Opacity</span><input id="opacity" type="range" min="15" max="100" value="92" aria-label="Aorta opacity" /></div></div>
         </div>
         <div class="evidence-panel" id="evidence-panel"><div class="section-heading"><h3>${icon("crosshair")} CT evidence <span>LINKED TO SELECTION</span></h3><label>Window <select id="ct-window" aria-label="CT window"><option value="cta">Angiography</option><option value="soft">Soft tissue</option><option value="bone">Bone</option></select></label></div><div class="slices" id="slices"></div></div>
       </div>
@@ -166,6 +176,9 @@ $("#app").innerHTML = `
   <div class="toast" id="toast" role="status" hidden></div>
 `;
 refreshIcons();
+$("#legend-bar").style.background = viridisGradientCSS();
+$("#legend-swatch").style.background = UNSCORED_COLOR;
+$("#diameter-legend-bar").style.background = diameterGradientCSS();
 
 let data: Case | undefined;
 let cases: { id: string; available: boolean }[] = [];
@@ -190,6 +203,13 @@ try {
   viewer.onFlightPlaying = (playing) => {
     $("#play-flight").innerHTML = icon(playing ? "pause" : "play");
     refreshIcons();
+  };
+  viewer.onWallDiameterRange = (minMm, maxMm) => {
+    $("#diameter-min").textContent = `${minMm.toFixed(1)} mm`;
+    $("#diameter-max").textContent = `${maxMm.toFixed(1)} mm`;
+  };
+  viewer.onCurrentDiameter = (mm) => {
+    $("#diameter-current").textContent = `${mm.toFixed(1)} mm`;
   };
 } catch {
   $("#viewer").innerHTML =
@@ -566,6 +586,7 @@ function setFlythrough(enabled: boolean) {
   viewer?.setFlythrough(enabled);
   if (!enabled) applyLayers();
   $("#flight-controls").hidden = !enabled;
+  $("#diameter-current-row").hidden = !enabled;
   $(".model-bottom").classList.toggle("touring", enabled);
   $(".model-caption").classList.toggle("touring", enabled);
   $(".orientation").classList.toggle("touring", enabled);
@@ -579,6 +600,9 @@ function applyLayers() {
   viewer?.setCenterline($<HTMLInputElement>("#centerline-layer").checked);
   viewer?.setOpacity(Number($<HTMLInputElement>("#opacity").value) / 100);
   slices.setOverlay($<HTMLInputElement>("#parent-layer").checked);
+  const diameterOn = $<HTMLInputElement>("#diameter-layer").checked;
+  viewer?.setDiameterColoring(diameterOn);
+  $("#diameter-legend").hidden = !diameterOn;
 }
 
 function showHelp() {
@@ -693,6 +717,7 @@ for (const id of [
   "parent-layer",
   "labels-layer",
   "centerline-layer",
+  "diameter-layer",
   "opacity",
 ])
   $(`#${id}`).oninput = applyLayers;
@@ -717,6 +742,19 @@ window.addEventListener("keydown", (event) => {
     viewer?.reset();
   }
   if (event.key === "Escape" && flythrough) setFlythrough(false);
+  if (
+    event.key === "ArrowUp" ||
+    event.key === "ArrowDown" ||
+    event.key === "ArrowLeft" ||
+    event.key === "ArrowRight"
+  ) {
+    event.preventDefault();
+    viewer?.handleKeyDown(event.key);
+  }
+});
+window.addEventListener("keyup", (event) => {
+  if (event.key === "ArrowUp" || event.key === "ArrowDown")
+    viewer?.handleKeyUp(event.key);
 });
 
 async function initialize() {

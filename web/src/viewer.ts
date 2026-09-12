@@ -1,7 +1,22 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import type { Branch, Case, Point } from "./types";
-import { branchName, COLORS } from "./types";
+import { branchName, COLORS, diameterColorRGB, evidenceColor } from "./types";
+import {
+  ARROW_SPEED,
+  MAX_PROGRESS,
+  MIN_PROGRESS,
+  clamp,
+  closestPolylinePosition,
+  nextBranchProgress,
+  percentileRangeExcluding,
+  progressForPoint,
+  ringIndexAt,
+  ringRadii,
+  ringsNear,
+  seedFlightUp,
+  transportFlightUp,
+} from "./flight-math";
 
 const viewPoint = (p: Point) => new THREE.Vector3(p[0], p[2], -p[1]);
 
@@ -12,7 +27,10 @@ export class AortaViewer {
   private controls: OrbitControls;
   private anatomy = new THREE.Group();
   private branchObjects = new THREE.Group();
-  private parent?: THREE.Mesh<THREE.BufferGeometry, THREE.MeshPhysicalMaterial>;
+  private parent?: THREE.Mesh<THREE.BufferGeometry, THREE.Material>;
+  private tissueMaterial?: THREE.MeshPhysicalMaterial;
+  private diameterMaterial?: THREE.MeshBasicMaterial;
+  private diameterColoringEnabled = true;
   private curveLine?: THREE.Line;
   private center = new THREE.Vector3();
   private extent = 160;
@@ -26,13 +44,21 @@ export class AortaViewer {
   private orbit = false;
   private flying = false;
   private flightProgress = 0.1;
+  private flightTarget = 0.1;
   private flightPlaying = false;
   private flightSpeed = 0.018;
   private flightCurve?: THREE.CatmullRomCurve3;
+  private flightUp = new THREE.Vector3(0, 1, 0);
+  private flightUpInitialized = false;
+  private heldKeys = new Set<string>();
+  private branchProgress = new Map<string, number>();
+  private wallRingRadii: number[] = [];
   private selected?: string;
   private labelsVisible = true;
   onFlightProgress: (progress: number) => void = () => {};
   onFlightPlaying: (playing: boolean) => void = () => {};
+  onWallDiameterRange: (minMm: number, maxMm: number) => void = () => {};
+  onCurrentDiameter: (mm: number) => void = () => {};
 
   constructor(
     private host: HTMLElement,
@@ -89,16 +115,37 @@ export class AortaViewer {
     this.renderer.setAnimationLoop((now) => {
       const delta = Math.min((now - previous) / 1000, 0.1);
       previous = now;
-      if (this.flying && this.flightPlaying) {
-        this.flightProgress = Math.min(
-          0.98,
-          this.flightProgress + delta * this.flightSpeed,
-        );
-        if (this.flightProgress >= 0.98) {
-          this.flightPlaying = false;
-          this.onFlightPlaying(false);
+      if (this.flying) {
+        if (this.flightPlaying) {
+          this.flightProgress = Math.min(
+            MAX_PROGRESS,
+            this.flightProgress + delta * this.flightSpeed,
+          );
+          this.flightTarget = this.flightProgress;
+          if (this.flightProgress >= MAX_PROGRESS) {
+            this.flightPlaying = false;
+            this.onFlightPlaying(false);
+          }
+          this.applyFlightPosition(this.flightProgress);
+        } else {
+          let direction = 0;
+          if (this.heldKeys.has("ArrowUp")) direction += 1;
+          if (this.heldKeys.has("ArrowDown")) direction -= 1;
+          if (direction !== 0) {
+            this.flightTarget = clamp(
+              this.flightTarget + direction * ARROW_SPEED * delta,
+              MIN_PROGRESS,
+              MAX_PROGRESS,
+            );
+          }
+          if (Math.abs(this.flightTarget - this.flightProgress) > 1e-4) {
+            const ease = 1 - Math.pow(0.001, delta);
+            this.applyFlightPosition(
+              this.flightProgress +
+                (this.flightTarget - this.flightProgress) * ease,
+            );
+          }
         }
-        this.setFlightPosition(this.flightProgress);
       }
       if (!this.flying) this.controls.update();
       this.updateLabels();
@@ -184,7 +231,20 @@ export class AortaViewer {
     const bounds = geometry.boundingBox!;
     bounds.getCenter(this.center);
     this.extent = Math.max(...bounds.getSize(new THREE.Vector3()).toArray());
-    const material = new THREE.MeshPhysicalMaterial({
+    this.flightCurve = new THREE.CatmullRomCurve3(
+      data.centerline.map(viewPoint),
+    );
+    this.mapBranchesToProgress(data.branches);
+    const wallColors = this.wallDiameterColors(positions);
+    geometry.setAttribute("color", wallColors.attribute);
+    this.wallRingRadii = wallColors.radiiByRing;
+    this.onWallDiameterRange(
+      wallColors.lowRadius * 2,
+      wallColors.highRadius * 2,
+    );
+    this.tissueMaterial?.dispose();
+    this.diameterMaterial?.dispose();
+    this.tissueMaterial = new THREE.MeshPhysicalMaterial({
       color: 0xb95854,
       roughness: 0.42,
       metalness: 0.08,
@@ -193,7 +253,21 @@ export class AortaViewer {
       opacity: 0.92,
       side: THREE.DoubleSide,
     });
-    this.parent = new THREE.Mesh(geometry, material);
+    // Unlit on purpose: any lit material — no matter how matte — still
+    // shades a neutral black/white surface with the scene's colored
+    // ambient/rim lights, which showed up as an unwanted blue-ish tint.
+    // MeshBasicMaterial ignores lighting entirely, so the ramp renders
+    // exactly as specified at the cost of the wall's rounded shading.
+    this.diameterMaterial = new THREE.MeshBasicMaterial({
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.92,
+      side: THREE.DoubleSide,
+    });
+    this.parent = new THREE.Mesh(
+      geometry,
+      this.diameterColoringEnabled ? this.diameterMaterial : this.tissueMaterial,
+    );
     this.anatomy.add(this.parent);
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(
       data.centerline.map(viewPoint),
@@ -218,11 +292,95 @@ export class AortaViewer {
     grid.position.copy(this.center);
     grid.position.y = bounds.min.y - 9;
     this.anatomy.add(grid);
-    this.flightCurve = new THREE.CatmullRomCurve3(
-      data.centerline.map(viewPoint),
-    );
     this.drawBranches(data.branches);
     this.reset();
+  }
+
+  /**
+   * Colors the parent mesh by local vessel radius, one shared color per
+   * "ring" (every vertex belonging to the same cross-section) rather than
+   * per individual vertex — a single vertex's own nearest-centreline
+   * distance is noisy (mesh irregularities, a stray branch-stub vertex),
+   * which made vertex-level coloring look speckled instead of banded like
+   * an actual cross-section. White = widest ring, black = thinnest.
+   *
+   * Each vertex is assigned to a ring by its closest point on the whole
+   * centreline polyline (not just its nearest single sample point): at a
+   * curve like the aortic arch, "nearest sample" snaps vertices on the
+   * outside vs. inside of the bend to different, non-adjacent samples,
+   * tearing one true ring into a jagged boundary. Closest-point-on-polyline
+   * gives every vertex around the same true cross-section the same ring.
+   *
+   * The "widest point" reference excludes rings within a few rings of any
+   * branch ostium: that's exactly where a daughter's stub is fused into the
+   * parent surface, sitting far outside the aorta's own true radius. A
+   * blanket percentile trim used to do this job, but cutting at the 90th
+   * percentile was clipping a big share of the genuinely wide ascending
+   * aorta/arch to flat white along with the real outliers. Excluding the
+   * known branch locations directly lets the trim stay light (1st-99th
+   * percentile, just a safety margin) while using the vessel's real range.
+   */
+  private wallDiameterColors(positions: Float32Array): {
+    attribute: THREE.BufferAttribute;
+    lowRadius: number;
+    highRadius: number;
+    radiiByRing: number[];
+  } {
+    const vertexCount = positions.length / 3;
+    const samples = this.flightCurve!.getSpacedPoints(150);
+    const vertex = new THREE.Vector3();
+    const assignments = new Array<{ index: number; distance: number }>(
+      vertexCount,
+    );
+    for (let i = 0; i < vertexCount; i++) {
+      vertex.set(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
+      const { position, distance } = closestPolylinePosition(samples, vertex);
+      assignments[i] = {
+        index: clamp(Math.round(position), 0, samples.length - 1),
+        distance,
+      };
+    }
+    const radiiByRing = ringRadii(assignments, samples.length);
+    const branchRings = [...this.branchProgress.values()].map((progress) =>
+      ringIndexAt(progress, samples.length),
+    );
+    const excluded = ringsNear(branchRings, 3, samples.length);
+    const [lowRadius, highRadius] = percentileRangeExcluding(
+      radiiByRing,
+      excluded,
+      0.01,
+      0.99,
+    );
+    const span = Math.max(highRadius - lowRadius, 1e-6);
+    const ringColors = radiiByRing.map((radius) =>
+      diameterColorRGB((radius - lowRadius) / span),
+    );
+    const colors = new Float32Array(vertexCount * 3);
+    for (let i = 0; i < vertexCount; i++) {
+      const [r, g, b] = ringColors[assignments[i].index];
+      colors[i * 3] = r;
+      colors[i * 3 + 1] = g;
+      colors[i * 3 + 2] = b;
+    }
+    return {
+      attribute: new THREE.BufferAttribute(colors, 3),
+      lowRadius,
+      highRadius,
+      radiiByRing,
+    };
+  }
+
+  private mapBranchesToProgress(branches: Branch[]) {
+    this.branchProgress.clear();
+    if (!this.flightCurve) return;
+    const samples = this.flightCurve.getSpacedPoints(200);
+    for (const branch of branches) {
+      const target = viewPoint(branch.ostium_xyz_mm);
+      this.branchProgress.set(
+        branch.instance_id,
+        progressForPoint(samples, target),
+      );
+    }
   }
 
   private drawBranches(branches: Branch[]) {
@@ -262,10 +420,14 @@ export class AortaViewer {
       this.branchObjects.add(tube);
       const sphere = new THREE.Mesh(
         new THREE.SphereGeometry(1.4, 16, 12),
-        new THREE.MeshBasicMaterial({ color, depthTest: false }),
+        new THREE.MeshBasicMaterial({
+          color: evidenceColor(branch.evidence_score),
+          depthTest: false,
+        }),
       );
       sphere.position.copy(viewPoint(branch.ostium_xyz_mm));
       sphere.userData.id = branch.instance_id;
+      sphere.userData.evidenceScore = branch.evidence_score;
       sphere.renderOrder = 2;
       this.branchObjects.add(sphere);
       const direction = viewPoint(branch.direction_xyz).normalize();
@@ -278,11 +440,16 @@ export class AortaViewer {
         1,
       );
       this.branchObjects.add(arrow);
+      const angle = branch.features.parent_angle_degrees;
+      const angleText =
+        typeof angle === "number" && Number.isFinite(angle)
+          ? ` · ${Math.round(angle)}°`
+          : "";
       const element = document.createElement("button");
       element.className = "branch-label";
-      element.textContent = branch.instance_id.replace("branch_", "");
+      element.textContent = `${branch.instance_id.replace("branch_", "")}${angleText}`;
       element.style.setProperty("--branch-color", color);
-      element.title = `Inspect ${branchName(branch.instance_id)}`;
+      element.title = `Inspect ${branchName(branch.instance_id)}${angleText ? ` — angle to parent wall: ${Math.round(angle)}°` : ""}`;
       element.onclick = () => this.onSelect(branch.instance_id);
       this.host.append(element);
       this.labels.push({
@@ -325,6 +492,7 @@ export class AortaViewer {
 
   reset() {
     if (this.flying) this.setFlythrough(false);
+    this.camera.up.set(0, 1, 0);
     this.controls.target.copy(this.center);
     this.camera.position
       .copy(this.center)
@@ -341,7 +509,8 @@ export class AortaViewer {
   }
 
   setOpacity(opacity: number) {
-    if (this.parent) this.parent.material.opacity = opacity;
+    if (this.tissueMaterial) this.tissueMaterial.opacity = opacity;
+    if (this.diameterMaterial) this.diameterMaterial.opacity = opacity;
   }
   setParent(visible: boolean) {
     if (this.parent) this.parent.visible = visible;
@@ -351,6 +520,11 @@ export class AortaViewer {
   }
   setCenterline(visible: boolean) {
     if (this.curveLine) this.curveLine.visible = visible;
+  }
+  setDiameterColoring(enabled: boolean) {
+    this.diameterColoringEnabled = enabled;
+    if (!this.parent || !this.tissueMaterial || !this.diameterMaterial) return;
+    this.parent.material = enabled ? this.diameterMaterial : this.tissueMaterial;
   }
   toggleOrbit() {
     this.orbit = !this.orbit;
@@ -368,30 +542,91 @@ export class AortaViewer {
     this.flying = enabled;
     this.controls.enabled = !enabled;
     this.flightPlaying = false;
-    if (this.parent) {
-      this.parent.material.side = THREE.DoubleSide;
-      this.parent.material.opacity = enabled ? 1 : 0.92;
-    }
-    if (enabled) this.setFlightPosition(this.flightProgress);
-    else this.reset();
+    this.heldKeys.clear();
+    const flightOpacity = enabled ? 1 : 0.92;
+    if (this.tissueMaterial) this.tissueMaterial.opacity = flightOpacity;
+    if (this.diameterMaterial) this.diameterMaterial.opacity = flightOpacity;
+    if (enabled) {
+      this.flightUpInitialized = false;
+      this.setFlightPosition(this.flightProgress);
+    } else this.reset();
   }
 
+  /** Immediate seek (slider drag, initial position, resuming after a jump). */
   setFlightPosition(progress: number) {
+    this.flightTarget = progress;
+    this.applyFlightPosition(progress);
+  }
+
+  /**
+   * Positions the camera along the flight curve and keeps its orientation
+   * roll-stable: rather than deriving "up" fresh from a fixed world axis
+   * each frame (which flips/rolls whenever the centreline tangent swings
+   * past vertical, as the aortic arch does), the up vector is parallel-
+   * transported frame-to-frame so it only ever changes as much as the
+   * tangent itself does.
+   */
+  private applyFlightPosition(progress: number) {
     this.flightProgress = progress;
     if (!this.flightCurve || !this.flying) return;
-    this.camera.position.copy(this.flightCurve.getPointAt(progress));
-    this.camera.lookAt(
-      this.flightCurve.getPointAt(Math.min(progress + 0.035, 1)),
-    );
+    const position = this.flightCurve.getPointAt(progress);
+    const lookAt = this.flightCurve.getPointAt(Math.min(progress + 0.035, 1));
+    const tangent = lookAt.clone().sub(position);
+    if (tangent.lengthSq() < 1e-8)
+      tangent.copy(this.flightCurve.getTangentAt(progress));
+    tangent.normalize();
+    if (!this.flightUpInitialized) {
+      this.flightUp.copy(seedFlightUp(tangent));
+      this.flightUpInitialized = true;
+    } else {
+      this.flightUp.copy(transportFlightUp(tangent, this.flightUp));
+    }
+    this.camera.position.copy(position);
+    this.camera.up.copy(this.flightUp);
+    this.camera.lookAt(lookAt);
     this.onFlightProgress(progress);
+    if (this.wallRingRadii.length) {
+      const ringIndex = ringIndexAt(progress, this.wallRingRadii.length);
+      this.onCurrentDiameter(this.wallRingRadii[ringIndex] * 2);
+    }
   }
 
   playFlight() {
-    if (this.flightProgress >= 0.98) this.setFlightPosition(0.02);
+    if (this.flightProgress >= MAX_PROGRESS) this.setFlightPosition(MIN_PROGRESS);
     this.flightPlaying = !this.flightPlaying;
+    if (this.flightPlaying) this.heldKeys.clear();
     return this.flightPlaying;
   }
   setSpeed(speed: number) {
     this.flightSpeed = speed * 0.018;
+  }
+
+  /** Up/Down held: dt-integrated in the animation loop (see setAnimationLoop). */
+  handleKeyDown(key: string) {
+    if (!this.flying) return;
+    if (key === "ArrowUp" || key === "ArrowDown") {
+      this.flightPlaying = false;
+      this.heldKeys.add(key);
+    } else if (key === "ArrowLeft") {
+      this.jumpToBranch(-1);
+    } else if (key === "ArrowRight") {
+      this.jumpToBranch(1);
+    }
+  }
+
+  handleKeyUp(key: string) {
+    this.heldKeys.delete(key);
+  }
+
+  private jumpToBranch(direction: 1 | -1) {
+    if (!this.flying || this.branchProgress.size === 0) return;
+    const next = nextBranchProgress(
+      [...this.branchProgress.values()],
+      this.flightTarget,
+      direction,
+    );
+    if (next === undefined) return;
+    this.flightPlaying = false;
+    this.flightTarget = clamp(next, MIN_PROGRESS, MAX_PROGRESS);
   }
 }
