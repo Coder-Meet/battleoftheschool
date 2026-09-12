@@ -11,8 +11,8 @@ Full problem statement: see the [Branchseed challenge doc](https://docs.google.c
 New teammates: start with the [setup, backend API and training handoff guide](TEAMMATE_GUIDE.md).
 
 Presenters: use the [five-minute presentation guide](presentation/README.md)
-and [film narration cues](presentation/FILM_CUES.md). The authoring source builds
-an offline HTML deck, editable PowerPoint, PDF and a 60-second Explorer film.
+and [live demo cues](presentation/LIVE_DEMO_CUES.md). The authoring source builds
+an offline HTML deck, editable PowerPoint and PDF; the Explorer segment runs live.
 
 **We are committing directly to `main`. There are no feature branches.**
 Pull before you start working, commit small and often, push as soon as

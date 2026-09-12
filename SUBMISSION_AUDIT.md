@@ -89,8 +89,9 @@ on Devpost or with organizers.
    presentation kit to the demo laptop before going offline. A source clone
    alone does not contain generated presentation media or downloaded LFS data.
 5. Assign Speaker 1–4 to actual teammates and rehearse the handoffs. Test the
-   film on the actual laptop; use offline HTML as the primary format.
-   Native PowerPoint video, physical touch and mobile fullscreen remain untested.
+   live Explorer demo (slide 5's window switch) on the actual laptop; use
+   offline HTML as the primary format. Physical touch and mobile fullscreen
+   remain untested.
 6. Be present for judging (scheduled 12:30–2:30 PM) and ready for finalist
    presentations (4:00–4:30 PM). A teammate must attend prize collection.
 

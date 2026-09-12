@@ -1,16 +1,20 @@
 # Branchseed presentation studio
 
 An eight-slide, five-minute presentation with four equal speaking slots and a
-60-second film of the actual Explorer. The visual system combines warm paper,
-deep ink, mint geometry and coral origins, with Fraunces display type and the
-Explorer's Manrope body type. Generated media stays outside Git.
+75-second live demo of the actual Explorer, driven from a real browser window
+alongside the deck. The visual system combines warm paper, deep ink, mint
+geometry and coral origins, with Fraunces display type and the Explorer's
+Manrope body type. Generated media stays outside Git.
 
 ## Start with the delivered kit
 
-Extract the entire ZIP before opening `index.html`. Keep `assets/` and
-`branchseed-film.mp4` beside it. The HTML uses local fonts and media; no account,
-CDN, analytics or internet connection is required. It is the recommended live
-presentation format.
+Extract the entire ZIP before opening `index.html`. Keep `assets/` beside it.
+The HTML uses local fonts and images; no account, CDN, analytics or internet
+connection is required. It is the recommended live presentation format.
+
+Have the Explorer already running with a case preloaded, in its own window or
+tab, before you start — Speaker 3 switches to it at slide 5 and back again,
+and that switch should cost no time.
 
 | Control | Action |
 |---|---|
@@ -18,20 +22,18 @@ presentation format.
 | Home / End | First / last slide |
 | F | Fullscreen |
 | N | Speaker notes |
-| V, on slide 5 | Play the film |
 | A | Start, pause or resume timed rehearsal |
-| Escape | Close film or notes |
+| Escape | Close notes |
 
-The timed rehearsal includes the film inside Speaker 3's 75 seconds. The film
-starts six seconds into that slot and lasts exactly sixty seconds. Pausing the
-rehearsal also pauses the film. Native video controls are available for manual
-playback; timed playback uses the shared rehearsal controls.
+The timed rehearsal covers all eight slides, including Speaker 3's 75-second
+slot, but it does not try to time or control the live demo itself — that runs
+in a separate window under the presenter's own hands. Pausing the rehearsal
+simply pauses the on-screen clock.
 
-The film is intentionally silent for live team narration. It is not a narrated
-five-minute standalone submission. Use the script while presenting or record
-the four teammates over the deck if the organizers request an uploaded talk.
-No additional presentation file-size, codec, speaker or upload constraints
-were found in the supplied challenge brief.
+Slide 5 is a cue card, not the demo: it stays on screen only until the
+presenter switches to the live Explorer, and it's what the audience sees again
+when they switch back. See [LIVE_DEMO_CUES.md](LIVE_DEMO_CUES.md) for the
+second-by-second run of show and suggested narration.
 
 ## Four-person running order
 
@@ -41,10 +43,11 @@ Names were not supplied, so the editable deck uses Speaker 1–4.
 |---|---|---|---|
 | 0:00–1:15 | 1 — problem lead | 1–2 | Opening, challenge, topology, scoring priority |
 | 1:15–2:30 | 2 — algorithm lead | 3–4 | Pipeline, physical geometry, recent improvements |
-| 2:30–3:45 | 3 — demo lead | 5 | Run and narrate the 60-second Explorer film |
+| 2:30–3:45 | 3 — demo lead | 5 | Run and narrate the live Explorer demo |
 | 3:45–5:00 | 4 — validation lead | 6–8 | Three cases, evidence, runtime, limits, close |
 
-Speaker 3 operates the laptop throughout to avoid switching drivers. Speaker 1
+Speaker 3 operates the laptop and the Explorer window throughout, to avoid
+switching drivers mid-demo. Speaker 1
 owns the opening and first handoff; Speaker 2 owns the method questions;
 Speaker 4 owns accuracy/runtime questions. Everyone should learn the final
 sentence in case the clock forces an early close.
@@ -56,23 +59,15 @@ notes are in PowerPoint and the HTML notes dialog. Slide durations are
 ## PowerPoint, PDF and media
 
 `branchseed-editable.pptx` contains editable text and geometric shapes,
-speaker notes, CT images and the embedded film. Click the film to play it in
-PowerPoint slideshow mode; HTML keyboard shortcuts do not apply. Install `assets/body.ttf`
-and `assets/display.ttf` before opening PowerPoint; they are static instances
-named **Branchseed Text** and **Branchseed Display**. Restart PowerPoint after
-installing fonts. Their original OFL licenses are included. The HTML does
-not need font installation.
+speaker notes and CT images. Install `assets/body.ttf` and `assets/display.ttf`
+before opening PowerPoint; they are static instances named **Branchseed Text**
+and **Branchseed Display**. Restart PowerPoint after installing fonts. Their
+original OFL licenses are included. The HTML does not need font installation.
 
-`branchseed-slides.pdf` is the consistent visual fallback. It has eight pages
-and cannot play video. If presenting from PDF, open the MP4 separately during
-slide 5 and return to the next slide afterward. Keep the whole demonstration
-within five minutes.
-
-`source-footage.mp4` in the kit is a real-time, unannotated recording of the
-Explorer, useful for recutting. The reel uses cuts at 22, 63, 85 and 119 seconds
-for 3D, CT, wall map and tour. Each excerpt plays for eight seconds at original
-speed. Each scene's 0.25-second fade-in and fade-out are included in its
-allocated duration.
+`branchseed-slides.pdf` is the consistent visual fallback. It has eight pages.
+If presenting from PDF or PowerPoint, alt-tab to the live Explorer at slide 5
+exactly as you would from the HTML deck, then return to the next slide
+afterward. Keep the whole demonstration within five minutes.
 
 ## Build from this repository
 
@@ -88,27 +83,22 @@ uv pip install --python .venv313/bin/python -r presentation/requirements.txt
 OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 \
   .venv313/bin/python batch.py --data-root data --output-dir outputs/accuracy-real-smoke
 
-# Use the real screenshot and raw capture from the delivered kit.
+# Use a real Explorer screenshot from the delivered kit as slide 5's cue card.
 .venv313/bin/python presentation/build.py \
-  --poster /path/to/explorer-screenshot.png \
-  --shot /path/to/source-footage.mp4@22 \
-  --shot /path/to/source-footage.mp4@63 \
-  --shot /path/to/source-footage.mp4@85 \
-  --shot /path/to/source-footage.mp4@119
+  --poster /path/to/explorer-screenshot.png
 node presentation/build-pptx.cjs
 ```
 
 Outputs default to `outputs/presentation-kit`. To change copy, timing or composition,
 edit `create_deck()` in `build.py`; to change controls, edit `player.html`.
 All formats share the same layout data. Supply `--skip-evidence` when only
-updating text or controls, and omit the four `--shot` arguments to retain the
-existing film. Re-run the PowerPoint builder after editing the deck or film.
+updating text or controls. Re-run the PowerPoint builder after editing the deck.
 
-The script needs local CTs, current predictions, FFmpeg/FFprobe, Pillow and
-FontTools (the latter two are installed with the project's Matplotlib stack).
-It does not fabricate an Explorer screenshot: without `--poster`, an existing
-poster is retained or the actual parent-mask rendering is used temporarily.
-Do not deliver that temporary poster as product footage.
+The script needs local CTs, current predictions, Pillow and FontTools (the
+latter two are installed with the project's Matplotlib stack). It does not
+fabricate an Explorer screenshot: without `--poster`, an existing poster is
+retained, or the actual parent-mask rendering is used temporarily as a
+placeholder cue card.
 
 ## Evidence and wording
 
@@ -143,15 +133,20 @@ positive/negative candidates and cannot recover a branch never proposed.
 
 ## Rehearsal and recovery
 
-1. Copy the extracted kit and the repository to the presentation laptop.
-2. Disconnect external internet and open the HTML. Start the video once.
+1. Copy the extracted kit, the repository, and a working Python/Explorer
+   environment to the presentation laptop.
+2. Disconnect external internet, open the HTML, and separately start the
+   Explorer (`python explorer.py --port 8000`) with a case preloaded in its
+   own window or tab.
 3. Assign the four names in the notes or regenerate the deck with names.
-4. Rehearse once at full pace, then once with the speaker handoffs. Keep the
-   film within Speaker 3's slot; never add sixty seconds after the five-minute talk.
-5. Keep PDF and MP4 open as a fallback. If playback fails, Speaker 3 uses the
-   poster and explains linked 3D, CT, wall-map and export interactions.
-6. If showing the live Explorer instead, preload a case and avoid promising a
-   particular candidate count. Subject018 currently has 13 candidates.
+4. Rehearse once at full pace, then once with the speaker handoffs, including
+   the actual window switch at slide 5. Keep the live segment within
+   Speaker 3's 75-second slot; never add time after the five-minute talk.
+5. Keep the PDF open as a fallback. If the live Explorer fails to launch or
+   hangs mid-demo, Speaker 3 stays on slide 5's poster and narrates the linked
+   3D, CT, wall-map and tour interactions from memory instead.
+6. Preload a case before you start and avoid promising a particular candidate
+   count. Subject018 currently has 13 candidates.
 
 Likely questions:
 
@@ -182,13 +177,13 @@ Reviewed on 2026-09-12:
   rendered slide validation.
 - [Remotion skills](https://github.com/remotion-dev/skills):
   frame-driven motion, one focal point per video scene, safe margins, local
-  assets and still-frame validation. Remotion is a strong future option for
-  complex React motion scenes; this film uses FFmpeg with deterministic
-  durations and original-speed footage, avoiding another browser-render stack.
+  assets and still-frame validation. Not used: the kit does not render a
+  video at all — slide 5 hands off to a live Explorer demo instead, so no
+  frame-based renderer applies.
 
 No personal plugins were installed. Local plugin search found no suitable
 presentation skill. External skill guidance informed the authoring; this kit
-does not pretend the FFmpeg renderer is a Remotion project.
+does not fabricate rendered footage where a live demo now runs instead.
 
 ## Authoring checks
 
@@ -197,8 +192,6 @@ does not pretend the FFmpeg renderer is a Remotion project.
 .venv313/bin/mypy presentation/build.py
 npm --prefix presentation run lint
 node presentation/build-pptx.cjs
-ffprobe -v error -show_entries format=duration:stream=codec_name,width,height \
-  -of json outputs/presentation-kit/branchseed-film.mp4
 ```
 
 `build.py` checks stage bounds, font text widths and speaker timing.
@@ -206,8 +199,3 @@ The PowerPoint generator permits PNG inputs only. The locked PptxGenJS
 dependency has upstream `image-size` parser advisories for other image formats;
 the build uses generated PNGs and does not process uploaded/untrusted images.
 No audit settings or repository security controls were disabled.
-
-The exporter sets the embedded video's generated cover relationship to the
-local poster file before writing the package. This adapter targets the pinned
-PptxGenJS 4.0.1 data model and checks its expected media type. Revalidate the
-video cover and embedded MP4 if upgrading that dependency.
