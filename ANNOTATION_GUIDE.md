@@ -111,3 +111,43 @@ stress sets and future organizer references separate. The reference geometry
 precedes voxelization/noise, so some small simulated branches can be hard to
 resolve in the sampled image. Ground truth is exact for the generator's
 intended geometry, not guaranteed observability or clinical realism.
+
+## Candidate labels from analytic references
+
+Export training features from the same strict/review union used by the
+candidate labelling workflow:
+
+```bash
+python synthetic_reviews.py --data-root outputs/hard-synthetic-731927 \
+  --output outputs/hard-synthetic-reviews.json
+```
+
+The exporter checks manifest hashes and accepts only analytic synthetic
+bundles. A one-to-one ostium match within 3 mm supplies a positive example.
+Unmatched proposals within 5 mm of a reference are ambiguous and excluded
+from training, including duplicate proposals. Farther unmatched proposals
+are negative examples. These local thresholds are not the organizer's scoring
+policy. Missed references and all false positives remain in the case report;
+ambiguity exclusions apply only to classifier training.
+
+The result uses the `learning.py` candidate-review schema and records
+`labeller=analytic_synthetic_geometry`. It can be supplied alongside separate
+AI review files to `learning.py split` and `learning.py train`. Keep complete
+generation seeds and patients in one partition, and inspect provenance counts
+in the training report. Neither source establishes real accuracy. A
+positive-only bundle cannot by itself fit the two-class classifier.
+
+Evaluate a trained model end to end, rather than relying on reviewed-candidate
+accuracy:
+
+```bash
+python benchmark.py --data-root outputs/independent-synthetic \
+  --candidate-model outputs/candidate-model.json \
+  --output outputs/independent-model-results.json
+```
+
+The report preserves unfiltered predictions, model hash, threshold, split
+overlap and full TP/FP/FN, including every reference removed by the model.
+For a separate experiment with the broader candidate pool, add
+`--candidate-pool --variant review`. This does not change the production CLI
+or promote the pool to default inference.
