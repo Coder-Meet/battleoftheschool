@@ -324,7 +324,8 @@ a transparent local metric, not a claim to reproduce the organizer's scoring.
 Do not evaluate against the detector's own outputs as if they were ground truth.
 
 When organizer reference files arrive, freeze the current predictions first
-(`python batch.py --output-dir predictions/frozen-<commit>`), then score the
+(`python batch.py --output-dir predictions/frozen-<commit>`; committed sets for
+the current revision live in [`frozen/`](frozen/README.md)), then score the
 whole set in one command regardless of their exact field names:
 
 ```bash
