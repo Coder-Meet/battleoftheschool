@@ -1,0 +1,134 @@
+{
+  "scope": "Labelled candidates only; misses never proposed by the detector are not measured.",
+  "label_sources": {
+    "claude": 237
+  },
+  "limitations": [
+    "AI verdicts are pseudo-labels; synthetic labels are analytic geometry, not clinical validation.",
+    "Not a calibrated clinical probability; validate on independent, complete daughter annotations.",
+    "Do not tune against the test results. Group repeat scans of one patient into the same partition."
+  ],
+  "feature_names": [
+    "radius_mm",
+    "mean_vesselness",
+    "evidence_score",
+    "path_length_mm",
+    "seed_distance_mm",
+    "tortuosity",
+    "path_hu_relative",
+    "bone_distance_mm",
+    "parent_angle_degrees",
+    "arc_position",
+    "native_spacing_mm",
+    "connector_gap",
+    "candidate_volume_mm3"
+  ],
+  "split": {
+    "train": [
+      "subject001",
+      "subject002",
+      "subject003",
+      "subject004",
+      "subject006",
+      "subject009",
+      "subject010",
+      "subject012",
+      "subject014",
+      "subject015",
+      "subject022",
+      "subject023",
+      "subject024"
+    ],
+    "validation": [
+      "subject011",
+      "subject020",
+      "subject016",
+      "subject008",
+      "subject007"
+    ],
+    "test": [
+      "subject005",
+      "subject013",
+      "subject018",
+      "subject021",
+      "subject025"
+    ]
+  },
+  "threshold_selected_on": "validation",
+  "minimum_training_recall": 0.0,
+  "threshold": 0.37631433544133275,
+  "partitions": {
+    "train": {
+      "classifier": {
+        "reviewed_candidates": 122,
+        "tp": 46,
+        "fp": 9,
+        "fn": 4,
+        "tn": 63,
+        "precision": 0.8363636363636363,
+        "recall": 0.92,
+        "f1": 0.8761904761904762,
+        "brier_score": 0.08300461523610889
+      },
+      "keep_all_baseline": {
+        "reviewed_candidates": 122,
+        "tp": 50,
+        "fp": 72,
+        "fn": 0,
+        "tn": 0,
+        "precision": 0.4098360655737705,
+        "recall": 1.0,
+        "f1": 0.5813953488372093,
+        "brier_score": 0.5901639344262295
+      }
+    },
+    "validation": {
+      "classifier": {
+        "reviewed_candidates": 47,
+        "tp": 17,
+        "fp": 3,
+        "fn": 4,
+        "tn": 23,
+        "precision": 0.85,
+        "recall": 0.8095238095238095,
+        "f1": 0.8292682926829268,
+        "brier_score": 0.12070523857378747
+      },
+      "keep_all_baseline": {
+        "reviewed_candidates": 47,
+        "tp": 21,
+        "fp": 26,
+        "fn": 0,
+        "tn": 0,
+        "precision": 0.44680851063829785,
+        "recall": 1.0,
+        "f1": 0.6176470588235294,
+        "brier_score": 0.5531914893617021
+      }
+    },
+    "test": {
+      "classifier": {
+        "reviewed_candidates": 68,
+        "tp": 20,
+        "fp": 2,
+        "fn": 1,
+        "tn": 45,
+        "precision": 0.9090909090909091,
+        "recall": 0.9523809523809523,
+        "f1": 0.9302325581395349,
+        "brier_score": 0.07318250203372922
+      },
+      "keep_all_baseline": {
+        "reviewed_candidates": 68,
+        "tp": 21,
+        "fp": 47,
+        "fn": 0,
+        "tn": 0,
+        "precision": 0.3088235294117647,
+        "recall": 1.0,
+        "f1": 0.47191011235955055,
+        "brier_score": 0.6911764705882353
+      }
+    }
+  }
+}
