@@ -57,6 +57,42 @@ tracked with **Git LFS**, not raw git. See setup below.
 
 ## Setup
 
+### Windows submission quick start
+
+The organizer confirmed **Windows, four CPU cores, 8 GB RAM, no GPU and no
+internet during evaluation**. Install 64-bit Python **3.13.3** before setup
+(confirm the organizer's CPU architecture; the prepared wheel bundle targets
+Windows x64). In a terminal where `python --version` reports that interpreter,
+the single online dependency-setup command is:
+
+```powershell
+python -m pip install --only-binary=:all: -r requirements.txt
+```
+
+The required run command works without a shell-specific interpreter path:
+
+```powershell
+python run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz --output prediction.json
+```
+
+To prepare a fresh Windows machine for installation without internet, run
+`python -m pip download --only-binary=:all: -r requirements.txt --dest wheelhouse`
+on a matching Windows/Python machine while online, then copy the wheels and
+source. Install offline with:
+
+```powershell
+python -m pip install --no-index --find-links wheelhouse -r requirements.txt
+```
+
+Do not copy a Linux virtual environment onto Windows. SimpleITK defaults to
+four threads in the CLI. In PowerShell, cap numerical-library thread pools
+before execution with `$env:OPENBLAS_NUM_THREADS="4"` and
+`$env:OMP_NUM_THREADS="4"`. The Windows CI job checks native installation and
+Python tests; the Linux network-denied test separately checks offline execution.
+Neither replaces a timed run on the organizer's actual 8 GB machine.
+
+### Linux/macOS development setup
+
 Submission quick start (Git checkout, `uv` and package access already available):
 
 ```bash
@@ -135,37 +171,40 @@ The sandbox test verifies sockets are actually blocked, and the trace applies to
 child CLI processes too. API/server tests are excluded because they deliberately
 need localhost networking. Bundled frontend assets are served by the local server.
 
-### Review workflow: build labels, then train the candidate filter
+### Labelling workflow: AI verdicts on detector candidates, then train the filter
 
-There are no branch annotations for the 25 scans, so labels come from
-engineers judging the detector's own proposals. `review.py` runs a deliberately
-loose **review profile** of the detector (wider wall shell, no tubularity gate at
-the wall, tolerant wall connection), records every proposal it makes under
-`outputs/review/`, and opens the Explorer on those cases:
+**AI verdicts are provisional pseudo-labels, not expert ground truth.** A
+`confirmed` status describes that reviewer's decision, not clinical validation.
+Keep the `labeller` provenance, hold out patients, and do not report evaluation
+against these decisions as real branch-detection accuracy. The default
+submission CLI does not load these reviews or an optional candidate model.
 
-```bash
-python review.py --cases subject001 subject002 subject003   # or --all
-```
-
-It opens the slice-first review page at `http://127.0.0.1:8000/review/<case>`:
-one card per candidate with axial, coronal and sagittal crops through the
-proposed origin plus a strip of consecutive axial slices. Press **Confirm** if a
-bright tube leaves the aorta outline along the arrow for at least 5 mm,
-**Reject** otherwise (keys `c`, `r`, `x`, `j`, `k`). Every verdict is written
-immediately to `labels/reviews.json` in the training schema, so nothing lives
-only in the browser. `/review` lists all cases with progress. The 3D Explorer
-remains at `/` for context. Check progress, then commit the labels so the team
-shares them:
+There are no branch annotations for the 25 scans, so labels come from judging the
+detector's own proposals against the CT. This is done by an AI reviewer reading
+rendered evidence, not by a web page. `autolabel.py render` runs the loose
+**review profile** of the detector merged with the strict result, saves each
+case's candidate pool with its thirteen features, and writes one PNG per
+candidate showing whole-aorta locators, ±2 mm slab views through the origin,
+consecutive axial slices and the traced path:
 
 ```bash
-python review.py --status
-git add labels/reviews.json && git commit -m "Review subject001" && git pull --rebase && git push
+python autolabel.py render --cases subject001      # or --all; output under outputs/autolabel/<case>/
 ```
 
-Only one person should label a given case; the file is one record per
-candidate, and two people editing the same case produce a merge conflict.
+The reviewer answers one question per PNG: does a bright tube leave the aorta
+outline at the yellow dot, along the red path, for at least 5 mm? Verdicts go in
+a small JSON file, `{"subject001": {"branch_001": "confirmed", "branch_002": "rejected"}}`,
+and are recorded in the training schema with the candidate's features and a
+fingerprint, so a candidate that later changes loses its stale label:
 
-Then hold out five patients and train:
+```bash
+python autolabel.py apply --verdicts verdicts.json --labeller claude
+python autolabel.py status
+git add labels/reviews.json && git commit -m "Label subject001" && git pull --rebase && git push
+```
+
+Candidates the reviewer cannot decide are left out rather than guessed. Then
+hold out five patients and train:
 
 ```bash
 python learning.py split --reviews labels/reviews.json --output labels/split.json \
@@ -333,6 +372,13 @@ python score_references.py --references organizer-refs/ \
   --predictions predictions/frozen-<commit> --data-root data \
   --output outputs/reference-score.json
 ```
+
+While waiting for labels, [prepare five difficult cases for expert review](ANNOTATION_GUIDE.md).
+`prepare_annotations.py` builds blinded native-slice surveys, proposed-opening
+CT sheets and editable review worksheets from frozen predictions. It leaves all
+labels and reference counts unconfirmed; the scorer rejects these packets as
+ground truth. The guide also provides a reproducible five-case **hard synthetic**
+bundle with analytic labels for development.
 
 It accepts one JSON per case, a list of cases, or a directory; maps common
 aliases (`ostium`/`origin`, `branches`/`daughters`, `diameter_mm`, case ids

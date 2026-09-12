@@ -37,7 +37,7 @@ def parse_args() -> argparse.Namespace:
         help="Case identifier to embed in the output JSON. Defaults to the image filename stem.",
     )
     parser.add_argument("--diagnostics", help="Optional JSON path for timings, paths and evidence.")
-    parser.add_argument("--candidate-model", type=Path, help="Optional model trained from human candidate reviews.")
+    parser.add_argument("--candidate-model", type=Path, help="Optional model trained from labelled candidate features.")
     parser.add_argument("--minimum-radius-mm", type=float, default=0.7)
     parser.add_argument("--spacing-mm", type=float, default=1.0, help="Isotropic working spacing; finer grids cost more CPU.")
     parser.add_argument("--threads", type=int, default=4, help="SimpleITK CPU threads (default: 4).")
