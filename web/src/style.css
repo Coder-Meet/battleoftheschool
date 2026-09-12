@@ -1754,7 +1754,7 @@ main {
   font-size: 12px;
 }
 .ct-mode .visual-panel {
-  flex: 0;
+  flex: none;
   min-height: 0;
   border-radius: 8px 8px 0 0;
 }
