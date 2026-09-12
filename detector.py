@@ -267,6 +267,66 @@ def stop_at_junction(path_mm: FloatArray, junctions_mm: FloatArray, tolerance_mm
     return truncate_path(path_mm, stop)
 
 
+def wall_origin(
+    path: FloatArray, parent: npt.NDArray, support: npt.NDArray,
+    signed_distance: npt.NDArray, spacing: float,
+) -> FloatArray | None:
+    proximal = truncate_path(path * spacing, 5) / spacing
+    centered = proximal - proximal.mean(axis=0)
+    _, _, vectors = np.linalg.svd(centered, full_matrices=False)
+    tangent = vectors[0]
+    if np.dot(tangent, proximal[-1] - proximal[0]) < 0:
+        tangent = -tangent
+    root = path[0]
+    low = np.maximum(np.floor(root - 6 / spacing).astype(int), 0)
+    high = np.minimum(np.ceil(root + 6 / spacing).astype(int) + 1, parent.shape)
+    search = tuple(slice(int(a), int(b)) for a, b in zip(low, high))
+    wall = np.argwhere(parent[search]) + low
+    if not len(wall):
+        return None
+    nearest = wall[np.argmin(np.sum((wall - root) ** 2, axis=1))]
+    for target in (root - tangent * 10 / spacing, nearest):
+        steps = max(3, int(np.ceil(np.linalg.norm(target - root) * spacing / 0.25)) + 1)
+        connector = np.linspace(root, target, steps)
+        values = ndi.map_coordinates(signed_distance, connector.T, order=1, mode="constant", cval=np.inf)
+        inside = np.flatnonzero(values <= 0)
+        if not len(inside) or inside[0] == 0:
+            continue
+        index = inside[0]
+        contact = connector[:index + 1]
+        if np.any(ndi.map_coordinates(support.astype(np.uint8), contact.T, order=0) == 0):
+            continue
+        fraction = values[index - 1] / (values[index - 1] - values[index])
+        return connector[index - 1] + fraction * (connector[index] - connector[index - 1])
+    return None
+
+
+def cross_section_radius(
+    intensity: npt.NDArray, seed: FloatArray, direction: FloatArray, spacing: float, level: float,
+) -> float | None:
+    axis = np.eye(3)[int(np.argmin(np.abs(direction)))]
+    first = np.cross(direction, axis)
+    first /= np.linalg.norm(first)
+    second = np.cross(direction, first)
+    angles = np.linspace(0, 2 * np.pi, 32, endpoint=False)
+    rays = np.cos(angles)[:, None] * first + np.sin(angles)[:, None] * second
+    distances = np.arange(0, 8.25, 0.25)
+    points = seed[:, None, None] + np.moveaxis(rays, -1, 0)[:, :, None] * distances / spacing
+    values = ndi.map_coordinates(intensity, points, order=1, mode="constant", cval=np.nan)
+    if not np.all(values[:, 0] > level):
+        return None
+    radii = np.full(32, np.nan)
+    for index, samples in enumerate(values):
+        crossing = np.flatnonzero(samples <= level)
+        if len(crossing):
+            stop = crossing[0]
+            fraction = (samples[stop - 1] - level) / (samples[stop - 1] - samples[stop])
+            radii[index] = distances[stop - 1] + 0.25 * fraction
+    diameters = radii[:16] + radii[16:]
+    valid = diameters[np.isfinite(diameters)]
+    return float(np.median(valid) / 2) if len(valid) >= 12 else None
+
+
 def _trace(
     root: npt.NDArray[np.int64],
     outside: npt.NDArray,
@@ -276,6 +336,8 @@ def _trace(
     vesselness: npt.NDArray,
     junctions: FloatArray,
     signed_distance: npt.NDArray,
+    intensity: npt.NDArray,
+    lumen_level: float,
     grid: sitk.Image,
     config: DetectorConfig,
 ) -> tuple[Branch | None, str]:
@@ -307,23 +369,9 @@ def _trace(
     if len(path) < 3:
         return None, "short_path"
 
-    search_low = np.maximum(root - int(np.ceil(6 / spacing)), 0)
-    search_high = np.minimum(root + int(np.ceil(6 / spacing)) + 1, parent.shape)
-    search = tuple(slice(int(a), int(b)) for a, b in zip(search_low, search_high))
-    wall = np.argwhere(parent[search]) + search_low
-    if not len(wall):
-        return None, "no_parent_contact"
-    nearest = wall[np.argmin(np.sum((wall - root) ** 2, axis=1))]
-    connector = np.linspace(nearest, root, max(3, int(np.linalg.norm(root - nearest) * 3)))
-    if np.any(ndi.map_coordinates(support.astype(np.uint8), connector.T, order=0) == 0):
+    ostium = wall_origin(path, parent, support, signed_distance, spacing)
+    if ostium is None:
         return None, "disconnected_ostium"
-    values = ndi.map_coordinates(signed_distance, connector.T, order=1)
-    crossing = np.flatnonzero(values >= 0)
-    if not len(crossing) or crossing[0] == 0:
-        return None, "no_wall_crossing"
-    i = crossing[0]
-    fraction = -values[i - 1] / (values[i] - values[i - 1])
-    ostium = connector[i - 1] + fraction * (connector[i] - connector[i - 1])
     path = np.vstack((ostium, path))
     path_mm = physical_points(grid, path)
     path_mm = truncate_path(path_mm, config.trace_length_mm)
@@ -341,6 +389,10 @@ def _trace(
     direction /= displacement
     seed_index = np.asarray(grid.TransformPhysicalPointToContinuousIndex(seed.tolist()))[::-1]
     seed_radius = sample_at(radius, seed_index)
+    local_direction = (np.asarray(grid.GetDirection()).reshape(3, 3).T @ direction)[::-1]
+    measured_radius = cross_section_radius(intensity, seed_index, local_direction, spacing, lumen_level)
+    if measured_radius is not None:
+        seed_radius = measured_radius
     if seed_radius < config.minimum_radius_mm:
         return None, "small_radius"
     if seed_radius > 8:
@@ -435,7 +487,7 @@ def detect(
             continue
         points = np.argwhere(labels[region] == label_id)
         points += np.asarray([s.start for s in region])
-        if len(points) * spacing**3 < 3:
+        if len(points) * spacing**3 < np.pi * config.minimum_radius_mm**2 * spacing:
             continue
         quality = radius[tuple(points.T)] * (0.3 + tubular[tuple(points.T)])
         root = points[int(np.argmax(quality))]
@@ -449,7 +501,8 @@ def detect(
             branch = None
         else:
             branch, reason = _trace(
-                root, outside, parent, support, radius, tubular, junctions, signed_distance, grid, config
+                root, outside, parent, support, radius, tubular, junctions, signed_distance,
+                smooth, (median + background_median) / 2, grid, config
             )
         if branch is None:
             rejections[reason] = rejections.get(reason, 0) + 1

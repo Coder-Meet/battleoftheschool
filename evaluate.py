@@ -72,6 +72,26 @@ def evaluate_case(prediction: dict, reference: dict, tolerance_mm: float = 5) ->
     }
 
 
+def summarize_cases(results: list[dict]) -> dict:
+    tp, fp, fn = (sum(r[key] for r in results) for key in
+                  ("true_positives", "false_positives", "false_negatives"))
+    errors = {}
+    for key in ("ostium_error_mm", "seed_error_mm", "radius_error_mm", "direction_error_degrees"):
+        values = [m[key] for r in results for m in r["matches"]]
+        errors[key] = {
+            "mean": float(np.mean(values)) if values else None,
+            "median": float(np.median(values)) if values else None,
+            "p95": float(np.percentile(values, 95)) if values else None,
+        }
+    return {
+        "cases": len(results), "true_positives": tp, "false_positives": fp, "false_negatives": fn,
+        "precision": tp / (tp + fp) if tp + fp else None,
+        "recall": tp / (tp + fn) if tp + fn else None,
+        "f1": 2 * tp / (2 * tp + fp + fn) if tp + fp + fn else None,
+        "matched_errors_only": errors,
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--prediction", required=True, type=Path)

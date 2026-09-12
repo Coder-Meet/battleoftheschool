@@ -8,6 +8,8 @@ Full problem statement: see the [Branchseed challenge doc](https://docs.google.c
 
 ## Working agreement
 
+New teammates: start with the [setup, backend API and training handoff guide](TEAMMATE_GUIDE.md).
+
 **We are committing directly to `main`. There are no feature branches.**
 Pull before you start working, commit small and often, push as soon as
 something works. If you break `main`, fix it forward — don't force-push.
@@ -40,6 +42,8 @@ web/                    # TypeScript + Three.js Aorta Explorer
 batch.py                # run every case with diagnostics and a failure report
 evaluate.py             # one-to-one matching against daughter reference JSON
 tests/                  # synthetic geometry, topology, evaluation and API tests
+synthetic.py             # five synthetic CT/instance-label/analytic-reference training cases
+benchmark.py             # labeled-bundle detection and geometry evaluation
 requirements.txt
 .gitattributes          # routes *.nii / *.nii.gz through Git LFS
 ```
@@ -108,6 +112,8 @@ BRANCHSEED_NETWORK_BLOCKED=1 strace -f -e trace=%network \
   tests/test_input_validation.py tests/test_learning.py
 ```
 
+Include `tests/test_synthetic.py tests/test_accuracy.py` in the traced test list
+to verify synthetic ground-truth generation and the expanded accuracy regressions.
 The sandbox test verifies sockets are actually blocked, and the trace applies to
 child CLI processes too. API/server tests are excluded because they deliberately
 need localhost networking. Bundled frontend assets are served by the local server.
@@ -202,6 +208,30 @@ For frontend development, keep the Python server running and run
 
 ## Batch processing, visual checks, and evaluation
 
+### Synthetic ground truth for training
+
+```bash
+python synthetic.py --output-dir outputs/ground-truth-five --seed 2026
+python benchmark.py --data-root outputs/ground-truth-five \
+  --output outputs/synthetic-metrics.json --tolerance-mm 3
+```
+
+This produces five synthetic CTs with parent masks, daughter instance masks,
+analytic physical-coordinate references and provenance/file hashes. Labels
+come from independently defined vessel geometry, never from detector predictions.
+All five are training/development data; they are **not annotations of the real
+scans** or an independent clinical test set. The generator refuses to overwrite
+an existing directory. See [the handoff guide](TEAMMATE_GUIDE.md#4-generate-the-five-ground-truth-training-cases)
+for label definitions, training use and limitations.
+
+The detector now admits small physically supported wall contacts, follows the
+proximal vessel tangent back to the wall for oblique ostia, and measures radius
+on a perpendicular intensity cross-section where a bounded lumen is observable.
+It retains distance-transform radius as a fallback. These changes are validated
+on synthetic geometry; they do not establish real-scan accuracy.
+
+### Real-case processing
+
 ```bash
 python batch.py --data-root data --output-dir predictions
 python batch.py --cases subject001 subject002 subject003 --output-dir predictions
@@ -263,7 +293,7 @@ coordinates are transformed through the input geometry.
 Topology and bifurcation locations are estimates from image evidence. Small or
 short vessels, touching openings, calcification, veins, and low-contrast scans
 can still cause misses or false detections. A radius is a local distance-transform
-estimate, not a validated lumen measurement. The colored tubes are proximal
+fallback or a local intensity cross-section estimate, not a validated lumen measurement. The colored tubes are proximal
 path illustrations, not daughter segmentations. The wall map and interior tour
 use an approximate parent curve; disconnected masks may interrupt that curve.
 Review the CT evidence before interpreting any result.
