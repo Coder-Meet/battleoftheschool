@@ -44,6 +44,34 @@ threshold after opening the new seed's results. Keep default inference
 unchanged if the filter drops true branches or the wider pool introduces
 additional false positives.
 
+### Expanded labels and Steven's supplied weights
+
+Steven's upstream commit `0207bf7` subsequently supplied the model, split and
+237 Claude verdicts across 23 nonempty candidate pools. Subject017/019 had
+empty pools. These assets are now also on this repository's main branch.
+The supplied 13-feature schema, normalization and split match `learning.py`;
+local retraining differs only at approximately floating-point roundoff in
+coefficients. Benchmark the original supplied bytes, not the local refit.
+
+Keep Steven's five validation and five test cases unchanged. Add the same
+40 analytic synthetic rows only to training; use the previously chosen 95%
+training-recall constraint. This expanded blended model selects threshold
+0.5, retains 86/89 positive training labels, and retains 17/21 positive
+validation labels. It does not promise 95% validation or test recall.
+
+Seed 864203 has already been inspected in the smaller-label experiment, so
+it is now development evidence. Before evaluating the expanded models,
+freeze a new seed **557891**, all 14 stress families, and both models:
+
+- Steven model SHA-256: `a45747a0382ae41d0a37f2104f2348190905c847a1b89347f9c9703448ddccc6`
+- Expanded blended SHA-256: `9d7026550b834b5f427d4b6404cd6ff02b182b9db7ffd207f0f24b802a83e2f1`
+- Expanded review SHA-256: `319138ab8e6778f4378d5938901e934d5997dc303adc01f54e3ed7be901a7b5f`
+
+Evaluate each with strict and review-union candidates; also run strict
+regressions on seeds 582743/904117. Do not retune either model after viewing
+these outcomes. Scores on AI verdicts are candidate-label agreement; only
+the analytic cases measure complete branch discovery here.
+
 ## Evaluation audit
 
 The evaluator uses maximum-cardinality, minimum-distance one-to-one ostium

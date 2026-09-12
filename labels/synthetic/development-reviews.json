@@ -1,0 +1,1280 @@
+{
+  "schema_version": 1,
+  "scope": "candidate_reviews_only",
+  "feature_names": [
+    "radius_mm",
+    "mean_vesselness",
+    "evidence_score",
+    "path_length_mm",
+    "seed_distance_mm",
+    "tortuosity",
+    "path_hu_relative",
+    "bone_distance_mm",
+    "parent_angle_degrees",
+    "arc_position",
+    "native_spacing_mm",
+    "connector_gap",
+    "candidate_volume_mm3"
+  ],
+  "label_source": "analytic_synthetic_geometry",
+  "profile": "pool",
+  "detector_config": {
+    "spacing_mm": 1.0,
+    "margin_mm": 20.0,
+    "shell_inner_mm": 1.5,
+    "shell_outer_mm": 6.0,
+    "cap_margin_mm": 4.0,
+    "minimum_radius_mm": 0.7,
+    "minimum_path_mm": 5.0,
+    "trace_length_mm": 10.0,
+    "vesselness_floor": 0.03,
+    "maximum_candidates": 160,
+    "shell_vesselness_floor": 0.005,
+    "connector_gap_fraction": 0.35,
+    "root_depth_mm": 2.5,
+    "blood_lower_scale": 2.0,
+    "support_contrast_fraction": 0.5,
+    "native_contrast_scale": 1.2,
+    "roots_per_contact": 6,
+    "wall_hug_penalty": 0.8,
+    "broad_contact_mm3": 1000000.0,
+    "parallel_clearance_mm": 0.0,
+    "profile": "review"
+  },
+  "matching_tolerance_mm": 3,
+  "negative_exclusion_mm": 5,
+  "manifest_sha256": "49ad6220758c7a07d8db836ffeeb83a4ed9a3eb329d0c96dd04a819ae297a00f",
+  "source_sha256": {
+    "synthetic_reviews.py": "9189ac56e6def4b4090e6cee3cf768cbebd1af3417994524c6dfd78a8751074d",
+    "detector.py": "006616f4c7037afd3dede49f58c70687132ed02ed7e5bebaed55db41c1887296",
+    "evaluate.py": "8436e03091ab2b794b549a37ea11580dd70df84de5e49cd787ab4b191dd57ee6",
+    "learning.py": "7804ad08e07583a571f7ffbb91fffef99c18b051882cea56fd37293a859cd439"
+  },
+  "limitations": [
+    "Synthetic candidate labels, not human annotations or real-scan accuracy.",
+    "Unmatched candidates within the exclusion distance are ambiguous and excluded from training.",
+    "Unproposed references remain misses in cases; candidate classification cannot recover them.",
+    "Keep generation seeds disjoint between training, validation and final evaluation."
+  ],
+  "cases": [
+    {
+      "case_id": "stress_00_tortuous_low_contrast_4001",
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.750666082445519,
+          "seed_error_mm": 0.46965215252604947,
+          "radius_error_mm": 0.10234813834730172,
+          "direction_error_degrees": 9.138385388420081
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 0.6114157453187749,
+          "seed_error_mm": 0.374770047828819,
+          "radius_error_mm": 0.08605384630987523,
+          "direction_error_degrees": 7.150016989730454
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "tortuous_low_contrast",
+      "input_sha256": {
+        "mask.nii.gz": "f83777783fc24a5fd7a16a8935b1aa552bd41b8c65a528ef01d9d6338026a145",
+        "orig.nii.gz": "28f25637900562b08e7bb4235d5f93c365dc3694a353e29c7b14bd04ea6d2c47",
+        "provenance.json": "799f8373d49658ee530afb7323af55723e081fe63fca2742db70c8ffbd1ae0ba",
+        "reference.json": "bf6ce701a50ea91cd8474b6702543bc92d4287e51a41475d36eea53244caf104"
+      },
+      "runtime_s": 2.585
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_4001",
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1": 0.6666666666666666,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.5082708982754922,
+          "seed_error_mm": 0.4366708394248223,
+          "radius_error_mm": 0.20352606433377995,
+          "direction_error_degrees": 9.100829987403566
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [
+        "branch_002"
+      ],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "thick_slice_anisotropic",
+      "input_sha256": {
+        "mask.nii.gz": "a6f985f0feea2892de73f783c59752536c7aaa3d35e5849abae4d5a24ab56301",
+        "orig.nii.gz": "d678fa6c3ca91b2ad9ccb481d2a454148ad5c17435a6fbee865c203efcf94592",
+        "provenance.json": "3e319cd6645d2f7df26ecf4c2eb28f247f289a36628b3444c7fb02a9a1edc0b8",
+        "reference.json": "40214a629fe5559ca714a622a96176adc9ab512a4ce75500c4b99e9388c33240"
+      },
+      "runtime_s": 1.946
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_4001",
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.8200489050828884,
+          "seed_error_mm": 0.4451617356099039,
+          "radius_error_mm": 0.7545285330678513,
+          "direction_error_degrees": 10.889727159973908
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 0.7839553683318615,
+          "seed_error_mm": 0.5118575574099773,
+          "radius_error_mm": 0.42708926785904255,
+          "direction_error_degrees": 4.761015080566956
+        },
+        {
+          "prediction_id": "branch_003",
+          "reference_id": "branch_003",
+          "ostium_error_mm": 0.693351676511521,
+          "seed_error_mm": 0.29758706466846,
+          "radius_error_mm": 0.198198301868028,
+          "direction_error_degrees": 6.790626678617755
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "touching_vein_and_calcification",
+      "input_sha256": {
+        "mask.nii.gz": "b1c4908d91c4a70e1b8789edb72369416802e25ca5091545d1658869eec2e41b",
+        "orig.nii.gz": "920f08d567a1b26a218359aba71193821be71800b60554adc1c5cb7412b6ac0a",
+        "provenance.json": "4ab0aaff0d8a7ed4caf391c434937eae52c3d572cb2f8c4fbe0d1852d6fea20b",
+        "reference.json": "646676dff552c311625f50c59658a38d86e883cb3a3321450038aaeb973cd37c"
+      },
+      "runtime_s": 2.017
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_4001",
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.8738319887806164,
+          "seed_error_mm": 0.5954899720712512,
+          "radius_error_mm": 0.1726879660653582,
+          "direction_error_degrees": 11.800265541000782
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 0.48666562665247765,
+          "seed_error_mm": 0.6866572391786168,
+          "radius_error_mm": 0.3827822676953787,
+          "direction_error_degrees": 4.100181535597854
+        },
+        {
+          "prediction_id": "branch_003",
+          "reference_id": "branch_003",
+          "ostium_error_mm": 0.8668195478503465,
+          "seed_error_mm": 0.8220861338941348,
+          "radius_error_mm": 0.1349972442644729,
+          "direction_error_degrees": 10.698860972885536
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "aneurysm_with_mural_thrombus",
+      "input_sha256": {
+        "mask.nii.gz": "7b1d9d4b83304fbd2fa5676c8fd0ce7263198f69d7d1f7709d24a73035e899c1",
+        "orig.nii.gz": "d551361ec7a34ab136b45b9b37061c4ad5113a443dac86b69d141bc8fa769fdc",
+        "provenance.json": "d973b0d8c869fac55f9aed4d4f35c90e9ebd682c5788c090c355febd1ee9db88",
+        "reference.json": "e282479952d65642ec668f9dc057a24557d56ffcfb862fa1fed2f90f5d9065e6"
+      },
+      "runtime_s": 2.434
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_4001",
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.8462610546400737,
+          "seed_error_mm": 0.2418886540590483,
+          "radius_error_mm": 0.34295895386030395,
+          "direction_error_degrees": 8.183608759633588
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 0.9453030796468301,
+          "seed_error_mm": 1.0006519290726956,
+          "radius_error_mm": 0.13905728818633367,
+          "direction_error_degrees": 8.684526607854295
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "common_trunk_early_split",
+      "input_sha256": {
+        "mask.nii.gz": "45edcfd687921863de5c42d3241266ec452c0512a9a12d0216ac3ba962fd5a7a",
+        "orig.nii.gz": "bb511f24423dcf4f91c9edabcc2990c0d0b6b3eacc55044eb383931f2fd14982",
+        "provenance.json": "39578744a863c192175ac7b4d36a869c03c27a81d509643151c748ede35ff4ac",
+        "reference.json": "1998b1b1dcf9b68e74ebbfd300095908fe9bba67f2ad440ac13391361fba0a95"
+      },
+      "runtime_s": 1.946
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_4001",
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 0.6256732289444453,
+          "seed_error_mm": 0.4103814977881778,
+          "radius_error_mm": 0.09695992613184146,
+          "direction_error_degrees": 6.499875704565606
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.8286481475749365,
+          "seed_error_mm": 0.2653510285445636,
+          "radius_error_mm": 0.37113849029973234,
+          "direction_error_degrees": 9.188994803601
+        },
+        {
+          "prediction_id": "branch_003",
+          "reference_id": "branch_003",
+          "ostium_error_mm": 0.650683554347033,
+          "seed_error_mm": 0.21628123744439826,
+          "radius_error_mm": 0.2633047269859743,
+          "direction_error_degrees": 4.963924563600222
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "daughter_of_daughter",
+      "input_sha256": {
+        "mask.nii.gz": "86bf7eb4133dd2bad704e2666ee8a27400c6db70f394d9fba48f6fee75dad661",
+        "orig.nii.gz": "535ceb3644514e38ceb50163c80793f7601e75f0b42aed30955991557c29e1ba",
+        "provenance.json": "5fb10d6d2eb5e799c161b9e0d91d9e003b65d4f2b5a3ca426a6c245ece58804b",
+        "reference.json": "f014127839ddaf7a407e1797a9565db5ad9a4b2f740d41590da2924cd2be5c26"
+      },
+      "runtime_s": 1.921
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_4001",
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.9207174489458043,
+          "seed_error_mm": 0.5423587882693235,
+          "radius_error_mm": 0.2530000000000001,
+          "direction_error_degrees": 12.60449566541983
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 0.45530688491096544,
+          "seed_error_mm": 0.6541167712471784,
+          "radius_error_mm": 0.43699999999999983,
+          "direction_error_degrees": 5.710598582496161
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "nearby_pair_with_short_stub",
+      "input_sha256": {
+        "mask.nii.gz": "a203eb5c0339d457c6a35b364976241b39ce3b753bd45bb44ba0ea81b6a5634c",
+        "orig.nii.gz": "4978951f5e287253ab9b03738de162e05bc13c573f8c8944c2995966ba873888",
+        "provenance.json": "3d8ff7f20e57907df8f80c1a12f788f0be8dc791dad4ff6af40c2ec07f03c4a8",
+        "reference.json": "fa793e0a6add3abcb040ee1dce92659147af9bf9afd2eeb2688b0f8b187f1b72"
+      },
+      "runtime_s": 1.939
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_4001",
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.226690244128536,
+          "seed_error_mm": 0.27460990908123306,
+          "radius_error_mm": 0.17426588731876347,
+          "direction_error_degrees": 0.5003273977375476
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "cropped_short_segment",
+      "input_sha256": {
+        "mask.nii.gz": "954af79c44db9f965b80cace22e04749bb0b57b61fe802a13e6b0e72595d7d93",
+        "orig.nii.gz": "878bc7be7c1e5c79985da70f8d7657bd005911c7317a4e09fdcf9307b8c91c64",
+        "provenance.json": "3b966cf395e1255647eaf13216a67529d65fd25c91ca04ea543b89ff8b8e0529",
+        "reference.json": "6e7792473af3079537e942fa8894c5154c6af8f9918bcdcb1a26647295aac801"
+      },
+      "runtime_s": 1.485
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_4001",
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 1.5143204618579764,
+          "seed_error_mm": 1.3772730610396449,
+          "radius_error_mm": 0.12823962807388511,
+          "direction_error_degrees": 25.513678307326995
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 1.1949590728596295,
+          "seed_error_mm": 0.7842739192682388,
+          "radius_error_mm": 0.41775151936644916,
+          "direction_error_degrees": 3.7461464588184414
+        },
+        {
+          "prediction_id": "branch_003",
+          "reference_id": "branch_003",
+          "ostium_error_mm": 1.423677625849543,
+          "seed_error_mm": 1.4991390945982226,
+          "radius_error_mm": 0.24940933359754824,
+          "direction_error_degrees": 4.313535775470271
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "imperfect_parent_mask",
+      "input_sha256": {
+        "mask.nii.gz": "4da689d8634e2f60daf5d628716286fc055661dcb615f766760d53f2b89d3a89",
+        "orig.nii.gz": "03eac5bee911cb368fd837013b42cdf1d1df513440e0254fb7f604cccc385121",
+        "provenance.json": "23dd2b54c2c898cbfdf889f23a6933c5a9701df285ec265263d0efd9e623571a",
+        "reference.json": "d54abb34d78ee42bed5552275ec683d3d14870a0fee9725bc41c6af447f2eff9"
+      },
+      "runtime_s": 2.032
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_4001",
+      "true_positives": 6,
+      "false_positives": 2,
+      "false_negatives": 0,
+      "precision": 0.75,
+      "recall": 1.0,
+      "f1": 0.8571428571428571,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.21274315160866075,
+          "seed_error_mm": 0.33049646083021955,
+          "radius_error_mm": 0.28185250006064266,
+          "direction_error_degrees": 4.72716074222473
+        },
+        {
+          "prediction_id": "branch_003",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 1.2463791438741711,
+          "seed_error_mm": 0.7855869010779514,
+          "radius_error_mm": 0.5995389554048889,
+          "direction_error_degrees": 9.460555028732013
+        },
+        {
+          "prediction_id": "branch_004",
+          "reference_id": "branch_004",
+          "ostium_error_mm": 0.48554378527742303,
+          "seed_error_mm": 0.6272102273719297,
+          "radius_error_mm": 0.1984961253890125,
+          "direction_error_degrees": 6.759236676151803
+        },
+        {
+          "prediction_id": "branch_006",
+          "reference_id": "branch_003",
+          "ostium_error_mm": 1.6391041327576747,
+          "seed_error_mm": 0.6146825431642721,
+          "radius_error_mm": 0.47893447262646105,
+          "direction_error_degrees": 12.430972594681043
+        },
+        {
+          "prediction_id": "branch_007",
+          "reference_id": "branch_005",
+          "ostium_error_mm": 1.0555737063794615,
+          "seed_error_mm": 0.4561506479981537,
+          "radius_error_mm": 0.08845870377369147,
+          "direction_error_degrees": 14.102506099695843
+        },
+        {
+          "prediction_id": "branch_008",
+          "reference_id": "branch_006",
+          "ostium_error_mm": 1.2767767945143351,
+          "seed_error_mm": 0.6310601854033753,
+          "radius_error_mm": 0.1622339189549069,
+          "direction_error_degrees": 10.270569377577125
+        }
+      ],
+      "unmatched_prediction_ids": [
+        "branch_002",
+        "branch_005"
+      ],
+      "unmatched_reference_ids": [],
+      "excluded_ambiguous_candidate_ids": [
+        "branch_002"
+      ],
+      "family": "dense_branch_field",
+      "input_sha256": {
+        "mask.nii.gz": "f5f00f179ff38fa6dfb375a571ca48a8e8fa86d105df2a8ad425e41393186af8",
+        "orig.nii.gz": "a232c2916fc241cb7ee15982bde3f4305ebd560b61ae15cee375d34d790f14f6",
+        "provenance.json": "16085dcd963e800cdcf8e29a0343e15bcd07fe88cb0beeba6df5d15df529dcc2",
+        "reference.json": "099ff09f914ac213961ea0e8cc59bf91637fdee694853f8b14463fe2046ce46c"
+      },
+      "runtime_s": 2.02
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_4001",
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "matches": [],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "negative_controls_only",
+      "input_sha256": {
+        "mask.nii.gz": "28178395576b83c07063d113a7d7f792ab4688dd1f007f97e37a905505ea46c7",
+        "orig.nii.gz": "61e47bbd88f3e0c736352b6bbc46fdc3a0e955a88221bfdeed29a00d1e998f7d",
+        "provenance.json": "f1ff6971d66654d505b6720d403b2328a7646fe125e4168c20d92c6c2a7e93bb",
+        "reference.json": "ef731afa7a7c695c1b427c76f461868b6541e93f3cce246a65546114833eadc9"
+      },
+      "runtime_s": 1.888
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_4001",
+      "true_positives": 1,
+      "false_positives": 0,
+      "false_negatives": 2,
+      "precision": 1.0,
+      "recall": 0.3333333333333333,
+      "f1": 0.5,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 0.3170110326622292,
+          "seed_error_mm": 0.4374171818891398,
+          "radius_error_mm": 0.4946036094839422,
+          "direction_error_degrees": 5.0260415065313975
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [
+        "branch_001",
+        "branch_003"
+      ],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "high_noise_small_branches",
+      "input_sha256": {
+        "mask.nii.gz": "39d78fb4c2725892c2b0710c153d2548eb68d55ae607333bb6b851db754b6f96",
+        "orig.nii.gz": "7a79738963dbd8ee554201baa188ac4f0d9de083aac96c2a587f8e07ab25f1e4",
+        "provenance.json": "da34b8f8507afe14f8771a542cf0ee3fa8b9edd572ffdc7cc98478e36a7b385a",
+        "reference.json": "60cacd09d20e95936b32c67ca38609d3b1c5a3b44fc364652836edf6bf4c9d69"
+      },
+      "runtime_s": 1.986
+    },
+    {
+      "case_id": "stress_12_curved_daughters_4001",
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 1.3081034498443522,
+          "seed_error_mm": 0.40618544352597236,
+          "radius_error_mm": 0.10964746550549709,
+          "direction_error_degrees": 16.889773567850572
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 0.6683830468877461,
+          "seed_error_mm": 0.6625101415253287,
+          "radius_error_mm": 0.3061015333131356,
+          "direction_error_degrees": 1.4557064721094393
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [],
+      "excluded_ambiguous_candidate_ids": [],
+      "family": "curved_daughters",
+      "input_sha256": {
+        "mask.nii.gz": "d283ee2d16f51784515b2f498d71f7a292ef1fb013faf85750aeffdd842cf09c",
+        "orig.nii.gz": "c407fedee2be0083e1e0c0c4b6cf4d3353ca3fc246ef6fcc4ef16877240813e3",
+        "provenance.json": "732ecdb4e59ef7b47cca7b588202fcb96afabfb94e921c23ca8070c67ee434c2",
+        "reference.json": "3292c5e235ecb1348d50d1132b4a63c8d108098962a4d67c3f01616ac700ad61"
+      },
+      "runtime_s": 1.938
+    }
+  ],
+  "records": [
+    {
+      "case_id": "stress_00_tortuous_low_contrast_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_001",
+      "features": [
+        2.971,
+        1.0,
+        0.995,
+        10.000000000000002,
+        4.928568409982664,
+        1.0551771264428855,
+        1.0001,
+        50.0,
+        76.68,
+        0.3967,
+        1.033,
+        0.0,
+        120.0
+      ],
+      "fingerprint": "[[-222.6793349952806, 33.72400803780544, 587.8284995839044], [-221.81044391524986, 28.875506875910048, 587.9953868093625], [0.17629684885185676, -0.9837544614527216, 0.03386119691876479], 2.971, [2.971, 1.0, 0.995, 10.000000000000002, 4.928568409982664, 1.0551771264428855, 1.0001, 50.0, 76.68, 0.3967, 1.033, 0.0, 120.0]]"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_4001",
+      "instance_id": "branch_002",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_002",
+      "features": [
+        2.791,
+        1.0,
+        1.0,
+        10.000000000000014,
+        4.997759395304128,
+        1.0548466589000651,
+        1.0207,
+        50.0,
+        44.89,
+        0.7267,
+        1.033,
+        0.0,
+        150.0
+      ],
+      "fingerprint": "[[-209.20796935401575, 43.85355882236985, 615.7686327730222], [-207.12644559754042, 46.364816091847565, 619.5552466629078], [0.4164913898078228, 0.5024766241922897, 0.7576623023196212], 2.791, [2.791, 1.0, 1.0, 10.000000000000014, 4.997759395304128, 1.0548466589000651, 1.0207, 50.0, 44.89, 0.7267, 1.033, 0.0, 150.0]]"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_001",
+      "features": [
+        1.055,
+        0.732,
+        0.963,
+        9.41519062969951,
+        4.686388655127181,
+        1.114794944495838,
+        0.5939,
+        50.0,
+        56.53,
+        0.3979,
+        2.5,
+        0.0,
+        43.0
+      ],
+      "fingerprint": "[[-186.06771726572762, -19.153084289984516, 561.4640431391501], [-183.84142471735206, -15.914414745041048, 564.0168611300394], [0.4750550396497471, 0.6910800156107786, 0.5447303198159464], 1.055, [1.055, 0.732, 0.963, 9.41519062969951, 4.686388655127181, 1.114794944495838, 0.5939, 50.0, 56.53, 0.3979, 2.5, 0.0, 43.0]]"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_001",
+      "features": [
+        3.238,
+        0.995,
+        0.985,
+        9.999999999999995,
+        4.783654163044367,
+        1.055215155891656,
+        0.9758,
+        12.207,
+        57.88,
+        0.412,
+        1.271,
+        0.0,
+        191.0
+      ],
+      "fingerprint": "[[-239.18943794228016, 57.19575500396023, 569.5837752977112], [-242.58857049186284, 58.91088493987531, 572.4799062279192], [-0.7105723854040968, 0.3585397015455552, 0.6054223051034342], 3.238, [3.238, 0.995, 0.985, 9.999999999999995, 4.783654163044367, 1.055215155891656, 0.9758, 12.207, 57.88, 0.412, 1.271, 0.0, 191.0]]"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_4001",
+      "instance_id": "branch_002",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_002",
+      "features": [
+        1.021,
+        0.657,
+        0.991,
+        10.000000000000025,
+        4.866179263421421,
+        1.0376129936568883,
+        0.7653,
+        9.055,
+        50.27,
+        0.6007,
+        1.271,
+        0.0,
+        27.0
+      ],
+      "fingerprint": "[[-230.6633622966676, 57.82828723397668, 585.4783852780071], [-230.12047850748667, 60.951646517353524, 589.1702147163941], [0.11156263667919848, 0.6418504363073549, 0.7586710720129266], 1.021, [1.021, 0.657, 0.991, 10.000000000000025, 4.866179263421421, 1.0376129936568883, 0.7653, 9.055, 50.27, 0.6007, 1.271, 0.0, 27.0]]"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_4001",
+      "instance_id": "branch_003",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_003",
+      "features": [
+        2.469,
+        1.0,
+        0.978,
+        9.999999999999975,
+        4.690057890150827,
+        1.0862394696105144,
+        0.9931,
+        9.0,
+        56.17,
+        0.6319,
+        1.271,
+        0.0,
+        121.0
+      ],
+      "fingerprint": "[[-237.0317591245906, 45.094564607439466, 586.7145599753619], [-239.74548375913338, 42.552242807630016, 583.8564239591697], [-0.5786121830695602, -0.5420661875300844, -0.6094031423779148], 2.469, [2.469, 1.0, 0.978, 9.999999999999975, 4.690057890150827, 1.0862394696105144, 0.9931, 9.0, 56.17, 0.6319, 1.271, 0.0, 121.0]]"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_001",
+      "features": [
+        2.083,
+        1.0,
+        0.998,
+        9.999999999999995,
+        4.964832405707959,
+        1.058548269475465,
+        0.9615,
+        11.874,
+        87.17,
+        0.2931,
+        1.408,
+        0.0,
+        72.0
+      ],
+      "fingerprint": "[[-171.932432976161, 34.18020188465818, 561.2636405999019], [-173.80124816218336, 38.75644188865759, 560.7998324034935], [-0.3764105277499014, 0.9217310132640543, -0.09341870148027395], 2.083, [2.083, 1.0, 0.998, 9.999999999999995, 4.964832405707959, 1.058548269475465, 0.9615, 11.874, 87.17, 0.2931, 1.408, 0.0, 72.0]]"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_4001",
+      "instance_id": "branch_002",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_002",
+      "features": [
+        1.175,
+        0.854,
+        0.976,
+        9.999999999999977,
+        4.652219412001311,
+        1.089174445738953,
+        0.8147,
+        16.643,
+        65.22,
+        0.6056,
+        1.408,
+        0.0,
+        30.0
+      ],
+      "fingerprint": "[[-159.62707675893606, 29.12826659566837, 588.0771825479718], [-155.76674071825695, 30.254329897917447, 590.4166125105404], [0.8297837438020675, 0.2420486229312777, 0.5028632047176417], 1.175, [1.175, 0.854, 0.976, 9.999999999999977, 4.652219412001311, 1.089174445738953, 0.8147, 16.643, 65.22, 0.6056, 1.408, 0.0, 30.0]]"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_4001",
+      "instance_id": "branch_003",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_003",
+      "features": [
+        2.822,
+        1.0,
+        0.973,
+        9.99999999999999,
+        4.61500829563877,
+        1.094733792628954,
+        0.9842,
+        15.33,
+        75.45,
+        0.707,
+        1.408,
+        0.0,
+        129.0
+      ],
+      "fingerprint": "[[-172.6929927681566, 34.54865234072563, 596.8034997026168], [-175.7925562690988, 37.714580259816074, 598.0949748605526], [-0.67162685360096, 0.686006983363882, 0.27984243477010645], 2.822, [2.822, 1.0, 0.973, 9.99999999999999, 4.61500829563877, 1.094733792628954, 0.9842, 15.33, 75.45, 0.707, 1.408, 0.0, 129.0]]"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_001",
+      "features": [
+        1.18,
+        0.795,
+        0.88,
+        6.109624139867037,
+        4.67100462656881,
+        1.0714991144304613,
+        0.7911,
+        50.0,
+        68.09,
+        0.3336,
+        1.173,
+        0.0,
+        24.0
+      ],
+      "fingerprint": "[[-220.42568117028443, 16.35753424831851, 512.1890576694983], [-220.07220469764837, 20.63111425301711, 510.33707156043585], [0.07567461411309169, 0.914916671328123, -0.3964856079414512], 1.18, [1.18, 0.795, 0.88, 6.109624139867037, 4.67100462656881, 1.0714991144304613, 0.7911, 50.0, 68.09, 0.3336, 1.173, 0.0, 24.0]]"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_4001",
+      "instance_id": "branch_002",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_002",
+      "features": [
+        2.323,
+        1.0,
+        0.976,
+        9.999999999999995,
+        4.662439909095024,
+        1.099920798227262,
+        0.9774,
+        50.0,
+        69.53,
+        0.6183,
+        1.173,
+        0.0,
+        82.0
+      ],
+      "fingerprint": "[[-228.18931885887883, 11.481623986192629, 536.3341003291006], [-232.58501533383165, 11.848782737623695, 534.8236722913388], [-0.942788874635816, 0.07874820021054851, -0.3239565693523298], 2.323, [2.323, 1.0, 0.976, 9.999999999999995, 4.662439909095024, 1.099920798227262, 0.9774, 50.0, 69.53, 0.6183, 1.173, 0.0, 82.0]]"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_002",
+      "features": [
+        2.981,
+        1.0,
+        0.999,
+        10.000000000000039,
+        4.97901336927886,
+        1.0218284889330558,
+        1.0082,
+        50.0,
+        48.58,
+        0.393,
+        1.418,
+        0.0,
+        175.0
+      ],
+      "fingerprint": "[[-215.4513394604225, 87.53662526743291, 521.897676423426], [-218.03344885663498, 90.64566238066251, 518.9895544476468], [-0.5185986067328949, 0.6244283520933595, -0.5840759524211484], 2.981, [2.981, 1.0, 0.999, 10.000000000000039, 4.97901336927886, 1.0218284889330558, 1.0082, 50.0, 48.58, 0.393, 1.418, 0.0, 175.0]]"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_4001",
+      "instance_id": "branch_002",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_001",
+      "features": [
+        1.25,
+        0.958,
+        0.992,
+        10.00000000000003,
+        4.88666540471579,
+        1.0658082232734924,
+        0.8285,
+        50.0,
+        52.32,
+        0.4206,
+        1.418,
+        0.0,
+        37.0
+      ],
+      "fingerprint": "[[-218.8877149229457, 82.30497966011814, 523.8237004159918], [-222.20333107293928, 83.72778933969657, 527.1194250615357], [-0.6785027980008436, 0.29116167401299425, 0.674432229872637], 1.25, [1.25, 0.958, 0.992, 10.00000000000003, 4.88666540471579, 1.0658082232734924, 0.8285, 50.0, 52.32, 0.4206, 1.418, 0.0, 37.0]]"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_4001",
+      "instance_id": "branch_003",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_003",
+      "features": [
+        1.393,
+        0.979,
+        0.973,
+        9.999999999999996,
+        4.618578088140928,
+        1.10546201063843,
+        0.8543,
+        50.0,
+        71.22,
+        0.7341,
+        1.418,
+        0.0,
+        33.0
+      ],
+      "fingerprint": "[[-203.4460337423058, 76.24664433609979, 549.5479125758989], [-199.1941144296091, 75.07459766170696, 550.9185884338672], [0.9206121952585996, -0.25376785929034795, 0.2967744253340173], 1.393, [1.393, 0.979, 0.973, 9.999999999999996, 4.618578088140928, 1.10546201063843, 0.8543, 50.0, 71.22, 0.7341, 1.418, 0.0, 33.0]]"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_001",
+      "features": [
+        1.947,
+        1.0,
+        0.975,
+        10.000000000000004,
+        4.64999604641284,
+        1.0898990864595028,
+        0.9524,
+        50.0,
+        71.01,
+        0.3393,
+        1.376,
+        0.0,
+        62.0
+      ],
+      "fingerprint": "[[-160.65248441013492, -20.134160110604814, 553.5899310067398], [-164.96271823792645, -21.010970159491766, 555.0984242018147], [-0.9269327940862642, -0.18856146115723094, 0.32440741454794336], 1.947, [1.947, 1.0, 0.975, 10.000000000000004, 4.64999604641284, 1.0898990864595028, 0.9524, 50.0, 71.01, 0.3393, 1.376, 0.0, 62.0]]"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_4001",
+      "instance_id": "branch_002",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_002",
+      "features": [
+        1.463,
+        1.0,
+        1.0,
+        9.999999999999998,
+        4.999999999999993,
+        1.0375805607861566,
+        0.8962,
+        50.0,
+        88.45,
+        0.3914,
+        1.376,
+        0.0,
+        39.0
+      ],
+      "fingerprint": "[[-159.129409980622, -24.252438855922417, 558.0547506381922], [-163.19340890601723, -27.164886865673633, 558.0152623502759], [-0.8127997850790462, -0.582489601950244, -0.007897657583271222], 1.463, [1.463, 1.0, 1.0, 9.999999999999998, 4.999999999999993, 1.0375805607861566, 0.8962, 50.0, 88.45, 0.3914, 1.376, 0.0, 39.0]]"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_001",
+      "features": [
+        2.175,
+        1.0,
+        0.992,
+        9.99999999999998,
+        4.888591412832829,
+        1.0346068231462924,
+        0.9865,
+        50.0,
+        49.3,
+        0.7568,
+        1.048,
+        0.0,
+        37.0
+      ],
+      "fingerprint": "[[-123.41087064645755, 26.884531999632884, 591.5399886886037], [-119.82320072816064, 27.645782944250897, 594.7722398481345], [0.7338862292477694, 0.15571989563694888, 0.6611825138517415], 2.175, [2.175, 1.0, 0.992, 9.99999999999998, 4.888591412832829, 1.0346068231462924, 0.9865, 50.0, 49.3, 0.7568, 1.048, 0.0, 37.0]]"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_001",
+      "features": [
+        2.728,
+        1.0,
+        0.887,
+        5.499999999999991,
+        4.999999999999995,
+        1.0,
+        0.9866,
+        50.0,
+        88.02,
+        0.2301,
+        1.335,
+        0.0,
+        127.0
+      ],
+      "fingerprint": "[[-193.28488704025915, 50.99129205200721, 556.8129970673715], [-196.8522953862896, 47.49095766626601, 556.9587944633361], [-0.7134816692060902, -0.7000668771482403, 0.029159479192912872], 2.728, [2.728, 1.0, 0.887, 5.499999999999991, 4.999999999999995, 1.0, 0.9866, 50.0, 88.02, 0.2301, 1.335, 0.0, 127.0]]"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_4001",
+      "instance_id": "branch_002",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_002",
+      "features": [
+        1.0,
+        0.781,
+        0.979,
+        9.999999999999995,
+        4.695347995765792,
+        1.1074779342789933,
+        0.7429,
+        50.0,
+        59.44,
+        0.425,
+        1.335,
+        0.0,
+        20.0
+      ],
+      "fingerprint": "[[-194.6752624747383, 59.20896520510139, 573.6086803210424], [-198.56514303437345, 60.549157827725885, 571.3461583283587], [-0.8284541557181687, 0.2854298816260396, -0.4818646018833936], 1.0, [1.0, 0.781, 0.979, 9.999999999999995, 4.695347995765792, 1.1074779342789933, 0.7429, 50.0, 59.44, 0.425, 1.335, 0.0, 20.0]]"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_4001",
+      "instance_id": "branch_003",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_003",
+      "features": [
+        1.98,
+        1.0,
+        0.997,
+        9.999999999999963,
+        4.953179284181026,
+        1.0375153152325938,
+        0.9523,
+        50.0,
+        44.45,
+        0.5677,
+        1.335,
+        0.0,
+        91.0
+      ],
+      "fingerprint": "[[-192.8513255400738, 53.20383064947857, 586.2464185222611], [-195.75256403928836, 51.05337417691502, 582.8563835443406], [-0.5857325836115522, -0.4341568009523626, -0.6844159646607803], 1.98, [1.98, 1.0, 0.997, 9.999999999999963, 4.953179284181026, 1.0375153152325938, 0.9523, 50.0, 44.45, 0.5677, 1.335, 0.0, 91.0]]"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_001",
+      "features": [
+        1.518,
+        0.892,
+        0.977,
+        10.0,
+        4.675189555059642,
+        1.1108218779175976,
+        0.8912,
+        19.339,
+        61.53,
+        0.1806,
+        1.173,
+        0.0,
+        42.0
+      ],
+      "fingerprint": "[[-156.0958272880702, -44.79198662441572, 517.4915856007276], [-160.01666740582127, -43.38366039627109, 515.3700231147535], [-0.8386483738413973, 0.30123403801253246, -0.4537917577433992], 1.518, [1.518, 0.892, 0.977, 10.0, 4.675189555059642, 1.1108218779175976, 0.8912, 19.339, 61.53, 0.1806, 1.173, 0.0, 42.0]]"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_4001",
+      "instance_id": "branch_003",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_002",
+      "features": [
+        3.812,
+        1.0,
+        0.989,
+        9.999999999999982,
+        4.848293822917401,
+        1.025982164590225,
+        0.9857,
+        36.194,
+        50.13,
+        0.4379,
+        1.173,
+        0.0,
+        238.0
+      ],
+      "fingerprint": "[[-151.53161685687837, -55.61901113443021, 538.0779438769534], [-151.97756961557408, -59.511878597989906, 540.933230559847], [-0.0919813804575409, -0.8029355492355889, 0.5889260814591829], 3.812, [3.812, 1.0, 0.989, 9.999999999999982, 4.848293822917401, 1.025982164590225, 0.9857, 36.194, 50.13, 0.4379, 1.173, 0.0, 238.0]]"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_4001",
+      "instance_id": "branch_004",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_004",
+      "features": [
+        2.37,
+        1.0,
+        0.984,
+        10.000000000000023,
+        4.777463977990453,
+        1.0756316454910961,
+        0.9821,
+        39.115,
+        56.03,
+        0.4855,
+        1.173,
+        0.0,
+        109.0
+      ],
+      "fingerprint": "[[-155.23173689691495, -46.245303173257035, 542.9005028986729], [-158.772565985826, -44.16123050328, 540.4626077962592], [-0.7411524409652209, 0.4362299076619427, -0.5102906298498413], 2.37, [2.37, 1.0, 0.984, 10.000000000000023, 4.777463977990453, 1.0756316454910961, 0.9821, 39.115, 56.03, 0.4855, 1.173, 0.0, 109.0]]"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_4001",
+      "instance_id": "branch_005",
+      "label": "rejected",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": null,
+      "features": [
+        4.258,
+        0.877,
+        0.661,
+        10.000000000000018,
+        4.874071905080973,
+        1.105812288801419,
+        0.9414,
+        40.075,
+        88.34,
+        0.5025,
+        1.173,
+        0.3333,
+        238.0
+      ],
+      "fingerprint": "[[-151.34951451129564, -55.27048572861758, 543.5187933678267], [-152.83081166747712, -59.896489538496276, 543.1157742343155], [-0.30391368552386483, -0.9491045474844805, -0.08268633318500132], 4.258, [4.258, 0.877, 0.661, 10.000000000000018, 4.874071905080973, 1.105812288801419, 0.9414, 40.075, 88.34, 0.5025, 1.173, 0.3333, 238.0]]"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_4001",
+      "instance_id": "branch_006",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_003",
+      "features": [
+        1.062,
+        0.575,
+        0.865,
+        9.987912819095552,
+        4.979013370927142,
+        1.021721957766431,
+        0.7722,
+        33.481,
+        55.12,
+        0.5263,
+        1.173,
+        0.1333,
+        27.0
+      ],
+      "fingerprint": "[[-144.8655964961264, -54.910016333639454, 545.5294534301003], [-144.41337249833242, -59.10124221971547, 548.1789237876579], [0.09082602598228336, -0.8417783954043834, 0.5321275843580066], 1.062, [1.062, 0.575, 0.865, 9.987912819095552, 4.979013370927142, 1.021721957766431, 0.7722, 33.481, 55.12, 0.5263, 1.173, 0.1333, 27.0]]"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_4001",
+      "instance_id": "branch_007",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_005",
+      "features": [
+        2.916,
+        1.0,
+        0.974,
+        10.000000000000009,
+        4.630553030021967,
+        1.088961689160292,
+        1.0068,
+        15.948,
+        67.58,
+        0.7598,
+        1.173,
+        0.0,
+        138.0
+      ],
+      "fingerprint": "[[-143.82756105089024, -55.122575663176335, 565.0657780301951], [-141.07695418486693, -58.59099135682906, 566.4245553513389], [0.5940126045830546, -0.7490283927568516, 0.2934373739668201], 2.916, [2.916, 1.0, 0.974, 10.000000000000009, 4.630553030021967, 1.088961689160292, 1.0068, 15.948, 67.58, 0.7598, 1.173, 0.0, 138.0]]"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_4001",
+      "instance_id": "branch_008",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_006",
+      "features": [
+        2.509,
+        1.0,
+        0.978,
+        10.000000000000004,
+        4.688090835845195,
+        1.0766795775117004,
+        0.9898,
+        22.405,
+        78.47,
+        0.7546,
+        1.173,
+        0.0,
+        85.0
+      ],
+      "fingerprint": "[[-150.0881359592262, -43.96580961515877, 565.6229358046603], [-152.3076904715725, -40.06920238160458, 566.989766269375], [-0.4734452872319695, 0.8311714448364957, 0.2915537502524196], 2.509, [2.509, 1.0, 0.978, 10.000000000000004, 4.688090835845195, 1.0766795775117004, 0.9898, 22.405, 78.47, 0.7546, 1.173, 0.0, 85.0]]"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_002",
+      "features": [
+        0.816,
+        0.429,
+        0.921,
+        10.00000000000001,
+        4.686640599143507,
+        1.070462074905841,
+        0.653,
+        50.0,
+        61.75,
+        0.5551,
+        1.182,
+        0.0,
+        17.0
+      ],
+      "fingerprint": "[[-185.46630019277066, 1.7226364444770041, 587.7775672504902], [-189.41211772159326, 2.659220762729651, 590.1265955495065], [-0.8419287643997511, 0.1998412932333257, 0.5012179298420403], 0.816, [0.816, 0.429, 0.921, 10.00000000000001, 4.686640599143507, 1.070462074905841, 0.653, 50.0, 61.75, 0.5551, 1.182, 0.0, 17.0]]"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_4001",
+      "instance_id": "branch_001",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_001",
+      "features": [
+        2.849,
+        1.0,
+        1.0,
+        9.999999999999993,
+        4.999999999999994,
+        1.0403562964231823,
+        0.9956,
+        50.0,
+        56.53,
+        0.4583,
+        1.091,
+        0.0,
+        150.0
+      ],
+      "fingerprint": "[[-199.5380189193095, 27.603469831176103, 550.5712689255621], [-200.72172554321764, 31.619555314310198, 553.3043799772165], [-0.23674132478162763, 0.80321709662682, 0.5466222103308844], 2.849, [2.849, 1.0, 1.0, 9.999999999999993, 4.999999999999994, 1.0403562964231823, 0.9956, 50.0, 56.53, 0.4583, 1.091, 0.0, 150.0]]"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_4001",
+      "instance_id": "branch_002",
+      "label": "confirmed",
+      "labeller": "analytic_synthetic_geometry",
+      "reference_instance_id": "branch_002",
+      "features": [
+        1.386,
+        0.965,
+        0.98,
+        10.00000000000001,
+        4.719890940823645,
+        1.1090525277358096,
+        0.865,
+        50.0,
+        75.76,
+        0.5925,
+        1.091,
+        0.0,
+        38.0
+      ],
+      "fingerprint": "[[-186.2779681128977, 20.55136747872755, 561.5835463646048], [-182.5065038430504, 18.04650130831553, 560.2497273278311], [0.7990575030509383, -0.5307042475805398, -0.28259530855619797], 1.386, [1.386, 0.965, 0.98, 10.00000000000001, 4.719890940823645, 1.1090525277358096, 0.865, 50.0, 75.76, 0.5925, 1.091, 0.0, 38.0]]"
+    }
+  ]
+}
