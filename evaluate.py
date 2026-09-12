@@ -13,6 +13,8 @@ def validate_prediction(prediction: dict) -> None:
     if not isinstance(prediction["case_id"], str):
         raise ValueError("case_id must be a string.")
     parent = prediction["parent"]["instance_id"]
+    if parent != "aorta":
+        raise ValueError("The parent instance_id must be aorta.")
     identifiers = set()
     for branch in prediction["daughters"]:
         identifier = branch["instance_id"]
@@ -61,7 +63,9 @@ def evaluate_case(prediction: dict, reference: dict, tolerance_mm: float = 5) ->
                 "radius_error_mm": abs(p["radius_mm"] - r["radius_mm"]),
                 "direction_error_degrees": float(angle),
             })
-    tp, fp, fn = len(matches), len(predicted) - len(matches), len(expected) - len(matches)
+    tp = len(matches)
+    fp = len(predicted) - tp
+    fn = len(expected) - tp
     return {
         "case_id": prediction["case_id"],
         "true_positives": tp, "false_positives": fp, "false_negatives": fn,
@@ -69,6 +73,14 @@ def evaluate_case(prediction: dict, reference: dict, tolerance_mm: float = 5) ->
         "recall": tp / (tp + fn) if tp + fn else None,
         "f1": 2 * tp / (2 * tp + fp + fn) if tp + fp + fn else None,
         "matches": matches,
+        "unmatched_prediction_ids": [
+            p["instance_id"] for p in predicted
+            if p["instance_id"] not in {m["prediction_id"] for m in matches}
+        ],
+        "unmatched_reference_ids": [
+            r["instance_id"] for r in expected
+            if r["instance_id"] not in {m["reference_id"] for m in matches}
+        ],
     }
 
 
@@ -89,6 +101,16 @@ def summarize_cases(results: list[dict]) -> dict:
         "recall": tp / (tp + fn) if tp + fn else None,
         "f1": 2 * tp / (2 * tp + fp + fn) if tp + fp + fn else None,
         "matched_errors_only": errors,
+        "negative_controls": {
+            "cases": sum(r["true_positives"] + r["false_negatives"] == 0 for r in results),
+            "cases_with_false_positives": sum(
+                r["true_positives"] + r["false_negatives"] == 0 and r["false_positives"] > 0
+                for r in results
+            ),
+            "false_positives": sum(
+                r["false_positives"] for r in results if r["true_positives"] + r["false_negatives"] == 0
+            ),
+        },
     }
 
 
