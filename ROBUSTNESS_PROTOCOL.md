@@ -4,6 +4,46 @@ The five released phantoms remain training/development data. This stress suite
 is also procedural, not clinical anatomy or the organizer's hidden evaluation.
 No synthetic score establishes clinical accuracy.
 
+## Candidate filter study — 2026-09-12
+
+The `2e17139` label ledger contains 52 **Claude pseudo-labels** from six real
+cases; no trained weights were present in that revision. The following are
+new local fits, not a reproduction of Steven's missing weight file.
+
+Training uses subject001/002/003/007. Subject004 supplies only five validation
+rows (four positive, one negative). Subject006 is held out from fitting, but
+its initial failed result has already been inspected; treat that case as
+development evidence rather than a fresh final accuracy estimate.
+
+The blended fit adds 40 analytic candidate labels from seed 4001 and the
+five hard seed-731927 phantoms, all in training. No synthetic generation seed
+straddles a partition. Unreviewed real packets are not training labels.
+
+Unconstrained validation-F1 selection chose thresholds 0.9105 (AI only) and
+0.9213 (blended). Both got all five validation rows right but discarded
+15/17 and 19/56 positive **training** rows, respectively. This is enough to
+reject them before independent synthetic evaluation. Tiny validation sets
+can reward an excessively restrictive operating point.
+
+The optional 95% training-recall constraint selects threshold 0.5 for the
+same blended coefficients: 54/56 training positives retained, with 3/19
+training negatives retained. Validation retains all five proposals. This
+constraint does not establish unseen recall or calibration.
+
+Before opening independent predictions, freeze the constrained model and
+new 14-family synthetic seed 864203:
+
+- Model SHA-256: `de1170092db85199f2cd3fdf0c8b37c60edc0dad27e866d6c673c286e19d44d1`
+- Manifest SHA-256: `a9eef26c633ecb453d545bfdb193c5706196cdbf8dac122dd9608c8a7833bb3a`
+- Real review SHA-256: `5110230f2547609f4d2113c41212f89d6e3287396204788d27f5861ffde5b020`
+
+Evaluate strict + filter and review-union + filter against the unchanged
+production detector, at 3 mm with 2/5 mm sensitivity. Existing frozen sets
+are additional regression checks. Do not change the coefficients or
+threshold after opening the new seed's results. Keep default inference
+unchanged if the filter drops true branches or the wider pool introduces
+additional false positives.
+
 ## Evaluation audit
 
 The evaluator uses maximum-cardinality, minimum-distance one-to-one ostium

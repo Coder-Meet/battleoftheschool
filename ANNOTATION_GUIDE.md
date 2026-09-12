@@ -137,6 +137,13 @@ generation seeds and patients in one partition, and inspect provenance counts
 in the training report. Neither source establishes real accuracy. A
 positive-only bundle cannot by itself fit the two-class classifier.
 
+Small validation sets can select a threshold that rejects many positive
+training examples. `learning.py train --minimum-training-recall 0.95` optionally
+restricts threshold selection to retain at least 95% of positive **training**
+labels before maximizing validation F1. This is a training constraint, not a
+promise about unseen recall. It may retain more false positives. The default
+remains unconstrained; compare both and keep complete held-out evaluation.
+
 Evaluate a trained model end to end, rather than relying on reviewed-candidate
 accuracy:
 

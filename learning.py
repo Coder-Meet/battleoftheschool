@@ -152,7 +152,11 @@ def metrics(labels: FloatArray, scores: FloatArray, threshold: float) -> dict:
     }
 
 
-def train(rows: list[dict], split: dict[str, list[str]]) -> tuple[CandidateModel, dict]:
+def train(
+    rows: list[dict], split: dict[str, list[str]], minimum_training_recall: float = 0.0,
+) -> tuple[CandidateModel, dict]:
+    if not np.isfinite(minimum_training_recall) or not 0 <= minimum_training_recall <= 1:
+        raise ValueError("Minimum training recall must lie between zero and one.")
     split = validate_split(split)
     declared = {case for partition in split.values() for case in partition}
     if declared != {row["case_id"] for row in rows}:
@@ -185,6 +189,14 @@ def train(rows: list[dict], split: dict[str, list[str]]) -> tuple[CandidateModel
     validation_x, validation_y = partitions["validation"]
     validation_scores = model.scores(validation_x)
     thresholds = sorted({0.0, 0.5, 1.0, *validation_scores.tolist()})
+    if minimum_training_recall > 0:
+        training_scores = model.scores(partitions["train"][0])
+        training_y = partitions["train"][1]
+        thresholds = sorted({*thresholds, *training_scores[training_y == 1].tolist()})
+        thresholds = [
+            threshold for threshold in thresholds
+            if metrics(training_y, training_scores, threshold)["recall"] >= minimum_training_recall
+        ]
     model.threshold = max(thresholds, key=lambda t: (
         metrics(validation_y, validation_scores, t)["f1"], -abs(t - 0.5),
     ))
@@ -208,6 +220,7 @@ def train(rows: list[dict], split: dict[str, list[str]]) -> tuple[CandidateModel
         "feature_names": FEATURE_NAMES,
         "split": split,
         "threshold_selected_on": "validation",
+        "minimum_training_recall": minimum_training_recall,
         "threshold": model.threshold,
         "partitions": partition_reports,
     }
@@ -244,13 +257,17 @@ def main() -> None:
     train_parser.add_argument("--split", required=True, type=Path)
     train_parser.add_argument("--model", required=True, type=Path)
     train_parser.add_argument("--report", required=True, type=Path)
+    train_parser.add_argument(
+        "--minimum-training-recall", type=float, default=0.0,
+        help="Optional retention constraint during threshold selection (0 disables it; not a recall guarantee).",
+    )
     args = parser.parse_args()
     try:
         rows = load_reviews(args.reviews)
         if args.command == "split":
             write_json(args.output, split_cases(rows, args.seed, args.test, args.validation))
         else:
-            model, report = train(rows, json.loads(args.split.read_text()))
+            model, report = train(rows, json.loads(args.split.read_text()), args.minimum_training_recall)
             model.save(args.model)
             write_json(args.report, report)
     except (OSError, ValueError, KeyError, TypeError) as error:
