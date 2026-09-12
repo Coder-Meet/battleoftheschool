@@ -22,6 +22,7 @@ if TYPE_CHECKING:
 
 HALF_MM = 15.0
 STRIP_OFFSETS_MM = (-4, -2, 0, 2, 4)
+SLAB_MM = 2.0
 WINDOW = (-100.0, 600.0)
 LABELS = ("confirmed", "rejected", "unreviewed")
 CASE_ID = re.compile(r"[A-Za-z0-9_-]+")
@@ -169,12 +170,19 @@ def render_candidate(case: "CaseData", branch: dict) -> bytes:
                path[:, [1, 0]], "locator · sagittal MIP", (axes_of["z_up"], axes_of["y_up"]), mip_window)
         offset = np.asarray([lo[0], lo[1], lo[2]], dtype=float)
         local = path - offset
+        # Thin-slab projections: a 1 mm vessel leaves any single slice at once, so show the brightest
+        # voxel across ±SLAB_MM around each plane instead.
+        slab = max(1, int(round(SLAB_MM / spacing)))
+        z0, z1 = max(0, iz - slab), min(ct.shape[0], iz + slab + 1)
+        y0, y1 = max(0, iy - slab), min(ct.shape[1], iy + slab + 1)
+        x0, x1 = max(0, ix - slab), min(ct.shape[2], ix + slab + 1)
+        title = f"±{SLAB_MM:g} mm slab at the origin"
         views = [
-            ("axial slice at the origin", ct[iz, lo[1]:hi[1], lo[2]:hi[2]], mask[iz, lo[1]:hi[1], lo[2]:hi[2]],
+            (f"axial · {title}", ct[z0:z1, lo[1]:hi[1], lo[2]:hi[2]].max(axis=0), mask[iz, lo[1]:hi[1], lo[2]:hi[2]],
              (ost[2] - lo[2], ost[1] - lo[1]), local[:, [2, 1]], (axes_of["y_up"], axes_of["x_right"])),
-            ("coronal slice at the origin", ct[lo[0]:hi[0], iy, lo[2]:hi[2]], mask[lo[0]:hi[0], iy, lo[2]:hi[2]],
+            (f"coronal · {title}", ct[lo[0]:hi[0], y0:y1, lo[2]:hi[2]].max(axis=1), mask[lo[0]:hi[0], iy, lo[2]:hi[2]],
              (ost[2] - lo[2], ost[0] - lo[0]), local[:, [2, 0]], (axes_of["z_up"], axes_of["x_right"])),
-            ("sagittal slice at the origin", ct[lo[0]:hi[0], lo[1]:hi[1], ix], mask[lo[0]:hi[0], lo[1]:hi[1], ix],
+            (f"sagittal · {title}", ct[lo[0]:hi[0], lo[1]:hi[1], x0:x1].max(axis=2), mask[lo[0]:hi[0], lo[1]:hi[1], ix],
              (ost[1] - lo[1], ost[0] - lo[0]), local[:, [1, 0]], (axes_of["z_up"], axes_of["y_up"])),
         ]
         for column, (title, image, outline, point, trace, edges) in enumerate(views):
