@@ -89,3 +89,39 @@ Real-scan execution measures resources and robustness to inputs, not detection
 accuracy without complete daughter annotations. Preserve the presentation's
 historical development claims, and add a dated stress-results supplement rather
 than replacing them with an unqualified accuracy number.
+
+## Selection record — before frozen inference
+
+Baseline revision: `406ab01`. Development seed 4001 has 32 reference daughters.
+
+| Variant | TP | FP | FN | F1 | Mean detector seconds |
+|---|---:|---:|---:|---:|---:|
+| Strict baseline | 21 | 0 | 11 | 0.7925 | 1.00 |
+| 0.75 mm sampling | 22 | 0 | 10 | 0.8148 | 1.82 |
+| Relaxed HU threshold | 28 | 0 | 4 | 0.9333 | 1.14 |
+| Loose review proposals (without strict-pool union) | 28 | 2 | 4 | 0.9032 | 1.08 |
+| Half-contrast support | 28 | 0 | 4 | 0.9333 | 1.09 |
+
+Selected: half-contrast support at 1 mm. It ties the relaxed HU threshold on
+discovery and uses the measured blood/background contrast rather than a
+fixed HU decrement. Threshold = the midpoint between background and blood
+(subject to the existing 30 HU lower bound). Strict wall connectivity,
+tubularity, radius, topology and cap filters remain required. The original
+five development phantoms still have 10 TP / 0 FP / 0 FN. The full Python
+suite has 69 passed and the expected one network-sandbox skip; frontend
+lint/types/build and six review tests passed before selection.
+
+Four development misses remain: two thick-slice small branches and two
+high-noise small branches, all rejected for lacking a supported distal path.
+The procedural references describe analytic geometry; expert judgement of
+5 mm visibility after partial-volume loss is unavailable. They remain misses
+in the report, not ignored predictions or removed cases.
+
+Frozen manifest SHA-256 values:
+
+- Development 4001: `49ad6220758c7a07d8db836ffeeb83a4ed9a3eb329d0c96dd04a819ae297a00f`
+- Evaluation 90817: `f4ba6252877b940c82578a4ba442a77d04cea1d47a0c5c4bb5a4787e6d8f1a82`
+- Evaluation 112213: `fe5f96ae9656e062a5080b801470d42122557a687b672abd69b5087f1b0b7e7e`
+
+Both evaluation datasets were generated before selection. Neither detector's
+evaluation predictions were opened before this decision was committed.

@@ -31,6 +31,7 @@ class DetectorConfig:
     connector_gap_fraction: float = 0.0
     root_depth_mm: float = 3.5
     blood_lower_scale: float = 1.0
+    support_contrast_fraction: float = 0.5
     roots_per_contact: int = 1
     wall_hug_penalty: float = 0.0
     broad_contact_mm3: float = 1200.0
@@ -47,6 +48,8 @@ class DetectorConfig:
             raise ValueError("All detector settings must be finite and positive.")
         if not 0 <= self.connector_gap_fraction < 1:
             raise ValueError("The connector gap fraction must lie in [0, 1).")
+        if not 0 < self.support_contrast_fraction <= 1:
+            raise ValueError("The support contrast fraction must lie in (0, 1].")
         if not self.shell_inner_mm < self.shell_outer_mm < self.margin_mm:
             raise ValueError("The candidate shell must fit inside the ROI margin.")
         if self.minimum_path_mm != 5 or self.trace_length_mm != 10:
@@ -547,6 +550,8 @@ def detect(
     background = smooth[(outside >= 8) & (outside <= 16)]
     background_median = float(np.median(background)) if len(background) else median
     if background_median < median:
+        partial_volume_level = background_median + config.support_contrast_fraction * (median - background_median)
+        lower = min(lower, max(30.0, partial_volume_level))
         lower = max(lower, (median + background_median) / 2)
     upper = median + max(120.0, 3.5 * mad)
     if median < 120:

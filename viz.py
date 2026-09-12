@@ -15,7 +15,6 @@ import argparse
 import glob
 import json
 import os
-import subprocess
 
 import numpy as np
 import SimpleITK as sitk
@@ -56,24 +55,6 @@ def find_one(pattern):
     if len(hits) != 1:
         raise SystemExit(f"expected exactly one file for {pattern}, found {hits}")
     return hits[0]
-
-
-def is_lfs_pointer(path):
-    with open(path, "rb") as f:
-        return f.read(40).startswith(b"version https://git-lfs")
-
-
-def ensure_lfs_pulled(paths):
-    pointers = [p for p in paths if is_lfs_pointer(p)]
-    if not pointers:
-        return
-    repo = os.path.dirname(os.path.abspath(__file__))
-    rel = [os.path.relpath(p, repo) for p in pointers]
-    print(f"[lfs] pulling {len(rel)} file(s): {rel}")
-    subprocess.run(["git", "lfs", "pull", "--include=" + ",".join(rel)], cwd=repo, check=True)
-    still = [p for p in pointers if is_lfs_pointer(p)]
-    if still:
-        raise SystemExit(f"still LFS pointers after pull (is git-lfs installed?): {still}")
 
 
 def describe(name, img, arr):
@@ -139,7 +120,6 @@ def draw_points(ax, pts, axes_idx, offset, spacing):
 
 def main():
     args = parse_args()
-    ensure_lfs_pulled([args.image, args.aorta_mask])
     image = read_nifti(args.image)
     mask = read_nifti(args.aorta_mask)
 
