@@ -57,6 +57,17 @@ tracked with **Git LFS**, not raw git. See setup below.
 
 ## Setup
 
+Submission quick start (Git checkout, `uv` and package access already available):
+
+```bash
+uv venv --python 3.13.3 .venv313 && uv pip install --python .venv313/bin/python -r requirements.txt
+```
+
+Then run `.venv313/bin/python run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz --output prediction.json`.
+Prepare this environment before the offline evaluation. Node and the supplied
+development scans are only needed for the Explorer/demo, not new-case inference.
+The [robustness protocol](ROBUSTNESS_PROTOCOL.md) records the frozen detector selection.
+
 1. Install Git LFS (one-time, per machine):
    ```bash
    brew install git-lfs      # macOS
@@ -150,9 +161,9 @@ python review.py --status outputs/review/reviews.json
 Then hold out five patients and train:
 
 ```bash
-python learning.py split --reviews branchseed-reviews.json --output outputs/split.json \
+python learning.py split --reviews outputs/review/reviews.json --output outputs/split.json \
   --test subject005 subject013 subject018 subject021 subject025
-python learning.py train --reviews branchseed-reviews.json --split outputs/split.json \
+python learning.py train --reviews outputs/review/reviews.json --split outputs/split.json \
   --model outputs/candidate-model.json --report outputs/model-report.json
 ```
 
@@ -174,7 +185,7 @@ measurements invalidate its prior review in the UI.
 
 No real daughter annotations or trained weights are included. `learning.py`
 trains an L2-regularized logistic candidate classifier using CPU NumPy/SciPy
-once an expert has reviewed candidates. It consumes six physical/evidence features,
+once an expert has reviewed candidates. It consumes thirteen physical/evidence/context features,
 not CT images. It cannot discover vessels missed by the classical proposal stage.
 
 Review at least six independent cases, including both true and false candidates

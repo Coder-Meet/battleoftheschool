@@ -152,6 +152,13 @@ or clinical accuracy. The Explorer can open them with
 
 ## 5. Human reviews and the existing candidate classifier
 
+For persisted server-side reviews, run `python review.py --cases subject001 subject002 subject003`.
+The `/review` pages save decisions to `outputs/review/reviews.json` immediately;
+use that file in the commands below instead of the browser-export filename.
+Candidate changes invalidate the displayed verdict and its completion count.
+Review crops use acquisition axes, which need not be anatomical planes on
+rotated scans. These proposal reviews cannot identify missed arteries.
+
 In the Explorer, select a branch, inspect its CT evidence, then Confirm/Reject.
 Use Next unreviewed and filters to work through cases. Export training reviews
 regularly: labels live in that browser's local storage. Changed candidates

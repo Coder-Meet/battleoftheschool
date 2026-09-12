@@ -273,7 +273,7 @@ def page_case(store: "CaseStore", ledger: ReviewLedger, case: "CaseData") -> byt
         "catch(error){alert('Verdict not saved: '+error.message);}finally{delete card.dataset.saving;}}"
         "cards.forEach((card,i)=>{card.addEventListener('click',()=>{current=i;cards.forEach((c,j)=>c.classList.toggle('current',j===i));});"
         "card.querySelectorAll('button[data-label]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();verdict(card,b.dataset.label);}));});"
-        "document.addEventListener('keydown',e=>{if(!cards.length||e.target.tagName==='INPUT')return;const k=e.key.toLowerCase();"
+        "document.addEventListener('keydown',e=>{if(!cards.length||e.ctrlKey||e.metaKey||e.altKey||e.repeat||e.target.tagName==='INPUT')return;const k=e.key.toLowerCase();"
         "if(k==='j')focusCard(current+1);else if(k==='k')focusCard(current-1);"
         "else if(k==='c'){verdict(cards[current],'confirmed');focusCard(current+1);}else if(k==='r'){verdict(cards[current],'rejected');focusCard(current+1);}"
         "else if(k==='x')verdict(cards[current],'unreviewed');});"
