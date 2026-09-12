@@ -58,7 +58,7 @@ tracked with **Git LFS**, not raw git. See setup below.
 2. Clone / pull as normal — LFS pointers resolve automatically once LFS is
    installed:
    ```bash
-   git clone https://github.com/StevenTB1/battleoftheschool.git
+   git clone https://github.com/Coder-Meet/battleoftheschool.git
    cd battleoftheschool
    ```
 3. Python environment (Python **3.13.3** is verified with the pinned packages):
@@ -81,6 +81,49 @@ tracked with **Git LFS**, not raw git. See setup below.
    small Git LFS pointer files, run `git lfs pull`.
 
 ## Run
+
+### Human review and optional ML
+
+The Explorer now supports **Confirm**, **Reject**, **Clear**, **Next unreviewed**,
+review filters, and **Export training reviews**. Reviews persist in this browser
+and export across cases. Export regularly: clearing browser storage removes them.
+Review labels do not modify the raw challenge prediction. A changed candidate's
+measurements invalidate its prior review in the UI.
+
+No real daughter annotations or trained weights are included. `learning.py`
+trains an L2-regularized logistic candidate classifier using CPU NumPy/SciPy
+once an expert has reviewed candidates. It consumes six physical/evidence features,
+not CT images. It cannot discover vessels missed by the classical proposal stage.
+
+Review at least six independent cases, including both true and false candidates
+in each partition. Export the review file, then freeze the case split **before**
+training. Group repeat scans of a patient in the same partition; the automatic
+split assumes each case is a different patient.
+
+```bash
+python learning.py split --reviews branchseed-reviews.json --output outputs/split.json --seed 42
+python learning.py train --reviews branchseed-reviews.json --split outputs/split.json \
+  --model outputs/candidate-model.json --report outputs/model-report.json
+python run.py --image data/subject001/orig1.nii --aorta-mask data/subject001/mask1.nii \
+  --candidate-model outputs/candidate-model.json --output outputs/prediction.json \
+  --diagnostics outputs/diagnostics.json
+```
+
+Scaling and weights use training cases only; the decision threshold uses validation
+F1; test cases are evaluated afterward. The report compares against keeping every
+candidate. Split overlap, conflicting reviews, missing classes, and invalid features
+fail explicitly. Test results must not be used for parameter selection. Candidate
+metrics are **not whole-vessel detection recall**; use complete independent daughter
+references with `evaluate.py` for that. Synthetic regression fixtures only test the
+training machinery, not real-scan accuracy. The model is opt-in at the CLI; the
+Explorer continues to show all classical candidates for unbiased human review.
+
+`--spacing-mm` selects the detector's working resolution (default 1.0 mm);
+finer grids increase CPU/memory requirements. Multi-label masks and sheared
+geometry are rejected before measurement.
+
+Frontend review tests run with `npm --prefix web test`. GitHub Actions checks
+Python tests/lint/types and frontend tests/lint/build on every push.
 
 The task spec requires the program to support this CLI contract:
 

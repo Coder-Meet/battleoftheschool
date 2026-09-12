@@ -1,0 +1,119 @@
+import type { Branch } from "./types";
+
+export const FEATURE_NAMES = [
+  "radius_mm",
+  "mean_vesselness",
+  "evidence_score",
+  "path_length_mm",
+  "seed_distance_mm",
+  "tortuosity",
+];
+export type ReviewLabel = "confirmed" | "rejected";
+export interface Review {
+  case_id: string;
+  instance_id: string;
+  label: ReviewLabel;
+  features: number[];
+  fingerprint: string;
+  reviewed_at: string;
+}
+
+export function features(branch: Branch): number[] {
+  const distance = (a: number[], b: number[]) =>
+    Math.hypot(...a.map((value, i) => value - b[i]));
+  const path = branch.path_xyz_mm;
+  const length = path
+    .slice(1)
+    .reduce((total, point, i) => total + distance(point, path[i]), 0);
+  return [
+    branch.radius_mm,
+    branch.mean_vesselness,
+    branch.evidence_score,
+    length,
+    distance(branch.ostium_xyz_mm, branch.seed_xyz_mm),
+    length / Math.max(distance(path[0], path[path.length - 1]), 0.001),
+  ];
+}
+
+function fingerprint(branch: Branch) {
+  return JSON.stringify([
+    branch.ostium_xyz_mm,
+    branch.seed_xyz_mm,
+    branch.direction_xyz,
+    features(branch),
+  ]);
+}
+
+function isReview(value: unknown): value is Review {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "case_id" in value &&
+    typeof value.case_id === "string" &&
+    "instance_id" in value &&
+    typeof value.instance_id === "string" &&
+    "fingerprint" in value &&
+    typeof value.fingerprint === "string" &&
+    "reviewed_at" in value &&
+    typeof value.reviewed_at === "string" &&
+    "label" in value &&
+    ["confirmed", "rejected"].includes(String(value.label)) &&
+    "features" in value &&
+    Array.isArray(value.features) &&
+    value.features.length === FEATURE_NAMES.length &&
+    value.features.every(
+      (n: unknown) => typeof n === "number" && Number.isFinite(n),
+    )
+  );
+}
+
+export class ReviewStore {
+  private rows: Review[] = [];
+  private key = "branchseed.reviews.v1";
+  constructor() {
+    try {
+      const saved: unknown = JSON.parse(localStorage.getItem(this.key) || "[]");
+      if (Array.isArray(saved)) this.rows = saved.filter(isReview);
+    } catch {
+      // Reviews remain available in memory when browser storage is unavailable.
+    }
+  }
+  status(caseId: string, branch: Branch) {
+    return (
+      this.rows.find(
+        (row) =>
+          row.case_id === caseId &&
+          row.instance_id === branch.instance_id &&
+          row.fingerprint === fingerprint(branch),
+      )?.label || "unreviewed"
+    );
+  }
+  set(caseId: string, branch: Branch, label: ReviewLabel | "unreviewed") {
+    this.rows = this.rows.filter(
+      (row) => row.case_id !== caseId || row.instance_id !== branch.instance_id,
+    );
+    if (label !== "unreviewed")
+      this.rows.push({
+        case_id: caseId,
+        instance_id: branch.instance_id,
+        label,
+        features: features(branch),
+        fingerprint: fingerprint(branch),
+        reviewed_at: new Date().toISOString(),
+      });
+    try {
+      localStorage.setItem(this.key, JSON.stringify(this.rows));
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  export() {
+    return {
+      schema_version: 1,
+      feature_names: FEATURE_NAMES,
+      scope: "candidate_reviews_only",
+      records: this.rows,
+    };
+  }
+}

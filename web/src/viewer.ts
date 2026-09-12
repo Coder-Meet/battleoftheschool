@@ -32,10 +32,12 @@ export class AortaViewer {
   private selected?: string;
   private labelsVisible = true;
   onFlightProgress: (progress: number) => void = () => {};
+  onFlightPlaying: (playing: boolean) => void = () => {};
 
   constructor(
     private host: HTMLElement,
     private onSelect: (id: string) => void,
+    private orientation: HTMLCanvasElement,
   ) {
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -92,13 +94,56 @@ export class AortaViewer {
           0.98,
           this.flightProgress + delta * this.flightSpeed,
         );
-        if (this.flightProgress >= 0.98) this.flightPlaying = false;
+        if (this.flightProgress >= 0.98) {
+          this.flightPlaying = false;
+          this.onFlightPlaying(false);
+        }
         this.setFlightPosition(this.flightProgress);
       }
       if (!this.flying) this.controls.update();
       this.updateLabels();
+      this.drawOrientation();
       this.renderer.render(this.scene, this.camera);
     });
+  }
+
+  private drawOrientation() {
+    const context = this.orientation.getContext("2d")!;
+    const inverse = this.camera.quaternion.clone().invert();
+    context.clearRect(0, 0, 90, 90);
+    context.font = "11px monospace";
+    context.textAlign = "center";
+    context.textBaseline = "middle";
+    const axes = [
+      {
+        axis: new THREE.Vector3(1, 0, 0),
+        labels: ["L", "R"],
+        color: "#f4a899",
+      },
+      {
+        axis: new THREE.Vector3(0, 0, -1),
+        labels: ["P", "A"],
+        color: "#71dbbd",
+      },
+      {
+        axis: new THREE.Vector3(0, 1, 0),
+        labels: ["S", "I"],
+        color: "#a8baff",
+      },
+    ];
+    for (const { axis, labels, color } of axes) {
+      const p = axis.applyQuaternion(inverse);
+      context.strokeStyle = color;
+      context.fillStyle = color;
+      context.beginPath();
+      context.moveTo(45 - p.x * 24, 45 + p.y * 24);
+      context.lineTo(45 + p.x * 24, 45 - p.y * 24);
+      context.stroke();
+      labels.forEach((label, i) => {
+        const sign = i === 0 ? 1 : -1;
+        context.fillText(label, 45 + p.x * 34 * sign, 45 - p.y * 34 * sign);
+      });
+    }
   }
 
   private resize() {

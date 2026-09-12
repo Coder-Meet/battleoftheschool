@@ -20,6 +20,7 @@ import sys
 import SimpleITK as sitk
 
 from detector import DetectorConfig, detect
+from learning import CandidateModel, filter_detection
 from nifti_io import read_nifti
 
 
@@ -36,7 +37,9 @@ def parse_args() -> argparse.Namespace:
         help="Case identifier to embed in the output JSON. Defaults to the image filename stem.",
     )
     parser.add_argument("--diagnostics", help="Optional JSON path for timings, paths and evidence.")
+    parser.add_argument("--candidate-model", type=Path, help="Optional model trained from human candidate reviews.")
     parser.add_argument("--minimum-radius-mm", type=float, default=0.7)
+    parser.add_argument("--spacing-mm", type=float, default=1.0, help="Isotropic working spacing; finer grids cost more CPU.")
     parser.add_argument("--threads", type=int, default=4, help="SimpleITK CPU threads (default: 4).")
     return parser.parse_args()
 
@@ -77,15 +80,23 @@ def main() -> int:
             image_path.parent.name if image_path.parent.name.startswith("subject")
             else image_path.name.removesuffix(".gz").removesuffix(".nii")
         )
-        result = detect(image, aorta_mask, DetectorConfig(minimum_radius_mm=args.minimum_radius_mm))
+        result = detect(image, aorta_mask, DetectorConfig(
+            minimum_radius_mm=args.minimum_radius_mm, spacing_mm=args.spacing_mm,
+        ))
+        model_diagnostics = None
+        if args.candidate_model:
+            model_diagnostics = filter_detection(result, CandidateModel.load(args.candidate_model))
         output = Path(args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(result.prediction(case_id), indent=2, allow_nan=False) + "\n")
         if args.diagnostics:
             diagnostics = Path(args.diagnostics)
             diagnostics.parent.mkdir(parents=True, exist_ok=True)
-            diagnostics.write_text(json.dumps(result.diagnostics(), indent=2, allow_nan=False) + "\n")
-    except (OSError, RuntimeError, ValueError) as error:
+            payload = result.diagnostics()
+            if model_diagnostics is not None:
+                payload["candidate_model"] = model_diagnostics
+            diagnostics.write_text(json.dumps(payload, indent=2, allow_nan=False) + "\n")
+    except (OSError, RuntimeError, ValueError, KeyError, TypeError) as error:
         print(f"Branchseed: {error}", file=sys.stderr)
         return 1
     print(f"Wrote {len(result.branches)} daughter instance(s) for '{case_id}' -> {args.output}"

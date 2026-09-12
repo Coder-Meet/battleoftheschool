@@ -33,6 +33,8 @@ import {
   Orbit,
 } from "lucide";
 import * as THREE from "three";
+import { ReviewStore } from "./reviews";
+import type { ReviewLabel } from "./reviews";
 import { AortaViewer } from "./viewer";
 import { SliceViews } from "./slices";
 import type { Branch, Case, Point } from "./types";
@@ -128,12 +130,12 @@ $("#app").innerHTML = `
             <button class="view-tab active" data-mode="3d" role="tab" aria-selected="true">${icon("box")}<span>3D reconstruction</span></button>
             <button class="view-tab" data-mode="ct" role="tab" aria-selected="false">${icon("layers")}<span>CT evidence</span></button>
             <button class="view-tab" data-mode="map" role="tab" aria-selected="false">${icon("map")}<span>Wall map</span></button>
-          </div><span class="coordinate-label">LPS <span>·</span> mm</span></div>
+          </div><span class="coordinate-label">LPS <span>·</span> mm</span><button class="icon-button" id="fullscreen" title="Expand workspace" aria-label="Expand workspace">${icon("expand")}</button></div>
           <div class="model-area" id="model-area">
             <div id="viewer"></div>
             <div class="model-caption"><span class="small-label">PARENT AORTA + DAUGHTER INSTANCES</span><div><span class="live-dot"></span>CT-derived surface</div></div>
-            <div class="model-tools"><button class="tool-button" id="reset-camera" title="Reset camera" aria-label="Reset camera">${icon("rotate-ccw")}</button><button class="tool-button" id="zoom-in" title="Zoom in" aria-label="Zoom in">${icon("zoom-in")}</button><button class="tool-button" id="zoom-out" title="Zoom out" aria-label="Zoom out">${icon("zoom-out")}</button><div></div><button class="tool-button" id="rotate" title="Auto rotate" aria-label="Auto rotate">${icon("orbit")}</button><button class="tool-button" id="fullscreen" title="Expand viewer" aria-label="Expand viewer">${icon("expand")}</button></div>
-            <div class="orientation"><span>S</span><div><span>R</span><svg width="46" height="36" viewBox="0 0 46 36"><path d="M23 32V2M5 25l18 7 18-7" fill="none" stroke="#667786"/><circle cx="23" cy="32" r="3" fill="#71d4b6"/></svg><span>L</span></div><small>Anterior view</small></div>
+            <div class="model-tools"><button class="tool-button" id="reset-camera" title="Reset camera" aria-label="Reset camera">${icon("rotate-ccw")}</button><button class="tool-button" id="zoom-in" title="Zoom in" aria-label="Zoom in">${icon("zoom-in")}</button><button class="tool-button" id="zoom-out" title="Zoom out" aria-label="Zoom out">${icon("zoom-out")}</button><div></div><button class="tool-button" id="rotate" title="Auto rotate" aria-label="Auto rotate">${icon("orbit")}</button></div>
+            <div class="orientation"><canvas width="90" height="90" aria-label="Camera-linked anatomical orientation"></canvas><small>LPS · camera-linked axes</small></div>
             <div class="model-bottom"><span>${icon("orbit")} Drag to orbit <b>·</b> Scroll to zoom</span><button class="fly-button" id="flythrough">${icon("play")} Enter aorta <span>3D TOUR</span></button></div>
             <div class="flight-controls" id="flight-controls" hidden><button class="icon-button" id="play-flight" aria-label="Play or pause fly-through">${icon("play")}</button><span>Endoluminal view</span><input type="range" id="flight-position" min="2" max="98" value="10" aria-label="Position inside aorta" /><select id="flight-speed" aria-label="Fly-through speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select><button class="icon-button" id="exit-flight" aria-label="Exit fly-through">${icon("x")}</button></div>
           </div>
@@ -144,6 +146,7 @@ $("#app").innerHTML = `
         <div class="evidence-panel" id="evidence-panel"><div class="section-heading"><h3>${icon("crosshair")} CT evidence <span>LINKED TO SELECTION</span></h3><label>Window <select id="ct-window" aria-label="CT window"><option value="cta">Angiography</option><option value="soft">Soft tissue</option><option value="bone">Bone</option></select></label></div><div class="slices" id="slices"></div></div>
       </div>
       <aside class="inspector"><div class="inspector-heading"><div><h3>Branch instances <span id="branch-count" class="count">0</span></h3><p>Direct daughters of the parent aorta</p></div>${icon("git-branch")}</div>
+        <div class="review-toolbar"><label>Show <select id="branch-filter" aria-label="Filter branch reviews"><option value="all">All candidates</option><option value="unreviewed">Needs review</option><option value="confirmed">Confirmed</option><option value="rejected">Rejected</option></select></label><button id="export-reviews" class="icon-button" title="Export training reviews for all cases" aria-label="Export training reviews">${icon("download")}</button><span id="review-progress" role="status"></span></div>
         <div class="branch-list" id="branch-list"><div class="empty-branches">Analyze a case to discover branches.</div></div>
         <div class="branch-details" id="branch-details"><div class="no-selection">${icon("crosshair")}<h4>Follow an origin</h4><p>Select a branch to inspect its coordinates and proximal path.</p></div></div>
         <div class="inspector-note">${icon("circle-help")}<p>Detections are candidates for review.<br>Evidence scores are not probabilities.</p></div>
@@ -168,22 +171,45 @@ let cases: { id: string; available: boolean }[] = [];
 let selectedCase = "";
 let selectedBranch = "";
 let loadSequence = 0;
+let loadController: AbortController | undefined;
 let mode = "3d";
 let flythrough = false;
 let viewer: AortaViewer | undefined;
+const reviews = new ReviewStore();
 const slices = new SliceViews($("#slices"));
 try {
-  viewer = new AortaViewer($("#viewer"), selectBranch);
+  viewer = new AortaViewer(
+    $("#viewer"),
+    selectBranch,
+    $(".orientation canvas"),
+  );
   viewer.onFlightProgress = (progress) => {
     $<HTMLInputElement>("#flight-position").value = String(progress * 100);
+  };
+  viewer.onFlightPlaying = (playing) => {
+    $("#play-flight").innerHTML = icon(playing ? "pause" : "play");
+    refreshIcons();
   };
 } catch {
   $("#viewer").innerHTML =
     '<div class="webgl-error">3D rendering is unavailable in this browser.<br>CT evidence, the wall map, and JSON export are still available.</div>';
 }
 
-async function api<T>(path: string, method = "GET"): Promise<T> {
-  const response = await fetch(path, { method });
+async function request(path: string, method = "GET", signal?: AbortSignal) {
+  return fetch(path, {
+    method,
+    signal: signal
+      ? AbortSignal.any([signal, AbortSignal.timeout(30000)])
+      : AbortSignal.timeout(30000),
+  });
+}
+
+async function api<T>(
+  path: string,
+  method = "GET",
+  signal?: AbortSignal,
+): Promise<T> {
+  const response = await request(path, method, signal);
   if (!response.ok) {
     const error = (await response
       .json()
@@ -235,9 +261,15 @@ function setLoading(title: string, description: string, error = false) {
 
 async function loadCase(id: string) {
   const sequence = ++loadSequence;
+  loadController?.abort();
+  loadController = new AbortController();
+  const signal = loadController.signal;
+  const deadline = Date.now() + 180000;
   selectedCase = id;
   data = undefined;
   renderCases();
+  if (window.matchMedia("(max-width: 1080px)").matches)
+    document.body.classList.remove("library-collapsed");
   if (flythrough) setFlythrough(false);
   setLoading(
     `Analyzing ${displayCase(id)}`,
@@ -249,9 +281,12 @@ async function loadCase(id: string) {
     let status = await api<{ status: string; error?: string }>(
       `/api/cases/${id}/analyze`,
       "POST",
+      signal,
     );
     while (status.status !== "ready") {
       if (sequence !== loadSequence) return;
+      if (Date.now() > deadline)
+        throw new Error("Analysis timed out. Check the CPU engine and retry.");
       if (status.status === "failed")
         throw new Error(status.error || "Analysis failed.");
       if (status.status === "idle")
@@ -261,12 +296,12 @@ async function loadCase(id: string) {
           ? "Waiting for the CPU engine. One case is processed at a time."
           : "Enhancing vessels, tracing wall connections, and building the 3D surface.";
       await new Promise((resolve) => setTimeout(resolve, 700));
-      status = await api(`/api/cases/${id}/status`);
+      status = await api(`/api/cases/${id}/status`, "GET", signal);
     }
     const [metadata, ctResponse, maskResponse] = await Promise.all([
-      api<Case>(`/api/cases/${id}`),
-      fetch(`/api/cases/${id}/ct`),
-      fetch(`/api/cases/${id}/mask`),
+      api<Case>(`/api/cases/${id}`, "GET", signal),
+      request(`/api/cases/${id}/ct`, "GET", signal),
+      request(`/api/cases/${id}/mask`, "GET", signal),
     ]);
     if (!ctResponse.ok || !maskResponse.ok)
       throw new Error("Volume data is no longer cached. Try again.");
@@ -278,6 +313,7 @@ async function loadCase(id: string) {
     data = metadata;
     viewer?.load(data);
     slices.load(data, ct, mask);
+    history.replaceState(null, "", `#case=${encodeURIComponent(id)}`);
     $("#metric-branches").innerHTML =
       `${String(data.branches.length).padStart(2, "0")}<span class="metric-tag">instances</span>`;
     $("#metric-coverage").innerHTML =
@@ -313,18 +349,26 @@ async function loadCase(id: string) {
 
 function renderBranches() {
   if (!data) return;
+  const filter = $<HTMLSelectElement>("#branch-filter").value;
+  const pending = data.branches.filter(
+    (b) => reviews.status(data!.case_id, b) === "unreviewed",
+  );
+  $("#review-progress").textContent =
+    `${data.branches.length - pending.length}/${data.branches.length} reviewed`;
   $("#branch-count").textContent = String(data.branches.length);
   $("#branch-list").innerHTML =
     data.branches
-      .map(
-        (branch, i) => `
+      .map((branch, i) => {
+        const status = reviews.status(data!.case_id, branch);
+        if (filter !== "all" && status !== filter) return "";
+        return `
     <button class="branch-item ${branch.instance_id === selectedBranch ? "selected" : ""}" data-branch="${branch.instance_id}" style="--branch-color:${COLORS[i % COLORS.length]}">
-      <span class="branch-symbol">${icon("git-branch")}</span><div><strong>${branchName(branch.instance_id)}</strong><small>Radius ${branch.radius_mm.toFixed(2)} mm</small></div><span class="branch-evidence">${branch.evidence_score.toFixed(2)}<small>evidence</small></span>
+      <span class="branch-symbol">${icon(status === "confirmed" ? "check" : status === "rejected" ? "x" : "git-branch")}</span><div><strong>${branchName(branch.instance_id)}</strong><small>${status === "unreviewed" ? `Radius ${branch.radius_mm.toFixed(2)} mm` : status}</small></div><span class="branch-evidence">${branch.evidence_score.toFixed(2)}<small>evidence</small></span>
     </button>
-  `,
-      )
+  `;
+      })
       .join("") ||
-    '<div class="empty-branches">No eligible branches detected.<br>Review the linked CT slices.</div>';
+    `<div class="empty-branches">${data.branches.length ? "No candidates match this filter." : "No eligible branches detected.<br>Review the linked CT slices."}</div>`;
   $("#branch-list")
     .querySelectorAll<HTMLButtonElement>("[data-branch]")
     .forEach(
@@ -357,7 +401,44 @@ function selectBranch(id: string) {
     <div class="direction-row"><span>${icon("git-branch")} Outward direction</span><code>[${branch.direction_xyz.map((n) => n.toFixed(2)).join(", ")}]</code></div>
     <div class="evidence-score"><span>Geometric evidence <strong>${branch.evidence_score.toFixed(2)}</strong></span><div><i style="width:${branch.evidence_score * 100}%;background:${color}"></i></div><small>Heuristic score · uncalibrated</small></div>
     <button class="button inspect-button" id="inspect-ct">${icon("layers")} Inspect CT evidence ${icon("arrow-right")}</button>
+    ${branch.warnings.length ? `<p class="branch-warning">${branch.warnings.map(escape).join("<br>")}</p>` : ""}
+    <section class="review-actions" aria-label="Candidate review"><span class="small-label">HUMAN REVIEW · ${reviews.status(data.case_id, branch).toUpperCase()}</span><div>
+      <button class="button secondary" data-review="confirmed" aria-pressed="${reviews.status(data.case_id, branch) === "confirmed"}">Confirm</button>
+      <button class="button secondary" data-review="rejected" aria-pressed="${reviews.status(data.case_id, branch) === "rejected"}">Reject</button>
+      <button class="button secondary" data-review="unreviewed">Clear</button></div>
+      <button class="button inspect-button" id="next-review">Next unreviewed ${icon("arrow-right")}</button>
+      <small>Saved in this browser. Export reviews to train a candidate classifier. Raw prediction export stays unchanged.</small>
+    </section>
   `;
+  $("#branch-details")
+    .querySelectorAll<HTMLButtonElement>("[data-review]")
+    .forEach((button) => {
+      button.onclick = () => {
+        const persisted = reviews.set(
+          data!.case_id,
+          branch,
+          button.dataset.review as ReviewLabel | "unreviewed",
+        );
+        selectBranch(id);
+        if (!persisted)
+          toast(
+            "Browser storage unavailable. Export reviews before closing this page.",
+          );
+      };
+    });
+  $("#next-review").onclick = () => {
+    if (!data) return;
+    const index = data.branches.indexOf(branch);
+    const ordered = [
+      ...data.branches.slice(index + 1),
+      ...data.branches.slice(0, index + 1),
+    ];
+    const next = ordered.find(
+      (b) => reviews.status(data!.case_id, b) === "unreviewed",
+    );
+    if (next) selectBranch(next.instance_id);
+    else toast("All candidates in this case have been reviewed.");
+  };
   $("#focus-branch").onclick = () => {
     if (flythrough) setFlythrough(false);
     setMode("3d");
@@ -432,7 +513,10 @@ function renderMap() {
       const activate = () => selectBranch(point.dataset.mapBranch!);
       point.onclick = activate;
       point.onkeydown = (event) => {
-        if (event.key === "Enter" || event.key === " ") activate();
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          activate();
+        }
       };
     });
 }
@@ -481,10 +565,12 @@ function applyLayers() {
 function showHelp() {
   $<HTMLDialogElement>("#help-dialog").showModal();
 }
+let toastTimer: ReturnType<typeof setTimeout>;
 function toast(message: string) {
+  clearTimeout(toastTimer);
   $("#toast").textContent = message;
   $("#toast").hidden = false;
-  setTimeout(() => {
+  toastTimer = setTimeout(() => {
     $("#toast").hidden = true;
   }, 3000);
 }
@@ -511,6 +597,23 @@ function stepCase(direction: number) {
 }
 
 $("#case-search").oninput = renderCases;
+$("#branch-filter").onchange = renderBranches;
+$("#export-reviews").onclick = () => {
+  const payload = reviews.export();
+  if (!payload.records.length)
+    return toast("Confirm or reject candidates before exporting reviews.");
+  const url = URL.createObjectURL(
+    new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" }),
+  );
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = "branchseed-reviews.json";
+  anchor.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  toast(
+    `Exported ${payload.records.length} candidate reviews across all reviewed cases.`,
+  );
+};
 $("#export").onclick = download;
 $("#retry").onclick = () => {
   if (selectedCase) void loadCase(selectedCase);
@@ -548,7 +651,7 @@ $("#rotate").onclick = () =>
 $("#fullscreen").onclick = () => {
   if (document.fullscreenElement) void document.exitFullscreen();
   else
-    void $(".visual-panel")
+    void $(".visual-column")
       .requestFullscreen()
       .catch(() => toast("Fullscreen is not available in this preview."));
 };
@@ -599,7 +702,10 @@ async function initialize() {
   try {
     cases = await api("/api/cases");
     renderCases();
-    const first = cases.find((c) => c.available);
+    const requested = new URLSearchParams(location.hash.slice(1)).get("case");
+    const first =
+      cases.find((c) => c.available && c.id === requested) ||
+      cases.find((c) => c.available);
     if (first) await loadCase(first.id);
     else
       setLoading(

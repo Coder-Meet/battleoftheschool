@@ -101,9 +101,15 @@ def validate_geometry(image: sitk.Image, mask: sitk.Image) -> None:
             raise ValueError("CT and aorta mask do not share the same physical geometry.")
     if np.any(np.asarray(image.GetSpacing()) <= 0):
         raise ValueError("Image spacing must be positive.")
+    direction = np.asarray(image.GetDirection()).reshape(3, 3)
+    if not np.allclose(direction.T @ direction, np.eye(3), rtol=0, atol=1e-4):
+        raise ValueError("Image direction must be orthonormal for physical distance measurements.")
     for volume in (image, mask):
         if not np.isfinite(sitk.GetArrayViewFromImage(volume)).all():
             raise ValueError("Input volume contains non-finite voxel values.")
+    labels = np.unique(sitk.GetArrayViewFromImage(mask))
+    if np.any(labels < 0) or len(labels[labels > 0]) > 1:
+        raise ValueError("Supply a binary parent-aorta mask, not a multi-label segmentation.")
 
 
 def physical_points(image: sitk.Image, points_zyx: npt.ArrayLike) -> FloatArray:
@@ -388,10 +394,17 @@ def detect(
     median = float(np.median(core))
     mad = float(np.median(np.abs(core - median)) * 1.4826)
     lower = max(30.0, median - max(65.0, 2.5 * mad))
+    background = smooth[(outside >= 8) & (outside <= 16)]
+    background_median = float(np.median(background)) if len(background) else median
+    if background_median < median:
+        lower = max(lower, (median + background_median) / 2)
     upper = median + max(120.0, 3.5 * mad)
     if median < 120:
         warnings.append("Low parent contrast: soft tissue and veins may mimic daughter arteries.")
-    blood = {"median_hu": median, "mad_hu": mad, "lower_hu": lower, "upper_hu": upper}
+    blood = {
+        "median_hu": median, "mad_hu": mad, "lower_hu": lower, "upper_hu": upper,
+        "background_median_hu": background_median,
+    }
     prepared = perf_counter()
     normalized = np.clip((smooth - lower) / max(upper - lower, 1), 0, 1)
     tubular = sato(normalized, sigmas=(0.8 / spacing, 1.5 / spacing, 2.5 / spacing), black_ridges=False)

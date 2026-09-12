@@ -169,6 +169,15 @@ b {
   grid-template-columns: var(--rail) var(--library) minmax(0, 1fr);
   min-height: 100vh;
 }
+#app > .rail {
+  grid-column: 1;
+}
+#app > .library {
+  grid-column: 2;
+}
+#app > main {
+  grid-column: 3;
+}
 .rail {
   position: sticky;
   top: 0;
@@ -1212,6 +1221,8 @@ main {
   position: relative;
 }
 .slice-card canvas {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: block;
@@ -1246,6 +1257,55 @@ main {
   min-width: 0;
   overflow: hidden;
   align-self: stretch;
+}
+.review-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+}
+.review-toolbar label {
+  flex: 1;
+  white-space: nowrap;
+}
+.review-toolbar select {
+  max-width: 130px;
+  font-size: 11px;
+}
+#review-progress {
+  width: 100%;
+  color: #91bbaa;
+}
+.review-actions {
+  margin-top: 16px;
+  display: grid;
+  gap: 10px;
+}
+.review-actions > div {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.review-actions .button {
+  padding: 8px 10px;
+  font-size: 11px;
+}
+.review-actions [aria-pressed="true"] {
+  border-color: #71dbbd;
+  color: #bdf1e1;
+  background: #20382f;
+}
+.review-actions small,
+.branch-warning {
+  color: #94a6b3;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.branch-warning {
+  color: #eebc6d;
 }
 .inspector-heading {
   padding: 18px 16px 16px;
@@ -1709,22 +1769,23 @@ main {
   flex-direction: column;
 }
 .ct-mode .slices {
-  flex: 1;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  min-height: 400px;
+  flex: none;
+  height: clamp(460px, 65vh, 800px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
 }
 .ct-mode .slice-card:first-child {
   grid-column: 1 / -1;
 }
 .ct-mode .slice-card {
+  min-height: 0;
   display: flex;
   flex-direction: column;
 }
 .ct-mode .slice-canvas-wrap {
   flex: 1;
   height: auto;
-  min-height: 140px;
+  min-height: 0;
 }
 .ct-mode .section-heading {
   height: 40px;
@@ -1838,10 +1899,10 @@ main {
   font-size: 8px;
   background: #22392e;
 }
-.visual-panel:fullscreen .model-area {
-  height: calc(100vh - 90px);
-}
-.visual-panel:fullscreen {
+.visual-column:fullscreen {
+  padding: 16px;
+  overflow: auto;
+  background: #0c1015;
   border-radius: 0;
 }
 dialog {

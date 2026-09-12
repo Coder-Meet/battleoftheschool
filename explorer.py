@@ -153,7 +153,11 @@ def make_handler(store: CaseStore, static_root: Path) -> type[BaseHTTPRequestHan
             self.send_header("Cache-Control", "no-cache")
             self.send_header("X-Content-Type-Options", "nosniff")
             self.end_headers()
-            self.wfile.write(data)
+            if self.command != "HEAD":
+                try:
+                    self.wfile.write(data)
+                except (BrokenPipeError, ConnectionResetError):
+                    pass
 
         def send_json(self, data: dict | list, status: int = 200) -> None:
             self.send_bytes(json.dumps(data, allow_nan=False).encode(), "application/json", status)
@@ -213,6 +217,9 @@ def make_handler(store: CaseStore, static_root: Path) -> type[BaseHTTPRequestHan
                 self.send_json({"error": "Not found. Build the frontend with npm run build in web/."}, 404)
                 return
             self.send_bytes(target.read_bytes(), mimetypes.guess_type(str(target))[0] or "application/octet-stream")
+
+        def do_HEAD(self) -> None:
+            self.do_GET()
 
     return Handler
 

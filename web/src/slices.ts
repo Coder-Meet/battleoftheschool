@@ -17,6 +17,8 @@ export class SliceViews {
   private window = { level: 220, width: 700 };
   private canvases: HTMLCanvasElement[] = [];
   private sliders: HTMLInputElement[] = [];
+  private buffers = PLANES.map(() => document.createElement("canvas"));
+  private framePending = false;
   private frames: { x: number; y: number; w: number; h: number }[] = [];
 
   constructor(private host: HTMLElement) {
@@ -77,10 +79,20 @@ export class SliceViews {
         this.draw();
       };
     });
-    new ResizeObserver(() => this.draw()).observe(host);
+    new ResizeObserver(() => {
+      if (this.framePending) return;
+      this.framePending = true;
+      requestAnimationFrame(() => {
+        this.framePending = false;
+        this.draw();
+      });
+    }).observe(host);
   }
 
   load(data: Case, ct: ArrayBuffer, mask: ArrayBuffer) {
+    const voxels = data.size_xyz.reduce((total, size) => total * size, 1);
+    if (ct.byteLength !== voxels * 2 || mask.byteLength !== voxels)
+      throw new Error("Incomplete CT or mask download. Please retry.");
     this.data = data;
     this.ct = new Int16Array(ct);
     this.mask = new Uint8Array(mask);
@@ -164,7 +176,8 @@ export class SliceViews {
           buffer[offset + 3] = 255;
         }
       }
-      const temporary = document.createElement("canvas");
+      if (!canvas.clientWidth || !canvas.clientHeight) return;
+      const temporary = this.buffers[index];
       temporary.width = width;
       temporary.height = height;
       temporary
