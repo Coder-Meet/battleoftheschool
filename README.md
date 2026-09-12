@@ -334,6 +334,13 @@ python score_references.py --references organizer-refs/ \
   --output outputs/reference-score.json
 ```
 
+While waiting for labels, [prepare five difficult cases for expert review](ANNOTATION_GUIDE.md).
+`prepare_annotations.py` builds blinded native-slice surveys, proposed-opening
+CT sheets and editable review worksheets from frozen predictions. It leaves all
+labels and reference counts unconfirmed; the scorer rejects these packets as
+ground truth. The guide also provides a reproducible five-case **hard synthetic**
+bundle with analytic labels for development.
+
 It accepts one JSON per case, a list of cases, or a directory; maps common
 aliases (`ostium`/`origin`, `branches`/`daughters`, `diameter_mm`, case ids
 like `18` or `orig18`); converts voxel indices to millimetres with the case

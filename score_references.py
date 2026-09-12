@@ -61,6 +61,8 @@ def _to_vector(value, label: str) -> np.ndarray:
 
 
 def normalize_reference(raw: dict, notes: list[str], image=None) -> dict:
+    if raw.get("scope") == "unreviewed_proposals_not_ground_truth":
+        raise ValueError("Unreviewed model proposals are not ground-truth references.")
     case_value = next((raw[key] for key in CASE_KEYS if key in raw), None)
     if case_value is None:
         raise ValueError("Reference has no case identifier.")
@@ -140,6 +142,8 @@ def load_references(path: Path) -> list[dict]:
     raws = []
     for file in files:
         loaded = json.loads(file.read_text())
+        if isinstance(loaded, dict) and loaded.get("scope") == "unreviewed_proposals_not_ground_truth":
+            raise ValueError("Unreviewed model proposals are not ground-truth references.")
         if isinstance(loaded, list):
             raws.extend(loaded)
         elif isinstance(loaded, dict) and any(key in loaded for key in DAUGHTER_KEYS):
