@@ -7,6 +7,7 @@ import sys
 import numpy as np
 import pytest
 import SimpleITK as sitk
+from scipy import ndimage as ndi
 
 from detector import (
     DetectorConfig, branch_junctions, detect, physical_points, stop_at_junction, truncate_path, validate_geometry,
@@ -184,3 +185,44 @@ def test_skeleton_junction_requires_three_substantial_arms():
     assert np.linalg.norm(junctions[0] - [15, 15, 15]) < 1.5
     support[15, 16:26, 15] = False
     assert len(branch_junctions(support, parent, 1)) == 0
+
+
+@pytest.mark.parametrize("spacing,radius", [(1.0, 1.8), (1.5, 1.4)])
+def test_partial_volume_daughters_survive_both_contrast_levels(spacing, radius):
+    size = tuple(np.ceil(np.array([72, 64, 72]) / spacing).astype(int))
+    z, y, x = np.indices(size) * spacing
+    parent = ((x - 26)**2 + (y - 30)**2 <= 8**2) & (z >= 5) & (z <= 65)
+    subvoxels = 3
+    fine_size = tuple(value * subvoxels for value in size)
+    fz, fy, fx = (np.indices(fine_size) - (subvoxels - 1) / 2) * (spacing / subvoxels)
+    lumen = ((fx - 26)**2 + (fy - 30)**2 <= 8**2) & (fz >= 5) & (fz <= 65)
+    for height in (24, 48):
+        lumen |= ((fy - 30)**2 + (fz - height)**2 <= radius**2) & (fx >= 26) & (fx <= 52)
+    occupancy = ndi.gaussian_filter(lumen.astype(float), 0.6 * subvoxels / spacing)
+    occupancy = occupancy.reshape(
+        size[0], subvoxels, size[1], subvoxels, size[2], subvoxels,
+    ).mean(axis=(1, 3, 5))
+    for hu in (150, 550):
+        image = sitk.GetImageFromArray((20 + (hu - 20) * occupancy).astype(np.float32))
+        image.SetSpacing((spacing,) * 3)
+        mask = sitk.GetImageFromArray(parent.astype(np.uint8))
+        mask.CopyInformation(image)
+        result = detect(image, mask, DetectorConfig(native_contrast_scale=1.2))
+        assert len(result.branches) == 2
+        for branch, height in zip(result.branches, (24, 48)):
+            assert np.linalg.norm(np.asarray(branch.ostium_xyz_mm) - (34, 30, height)) < 3
+            assert np.allclose(truncate_path(np.asarray(branch.path_xyz_mm), 5)[-1], branch.seed_xyz_mm)
+        if spacing == 1.5:
+            assert result.blood_model["support_fraction"] < 0.5
+
+
+def test_background_overlap_is_reported_without_claiming_a_noise_measurement():
+    image, mask = phantom(branches=())
+    data = sitk.GetArrayFromImage(image)
+    z, y, x = np.indices(data.shape)
+    data[sitk.GetArrayViewFromImage(mask) == 0] = (40 + 7 * x)[sitk.GetArrayViewFromImage(mask) == 0]
+    image = sitk.GetImageFromArray(data)
+    image.CopyInformation(mask)
+    result = detect(image, mask, DetectorConfig(native_contrast_scale=1.2))
+    assert result.blood_model["contrast_to_background_mad"] <= 1
+    assert any("Parent/background intensities overlap" in warning for warning in result.warnings)

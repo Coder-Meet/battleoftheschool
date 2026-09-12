@@ -32,6 +32,7 @@ class DetectorConfig:
     root_depth_mm: float = 3.5
     blood_lower_scale: float = 1.0
     support_contrast_fraction: float = 0.5
+    native_contrast_scale: float = 0.0
     roots_per_contact: int = 1
     wall_hug_penalty: float = 0.0
     broad_contact_mm3: float = 1200.0
@@ -42,9 +43,12 @@ class DetectorConfig:
         values = np.asarray(list(numeric.values()), dtype=float)
         if not np.isfinite(values).all():
             raise ValueError("All detector settings must be finite.")
-        may_be_zero = {"connector_gap_fraction", "wall_hug_penalty"}
+        may_be_zero = {"connector_gap_fraction", "wall_hug_penalty", "native_contrast_scale"}
         positive = [v for k, v in numeric.items() if k not in may_be_zero]
-        if np.any(np.asarray(positive, dtype=float) <= 0) or self.wall_hug_penalty < 0:
+        if (
+            np.any(np.asarray(positive, dtype=float) <= 0)
+            or self.wall_hug_penalty < 0 or self.native_contrast_scale < 0
+        ):
             raise ValueError("All detector settings must be finite and positive.")
         if not 0 <= self.connector_gap_fraction < 1:
             raise ValueError("The connector gap fraction must lie in [0, 1).")
@@ -549,16 +553,28 @@ def detect(
     lower = max(30.0, median - config.blood_lower_scale * max(65.0, 2.5 * mad))
     background = smooth[(outside >= 8) & (outside <= 16)]
     background_median = float(np.median(background)) if len(background) else median
+    background_mad = float(np.median(np.abs(background - background_median)) * 1.4826) if len(background) else 0.0
+    fraction = config.support_contrast_fraction
+    if config.native_contrast_scale:
+        radius_squared = config.minimum_radius_mm**2
+        retention = radius_squared / (radius_squared + (0.6 * max(image.GetSpacing()))**2)
+        fraction = min(fraction, config.native_contrast_scale * retention)
     if background_median < median:
-        partial_volume_level = background_median + config.support_contrast_fraction * (median - background_median)
-        lower = min(lower, max(30.0, partial_volume_level))
-        lower = max(lower, (median + background_median) / 2)
+        partial_volume_level = max(30.0, background_median + fraction * (median - background_median))
+        if config.native_contrast_scale:
+            lower = partial_volume_level
+        else:
+            lower = max(min(lower, partial_volume_level), (median + background_median) / 2)
     upper = median + max(120.0, 3.5 * mad)
     if median < 120:
         warnings.append("Low parent contrast: soft tissue and veins may mimic daughter arteries.")
+    contrast_to_background_mad = (median - background_median) / max(background_mad, 1.0)
+    if contrast_to_background_mad <= 1:
+        warnings.append("Parent/background intensities overlap: inspect CT for tissue mimicking branches.")
     blood = {
         "median_hu": median, "mad_hu": mad, "lower_hu": lower, "upper_hu": upper,
-        "background_median_hu": background_median,
+        "background_median_hu": background_median, "background_mad_hu": background_mad,
+        "support_fraction": fraction, "contrast_to_background_mad": contrast_to_background_mad,
     }
     prepared = perf_counter()
     normalized = np.clip((smooth - lower) / max(upper - lower, 1), 0, 1)

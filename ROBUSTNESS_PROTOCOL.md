@@ -191,3 +191,58 @@ instance quality and clinical validity remain unmeasured.
 The delivery evidence ZIP includes unchanged per-case predictions, resource
 files, development/frozen reports and dataset manifests. Regenerate datasets
 with the recorded seeds in fresh directories to verify the report hashes.
+
+## Native-resolution experiment — selection before new frozen inference
+
+The teammate's fixed-65-HU diagnosis describes the earlier baseline. The
+current default already uses half of the measured parent/background contrast.
+The new experiment lowers that fraction only when native resolution warrants it:
+
+```text
+p = r² / (r² + (0.6 × max(native_spacing))²)
+f = min(0.5, scale × p)
+lower = max(30 HU, background + f × (parent - background))
+```
+
+Here `r` is the configured minimum radius, not a case-specific anatomical label.
+The formula approximates partial volume; it is not a calibrated scanner PSF.
+At nonpositive parent/background contrast the existing conservative fallback
+remains. The old midpoint clamp is absent from the experimental path.
+`native_contrast_scale=0` preserves the existing detector; the benchmark's
+`native-contrast` variant selects scale 1.2. It is opt-in until frozen evaluation.
+
+Development seed 4001, before any new frozen predictions:
+
+| Native scale | TP | FP | FN | F1 | Negative-control FP |
+|---|---:|---:|---:|---:|---:|
+| Disabled (existing half-contrast) | 28 | 0 | 4 | 0.9333 | 0 |
+| 1.2 | 29 | 0 | 3 | 0.9508 | 0 |
+| 0.9 | 30 | 2 | 2 | 0.9375 | 0 |
+| 0.6 | 29 | 20 | 3 | 0.7160 | 8 |
+
+Select **1.2 only** for the independent comparison. Do not retune using the
+new frozen cases. Promote only if aggregate frozen F1 improves without more
+false positives or negative-control detections, the original geometry tests
+pass, and real-input runtime/memory remain within the existing limits.
+Otherwise retain the existing production default and report the rejected result.
+
+New datasets were generated before this selection:
+
+- Seed 582743: `d98c8d368881567c0ab95dcd1a303106fa60c2f7aab1677643fbcf94545ca857`
+- Seed 904117: `2a457b54796d8a0bfb54b19a75297b97d08a63993211209392b1a6738170f349`
+
+These remain procedural draws from the same generator, not independent
+clinical data. The old frozen sets are regression data for this investigation.
+
+All three scales were also swept over all 25 supplied scans. Counts and their
+correlation with parent HU are diagnostics, not optimization targets: there
+are no real reference counts, and anatomy, crop coverage and acquisition
+protocol are confounded. In particular, neither more detections nor zero
+correlation proves improvement. The aggressive scale's eight false positives
+on an empty control disqualify it despite its increased candidate recovery.
+
+Diagnostics now expose background MAD and parent/background contrast divided
+by that MAD, and warn when their intensity distributions overlap. This MAD
+measures heterogeneous tissue, **not image noise**. It does not set the intensity
+threshold or establish a clinical CNR/visibility cutoff. A low absolute parent
+HU warning is retained; decisions still require complete expert references.

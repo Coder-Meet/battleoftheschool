@@ -88,7 +88,8 @@ def main() -> int:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--tolerance-mm", type=float, default=3)
     parser.add_argument(
-        "--variant", choices=("strict", "finer", "relaxed", "review", "partial-volume"), default="partial-volume",
+        "--variant", choices=("strict", "finer", "relaxed", "review", "partial-volume", "native-contrast"),
+        default="partial-volume",
     )
     args = parser.parse_args()
     if not np.isfinite(args.tolerance_mm) or args.tolerance_mm <= 0:
@@ -100,6 +101,7 @@ def main() -> int:
         "relaxed": DetectorConfig(blood_lower_scale=2.0, support_contrast_fraction=1.0),
         "review": DetectorConfig.review(support_contrast_fraction=1.0),
         "partial-volume": DetectorConfig(support_contrast_fraction=0.5),
+        "native-contrast": DetectorConfig(native_contrast_scale=1.2),
     }
     try:
         report = benchmark(args.data_root, args.output, args.tolerance_mm, variants[args.variant])
