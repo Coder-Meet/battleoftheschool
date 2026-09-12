@@ -122,6 +122,43 @@ The sandbox test verifies sockets are actually blocked, and the trace applies to
 child CLI processes too. API/server tests are excluded because they deliberately
 need localhost networking. Bundled frontend assets are served by the local server.
 
+### Review workflow: build labels, then train the candidate filter
+
+There are no branch annotations for the 25 scans, so labels come from
+engineers judging the detector's own proposals. `review.py` runs a deliberately
+loose **review profile** of the detector (wider wall shell, no tubularity gate at
+the wall, tolerant wall connection), records every proposal it makes under
+`outputs/review/`, and opens the Explorer on those cases:
+
+```bash
+python review.py --cases subject001 subject002 subject003   # or --all
+```
+
+In the Explorer, select each candidate, look at the CT panels, press **Confirm**
+if a bright tube leaves the aorta outline along the arrow for at least 5 mm,
+**Reject** otherwise, then **Export training reviews**. Check progress with:
+
+```bash
+python review.py --status branchseed-reviews.json
+```
+
+Then hold out five patients and train:
+
+```bash
+python learning.py split --reviews branchseed-reviews.json --output outputs/split.json \
+  --test subject005 subject013 subject018 subject021 subject025
+python learning.py train --reviews branchseed-reviews.json --split outputs/split.json \
+  --model outputs/candidate-model.json --report outputs/model-report.json
+```
+
+The review profile never runs in `run.py`; the submission uses the strict
+detector plus, optionally, the trained filter via `--candidate-model`. Each
+candidate carries thirteen features: six geometric ones and seven context ones
+(brightness relative to the aorta, distance to bone, angle against the aortic
+axis, position along the aorta, native spacing, wall-connector gap, contact
+volume). External datasets that could supply independent truth are listed in
+[EXTERNAL_DATA_SOURCES.md](EXTERNAL_DATA_SOURCES.md).
+
 ### Human review and optional ML
 
 The Explorer now supports **Confirm**, **Reject**, **Clear**, **Next unreviewed**,

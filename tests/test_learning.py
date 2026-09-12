@@ -10,16 +10,37 @@ from detector import Branch, Detection, DetectorConfig
 from learning import CandidateModel, FEATURE_NAMES, features, filter_detection, load_reviews, split_cases, train
 
 
+CONTEXT = {
+    "path_hu_relative": 0.9, "bone_distance_mm": 12, "parent_angle_degrees": 80, "arc_position": 0.5,
+    "native_spacing_mm": 0.8, "connector_gap": 0, "candidate_volume_mm3": 60,
+}
+REJECTED_CONTEXT = {**CONTEXT, "path_hu_relative": 0.3, "bone_distance_mm": 1}
+
+
 @pytest.fixture
 def reviews():
     return [
         {
             "case_id": f"case{case}", "instance_id": f"branch_{label}",
             "label": "confirmed" if label else "rejected",
-            "features": [2 + case * 0.01, 0.8 if label else 0.05, 0.9 if label else 0.4, 10, 5, 1],
+            "features": [
+                2 + case * 0.01, 0.8 if label else 0.05, 0.9 if label else 0.4, 10, 5, 1,
+                *(CONTEXT if label else REJECTED_CONTEXT).values(),
+            ],
         }
         for case in range(6) for label in (0, 1)
     ]
+
+
+def test_explicit_holdout_split_keeps_requested_cases_out_of_training(reviews):
+    split = split_cases(reviews, 42, test=["case5", "case4"], validation=["case3"])
+    assert split["test"] == ["case5", "case4"]
+    assert split["validation"] == ["case3"]
+    assert split["train"] == ["case0", "case1", "case2"]
+    with pytest.raises(ValueError, match="no reviews"):
+        split_cases(reviews, 42, test=["missing"])
+    with pytest.raises(ValueError, match="both"):
+        split_cases(reviews, 42, test=["case5"], validation=["case5"])
 
 
 def partition():
@@ -72,7 +93,7 @@ def test_model_round_trip_and_schema_validation(reviews, tmp_path):
     with pytest.raises(ValueError, match="scale"):
         CandidateModel.load(path)
     with pytest.raises(ValueError, match="finite matrix"):
-        model.scores([[float("nan")] * 6])
+        model.scores([[float("nan")] * len(FEATURE_NAMES)])
 
 
 def test_review_loader_deduplicates_but_rejects_conflicting_or_nonfinite_rows(reviews, tmp_path):
@@ -106,12 +127,14 @@ def test_training_cli_and_inference_preserve_geometry(reviews, tmp_path):
     ], check=True, capture_output=True)
     branch = Branch(
         "branch_001", (1, 2, 3), (6, 2, 3), 2, (1, 0, 0),
-        [(1, 2, 3), (6, 2, 3), (11, 2, 3)], 0.9, 0.8,
+        [(1, 2, 3), (6, 2, 3), (11, 2, 3)], 0.9, 0.8, features=CONTEXT,
     )
-    assert features(branch) == [2, 0.8, 0.9, 10, 5, 1]
+    assert features(branch) == [2, 0.8, 0.9, 10, 5, 1, *CONTEXT.values()]
+    with pytest.raises(ValueError, match="context features"):
+        features(Branch("branch_003", (1, 2, 3), (6, 2, 3), 2, (1, 0, 0), [(1, 2, 3), (6, 2, 3)], 0.9, 0.8))
     rejected = Branch(
         "branch_002", (1, 2, 3), (6, 2, 3), 2, (1, 0, 0),
-        [(1, 2, 3), (6, 2, 3), (11, 2, 3)], 0.4, 0.05,
+        [(1, 2, 3), (6, 2, 3), (11, 2, 3)], 0.4, 0.05, features=REJECTED_CONTEXT,
     )
     result = Detection([branch, rejected], {}, {}, 2, {}, [], DetectorConfig())
     original = branch.prediction()

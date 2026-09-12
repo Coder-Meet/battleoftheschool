@@ -27,15 +27,42 @@ class DetectorConfig:
     trace_length_mm: float = 10.0
     vesselness_floor: float = 0.06
     maximum_candidates: int = 160
+    shell_vesselness_floor: float = 0.06
+    connector_gap_fraction: float = 0.0
+    root_depth_mm: float = 3.5
+    blood_lower_scale: float = 1.0
+    roots_per_contact: int = 1
+    wall_hug_penalty: float = 0.0
+    broad_contact_mm3: float = 1200.0
+    profile: str = "strict"
 
     def __post_init__(self) -> None:
-        values = np.asarray(list(asdict(self).values()), dtype=float)
-        if not np.isfinite(values).all() or np.any(values <= 0):
+        numeric = {k: v for k, v in asdict(self).items() if k != "profile"}
+        values = np.asarray(list(numeric.values()), dtype=float)
+        if not np.isfinite(values).all():
+            raise ValueError("All detector settings must be finite.")
+        may_be_zero = {"connector_gap_fraction", "wall_hug_penalty"}
+        positive = [v for k, v in numeric.items() if k not in may_be_zero]
+        if np.any(np.asarray(positive, dtype=float) <= 0) or self.wall_hug_penalty < 0:
             raise ValueError("All detector settings must be finite and positive.")
+        if not 0 <= self.connector_gap_fraction < 1:
+            raise ValueError("The connector gap fraction must lie in [0, 1).")
         if not self.shell_inner_mm < self.shell_outer_mm < self.margin_mm:
             raise ValueError("The candidate shell must fit inside the ROI margin.")
         if self.minimum_path_mm != 5 or self.trace_length_mm != 10:
             raise ValueError("The challenge requires a 5 mm seed and a 10 mm trace.")
+
+    @classmethod
+    def review(cls, **overrides: float | str) -> "DetectorConfig":
+        # Wide proposal pool for human labelling; the classifier can only remove, never add, candidates.
+        settings: dict[str, float | str] = {
+            "shell_outer_mm": 6.0, "vesselness_floor": 0.03, "shell_vesselness_floor": 0.005,
+            "connector_gap_fraction": 0.35, "root_depth_mm": 2.5, "blood_lower_scale": 2.0,
+            "roots_per_contact": 6, "wall_hug_penalty": 0.8, "broad_contact_mm3": 1e6,
+            "profile": "review",
+        }
+        settings.update(overrides)
+        return cls(**settings)  # type: ignore[arg-type]
 
 
 @dataclass
@@ -50,6 +77,7 @@ class Branch:
     mean_vesselness: float
     parent_instance_id: str = "aorta"
     warnings: list[str] = field(default_factory=list)
+    features: dict[str, float] = field(default_factory=dict)
 
     def prediction(self) -> dict:
         return {
@@ -269,7 +297,7 @@ def stop_at_junction(path_mm: FloatArray, junctions_mm: FloatArray, tolerance_mm
 
 def wall_origin(
     path: FloatArray, parent: npt.NDArray, support: npt.NDArray,
-    signed_distance: npt.NDArray, spacing: float,
+    signed_distance: npt.NDArray, spacing: float, gap_fraction: float = 0.0,
 ) -> FloatArray | None:
     proximal = truncate_path(path * spacing, 5) / spacing
     centered = proximal - proximal.mean(axis=0)
@@ -294,7 +322,8 @@ def wall_origin(
             continue
         index = inside[0]
         contact = connector[:index + 1]
-        if np.any(ndi.map_coordinates(support.astype(np.uint8), contact.T, order=0) == 0):
+        unsupported = ndi.map_coordinates(support.astype(np.uint8), contact.T, order=0) == 0
+        if float(np.mean(unsupported)) > gap_fraction:
             continue
         fraction = values[index - 1] / (values[index - 1] - values[index])
         return connector[index - 1] + fraction * (connector[index] - connector[index - 1])
@@ -327,6 +356,37 @@ def cross_section_radius(
     return float(np.median(valid) / 2) if len(valid) >= 12 else None
 
 
+@dataclass(frozen=True)
+class TraceContext:
+    intensity: npt.NDArray
+    lumen_level: float
+    bone_distance: npt.NDArray
+    axis_zyx: FloatArray
+    axis_range: tuple[float, float]
+    native_spacing_mm: float
+    median: float
+    background_median: float
+
+
+def connector_gap(support: npt.NDArray, start: FloatArray, end: FloatArray) -> float:
+    steps = max(3, int(np.ceil(np.linalg.norm(end - start) * 4)) + 1)
+    line = np.linspace(start, end, steps)
+    return float(np.mean(ndi.map_coordinates(support.astype(np.uint8), line.T, order=0) == 0))
+
+
+def parent_angle(parent: npt.NDArray, point: FloatArray, direction_zyx: FloatArray, spacing: float) -> float:
+    pad = int(np.ceil(12 / spacing))
+    low = np.maximum(np.floor(point).astype(int) - pad, 0)
+    high = np.minimum(np.ceil(point).astype(int) + pad + 1, parent.shape)
+    region = tuple(slice(int(a), int(b)) for a, b in zip(low, high))
+    voxels = np.argwhere(parent[region]).astype(float)
+    if len(voxels) < 3:
+        return 90.0
+    _, _, vectors = np.linalg.svd(voxels - voxels.mean(axis=0), full_matrices=False)
+    cosine = abs(float(np.dot(vectors[0], direction_zyx)))
+    return float(np.degrees(np.arccos(np.clip(cosine, 0, 1))))
+
+
 def _trace(
     root: npt.NDArray[np.int64],
     outside: npt.NDArray,
@@ -336,8 +396,8 @@ def _trace(
     vesselness: npt.NDArray,
     junctions: FloatArray,
     signed_distance: npt.NDArray,
-    intensity: npt.NDArray,
-    lumen_level: float,
+    ctx: TraceContext,
+    volume_mm3: float,
     grid: sitk.Image,
     config: DetectorConfig,
 ) -> tuple[Branch | None, str]:
@@ -350,6 +410,8 @@ def _trace(
     local_radius = radius[region]
     root_local = root - low
     cost = 1 / (0.5 + local_radius) + 0.7 * (1 - vesselness[region])
+    if config.wall_hug_penalty > 0:
+        cost = cost + config.wall_hug_penalty * np.exp(-outside[region] / 2.0)
     cost[~local_support] = np.inf
     cost[parent[region]] = np.inf
     solver = MCP_Geometric(cost, sampling=(spacing,) * 3)
@@ -369,9 +431,10 @@ def _trace(
     if len(path) < 3:
         return None, "short_path"
 
-    ostium = wall_origin(path, parent, support, signed_distance, spacing)
+    ostium = wall_origin(path, parent, support, signed_distance, spacing, config.connector_gap_fraction)
     if ostium is None:
         return None, "disconnected_ostium"
+    gap = connector_gap(support, ostium, path[0])
     path = np.vstack((ostium, path))
     path_mm = physical_points(grid, path)
     path_mm = truncate_path(path_mm, config.trace_length_mm)
@@ -390,7 +453,7 @@ def _trace(
     seed_index = np.asarray(grid.TransformPhysicalPointToContinuousIndex(seed.tolist()))[::-1]
     seed_radius = sample_at(radius, seed_index)
     local_direction = (np.asarray(grid.GetDirection()).reshape(3, 3).T @ direction)[::-1]
-    measured_radius = cross_section_radius(intensity, seed_index, local_direction, spacing, lumen_level)
+    measured_radius = cross_section_radius(ctx.intensity, seed_index, local_direction, spacing, ctx.lumen_level)
     if measured_radius is not None:
         seed_radius = measured_radius
     if seed_radius < config.minimum_radius_mm:
@@ -403,10 +466,25 @@ def _trace(
     mean_vesselness = float(np.mean(ndi.map_coordinates(vesselness, sampled_path.T, order=1)))
     if mean_vesselness < config.vesselness_floor:
         return None, "weak_tubularity"
+    hu_along = float(np.mean(ndi.map_coordinates(ctx.intensity, sampled_path.T, order=1)))
+    bone = float(np.min(ndi.map_coordinates(ctx.bone_distance, sampled_path.T, order=1)))
+    span = max(ctx.axis_range[1] - ctx.axis_range[0], 1e-6)
+    features = {
+        "path_hu_relative": round((hu_along - ctx.background_median) / max(ctx.median - ctx.background_median, 1.0), 4),
+        "bone_distance_mm": round(min(bone, 50.0), 3),
+        "parent_angle_degrees": round(parent_angle(parent, ostium, local_direction, spacing), 2),
+        "arc_position": round(float(np.clip((np.dot(ostium, ctx.axis_zyx) - ctx.axis_range[0]) / span, 0, 1)), 4),
+        "native_spacing_mm": round(ctx.native_spacing_mm, 3),
+        "connector_gap": round(gap, 4),
+        "candidate_volume_mm3": round(volume_mm3, 2),
+    }
     score = float(np.clip(
-        0.4 * min(mean_vesselness / 0.5, 1) + 0.35 * min(displacement / 5, 1)
-        + 0.25 * min(length / 10, 1), 0, 1
+        (0.4 * min(mean_vesselness / 0.5, 1) + 0.35 * min(displacement / 5, 1)
+         + 0.25 * min(length / 10, 1)) * (1 - gap), 0, 1
     ))
+    warnings = ["Trace stops at an estimated downstream bifurcation."] if length < before_junction - 0.01 else []
+    if gap > 0:
+        warnings.append("Wall connector crosses unsupported voxels; verify the ostium on CT.")
     return Branch(
         instance_id="",
         ostium_xyz_mm=point_tuple(ost),
@@ -416,8 +494,28 @@ def _trace(
         path_xyz_mm=[point_tuple(p) for p in path_mm],
         evidence_score=round(score, 3),
         mean_vesselness=round(mean_vesselness, 3),
-        warnings=["Trace stops at an estimated downstream bifurcation."] if length < before_junction - 0.01 else [],
+        warnings=warnings,
+        features=features,
     ), ""
+
+
+def detect_pool(image: sitk.Image, mask: sitk.Image, review: DetectorConfig | None = None) -> Detection:
+    """Loose-profile candidates plus any strict detections they missed, so review never drops a submission branch."""
+    strict = detect(image, mask)
+    pool = detect(image, mask, review or DetectorConfig.review())
+    added = 0
+    for branch in strict.branches:
+        if all(np.linalg.norm(np.subtract(branch.ostium_xyz_mm, b.ostium_xyz_mm)) >= 3 for b in pool.branches):
+            branch.warnings = [*branch.warnings, "Strict-profile detection that the loose pool did not propose."]
+            pool.branches.append(branch)
+            added += 1
+    pool.branches.sort(key=lambda b: (b.ostium_xyz_mm[2], b.ostium_xyz_mm[1], b.ostium_xyz_mm[0]))
+    for number, branch in enumerate(pool.branches, 1):
+        branch.instance_id = f"branch_{number:03d}"
+    pool.rejections["strict_only_added"] = added
+    pool.timings["strict_s"] = strict.timings["total_s"]
+    pool.timings["total_s"] = round(pool.timings["total_s"] + strict.timings["total_s"], 3)
+    return pool
 
 
 def detect(
@@ -445,7 +543,7 @@ def detect(
         core = smooth[parent]
     median = float(np.median(core))
     mad = float(np.median(np.abs(core - median)) * 1.4826)
-    lower = max(30.0, median - max(65.0, 2.5 * mad))
+    lower = max(30.0, median - config.blood_lower_scale * max(65.0, 2.5 * mad))
     background = smooth[(outside >= 8) & (outside <= 16)]
     background_median = float(np.median(background)) if len(background) else median
     if background_median < median:
@@ -475,10 +573,23 @@ def detect(
     shell = (
         support & ~excluded
         & (outside >= config.shell_inner_mm) & (outside <= config.shell_outer_mm)
-        & (tubular >= config.vesselness_floor)
+        & (tubular >= config.shell_vesselness_floor)
     )
     labels, count = ndi.label(shell, structure=np.ones((3, 3, 3), dtype=int))
     enhanced = perf_counter()
+    bone = smooth >= 600
+    bone_distance = (
+        ndi.distance_transform_edt(~bone, sampling=spacing) if bone.any() else np.full(smooth.shape, 50.0)
+    ).astype(np.float32)
+    voxels = np.argwhere(parent)
+    sample = voxels[:: max(1, len(voxels) // 20000)].astype(float)
+    _, _, vectors = np.linalg.svd(sample - sample.mean(axis=0), full_matrices=False)
+    projections = sample @ vectors[0]
+    ctx = TraceContext(
+        smooth, (median + background_median) / 2, bone_distance, vectors[0],
+        (float(projections.min()), float(projections.max())), float(max(image.GetSpacing())),
+        median, background_median,
+    )
     branches: list[Branch] = []
     rejections: dict[str, int] = {}
     candidates = []
@@ -490,19 +601,29 @@ def detect(
         if len(points) * spacing**3 < np.pi * config.minimum_radius_mm**2 * spacing:
             continue
         quality = radius[tuple(points.T)] * (0.3 + tubular[tuple(points.T)])
-        root = points[int(np.argmax(quality))]
-        candidates.append((float(np.max(quality)), root, len(points) * spacing**3))
+        # A root deep in a wide shell leaves no room to trace outward, so prefer the wall-side voxels.
+        near_wall = outside[tuple(points.T)] <= config.root_depth_mm
+        if near_wall.any():
+            quality = np.where(near_wall, quality, -np.inf)
+        roots: list[npt.NDArray[np.int64]] = []
+        for index in np.argsort(-quality, kind="stable"):
+            if len(roots) >= config.roots_per_contact or not np.isfinite(quality[index]):
+                break
+            # Merged contact blobs hide neighbouring ostia, so allow several well-separated roots per blob.
+            if all(np.linalg.norm((points[index] - r) * spacing) >= 4.0 for r in roots):
+                roots.append(points[index])
+                candidates.append((float(quality[index]), points[index], len(points) * spacing**3))
     candidates.sort(key=lambda c: (-c[0], tuple(c[1])))
     if len(candidates) > config.maximum_candidates:
         warnings.append(f"Candidate limit reached ({config.maximum_candidates}); weaker contacts were omitted.")
     for _, root, volume in candidates[:config.maximum_candidates]:
-        if volume > 1200:
+        if volume > config.broad_contact_mm3:
             reason = "broad_wall_contact"
             branch = None
         else:
             branch, reason = _trace(
                 root, outside, parent, support, radius, tubular, junctions, signed_distance,
-                smooth, (median + background_median) / 2, grid, config
+                ctx, volume, grid, config
             )
         if branch is None:
             rejections[reason] = rejections.get(reason, 0) + 1

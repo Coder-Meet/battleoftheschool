@@ -33,7 +33,7 @@ import {
   Orbit,
 } from "lucide";
 import * as THREE from "three";
-import { ReviewStore } from "./reviews";
+import { FEATURE_NAMES, ReviewStore } from "./reviews";
 import type { ReviewLabel } from "./reviews";
 import { AortaViewer } from "./viewer";
 import { SliceViews } from "./slices";
@@ -313,6 +313,14 @@ async function loadCase(id: string) {
     ]);
     if (sequence !== loadSequence) return;
     data = metadata;
+    if (JSON.stringify(data.feature_names) !== JSON.stringify(FEATURE_NAMES))
+      toast(
+        "Server feature contract differs from this page. Rebuild web/ before exporting reviews.",
+      );
+    $(".eyebrow").innerHTML =
+      data.profile === "review"
+        ? '<span class="live-dot"></span>REVIEW POOL · LOOSE DETECTOR · EVERY CANDIDATE NEEDS A VERDICT'
+        : '<span class="live-dot"></span>ANATOMY WORKSPACE';
     const removed = reviews.reconcile(id, data.branches);
     if (removed)
       toast(
@@ -399,6 +407,8 @@ function selectBranch(id: string) {
           `<div><span>${["X", "Y", "Z"][i]}</span>${n.toFixed(2)}</div>`,
       )
       .join("");
+  const fmt = (n: number | undefined) =>
+    typeof n === "number" ? n.toFixed(2) : "—";
   $("#branch-details").innerHTML = `
     <div class="detail-heading"><span class="small-label">SELECTED INSTANCE</span><button class="icon-button" id="focus-branch" title="Focus in 3D" aria-label="Focus selected branch in 3D">${icon("crosshair")}</button></div>
     <h3><span class="color-dot" style="background:${color}"></span>${branchName(id)}<span class="parent-link">aorta</span></h3>
@@ -406,6 +416,8 @@ function selectBranch(id: string) {
     <div class="coordinate-heading">Ostium coordinates <span>LPS · mm</span></div><div class="coordinates">${coords(branch.ostium_xyz_mm)}</div>
     <div class="coordinate-heading">Daughter seed <span>LPS · mm</span></div><div class="coordinates">${coords(branch.seed_xyz_mm)}</div>
     <div class="direction-row"><span>${icon("git-branch")} Outward direction</span><code>[${branch.direction_xyz.map((n) => n.toFixed(2)).join(", ")}]</code></div>
+    <div class="detail-metrics"><div><span>Path HU vs blood</span><strong>${fmt(branch.features.path_hu_relative)}</strong></div><div><span>Bone distance</span><strong>${fmt(branch.features.bone_distance_mm)}<small> mm</small></strong></div></div>
+    <div class="detail-metrics"><div><span>Angle to aorta</span><strong>${fmt(branch.features.parent_angle_degrees)}<small> °</small></strong></div><div><span>Wall gap</span><strong>${fmt(branch.features.connector_gap)}</strong></div></div>
     <div class="evidence-score"><span>Geometric evidence <strong>${branch.evidence_score.toFixed(2)}</strong></span><div><i style="width:${branch.evidence_score * 100}%;background:${color}"></i></div><small>Heuristic score · uncalibrated</small></div>
     <button class="button inspect-button" id="inspect-ct">${icon("layers")} Inspect CT evidence ${icon("arrow-right")}</button>
     ${branch.warnings.length ? `<p class="branch-warning">${branch.warnings.map(escape).join("<br>")}</p>` : ""}

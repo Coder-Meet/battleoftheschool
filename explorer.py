@@ -18,7 +18,8 @@ import SimpleITK as sitk
 from scipy import ndimage as ndi
 from skimage.measure import marching_cubes
 
-from detector import DetectorConfig, detect, parent_curve, physical_points, prepare_roi
+from detector import DetectorConfig, detect, detect_pool, parent_curve, physical_points, prepare_roi
+from learning import FEATURE_NAMES, features as candidate_features
 from nifti_io import read_nifti
 
 ROOT = Path(__file__).resolve().parent
@@ -31,13 +32,16 @@ class CaseData:
     mask: bytes
 
 
-def build_case(image_path: Path, mask_path: Path, case_id: str) -> CaseData:
+def build_case(
+    image_path: Path, mask_path: Path, case_id: str, config: DetectorConfig | None = None
+) -> CaseData:
+    config = config or DetectorConfig()
     image = read_nifti(str(image_path))
     mask = read_nifti(str(mask_path))
-    result = detect(image, mask)
+    result = detect_pool(image, mask, config) if config.profile == "review" else detect(image, mask, config)
     if not np.any(sitk.GetArrayViewFromImage(mask) > 0):
         raise ValueError("This mask is empty; the CLI can export an empty prediction, but there is no aorta to view.")
-    grid, parent = prepare_roi(image, mask, DetectorConfig())
+    grid, parent = prepare_roi(image, mask, config)
     ct = np.clip(sitk.GetArrayFromImage(grid), -32768, 32767).astype("<i2")
     surface = ndi.gaussian_filter(np.pad(parent.astype(np.float32), 1), 0.65)
     vertices, faces, _, _ = marching_cubes(surface, level=0.5, step_size=2)
@@ -58,7 +62,9 @@ def build_case(image_path: Path, mask_path: Path, case_id: str) -> CaseData:
         "coverage_mm": round(float(np.linalg.norm(np.diff(centerline, axis=0), axis=1).sum()), 1),
         "mesh": {"vertices": np.round(vertices, 3).ravel().tolist(), "faces": faces.ravel().tolist()},
         "centerline": np.round(centerline, 3).tolist(),
-        "branches": [asdict(b) for b in result.branches],
+        "profile": config.profile,
+        "feature_names": FEATURE_NAMES,
+        "branches": [{**asdict(b), "feature_vector": candidate_features(b)} for b in result.branches],
         "prediction": result.prediction(case_id),
         "diagnostics": result.diagnostics(),
     }
@@ -66,8 +72,9 @@ def build_case(image_path: Path, mask_path: Path, case_id: str) -> CaseData:
 
 
 class CaseStore:
-    def __init__(self, data_root: Path):
+    def __init__(self, data_root: Path, config: DetectorConfig | None = None):
         self.data_root = data_root
+        self.config = config or DetectorConfig()
         self.lock = Lock()
         self.executor = ThreadPoolExecutor(max_workers=1)
         self.cache: OrderedDict[str, CaseData] = OrderedDict()
@@ -120,7 +127,7 @@ class CaseStore:
         with self.lock:
             self.jobs[case_id] = {"status": "running"}
         try:
-            data = build_case(*paths, case_id)
+            data = build_case(*paths, case_id, self.config)
             with self.lock:
                 self.cache[case_id] = data
                 self.cache.move_to_end(case_id)
@@ -180,7 +187,7 @@ def make_handler(store: CaseStore, static_root: Path) -> type[BaseHTTPRequestHan
         def do_GET(self) -> None:
             path = urlparse(self.path).path
             if path == "/api/health":
-                self.send_json({"status": "ok"})
+                self.send_json({"status": "ok", "profile": store.config.profile})
                 return
             if path == "/api/cases":
                 self.send_json(store.list_cases())
@@ -229,13 +236,17 @@ def main() -> None:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--data-root", type=Path, default=ROOT / "data")
+    parser.add_argument(
+        "--review-mode", action="store_true",
+        help="Run the loose review-profile detector so weak candidates reach human review.",
+    )
     args = parser.parse_args()
     if not args.data_root.is_dir():
         parser.error("The data directory does not exist.")
     sitk.ProcessObject.SetGlobalDefaultNumberOfThreads(4)
-    store = CaseStore(args.data_root)
+    store = CaseStore(args.data_root, DetectorConfig.review() if args.review_mode else None)
     server = ThreadingHTTPServer((args.host, args.port), make_handler(store, ROOT / "web" / "dist"))
-    print(f"Aorta Explorer listening on port {args.port}", flush=True)
+    print(f"Aorta Explorer listening on port {args.port} ({store.config.profile} detector profile)", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

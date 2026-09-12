@@ -7,6 +7,13 @@ export const FEATURE_NAMES = [
   "path_length_mm",
   "seed_distance_mm",
   "tortuosity",
+  "path_hu_relative",
+  "bone_distance_mm",
+  "parent_angle_degrees",
+  "arc_position",
+  "native_spacing_mm",
+  "connector_gap",
+  "candidate_volume_mm3",
 ];
 export type ReviewLabel = "confirmed" | "rejected";
 export interface Review {
@@ -18,21 +25,18 @@ export interface Review {
   reviewed_at: string;
 }
 
+// The Python detector is the single source of feature values; the page only forwards them.
 export function features(branch: Branch): number[] {
-  const distance = (a: number[], b: number[]) =>
-    Math.hypot(...a.map((value, i) => value - b[i]));
-  const path = branch.path_xyz_mm;
-  const length = path
-    .slice(1)
-    .reduce((total, point, i) => total + distance(point, path[i]), 0);
-  return [
-    branch.radius_mm,
-    branch.mean_vesselness,
-    branch.evidence_score,
-    length,
-    distance(branch.ostium_xyz_mm, branch.seed_xyz_mm),
-    length / Math.max(distance(path[0], path[path.length - 1]), 0.001),
-  ];
+  const vector = branch.feature_vector;
+  if (
+    !Array.isArray(vector) ||
+    vector.length !== FEATURE_NAMES.length ||
+    !vector.every((n) => typeof n === "number" && Number.isFinite(n))
+  )
+    throw new Error(
+      "Candidate features do not match the review contract; rebuild the frontend and restart the server.",
+    );
+  return [...vector];
 }
 
 function fingerprint(branch: Branch) {
@@ -40,6 +44,7 @@ function fingerprint(branch: Branch) {
     branch.ostium_xyz_mm,
     branch.seed_xyz_mm,
     branch.direction_xyz,
+    branch.radius_mm,
     features(branch),
   ]);
 }

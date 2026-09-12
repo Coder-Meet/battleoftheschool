@@ -11,10 +11,14 @@ export interface Branch {
   evidence_score: number;
   mean_vesselness: number;
   warnings: string[];
+  features: Record<string, number>;
+  feature_vector: number[];
 }
 
 export interface Case {
   case_id: string;
+  profile: string;
+  feature_names: string[];
   size_xyz: Point;
   origin_xyz: Point;
   basis: number[][];

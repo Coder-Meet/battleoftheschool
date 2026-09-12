@@ -12,20 +12,30 @@ from scipy.special import expit
 
 from detector import Branch, Detection
 
-FEATURE_NAMES = [
+GEOMETRY_FEATURES = [
     "radius_mm", "mean_vesselness", "evidence_score",
     "path_length_mm", "seed_distance_mm", "tortuosity",
 ]
+# Context features separate bone, veins and caps from arteries; the detector computes them per candidate.
+CONTEXT_FEATURES = [
+    "path_hu_relative", "bone_distance_mm", "parent_angle_degrees", "arc_position",
+    "native_spacing_mm", "connector_gap", "candidate_volume_mm3",
+]
+FEATURE_NAMES = GEOMETRY_FEATURES + CONTEXT_FEATURES
 FloatArray = npt.NDArray[np.float64]
 
 
 def features(branch: Branch) -> list[float]:
     path = np.asarray(branch.path_xyz_mm)
     length = float(np.linalg.norm(np.diff(path, axis=0), axis=1).sum())
+    missing = [name for name in CONTEXT_FEATURES if name not in branch.features]
+    if missing:
+        raise ValueError(f"Candidate lacks detector context features: {missing}")
     return [
         branch.radius_mm, branch.mean_vesselness, branch.evidence_score, length,
         float(np.linalg.norm(np.asarray(branch.seed_xyz_mm) - branch.ostium_xyz_mm)),
         length / max(float(np.linalg.norm(path[-1] - path[0])), 0.001),
+        *(float(branch.features[name]) for name in CONTEXT_FEATURES),
     ]
 
 
@@ -104,13 +114,27 @@ def validate_split(value: dict) -> dict[str, list[str]]:
     return value
 
 
-def split_cases(rows: list[dict], seed: int) -> dict[str, list[str]]:
+def split_cases(
+    rows: list[dict], seed: int, test: list[str] | None = None, validation: list[str] | None = None,
+) -> dict[str, list[str]]:
     cases = sorted({row["case_id"] for row in rows})
     if len(cases) < 6:
         raise ValueError("Review at least six independent cases before creating a three-way split.")
-    shuffled = np.random.default_rng(seed).permutation(cases).tolist()
+    chosen = [*(test or []), *(validation or [])]
+    unknown = sorted(set(chosen) - set(cases))
+    if unknown:
+        raise ValueError(f"Requested split cases have no reviews: {unknown}")
+    if len(set(chosen)) != len(chosen):
+        raise ValueError("A case cannot be in both the test and validation partitions.")
+    remaining = [c for c in np.random.default_rng(seed).permutation(cases).tolist() if c not in chosen]
     holdout = max(1, len(cases) // 5)
-    return {"train": shuffled[2 * holdout:], "validation": shuffled[holdout:2 * holdout], "test": shuffled[:holdout]}
+    test_cases = list(test) if test else remaining[:holdout]
+    remaining = [c for c in remaining if c not in test_cases]
+    validation_cases = list(validation) if validation else remaining[:max(1, len(test_cases))]
+    train_cases = [c for c in remaining if c not in validation_cases]
+    if not train_cases:
+        raise ValueError("The requested test and validation cases leave nothing to train on.")
+    return validate_split({"train": sorted(train_cases), "validation": validation_cases, "test": test_cases})
 
 
 def metrics(labels: FloatArray, scores: FloatArray, threshold: float) -> dict:
@@ -208,6 +232,8 @@ def main() -> None:
     split_parser.add_argument("--reviews", required=True, nargs="+", type=Path)
     split_parser.add_argument("--output", required=True, type=Path)
     split_parser.add_argument("--seed", type=int, default=42)
+    split_parser.add_argument("--test", nargs="+", help="Hold these case IDs out as the final test set.")
+    split_parser.add_argument("--validation", nargs="+", help="Use these case IDs to pick the decision threshold.")
     train_parser = commands.add_parser("train")
     train_parser.add_argument("--reviews", required=True, nargs="+", type=Path)
     train_parser.add_argument("--split", required=True, type=Path)
@@ -217,7 +243,7 @@ def main() -> None:
     try:
         rows = load_reviews(args.reviews)
         if args.command == "split":
-            write_json(args.output, split_cases(rows, args.seed))
+            write_json(args.output, split_cases(rows, args.seed, args.test, args.validation))
         else:
             model, report = train(rows, json.loads(args.split.read_text()))
             model.save(args.model)

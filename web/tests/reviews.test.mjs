@@ -7,6 +7,9 @@ const branch = {
   ostium_xyz_mm: [1, 2, 3], seed_xyz_mm: [6, 2, 3], radius_mm: 2,
   direction_xyz: [1, 0, 0], path_xyz_mm: [[1, 2, 3], [6, 2, 3], [11, 2, 3]],
   evidence_score: 0.9, mean_vesselness: 0.8, warnings: [],
+  features: { path_hu_relative: 0.9, bone_distance_mm: 12, parent_angle_degrees: 80, arc_position: 0.5,
+    native_spacing_mm: 0.8, connector_gap: 0, candidate_volume_mm3: 60 },
+  feature_vector: [2, 0.8, 0.9, 10, 5, 1, 0.9, 12, 80, 0.5, 0.8, 0, 60],
 };
 
 beforeEach(() => {
@@ -20,8 +23,11 @@ beforeEach(() => {
 test("export feature order matches the Python training contract", () => {
   assert.deepEqual(FEATURE_NAMES, [
     "radius_mm", "mean_vesselness", "evidence_score", "path_length_mm", "seed_distance_mm", "tortuosity",
+    "path_hu_relative", "bone_distance_mm", "parent_angle_degrees", "arc_position",
+    "native_spacing_mm", "connector_gap", "candidate_volume_mm3",
   ]);
-  assert.deepEqual(features(branch), [2, 0.8, 0.9, 10, 5, 1]);
+  assert.deepEqual(features(branch), branch.feature_vector);
+  assert.throws(() => features({ ...branch, feature_vector: [1, 2, 3] }), /review contract/);
 });
 
 test("reviews survive reload, remain per-case and never edit predictions", () => {
