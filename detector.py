@@ -1,4 +1,7 @@
-"""CPU-only, parent-anchored detection of proximal arterial branches."""
+"""CPU-only, parent-anchored detection of proximal arterial branches.
+
+Pipeline stages, in order: normalize (grid, smoothing, blood window) -> enhance (tubularity, support, radius)
+-> propose (wall-contact roots) -> resolve (trace, filter, measure). See detect() for the orchestration."""
 
 from dataclasses import asdict, dataclass, field
 from time import perf_counter
@@ -528,6 +531,7 @@ def detect_pool(image: sitk.Image, mask: sitk.Image, review: DetectorConfig | No
 def detect(
     image: sitk.Image, mask: sitk.Image, config: DetectorConfig | None = None
 ) -> Detection:
+    """Run the four stages: normalize the scan, enhance vessel evidence, propose wall contacts, resolve branches."""
     config = config or DetectorConfig()
     start = perf_counter()
     validate_geometry(image, mask)
@@ -537,6 +541,45 @@ def detect(
     ]
     if not np.any(sitk.GetArrayViewFromImage(mask) > 0):
         return Detection([], {"total_s": perf_counter() - start}, {}, 0, {}, warnings, config)
+    scan = normalize(image, mask, config)
+    warnings.extend(scan.warnings)
+    prepared = perf_counter()
+    evidence = enhance(scan, config)
+    candidates, limit_warning = propose(scan, evidence, config)
+    warnings.extend(limit_warning)
+    enhanced = perf_counter()
+    branches, rejections = resolve(scan, evidence, candidates, config)
+    return Detection(
+        branches,
+        {
+            "prepare_s": round(prepared - start, 3),
+            "enhance_s": round(enhanced - prepared, 3),
+            "trace_s": round(perf_counter() - enhanced, 3),
+            "total_s": round(perf_counter() - start, 3),
+        },
+        scan.blood, len(candidates), rejections, warnings, config,
+    )
+
+
+# ----------------------------------------------------------------------------------------------
+# Stage 1 · normalization: put the scan on a common grid and calibrate it to this patient's blood.
+# Nothing in this stage decides anything about branches.
+# ----------------------------------------------------------------------------------------------
+
+
+@dataclass
+class NormalizedScan:
+    grid: sitk.Image
+    parent: npt.NDArray[np.bool_]
+    smooth: npt.NDArray
+    outside: npt.NDArray
+    inside: npt.NDArray
+    blood: dict[str, float]
+    native_spacing_mm: float
+    warnings: list[str] = field(default_factory=list)
+
+
+def normalize(image: sitk.Image, mask: sitk.Image, config: DetectorConfig) -> NormalizedScan:
     grid, parent = prepare_roi(image, mask, config)
     if not parent.any():
         raise ValueError("Aorta mask vanished on the working grid; use finer spacing.")
@@ -545,6 +588,16 @@ def detect(
     outside = ndi.distance_transform_edt(~parent, sampling=spacing)
     inside = ndi.distance_transform_edt(parent, sampling=spacing)
     smooth = ndi.gaussian_filter(ct, sigma=0.6 / spacing)
+    blood, warnings = blood_window(image, smooth, parent, outside, inside, config)
+    return NormalizedScan(grid, parent, smooth, outside, inside, blood, float(max(image.GetSpacing())), warnings)
+
+
+def blood_window(
+    image: sitk.Image, smooth: npt.NDArray, parent: npt.NDArray, outside: npt.NDArray,
+    inside: npt.NDArray, config: DetectorConfig,
+) -> tuple[dict[str, float], list[str]]:
+    """Per-patient HU window for contrast-filled blood, measured from the supplied aorta and its surroundings."""
+    warnings: list[str] = []
     core = smooth[inside >= 2]
     if len(core) < 20:
         core = smooth[parent]
@@ -576,7 +629,30 @@ def detect(
         "background_median_hu": background_median, "background_mad_hu": background_mad,
         "support_fraction": fraction, "contrast_to_background_mad": contrast_to_background_mad,
     }
-    prepared = perf_counter()
+    return blood, warnings
+
+
+# ----------------------------------------------------------------------------------------------
+# Stage 2 · enhancement: per-voxel vessel evidence derived from the normalized scan.
+# Still no decisions; these are maps the later stages read.
+# ----------------------------------------------------------------------------------------------
+
+
+@dataclass
+class VesselEvidence:
+    tubular: npt.NDArray
+    support: npt.NDArray[np.bool_]
+    radius: npt.NDArray
+    junctions: FloatArray
+    signed_distance: npt.NDArray
+    excluded: npt.NDArray[np.bool_]
+    context: TraceContext
+
+
+def enhance(scan: NormalizedScan, config: DetectorConfig) -> VesselEvidence:
+    spacing = config.spacing_mm
+    smooth, parent, outside = scan.smooth, scan.parent, scan.outside
+    lower, upper = scan.blood["lower_hu"], scan.blood["upper_hu"]
     normalized = np.clip((smooth - lower) / max(upper - lower, 1), 0, 1)
     tubular = sato(normalized, sigmas=(0.8 / spacing, 1.5 / spacing, 2.5 / spacing), black_ridges=False)
     shell_region = (outside > 0) & (outside <= 15)
@@ -589,15 +665,8 @@ def detect(
     ) | parent
     radius = ndi.distance_transform_edt(support, sampling=spacing).astype(np.float32)
     junctions = branch_junctions(support, parent, spacing)
-    signed_distance = outside - inside
+    signed_distance = outside - scan.inside
     excluded = cap_mask(parent, config)
-    shell = (
-        support & ~excluded
-        & (outside >= config.shell_inner_mm) & (outside <= config.shell_outer_mm)
-        & (tubular >= config.shell_vesselness_floor)
-    )
-    labels, count = ndi.label(shell, structure=np.ones((3, 3, 3), dtype=int))
-    enhanced = perf_counter()
     bone = smooth >= 600
     bone_distance = (
         ndi.distance_transform_edt(~bone, sampling=spacing) if bone.any() else np.full(smooth.shape, 50.0)
@@ -606,14 +675,33 @@ def detect(
     sample = voxels[:: max(1, len(voxels) // 20000)].astype(float)
     _, _, vectors = np.linalg.svd(sample - sample.mean(axis=0), full_matrices=False)
     projections = sample @ vectors[0]
-    ctx = TraceContext(
+    median, background_median = scan.blood["median_hu"], scan.blood["background_median_hu"]
+    context = TraceContext(
         smooth, (median + background_median) / 2, bone_distance, vectors[0],
-        (float(projections.min()), float(projections.max())), float(max(image.GetSpacing())),
+        (float(projections.min()), float(projections.max())), scan.native_spacing_mm,
         median, background_median,
     )
-    branches: list[Branch] = []
-    rejections: dict[str, int] = {}
-    candidates = []
+    return VesselEvidence(tubular, support, radius, junctions, signed_distance, excluded, context)
+
+
+# ----------------------------------------------------------------------------------------------
+# Stage 3 · proposal: wall contacts that might be openings. A candidate is a root voxel and a blob volume.
+# ----------------------------------------------------------------------------------------------
+
+
+Candidate = tuple[float, npt.NDArray[np.int64], float]
+
+
+def propose(scan: NormalizedScan, evidence: VesselEvidence, config: DetectorConfig) -> tuple[list[Candidate], list[str]]:
+    spacing = config.spacing_mm
+    outside, tubular, radius = scan.outside, evidence.tubular, evidence.radius
+    shell = (
+        evidence.support & ~evidence.excluded
+        & (outside >= config.shell_inner_mm) & (outside <= config.shell_outer_mm)
+        & (tubular >= config.shell_vesselness_floor)
+    )
+    labels, _ = ndi.label(shell, structure=np.ones((3, 3, 3), dtype=int))
+    candidates: list[Candidate] = []
     for label_id, region in enumerate(ndi.find_objects(labels), 1):
         if region is None:
             continue
@@ -635,16 +723,30 @@ def detect(
                 roots.append(points[index])
                 candidates.append((float(quality[index]), points[index], len(points) * spacing**3))
     candidates.sort(key=lambda c: (-c[0], tuple(c[1])))
+    warnings = []
     if len(candidates) > config.maximum_candidates:
         warnings.append(f"Candidate limit reached ({config.maximum_candidates}); weaker contacts were omitted.")
+    return candidates, warnings
+
+
+# ----------------------------------------------------------------------------------------------
+# Stage 4 · resolution: trace each candidate, keep the ones that behave like a direct daughter, measure them.
+# ----------------------------------------------------------------------------------------------
+
+
+def resolve(
+    scan: NormalizedScan, evidence: VesselEvidence, candidates: list[Candidate], config: DetectorConfig,
+) -> tuple[list[Branch], dict[str, int]]:
+    branches: list[Branch] = []
+    rejections: dict[str, int] = {}
     for _, root, volume in candidates[:config.maximum_candidates]:
         if volume > config.broad_contact_mm3:
             reason = "broad_wall_contact"
             branch = None
         else:
             branch, reason = _trace(
-                root, outside, parent, support, radius, tubular, junctions, signed_distance,
-                ctx, volume, grid, config
+                root, scan.outside, scan.parent, evidence.support, evidence.radius, evidence.tubular,
+                evidence.junctions, evidence.signed_distance, evidence.context, volume, scan.grid, config,
             )
         if branch is None:
             rejections[reason] = rejections.get(reason, 0) + 1
@@ -661,13 +763,4 @@ def detect(
     branches.sort(key=lambda b: (b.ostium_xyz_mm[2], b.ostium_xyz_mm[1], b.ostium_xyz_mm[0]))
     for number, branch in enumerate(branches, 1):
         branch.instance_id = f"branch_{number:03d}"
-    return Detection(
-        branches,
-        {
-            "prepare_s": round(prepared - start, 3),
-            "enhance_s": round(enhanced - prepared, 3),
-            "trace_s": round(perf_counter() - enhanced, 3),
-            "total_s": round(perf_counter() - start, 3),
-        },
-        blood, len(candidates), rejections, warnings, config,
-    )
+    return branches, rejections
