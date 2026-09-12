@@ -1,8 +1,13 @@
+from http.client import HTTPConnection
+from http.server import ThreadingHTTPServer
 import json
+from pathlib import Path
+from threading import Thread
 
 import numpy as np
+import pytest
 
-from explorer import CaseData
+from explorer import CaseData, CaseStore, make_handler
 from learning import FEATURE_NAMES
 from review_page import ReviewLedger, page_case, render_candidate
 
@@ -61,3 +66,53 @@ def test_candidate_crops_render_and_case_page_lists_every_candidate(tmp_path):
 
     html = page_case(Store(), ledger, case).decode()
     assert "branch_001" in html and "/review/subject_test/branch_001.png" in html and "1 pending" in html
+
+
+def test_pending_counts_ignore_changed_and_removed_candidates(tmp_path):
+    ledger = ReviewLedger(tmp_path / "reviews.json")
+    ledger.set("subject_test", branch(), "confirmed")
+    ledger.set("subject_test", branch("branch_002"), "rejected")
+    assert ledger.counts("subject_test", [branch(radius=3)]) == {"confirmed": 0, "rejected": 0}
+    assert ledger.counts("subject_test", [branch()]) == {"confirmed": 1, "rejected": 0}
+
+
+def test_failed_disk_commit_preserves_previous_verdicts(tmp_path, monkeypatch):
+    ledger = ReviewLedger(tmp_path / "reviews.json")
+    ledger.set("subject_test", branch(), "confirmed")
+    previous = ledger.path.read_bytes()
+
+    def fail_replace(self, target):
+        raise OSError("Read-only filesystem")
+
+    monkeypatch.setattr(Path, "replace", fail_replace)
+    with pytest.raises(OSError, match="Read-only"):
+        ledger.set("subject_test", branch(), "rejected")
+    assert ledger.path.read_bytes() == previous
+    assert ledger.status("subject_test", branch()) == "confirmed"
+
+
+def test_review_http_rejects_malformed_requests_without_losing_the_ledger(tmp_path):
+    store = CaseStore(tmp_path)
+    store.cache["subject_test"] = case_data()
+    ledger = ReviewLedger(tmp_path / "reviews.json")
+    http = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(store, tmp_path, ledger))
+    thread = Thread(target=http.serve_forever, daemon=True)
+    thread.start()
+    connection = HTTPConnection(*http.server_address[:2], timeout=10)
+    try:
+        for path, payload, expected in [
+            ("/review", {}, 404),
+            ("/review/subject_test/verdict", [], 400),
+            ("/review/subject_test/verdict", {"instance_id": "branch_001", "label": "confirmed"}, 200),
+        ]:
+            connection.request("POST", path, json.dumps(payload), {"Content-Type": "application/json"})
+            response = connection.getresponse()
+            assert response.status == expected, response.read()
+            response.read()
+        assert ReviewLedger(ledger.path).status("subject_test", branch()) == "confirmed"
+    finally:
+        connection.close()
+        http.shutdown()
+        http.server_close()
+        store.executor.shutdown(wait=True)
+        thread.join(timeout=5)

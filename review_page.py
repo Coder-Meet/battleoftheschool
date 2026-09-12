@@ -63,22 +63,36 @@ class ReviewLedger:
         if label not in LABELS:
             raise ValueError("Label must be confirmed, rejected or unreviewed.")
         with self.lock:
-            self.rows = [
+            rows = [
                 r for r in self.rows
                 if not (r["case_id"] == case_id and r["instance_id"] == branch["instance_id"])
             ]
             if label != "unreviewed":
-                self.rows.append({
+                rows.append({
                     "case_id": case_id, "instance_id": branch["instance_id"], "label": label,
                     "features": [float(v) for v in branch["feature_vector"]],
                     "fingerprint": fingerprint(branch),
                     "reviewed_at": datetime.now(timezone.utc).isoformat(),
                 })
             self.path.parent.mkdir(parents=True, exist_ok=True)
-            self.path.write_text(json.dumps(self.export(), indent=2, allow_nan=False) + "\n")
+            temporary = self.path.with_suffix(self.path.suffix + ".tmp")
+            try:
+                temporary.write_text(json.dumps(
+                    {**self.export(), "records": rows}, indent=2, allow_nan=False
+                ) + "\n")
+                temporary.replace(self.path)
+            finally:
+                temporary.unlink(missing_ok=True)
+            self.rows = rows
 
-    def counts(self, case_id: str) -> dict[str, int]:
+    def counts(self, case_id: str, branches: list[dict] | None = None) -> dict[str, int]:
         counts = {"confirmed": 0, "rejected": 0}
+        if branches is not None:
+            for branch in branches:
+                status = self.status(case_id, branch)
+                if status in counts:
+                    counts[status] += 1
+            return counts
         for row in self.rows:
             if row["case_id"] == case_id and row["label"] in counts:
                 counts[row["label"]] += 1
@@ -136,11 +150,11 @@ def render_candidate(case: "CaseData", branch: dict) -> bytes:
         fig.patch.set_facecolor("#0d1117")
         grid = fig.add_gridspec(2, 15, hspace=0.25, wspace=0.15)
         views = [
-            ("axial · top = anterior", ct[iz, lo[1]:hi[1], lo[2]:hi[2]], mask[iz, lo[1]:hi[1], lo[2]:hi[2]],
+            ("acquisition XY", ct[iz, lo[1]:hi[1], lo[2]:hi[2]], mask[iz, lo[1]:hi[1], lo[2]:hi[2]],
              (ost[2] - lo[2], ost[1] - lo[1]), (tip[2] - lo[2], tip[1] - lo[1])),
-            ("coronal · top = head", ct[lo[0]:hi[0], iy, lo[2]:hi[2]], mask[lo[0]:hi[0], iy, lo[2]:hi[2]],
+            ("acquisition XZ", ct[lo[0]:hi[0], iy, lo[2]:hi[2]], mask[lo[0]:hi[0], iy, lo[2]:hi[2]],
              (ost[2] - lo[2], ost[0] - lo[0]), (tip[2] - lo[2], tip[0] - lo[0])),
-            ("sagittal · top = head", ct[lo[0]:hi[0], lo[1]:hi[1], ix], mask[lo[0]:hi[0], lo[1]:hi[1], ix],
+            ("acquisition YZ", ct[lo[0]:hi[0], lo[1]:hi[1], ix], mask[lo[0]:hi[0], lo[1]:hi[1], ix],
              (ost[1] - lo[1], ost[0] - lo[0]), (tip[1] - lo[1], tip[0] - lo[0])),
         ]
         for column, (title, image, outline, point, arrow_tip) in enumerate(views):
@@ -188,7 +202,7 @@ def page_index(store: "CaseStore", ledger: ReviewLedger) -> bytes:
         case_id = entry["id"]
         case = store.get(case_id)
         pool = len(case.metadata["branches"]) if case else None
-        counts = ledger.counts(case_id)
+        counts = ledger.counts(case_id, case.metadata["branches"] if case else None)
         pending = "" if pool is None else str(max(0, pool - counts["confirmed"] - counts["rejected"]))
         link = f"<a href='/review/{case_id}'>{case_id}</a>" if entry["available"] else f"{case_id} <span class='meta'>(LFS pointer)</span>"
         rows.append(
@@ -235,7 +249,7 @@ def page_case(store: "CaseStore", ledger: ReviewLedger, case: "CaseData") -> byt
             f"<button class='reject {'on' if status == 'rejected' else ''}' data-label='rejected'>Reject</button>"
             f"<button data-label='unreviewed'>Clear</button><span class='meta'>{warnings}</span></div></section>"
         )
-    counts = ledger.counts(case_id)
+    counts = ledger.counts(case_id, branches)
     pending = max(0, len(branches) - counts["confirmed"] - counts["rejected"])
     body = (
         f"<header><strong>{html.escape(case_id)}</strong><span class='pill'>{len(branches)} candidates</span>"
@@ -243,20 +257,23 @@ def page_case(store: "CaseStore", ledger: ReviewLedger, case: "CaseData") -> byt
         f"<a href='/#case={case_id}'>3D explorer</a><a href='/review/export'>download reviews JSON</a></header><main>"
         "<div class='hint'>Confirm when a bright tube leaves the green aorta outline at the yellow dot, along the red arrow, "
         "and keeps going for about 5 mm in at least one panel. The bottom row walks through consecutive axial slices around the origin. "
+        "Views follow the acquisition axes; rotated scans are not anatomical reformats. "
         "Keys: <kbd>c</kbd> confirm · <kbd>r</kbd> reject · <kbd>x</kbd> clear · <kbd>j</kbd>/<kbd>k</kbd> next/previous.</div>"
         + "".join(cards) + "</main>"
         "<script>"
         "const cards=[...document.querySelectorAll('.card')];let current=0;"
         "function focusCard(i){current=Math.max(0,Math.min(cards.length-1,i));cards.forEach((c,j)=>c.classList.toggle('current',j===current));"
         "cards[current].scrollIntoView({behavior:'smooth',block:'start'});}"
-        "async function verdict(card,label){const r=await fetch(location.pathname+'/verdict',{method:'POST',headers:{'Content-Type':'application/json'},"
+        "async function verdict(card,label){if(card.dataset.saving)return;card.dataset.saving='true';try{"
+        "const r=await fetch(location.pathname+'/verdict',{method:'POST',headers:{'Content-Type':'application/json'},"
         "body:JSON.stringify({instance_id:card.dataset.instance,label})});if(!r.ok){alert('Verdict not saved: '+(await r.text()));return;}"
         "const data=await r.json();const badge=card.querySelector('[data-badge]');badge.textContent=label;badge.className='badge '+label;"
         "card.querySelectorAll('button[data-label]').forEach(b=>b.classList.toggle('on',b.dataset.label===label&&label!=='unreviewed'));"
         "document.getElementById('progress').textContent=data.pending+' pending';}"
+        "catch(error){alert('Verdict not saved: '+error.message);}finally{delete card.dataset.saving;}}"
         "cards.forEach((card,i)=>{card.addEventListener('click',()=>{current=i;cards.forEach((c,j)=>c.classList.toggle('current',j===i));});"
         "card.querySelectorAll('button[data-label]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();verdict(card,b.dataset.label);}));});"
-        "document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;const k=e.key.toLowerCase();"
+        "document.addEventListener('keydown',e=>{if(!cards.length||e.target.tagName==='INPUT')return;const k=e.key.toLowerCase();"
         "if(k==='j')focusCard(current+1);else if(k==='k')focusCard(current-1);"
         "else if(k==='c'){verdict(cards[current],'confirmed');focusCard(current+1);}else if(k==='r'){verdict(cards[current],'rejected');focusCard(current+1);}"
         "else if(k==='x')verdict(cards[current],'unreviewed');});"
@@ -272,6 +289,9 @@ def handle(handler: Any, store: "CaseStore", ledger: ReviewLedger, method: str, 
         return False
     if method == "GET" and len(parts) == 1:
         handler.send_bytes(page_index(store, ledger), "text/html; charset=utf-8")
+        return True
+    if len(parts) == 1:
+        handler.send_json({"error": "Unknown review endpoint."}, 404)
         return True
     if method == "GET" and parts[1] == "export":
         handler.send_bytes(json.dumps(ledger.export(), indent=2).encode(), "application/json")
@@ -310,12 +330,17 @@ def handle(handler: Any, store: "CaseStore", ledger: ReviewLedger, method: str, 
             return True
         try:
             body = json.loads(handler.rfile.read(int(handler.headers.get("Content-Length", 0)) or 0) or b"{}")
+            if not isinstance(body, dict):
+                raise ValueError("Verdict must be a JSON object.")
             branch = next(b for b in case.metadata["branches"] if b["instance_id"] == body.get("instance_id"))
             ledger.set(case_id, branch, str(body.get("label")))
         except (ValueError, StopIteration, KeyError, TypeError) as error:
             handler.send_json({"error": f"Verdict rejected: {error}"}, 400)
             return True
-        counts = ledger.counts(case_id)
+        except OSError:
+            handler.send_json({"error": "Verdict could not be saved to disk. Please retry."}, 500)
+            return True
+        counts = ledger.counts(case_id, case.metadata["branches"])
         pending = max(0, len(case.metadata["branches"]) - counts["confirmed"] - counts["rejected"])
         handler.send_json({**counts, "pending": pending})
         return True
