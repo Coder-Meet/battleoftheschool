@@ -67,6 +67,8 @@ Then run `.venv313/bin/python run.py --image image.nii.gz --aorta-mask aorta_mas
 Prepare this environment before the offline evaluation. Node and the supplied
 development scans are only needed for the Explorer/demo, not new-case inference.
 The [robustness protocol](ROBUSTNESS_PROTOCOL.md) records the frozen detector selection.
+The [submission audit](SUBMISSION_AUDIT.md) maps the deliverables to both challenge
+guides and lists the remaining team actions.
 
 1. Install Git LFS (one-time, per machine):
    ```bash

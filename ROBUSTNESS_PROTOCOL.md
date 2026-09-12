@@ -125,3 +125,69 @@ Frozen manifest SHA-256 values:
 
 Both evaluation datasets were generated before selection. Neither detector's
 evaluation predictions were opened before this decision was committed.
+
+## Frozen results — 2026-09-12
+
+Baseline predictions were generated at `406ab01`; selected predictions at
+`fd8f67f`. Both recorded clean working trees. The selected detector source
+SHA-256 is `ecc058e475bad05d67be6ab8e8c06973a41a9ae38e05bb4476a5e20e5738b7e7`.
+The later review/UI changes do not change this detector. Neither frozen set
+was used for subsequent threshold tuning.
+
+| Implementation / frozen seed | TP | FP | FN | Precision | Recall | F1 |
+|---|---:|---:|---:|---:|---:|---:|
+| Baseline, both seeds | 46 | 0 | 18 | 1.0000 | 0.7188 | 0.8364 |
+| Selected, 90817 | 29 | 1 | 4 | 0.9667 | 0.8788 | 0.9206 |
+| Selected, 112213 | 27 | 0 | 4 | 1.0000 | 0.8710 | 0.9310 |
+| Selected, both seeds | 56 | 1 | 8 | 0.9825 | 0.8750 | 0.9256 |
+
+These are 26 procedural cases with 64 analytic reference daughters, not 26
+patients. The improvement recovered ten additional references and introduced
+one false positive. Both negative controls remained empty. Selected mean
+detector time was 1.0115 seconds; the slowest case was 1.409 seconds.
+
+Failures remain visible: four misses in high-noise small branches, three in
+thick-slice acquisitions, one miss and one false positive in dense branch
+fields. Do not remove these cases, redefine their eligibility after observing
+the result, or describe this as perfect detection.
+
+The same saved selected predictions at 2 mm tolerance give 54 TP / 3 FP / 10 FN;
+3 mm and 5 mm each give 56 TP / 1 FP / 8 FN. Baseline at 2 mm gives
+45 TP / 1 FP / 19 FN; at 3 and 5 mm it gives 46 TP / 0 FP / 18 FN.
+
+| Matched-pair error only | Baseline mean | Selected mean | Selected p95 |
+|---|---:|---:|---:|
+| Ostium distance, mm | 0.746 | 0.844 | 1.760 |
+| Seed distance, mm | 0.609 | 0.648 | 1.144 |
+| Absolute radius error, mm | 0.191 | 0.217 | 0.467 |
+| Direction error, degrees | 8.471 | 10.560 | 24.854 |
+
+Matched geometry did not improve across every metric. The matched populations
+also differ, since the selected detector includes harder recovered branches.
+Discovery and geometry must be discussed together.
+
+## Real-input resource audit
+
+All 25 supplied scans completed through the required CLI under Linux CPU
+affinity 0–3, four numerical-library threads, and an 8 GiB virtual-address-space
+limit. Each ran in a fresh process with `/usr/bin/time` capturing elapsed
+seconds, maximum RSS in KiB and exit status. All exit statuses were zero; all
+25 output JSONs passed the evaluator's physical-output validation.
+
+- Mean end-to-end elapsed time: 5.837 seconds.
+- Slowest end-to-end elapsed time: 23.35 seconds (`subject025`).
+- Mean detector-reported time: 5.159 seconds.
+- Maximum detector-reported time: 22.345 seconds.
+- Maximum peak RSS: 1,495,320 KiB, approximately 1.43 GiB (`subject018`).
+- Total predictions: 146, including empty daughter lists.
+
+The 8 GiB virtual-memory limit is a conservative process limit, not an
+emulation of the organizer's complete operating system. CPU affinity fixes
+the available logical cores, not their speed. These observations meet the
+initial local runtime target but do not guarantee organizer hardware results.
+No complete real daughter annotations were available: real precision, recall,
+instance quality and clinical validity remain unmeasured.
+
+The delivery evidence ZIP includes unchanged per-case predictions, resource
+files, development/frozen reports and dataset manifests. Regenerate datasets
+with the recorded seeds in fresh directories to verify the report hashes.

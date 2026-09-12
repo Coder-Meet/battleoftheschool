@@ -112,6 +112,10 @@ Do not deliver that temporary poster as product footage.
 
 ## Evidence and wording
 
+The later [robustness supplement](ROBUSTNESS_UPDATE.md) gives frozen stress
+results and a replacement Speaker 4 narration within the existing time slot.
+The original deck and film remain historical evidence from the revisions below.
+
 The deck's metrics are frozen to the algorithm improvement report from
 `29c843e`; product capture uses `4d59d12`, with the same detector and a formatted
 Vite configuration. The kit contains the supporting reports.
