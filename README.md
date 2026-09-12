@@ -139,21 +139,26 @@ one card per candidate with axial, coronal and sagittal crops through the
 proposed origin plus a strip of consecutive axial slices. Press **Confirm** if a
 bright tube leaves the aorta outline along the arrow for at least 5 mm,
 **Reject** otherwise (keys `c`, `r`, `x`, `j`, `k`). Every verdict is written
-immediately to `outputs/review/reviews.json` in the training schema, so nothing
-lives only in the browser. `/review` lists all cases with progress. The 3D
-Explorer remains at `/` for context. Check progress with:
+immediately to `labels/reviews.json` in the training schema, so nothing lives
+only in the browser. `/review` lists all cases with progress. The 3D Explorer
+remains at `/` for context. Check progress, then commit the labels so the team
+shares them:
 
 ```bash
-python review.py --status outputs/review/reviews.json
+python review.py --status
+git add labels/reviews.json && git commit -m "Review subject001" && git pull --rebase && git push
 ```
+
+Only one person should label a given case; the file is one record per
+candidate, and two people editing the same case produce a merge conflict.
 
 Then hold out five patients and train:
 
 ```bash
-python learning.py split --reviews branchseed-reviews.json --output outputs/split.json \
+python learning.py split --reviews labels/reviews.json --output labels/split.json \
   --test subject005 subject013 subject018 subject021 subject025
-python learning.py train --reviews branchseed-reviews.json --split outputs/split.json \
-  --model outputs/candidate-model.json --report outputs/model-report.json
+python learning.py train --reviews labels/reviews.json --split labels/split.json \
+  --model labels/candidate-model.json --report labels/model-report.json
 ```
 
 The review profile never runs in `run.py`; the submission uses the strict
