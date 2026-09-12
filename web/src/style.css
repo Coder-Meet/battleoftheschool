@@ -2055,6 +2055,9 @@ dialog h2 span {
 .library-collapsed .library {
   display: none;
 }
+.library-backdrop {
+  display: none;
+}
 @media (min-width: 1550px) {
   :root {
     --library: 245px;
@@ -2255,10 +2258,22 @@ dialog h2 span {
     display: none;
   }
   .library-collapsed {
-    --library: 200px;
+    --library: 0px;
   }
   .library-collapsed .library {
     display: flex;
+    position: fixed;
+    left: var(--rail);
+    width: 240px;
+    z-index: 12;
+    box-shadow: 20px 0 50px #0008;
+  }
+  .library-collapsed .library-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0 0 0 var(--rail);
+    z-index: 11;
+    background: #0006;
   }
   .heading-actions {
     padding-top: 10px;
@@ -2270,7 +2285,22 @@ dialog h2 span {
     padding: 24px 0;
   }
   .case-summary {
-    gap: 23px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .case-identity,
+  .case-arrows {
+    grid-column: 1 / -1;
+  }
+  .case-arrows {
+    justify-self: end;
+  }
+  .summary-divider {
+    display: none;
+  }
+  .metric {
+    white-space: normal;
   }
   .view-tabs {
     gap: 22px;
@@ -2298,21 +2328,6 @@ dialog h2 span {
   }
   .layers-bar > span {
     display: flex;
-  }
-  .library-collapsed .analysis-layout {
-    grid-template-columns: minmax(0, 1fr) 220px;
-  }
-  .library-collapsed .case-summary {
-    gap: 12px;
-  }
-  .library-collapsed .metric-tag {
-    display: none;
-  }
-  .library-collapsed .view-tabs {
-    gap: 12px;
-  }
-  .library-collapsed .view-tab {
-    font-size: 8px;
   }
 }
 @media (max-width: 760px) {
@@ -2417,19 +2432,18 @@ dialog h2 span {
     gap: 16px;
   }
   .inspector {
-    display: grid;
-    grid-template-columns: 1fr 1.1fr;
-    grid-template-rows: auto 1fr auto;
+    display: flex;
+    flex-direction: column;
   }
   .inspector-heading {
     grid-column: 1 / -1;
   }
   .branch-list {
-    max-height: 360px;
+    max-height: 220px;
   }
   .branch-details {
-    border-left: 1px solid #29343d;
-    border-top: 0;
+    border-left: 0;
+    border-top: 1px solid #29343d;
   }
   .inspector-note {
     grid-column: 1 / -1;
@@ -2487,19 +2501,19 @@ dialog h2 span {
     font-size: 7px;
   }
   .branch-details h3 {
-    font-size: 12px;
-  }
-  .coordinates > div {
-    font-size: 7px;
-  }
-  .direction-row {
-    font-size: 7px;
-  }
-  .detail-metrics strong {
     font-size: 15px;
   }
+  .coordinates > div {
+    font-size: 11px;
+  }
+  .direction-row {
+    font-size: 10px;
+  }
+  .detail-metrics strong {
+    font-size: 20px;
+  }
   .detail-metrics span {
-    font-size: 7px;
+    font-size: 10px;
   }
   .loading-overlay {
     position: absolute;

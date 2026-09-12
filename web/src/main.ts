@@ -111,6 +111,7 @@ $("#app").innerHTML = `
     <div class="library-foot"><div class="engine-icon">${icon("shield-check")}</div><div>On-device processing<small>CPU only · your data stays local</small></div><span class="status-dot"></span></div>
     <div class="version">BRANCHSEED <span>RESEARCH BUILD 1.0</span></div>
   </aside>
+  <button id="library-backdrop" class="library-backdrop" aria-label="Close case library"></button>
   <main>
     <header class="topbar"><div class="breadcrumb">${icon("layers")}<span>Workspace</span>${icon("chevron-right")}<strong>Aorta Explorer</strong></div>
       <div class="topbar-right"><button class="research-pill" id="research-info"><span></span>Research prototype</button><div class="separator"></div><button id="help-top" class="icon-button" aria-label="Open help">${icon("circle-help")}</button></div></header>
@@ -629,6 +630,8 @@ $("#previous-case").onclick = () => stepCase(-1);
 $("#next-case").onclick = () => stepCase(1);
 $("#collapse-library").onclick = $("#cases-nav").onclick = () =>
   document.body.classList.toggle("library-collapsed");
+$("#library-backdrop").onclick = () =>
+  document.body.classList.remove("library-collapsed");
 $("#explore-nav").onclick = () => setMode("3d");
 for (const id of [
   "method-nav",
