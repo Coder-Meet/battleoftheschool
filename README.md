@@ -171,37 +171,34 @@ The sandbox test verifies sockets are actually blocked, and the trace applies to
 child CLI processes too. API/server tests are excluded because they deliberately
 need localhost networking. Bundled frontend assets are served by the local server.
 
-### Review workflow: build labels, then train the candidate filter
+### Labelling workflow: AI verdicts on detector candidates, then train the filter
 
-There are no branch annotations for the 25 scans, so labels come from
-engineers judging the detector's own proposals. `review.py` runs a deliberately
-loose **review profile** of the detector (wider wall shell, no tubularity gate at
-the wall, tolerant wall connection), records every proposal it makes under
-`outputs/review/`, and opens the Explorer on those cases:
-
-```bash
-python review.py --cases subject001 subject002 subject003   # or --all
-```
-
-It opens the slice-first review page at `http://127.0.0.1:8000/review/<case>`:
-one card per candidate with axial, coronal and sagittal crops through the
-proposed origin plus a strip of consecutive axial slices. Press **Confirm** if a
-bright tube leaves the aorta outline along the arrow for at least 5 mm,
-**Reject** otherwise (keys `c`, `r`, `x`, `j`, `k`). Every verdict is written
-immediately to `labels/reviews.json` in the training schema, so nothing lives
-only in the browser. `/review` lists all cases with progress. The 3D Explorer
-remains at `/` for context. Check progress, then commit the labels so the team
-shares them:
+There are no branch annotations for the 25 scans, so labels come from judging the
+detector's own proposals against the CT. This is done by an AI reviewer reading
+rendered evidence, not by a web page. `autolabel.py render` runs the loose
+**review profile** of the detector merged with the strict result, saves each
+case's candidate pool with its thirteen features, and writes one PNG per
+candidate showing whole-aorta locators, ±2 mm slab views through the origin,
+consecutive axial slices and the traced path:
 
 ```bash
-python review.py --status
-git add labels/reviews.json && git commit -m "Review subject001" && git pull --rebase && git push
+python autolabel.py render --cases subject001      # or --all; output under outputs/autolabel/<case>/
 ```
 
-Only one person should label a given case; the file is one record per
-candidate, and two people editing the same case produce a merge conflict.
+The reviewer answers one question per PNG: does a bright tube leave the aorta
+outline at the yellow dot, along the red path, for at least 5 mm? Verdicts go in
+a small JSON file, `{"subject001": {"branch_001": "confirmed", "branch_002": "rejected"}}`,
+and are recorded in the training schema with the candidate's features and a
+fingerprint, so a candidate that later changes loses its stale label:
 
-Then hold out five patients and train:
+```bash
+python autolabel.py apply --verdicts verdicts.json --labeller claude
+python autolabel.py status
+git add labels/reviews.json && git commit -m "Label subject001" && git pull --rebase && git push
+```
+
+Candidates the reviewer cannot decide are left out rather than guessed. Then
+hold out five patients and train:
 
 ```bash
 python learning.py split --reviews labels/reviews.json --output labels/split.json \

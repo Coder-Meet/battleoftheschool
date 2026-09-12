@@ -21,7 +21,6 @@ from skimage.measure import marching_cubes
 from detector import DetectorConfig, detect, detect_pool, parent_curve, physical_points, prepare_roi
 from learning import FEATURE_NAMES, features as candidate_features
 from nifti_io import read_nifti
-import review_page
 
 ROOT = Path(__file__).resolve().parent
 
@@ -148,9 +147,7 @@ class CaseStore:
             return case
 
 
-def make_handler(
-    store: CaseStore, static_root: Path, ledger: review_page.ReviewLedger | None = None
-) -> type[BaseHTTPRequestHandler]:
+def make_handler(store: CaseStore, static_root: Path) -> type[BaseHTTPRequestHandler]:
     class Handler(BaseHTTPRequestHandler):
         def send_bytes(self, data: bytes, content_type: str, status: int = 200) -> None:
             self.send_response(status)
@@ -173,8 +170,6 @@ def make_handler(
             self.send_bytes(json.dumps(data, allow_nan=False).encode(), "application/json", status)
 
         def do_POST(self) -> None:
-            if ledger and review_page.handle(self, store, ledger, "POST", urlparse(self.path).path):
-                return
             parts = urlparse(self.path).path.strip("/").split("/")
             if len(parts) != 4 or parts[:2] != ["api", "cases"] or parts[3] != "analyze":
                 self.send_json({"error": "Unknown endpoint."}, 404)
@@ -191,8 +186,6 @@ def make_handler(
 
         def do_GET(self) -> None:
             path = urlparse(self.path).path
-            if ledger and review_page.handle(self, store, ledger, "GET", path):
-                return
             if path == "/api/health":
                 self.send_json({"status": "ok", "profile": store.config.profile})
                 return
@@ -247,19 +240,13 @@ def main() -> None:
         "--review-mode", action="store_true",
         help="Run the loose review-profile detector so weak candidates reach human review.",
     )
-    parser.add_argument(
-        "--reviews", type=Path, default=ROOT / "labels" / "reviews.json",
-        help="Where /review verdicts are saved (Explorer export schema).",
-    )
     args = parser.parse_args()
     if not args.data_root.is_dir():
         parser.error("The data directory does not exist.")
     sitk.ProcessObject.SetGlobalDefaultNumberOfThreads(4)
     store = CaseStore(args.data_root, DetectorConfig.review() if args.review_mode else None)
-    ledger = review_page.ReviewLedger(args.reviews)
-    server = ThreadingHTTPServer((args.host, args.port), make_handler(store, ROOT / "web" / "dist", ledger))
+    server = ThreadingHTTPServer((args.host, args.port), make_handler(store, ROOT / "web" / "dist"))
     print(f"Aorta Explorer listening on port {args.port} ({store.config.profile} detector profile)", flush=True)
-    print(f"Slice review page: http://{args.host}:{args.port}/review  (verdicts -> {args.reviews})", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

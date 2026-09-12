@@ -1,0 +1,19 @@
+{
+  "subject001": {
+    "branch_003": "confirmed",
+    "branch_006": "confirmed",
+    "branch_010": "confirmed",
+    "branch_013": "confirmed",
+    "branch_015": "confirmed",
+    "branch_020": "confirmed",
+    "branch_004": "rejected",
+    "branch_005": "rejected",
+    "branch_007": "rejected",
+    "branch_008": "rejected",
+    "branch_009": "rejected",
+    "branch_018": "rejected",
+    "branch_019": "rejected",
+    "branch_023": "rejected",
+    "branch_024": "rejected"
+  }
+}
