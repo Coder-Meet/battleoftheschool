@@ -20,7 +20,7 @@ import sys
 
 import SimpleITK as sitk
 
-from detector import detect
+from detector import DetectorConfig, detect, detect_pool
 from evaluate import summarize_cases
 from explorer import ROOT
 from learning import CandidateModel, filter_detection
@@ -28,6 +28,15 @@ from nifti_io import read_nifti
 from score_references import score
 
 PARTITION_ORDER = ("test", "validation", "train", "unsplit")
+PROFILES = ("strict", "review", "pool")
+
+
+def run_profile(image, mask, profile: str):
+    if profile == "pool":
+        return detect_pool(image, mask)
+    if profile == "review":
+        return detect(image, mask, DetectorConfig.review())
+    return detect(image, mask)
 
 
 def case_paths(directory: Path) -> tuple[Path, Path] | None:
@@ -41,7 +50,9 @@ def case_paths(directory: Path) -> tuple[Path, Path] | None:
     return images[0], masks[0]
 
 
-def run_cases(data_root: Path, cases: list[str], model: CandidateModel | None, output_dir: Path) -> dict[str, dict]:
+def run_cases(
+    data_root: Path, cases: list[str], model: CandidateModel | None, output_dir: Path, profile: str = "strict",
+) -> dict[str, dict]:
     plain_dir, filtered_dir = output_dir / "plain", output_dir / "filtered"
     plain_dir.mkdir(parents=True, exist_ok=True)
     filtered_dir.mkdir(parents=True, exist_ok=True)
@@ -52,7 +63,7 @@ def run_cases(data_root: Path, cases: list[str], model: CandidateModel | None, o
             print(f"{case_id}: skipped (missing or unresolved scan files)", flush=True)
             continue
         before = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
-        result = detect(read_nifti(str(paths[0])), read_nifti(str(paths[1])))
+        result = run_profile(read_nifti(str(paths[0])), read_nifti(str(paths[1])), profile)
         plain = result.prediction(case_id)
         (plain_dir / f"{case_id}.json").write_text(json.dumps(plain, indent=2, allow_nan=False) + "\n")
         decisions = filter_detection(result, model) if model else None
@@ -87,7 +98,7 @@ def fmt(value, digits: int = 2) -> str:
 
 
 def render(report: dict, tolerance: str) -> str:
-    lines = [f"tolerance {tolerance} mm · pooled counts per partition (plain -> filtered)", ""]
+    lines = [f"profile {report['profile']} · tolerance {tolerance} mm · pooled counts per partition (plain -> filtered)", ""]
     lines.append(f"{'partition':<11}{'cases':>6}{'refs':>6}   {'TP':>7}{'FP':>9}{'FN':>7}{'precision':>14}{'recall':>13}{'F1':>13}")
     for name in PARTITION_ORDER:
         block = report["partitions"].get(name)
@@ -125,13 +136,15 @@ def main() -> int:
     parser.add_argument("--cases", nargs="*", default=[])
     parser.add_argument("--tolerances-mm", type=float, nargs="+", default=[2, 3, 5])
     parser.add_argument("--report-tolerance-mm", type=float, default=3)
+    parser.add_argument("--profile", choices=PROFILES, default="strict",
+                        help="strict = submission rules; review = loose proposal rules; pool = union of both.")
     args = parser.parse_args()
     sitk.ProcessObject.SetGlobalDefaultNumberOfThreads(4)
     try:
         model = CandidateModel.load(args.candidate_model)
         split = json.loads(args.split.read_text()) if args.split else None
         cases = args.cases or sorted(p.name for p in args.data_root.iterdir() if p.is_dir())
-        runs = run_cases(args.data_root, cases, model, args.output_dir)
+        runs = run_cases(args.data_root, cases, model, args.output_dir, args.profile)
         scored = {
             name: score(args.references, args.output_dir / name, args.data_root, args.tolerances_mm)
             for name in ("plain", "filtered")
@@ -159,6 +172,7 @@ def main() -> int:
                 }
         report = {
             "generated_at": datetime.now(timezone.utc).isoformat(),
+            "profile": args.profile,
             "candidate_model": str(args.candidate_model), "references": str(args.references),
             "note": "Train/validation partitions were used to fit the filter; only 'test' is a held-out estimate.",
             "partitions": partitions, "cases": rows,

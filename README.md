@@ -235,7 +235,8 @@ python compare_e2e.py --candidate-model labels/candidate-model.json \
 
 `compare_e2e.py` writes `outputs/e2e/plain/<case>.json` and
 `outputs/e2e/filtered/<case>.json`, then pools precision, recall and F1 per split
-partition. Only the **test** partition is a held-out estimate; train and
+partition. `--profile strict|review|pool` picks the proposal rules: `strict` is
+the submission default, `review` the loose labelling rules, `pool` their union. Only the **test** partition is a held-out estimate; train and
 validation labels fitted the weights. These references carry the reviewer's
 judgement, not organiser truth: a branch the detector never proposed cannot be
 in them, and their geometry is the detector's own, so ostium and radius errors

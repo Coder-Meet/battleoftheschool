@@ -288,6 +288,15 @@ def branch_junctions(support: npt.NDArray, parent: npt.NDArray, spacing: float) 
     return np.asarray(junctions, dtype=float).reshape(-1, 3)
 
 
+def same_trunk(a: "Branch", b: "Branch") -> bool:
+    """Two separate vessels cannot share lumen, so a proximal path inside the other's tube means one opening."""
+    a_path, b_path = np.asarray(a.path_xyz_mm), np.asarray(b.path_xyz_mm)
+    return (
+        shares_prefix(a_path, b_path, tolerance_mm=max(1.5, 1.2 * b.radius_mm))
+        or shares_prefix(b_path, a_path, tolerance_mm=max(1.5, 1.2 * a.radius_mm))
+    )
+
+
 def shares_prefix(path_mm: FloatArray, other_mm: FloatArray, prefix_mm: float = 3.0, tolerance_mm: float = 1.5) -> bool:
     """True when the first prefix_mm of path_mm runs within tolerance_mm of the other path: a shared trunk."""
     prefix = truncate_path(path_mm, prefix_mm)
@@ -823,13 +832,15 @@ def resolve(
             continue
         reason = ""
         for old in branches:
-            if np.linalg.norm(np.asarray(branch.ostium_xyz_mm) - old.ostium_xyz_mm) >= 2.5:
+            separation = float(np.linalg.norm(np.asarray(branch.ostium_xyz_mm) - old.ostium_xyz_mm))
+            # A wide ostium can host roots up to a radius apart, so the gate scales with the two lumens.
+            if separation >= max(2.5, branch.radius_mm + old.radius_mm):
                 continue
-            if np.linalg.norm(np.asarray(branch.seed_xyz_mm) - old.seed_xyz_mm) < 3:
+            if separation < 2.5 and np.linalg.norm(np.asarray(branch.seed_xyz_mm) - old.seed_xyz_mm) < 3:
                 reason = "same_opening_and_path"
                 break
-            # One opening whose trunk forks before the seed is still one daughter (challenge doc, common trunk).
-            if shares_prefix(np.asarray(branch.path_xyz_mm), np.asarray(old.path_xyz_mm)):
+            # One opening is one daughter (challenge doc): merge when either proximal path lies inside the other's lumen.
+            if same_trunk(branch, old):
                 reason = "common_trunk"
                 break
         if reason:
