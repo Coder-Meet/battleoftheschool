@@ -167,6 +167,16 @@ def test_a_noncontacting_enhanced_vessel_is_rejected():
     assert detect(image, mask).branches == []
 
 
+def test_shared_prefix_marks_a_common_trunk_but_not_a_neighbouring_opening():
+    from detector import shares_prefix
+
+    trunk = np.array([[0, 0, 0], [4, 0, 0], [8, 3, 0], [10, 6, 0]], dtype=float)
+    other_child = np.array([[0.5, 0.3, 0], [4, 0.4, 0], [8, -3, 0]], dtype=float)
+    neighbour = np.array([[0, 2.5, 0], [4, 4, 0], [8, 6, 0]], dtype=float)
+    assert shares_prefix(other_child, trunk)
+    assert not shares_prefix(neighbour, trunk)
+
+
 def test_proximal_path_stops_at_first_associated_bifurcation():
     path = np.array([[0, 0, 0], [5, 0, 0], [10, 0, 0]], dtype=float)
     junctions = np.array([[9, 0, 0], [7, 0, 0], [2, 4, 0]], dtype=float)

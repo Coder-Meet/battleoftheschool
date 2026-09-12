@@ -287,6 +287,19 @@ def branch_junctions(support: npt.NDArray, parent: npt.NDArray, spacing: float) 
     return np.asarray(junctions, dtype=float).reshape(-1, 3)
 
 
+def shares_prefix(path_mm: FloatArray, other_mm: FloatArray, prefix_mm: float = 3.0, tolerance_mm: float = 1.5) -> bool:
+    """True when the first prefix_mm of path_mm runs within tolerance_mm of the other path: a shared trunk."""
+    prefix = truncate_path(path_mm, prefix_mm)
+    segments = np.diff(other_mm, axis=0)
+    lengths = np.maximum(np.sum(segments**2, axis=1), 1e-8)
+    for point in prefix:
+        fraction = np.clip(np.sum((point - other_mm[:-1]) * segments, axis=1) / lengths, 0, 1)
+        nearest = other_mm[:-1] + fraction[:, None] * segments
+        if np.min(np.linalg.norm(nearest - point, axis=1)) > tolerance_mm:
+            return False
+    return True
+
+
 def stop_at_junction(path_mm: FloatArray, junctions_mm: FloatArray, tolerance_mm: float) -> FloatArray:
     segment = np.diff(path_mm, axis=0)
     lengths = np.linalg.norm(segment, axis=1)
@@ -426,9 +439,16 @@ def _trace(
     cost[parent[region]] = np.inf
     solver = MCP_Geometric(cost, sampling=(spacing,) * 3)
     cumulative, _ = solver.find_costs([tuple(root_local)])
+    # The doc's 5 mm rule is path length beyond the wall, so measure geodesic distance through the support
+    # instead of straight-line distance from the wall, which rejected obliquely leaving branches.
+    geodesic, _ = MCP_Geometric(np.where(np.isfinite(cost), 1.0, np.inf), sampling=(spacing,) * 3).find_costs(
+        [tuple(root_local)]
+    )
+    needed = max(0.0, config.minimum_path_mm - float(outside[tuple(root)])) + spacing / 2
     endpoints = (
         np.isfinite(cumulative)
-        & (outside[region] >= config.minimum_path_mm + spacing / 2)
+        & (geodesic >= needed)
+        & (outside[region] >= 1.5)
         & (outside[region] <= 12)
         & (local_radius >= config.minimum_radius_mm)
     )
@@ -751,13 +771,19 @@ def resolve(
         if branch is None:
             rejections[reason] = rejections.get(reason, 0) + 1
             continue
-        duplicate = any(
-            np.linalg.norm(np.asarray(branch.ostium_xyz_mm) - old.ostium_xyz_mm) < 2.5
-            and np.linalg.norm(np.asarray(branch.seed_xyz_mm) - old.seed_xyz_mm) < 3
-            for old in branches
-        )
-        if duplicate:
-            rejections["same_opening_and_path"] = rejections.get("same_opening_and_path", 0) + 1
+        reason = ""
+        for old in branches:
+            if np.linalg.norm(np.asarray(branch.ostium_xyz_mm) - old.ostium_xyz_mm) >= 2.5:
+                continue
+            if np.linalg.norm(np.asarray(branch.seed_xyz_mm) - old.seed_xyz_mm) < 3:
+                reason = "same_opening_and_path"
+                break
+            # One opening whose trunk forks before the seed is still one daughter (challenge doc, common trunk).
+            if shares_prefix(np.asarray(branch.path_xyz_mm), np.asarray(old.path_xyz_mm)):
+                reason = "common_trunk"
+                break
+        if reason:
+            rejections[reason] = rejections.get(reason, 0) + 1
         else:
             branches.append(branch)
     branches.sort(key=lambda b: (b.ostium_xyz_mm[2], b.ostium_xyz_mm[1], b.ostium_xyz_mm[0]))
