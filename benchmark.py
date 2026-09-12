@@ -88,7 +88,8 @@ def main() -> int:
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--tolerance-mm", type=float, default=3)
     parser.add_argument(
-        "--variant", choices=("strict", "finer", "relaxed", "review", "partial-volume", "native-contrast"),
+        "--variant",
+        choices=("strict", "finer", "relaxed", "review", "partial-volume", "native-contrast", "wall-parallel"),
         default="native-contrast",
     )
     args = parser.parse_args()
@@ -102,6 +103,7 @@ def main() -> int:
         "review": DetectorConfig.review(support_contrast_fraction=1.0, native_contrast_scale=0),
         "partial-volume": DetectorConfig(support_contrast_fraction=0.5, native_contrast_scale=0),
         "native-contrast": DetectorConfig(native_contrast_scale=1.2),
+        "wall-parallel": DetectorConfig(native_contrast_scale=1.2, parallel_clearance_mm=2.5),
     }
     try:
         report = benchmark(args.data_root, args.output, args.tolerance_mm, variants[args.variant])

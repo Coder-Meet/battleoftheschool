@@ -39,6 +39,7 @@ class DetectorConfig:
     roots_per_contact: int = 1
     wall_hug_penalty: float = 0.0
     broad_contact_mm3: float = 1200.0
+    parallel_clearance_mm: float = 0.0
     profile: str = "strict"
 
     def __post_init__(self) -> None:
@@ -46,11 +47,11 @@ class DetectorConfig:
         values = np.asarray(list(numeric.values()), dtype=float)
         if not np.isfinite(values).all():
             raise ValueError("All detector settings must be finite.")
-        may_be_zero = {"connector_gap_fraction", "wall_hug_penalty", "native_contrast_scale"}
+        may_be_zero = {"connector_gap_fraction", "wall_hug_penalty", "native_contrast_scale", "parallel_clearance_mm"}
         positive = [v for k, v in numeric.items() if k not in may_be_zero]
         if (
             np.any(np.asarray(positive, dtype=float) <= 0)
-            or self.wall_hug_penalty < 0 or self.native_contrast_scale < 0
+            or self.wall_hug_penalty < 0 or self.native_contrast_scale < 0 or self.parallel_clearance_mm < 0
         ):
             raise ValueError("All detector settings must be finite and positive.")
         if not 0 <= self.connector_gap_fraction < 1:
@@ -318,6 +319,31 @@ def stop_at_junction(path_mm: FloatArray, junctions_mm: FloatArray, tolerance_mm
     return truncate_path(path_mm, stop)
 
 
+def upstream_contact(
+    path: FloatArray, geodesic: npt.NDArray, outside: npt.NDArray, config: DetectorConfig,
+) -> FloatArray | None:
+    """Where a wall-hugging daughter first enters the contact shell, upstream of the root along its own course."""
+    spacing = config.spacing_mm
+    proximal = truncate_path(path * spacing, 5) / spacing
+    centered = proximal - proximal.mean(axis=0)
+    _, _, vectors = np.linalg.svd(centered, full_matrices=False)
+    tangent = vectors[0]
+    if np.dot(tangent, proximal[-1] - proximal[0]) < 0:
+        tangent = -tangent
+    shell = (
+        np.isfinite(geodesic)
+        & (geodesic <= 6.0)
+        & (outside >= config.shell_inner_mm)
+        & (outside <= config.shell_outer_mm + spacing)
+    )
+    if not shell.any():
+        return None
+    voxels = np.argwhere(shell)
+    along = (voxels - path[0]) @ tangent * spacing
+    best = int(np.argmin(along))
+    return voxels[best].astype(float) if along[best] < -spacing else None
+
+
 def wall_origin(
     path: FloatArray, parent: npt.NDArray, support: npt.NDArray,
     signed_distance: npt.NDArray, spacing: float, gap_fraction: float = 0.0,
@@ -439,27 +465,39 @@ def _trace(
     cost[parent[region]] = np.inf
     solver = MCP_Geometric(cost, sampling=(spacing,) * 3)
     cumulative, _ = solver.find_costs([tuple(root_local)])
-    # The doc's 5 mm rule is path length beyond the wall, so measure geodesic distance through the support
-    # instead of straight-line distance from the wall, which rejected obliquely leaving branches.
-    geodesic, _ = MCP_Geometric(np.where(np.isfinite(cost), 1.0, np.inf), sampling=(spacing,) * 3).find_costs(
-        [tuple(root_local)]
-    )
-    needed = max(0.0, config.minimum_path_mm - float(outside[tuple(root)])) + spacing / 2
     endpoints = (
         np.isfinite(cumulative)
-        & (geodesic >= needed)
-        & (outside[region] >= 1.5)
+        & (outside[region] >= config.minimum_path_mm + spacing / 2)
         & (outside[region] <= 12)
         & (local_radius >= config.minimum_radius_mm)
     )
+    quality = cumulative / np.maximum(outside[region] - outside[tuple(root)], 1)
+    geodesic: npt.NDArray | None = None
+    if not endpoints.any() and config.parallel_clearance_mm > 0:
+        # A daughter that runs along the parent wall never gets 5 mm away from it; measure path length instead.
+        unit = np.where(np.isfinite(cost), 1.0, np.inf)
+        geodesic, _ = MCP_Geometric(unit, sampling=(spacing,) * 3).find_costs([tuple(root_local)])
+        endpoints = (
+            np.isfinite(geodesic)
+            & (geodesic >= config.minimum_path_mm + spacing / 2)
+            & (geodesic <= 12)
+            & (outside[region] >= config.parallel_clearance_mm)
+            & (local_radius >= config.minimum_radius_mm)
+        )
+        finite = np.isfinite(geodesic)
+        quality = np.full_like(cumulative, np.inf)
+        quality[finite] = cumulative[finite] / np.maximum(geodesic[finite], 1)
     if not endpoints.any():
         return None, "no_supported_5mm_path"
-    quality = cumulative / np.maximum(outside[region] - outside[tuple(root)], 1)
     quality[~endpoints] = np.inf
     endpoint = np.unravel_index(np.argmin(quality), quality.shape)
     path = np.asarray(solver.traceback(endpoint), dtype=float) + low
     if len(path) < 3:
         return None, "short_path"
+    if geodesic is not None:
+        upstream = upstream_contact(path - low, geodesic, outside[region], config)
+        if upstream is not None:
+            path = np.vstack((upstream + low, path))
 
     ostium = wall_origin(path, parent, support, signed_distance, spacing, config.connector_gap_fraction)
     if ostium is None:
@@ -497,6 +535,8 @@ def _trace(
     if mean_vesselness < config.vesselness_floor:
         return None, "weak_tubularity"
     hu_along = float(np.mean(ndi.map_coordinates(ctx.intensity, sampled_path.T, order=1)))
+    if geodesic is not None and hu_along > ctx.median + 0.1 * max(ctx.median - ctx.background_median, 1.0):
+        return None, "hyperdense_wall_structure"
     bone = float(np.min(ndi.map_coordinates(ctx.bone_distance, sampled_path.T, order=1)))
     span = max(ctx.axis_range[1] - ctx.axis_range[0], 1e-6)
     features = {
@@ -754,6 +794,16 @@ def propose(scan: NormalizedScan, evidence: VesselEvidence, config: DetectorConf
 # ----------------------------------------------------------------------------------------------
 
 
+def on_path(branch: Branch, other: Branch, spacing: float) -> bool:
+    """True when this branch's opening, or its first lumen point, sits on the other branch's proximal path."""
+    path = np.asarray(other.path_xyz_mm[1:], dtype=float)
+    proximal = np.asarray(branch.path_xyz_mm[:2], dtype=float)
+    if not len(path) or not len(proximal):
+        return False
+    distances = np.linalg.norm(path[:, None, :] - proximal[None, :, :], axis=2)
+    return bool(distances.min() < 1.5 * spacing)
+
+
 def resolve(
     scan: NormalizedScan, evidence: VesselEvidence, candidates: list[Candidate], config: DetectorConfig,
 ) -> tuple[list[Branch], dict[str, int]]:
@@ -784,8 +834,17 @@ def resolve(
                 break
         if reason:
             rejections[reason] = rejections.get(reason, 0) + 1
-        else:
-            branches.append(branch)
+            continue
+        if config.parallel_clearance_mm > 0:
+            # An opening that lies on another daughter's proximal path is the same vessel seen further along it.
+            if any(on_path(branch, old, config.spacing_mm) for old in branches):
+                rejections["opening_on_another_path"] = rejections.get("opening_on_another_path", 0) + 1
+                continue
+            downstream = [old for old in branches if on_path(old, branch, config.spacing_mm)]
+            for old in downstream:
+                branches.remove(old)
+                rejections["opening_on_another_path"] = rejections.get("opening_on_another_path", 0) + 1
+        branches.append(branch)
     branches.sort(key=lambda b: (b.ostium_xyz_mm[2], b.ostium_xyz_mm[1], b.ostium_xyz_mm[0]))
     for number, branch in enumerate(branches, 1):
         branch.instance_id = f"branch_{number:03d}"

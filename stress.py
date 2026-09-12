@@ -32,6 +32,7 @@ FAMILIES = (
     "negative_controls_only",
     "high_noise_small_branches",
     "curved_daughters",
+    "wall_parallel_descending",
 )
 STUB_LENGTH_MM = 3.0
 ELIGIBLE_LENGTH_MM = 16.0
@@ -84,6 +85,35 @@ class ParentTube:
         return (np.linalg.norm(offsets, axis=-1) - self.radii).min(axis=-1)
 
 
+def parallel_axis(
+    height: float, azimuth: float, parent: ParentTube, radius: float, clearance: float, length: float,
+) -> tuple[Array, Array, Array] | None:
+    """Daughter that leaves the wall and then descends alongside the parent, like an inferior mesenteric artery."""
+    radial = np.array([np.cos(azimuth), np.sin(azimuth), 0.0])
+    descent = np.arange(-6.0, length + 8.0, 0.3)
+    points = []
+    for t in descent:
+        nearest = int(np.argmin(np.abs(parent.centers[:, 2] - (height - t))))
+        settle = 1 - np.exp(-max(t, 0.0) / 3.0)
+        offset = parent.radii[nearest] - 0.5 + 0.4 * min(t, 0.0) + (radius + clearance + 0.5) * settle
+        points.append(parent.centers[nearest] + offset * radial)
+    axis = np.asarray(points)
+    signed = parent.signed(axis)
+    outside = np.flatnonzero(signed > 0)
+    if not len(outside) or outside[0] == 0:
+        return None
+    index = int(outside[0])
+    span = signed[index] - signed[index - 1]
+    fraction = -signed[index - 1] / span if span else 0.0
+    ostium = axis[index - 1] + fraction * (axis[index] - axis[index - 1])
+    axis = np.vstack((axis[:index], ostium, axis[index:]))
+    steps = np.linalg.norm(np.diff(axis, axis=0), axis=1)
+    arc = np.r_[0.0, np.cumsum(steps)]
+    along = arc - arc[index]
+    keep = along <= length
+    return axis[keep], along[keep], ostium
+
+
 def generate_case(family: str, seed: int) -> StressCase:
     if family not in FAMILIES:
         raise ValueError(f"Unknown stress family: {family}")
@@ -121,6 +151,7 @@ def generate_case(family: str, seed: int) -> StressCase:
         "cropped_short_segment": 1,
         "dense_branch_field": 6,
         "nearby_pair_with_short_stub": 2,
+        "wall_parallel_descending": 2,
     }
     count = counts.get(family, int(rng.integers(2, 4)))
     small = family in ("high_noise_small_branches", "thick_slice_anisotropic")
@@ -145,13 +176,22 @@ def generate_case(family: str, seed: int) -> StressCase:
     for index, (height, azimuth, slope, radius) in enumerate(specs, 1):
         direction = axis_from(azimuth, slope)
         inside = centers[np.argmin(np.abs(heights - height))]
-        ostium = wall_crossing(inside, direction, parent)
-        if ostium is None:
-            continue
         trunk = family == "common_trunk_early_split" and index == 1
         length = ELIGIBLE_LENGTH_MM if not trunk else 8.0
-        along = np.unique(np.r_[np.arange(-8.0, length, 0.35), 0.0, 5.0, length])
-        axis_points = ostium[None] + along[:, None] * direction
+        hugging = family == "wall_parallel_descending" and index == 1
+        if hugging:
+            radius = float(rng.uniform(1.0, 1.6))
+            parallel = parallel_axis(height, azimuth, parent, radius, float(rng.uniform(1.5, 3.0)), 22.0)
+            if parallel is None:
+                continue
+            axis_points, along, ostium = parallel
+        else:
+            crossing = wall_crossing(inside, direction, parent)
+            if crossing is None:
+                continue
+            ostium = crossing
+            along = np.unique(np.r_[np.arange(-8.0, length, 0.35), 0.0, 5.0, length])
+            axis_points = ostium[None] + along[:, None] * direction
         if family == "curved_daughters":
             side = np.cross(direction, [0.0, 0.0, 1.0])
             side /= np.linalg.norm(side)

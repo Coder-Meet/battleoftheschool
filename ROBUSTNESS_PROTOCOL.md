@@ -307,6 +307,71 @@ The older frozen seeds were rerun only after selection: native results were
 30 TP / 0 FP / 3 FN for 90817 and 27 TP / 0 FP / 4 FN for 112213.
 The five training cases retained 10 TP / 0 FP / 0 FN.
 
+## Wall-parallel daughter experiment — opt-in, not promoted
+
+Hypothesis: the strict tracer requires a daughter to move monotonically away
+from the parent, so a daughter that leaves the wall and then runs alongside it
+(clearance under 5 mm for its first 10 mm) is rejected as `wall_hugging_path`.
+Some real daughters do this; so do veins, mural thrombus and calcified wall.
+
+Implementation (`DetectorConfig.parallel_clearance_mm`, default `0` = off):
+only after the ordinary endpoint search fails, endpoints are accepted by
+geodesic path length through supported vessel voxels instead of Euclidean
+parent clearance, provided the path clears the parent by at least the
+configured margin and the lumen radius stays above the minimum. The traced
+path is extended upstream to where it first enters the contact shell, paths
+whose mean HU exceeds the parent blood pool are rejected
+(`hyperdense_wall_structure`), and an opening lying on another daughter's
+proximal path is folded into that daughter (`opening_on_another_path`).
+`benchmark.py --variant wall-parallel` enables it with 2.5 mm clearance.
+
+A new procedural family, `wall_parallel_descending`, generates one hugging
+daughter (analytic clearance 1.5–3 mm, checked by the test) plus one ordinary
+daughter. Ten seeds, 20 eligible references, 3 mm tolerance:
+
+| Variant | TP | FP | FN | F1 |
+|---|---:|---:|---:|---:|
+| Native 1.2 (production) | 10 | 0 | 10 | 0.667 |
+| Wall-parallel 2.5 mm | 18 | 0 | 2 | 0.947 |
+
+Frozen seeds 582743 and 904117 (63 references, all 13 earlier families,
+including touching vein/calcification, mural thrombus and nearby pairs): the
+wall-parallel variant reproduced the production counts exactly (26/1/6 and
+27/0/4) and identical mean ostium error. An earlier draft without the
+hyperdense rejection and path folding produced 4 and 1 false positives there;
+those drafts were discarded before this record.
+
+Real 25-case batch, production versus wall-parallel (151 → 152 daughters, per-case
+detection time unchanged within noise): four openings were added (subject004,
+017, 023, 025) and three were folded into another daughter's path (two in
+subject005, one in subject013). Visual review of the additions: subject004 is a
+small contrast-filled vessel leaving the anterior wall at the superior mask cap
+(plausible inferior mesenteric origin, but adjacent to the cap); subject017 and
+subject023 are small anterolateral wall-adjacent structures with weak
+evidence; subject025 sits beside an isolated mask island. The folded openings
+in subject005/013 shared a traced lumen with a neighbouring daughter 4–8 mm
+away. None of these can be resolved without expert references, so the variant
+stays opt-in. Production predictions are unchanged. Once organizer references
+arrive, score both frozen prediction sets with `score_references.py` and
+promote only if the wall-parallel set is not worse on any reference case.
+
+Commit `5c2b9a3` proposed the same geodesic endpoint rule *always on* with a
+1.5 mm clearance and no hyperdense or path-folding guard, plus a
+`shares_prefix` common-trunk merge. Measured on the same data before merging:
+
+| Data | Production | Always-on geodesic (`5c2b9a3`) |
+|---|---|---|
+| Frozen 582743 | 26 / 1 / 6 | 26 / **4** / 6 (thrombus, vein/calcification) |
+| Frozen 904117 | 27 / 0 / 4 | 27 / **1** / 4 (thrombus) |
+| Wall-parallel family, 10 seeds | 10 / 0 / 10 | 17 / 0 / 3 |
+| Real 25 cases, daughters | 151 | 163 (+13 small additions, 4 ostium shifts) |
+
+The frozen false positives are mural-thrombus and wall-adjacent vein
+structures accepted because a supported path of 5 mm exists along the wall;
+they gain no true positives. The always-on rule was therefore not kept. The
+`shares_prefix` common-trunk merge was kept: with it, frozen counts and all 25
+production predictions are unchanged.
+
 The photometric regression keeps anatomy/background fixed and gives daughters
 65% of the parent/background contrast. The historical gate detects two origins
 at parent 150 HU and zero at 550 HU; the selected detector detects both at each
