@@ -45,6 +45,9 @@ def _orthonormalise_srow(data: bytes) -> bytes:
 
 
 def read_nifti(path: str) -> sitk.Image:
+    with open(path, "rb") as source:
+        if source.read(40).startswith(b"version https://git-lfs"):
+            raise ValueError(f"{path} is a Git LFS pointer. Run git lfs pull before processing.")
     if not is_gzipped(path) or path.endswith(".gz"):
         try:
             return sitk.ReadImage(path)

@@ -1,0 +1,25 @@
+{
+  "name": "branchseed-explorer",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit --noUnusedLocals --noUnusedParameters && prettier --check src index.html vite.config.ts tsconfig.json package.json",
+    "format": "prettier --write src index.html vite.config.ts tsconfig.json package.json"
+  },
+  "dependencies": {
+    "@fontsource-variable/dm-sans": "5.1.1",
+    "@fontsource-variable/manrope": "5.1.1",
+    "lucide": "0.468.0",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@types/three": "0.180.0",
+    "prettier": "3.5.3",
+    "typescript": "5.8.3",
+    "vite": "6.4.3"
+  }
+}

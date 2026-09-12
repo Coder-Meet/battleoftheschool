@@ -2,6 +2,12 @@
 __pycache__/
 *.pyc
 .venv/
+.venv*/
+node_modules/
+web/dist/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
 venv/
 *.egg-info/
 

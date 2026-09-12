@@ -8,19 +8,18 @@ volume and writes one prediction JSON per case.
 CLI contract (required by the challenge spec):
     python run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz --output prediction.json
 
-This is a scaffold: it loads the volume/mask, sets up the physical
-coordinate handling correctly, and writes a valid (currently empty)
-prediction file. Fill in `find_daughter_branches` with the real detection
-logic (vessel enhancement + region growing / graph search / etc).
+The deterministic detector uses adaptive CT intensity, multiscale tubularity,
+wall contact components and physical proximal paths.
 """
 
 import argparse
 import json
+from pathlib import Path
 import sys
 
-import numpy as np
 import SimpleITK as sitk
 
+from detector import DetectorConfig, detect
 from nifti_io import read_nifti
 
 
@@ -36,6 +35,9 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Case identifier to embed in the output JSON. Defaults to the image filename stem.",
     )
+    parser.add_argument("--diagnostics", help="Optional JSON path for timings, paths and evidence.")
+    parser.add_argument("--minimum-radius-mm", type=float, default=0.7)
+    parser.add_argument("--threads", type=int, default=4, help="SimpleITK CPU threads (default: 4).")
     return parser.parse_args()
 
 
@@ -50,24 +52,7 @@ def voxel_to_physical(image: sitk.Image, index_xyz) -> tuple:
 
 
 def find_daughter_branches(image: sitk.Image, aorta_mask: sitk.Image) -> list:
-    """
-    Core detection logic — TODO.
-
-    Should return a list of dicts, each with:
-        instance_id, parent_instance_id, ostium_xyz_mm, seed_xyz_mm,
-        radius_mm, direction_xyz
-
-    Approach ideas (see challenge doc for full definitions):
-      1. Find the aortic wall surface from `aorta_mask`.
-      2. Look for bright, tubular structures (vesselness filter, e.g.
-         Frangi/Sato) adjacent to the wall in `image`.
-      3. Cluster candidate ostia, dedupe common trunks vs separate origins.
-      4. For each ostium, trace up to 10mm along the daughter centreline
-         (or to the first bifurcation) to estimate seed point, radius,
-         and initial direction.
-    """
-    # Placeholder: no daughters detected yet.
-    return []
+    return [branch.prediction() for branch in detect(image, aorta_mask).branches]
 
 
 def build_output(case_id: str, daughters: list) -> dict:
@@ -80,23 +65,31 @@ def build_output(case_id: str, daughters: list) -> dict:
 
 def main() -> int:
     args = parse_args()
-
-    image = load_volume(args.image)
-    aorta_mask = load_volume(args.aorta_mask)
-
-    case_id = args.case_id
-    if case_id is None:
-        import os
-
-        case_id = os.path.splitext(os.path.basename(args.image))[0]
-
-    daughters = find_daughter_branches(image, aorta_mask)
-    output = build_output(case_id, daughters)
-
-    with open(args.output, "w") as f:
-        json.dump(output, f, indent=2)
-
-    print(f"Wrote {len(daughters)} daughter instance(s) for '{case_id}' -> {args.output}")
+    if args.threads < 1:
+        print("--threads must be positive.", file=sys.stderr)
+        return 2
+    sitk.ProcessObject.SetGlobalDefaultNumberOfThreads(args.threads)
+    try:
+        image = load_volume(args.image)
+        aorta_mask = load_volume(args.aorta_mask)
+        image_path = Path(args.image)
+        case_id = args.case_id or (
+            image_path.parent.name if image_path.parent.name.startswith("subject")
+            else image_path.name.removesuffix(".gz").removesuffix(".nii")
+        )
+        result = detect(image, aorta_mask, DetectorConfig(minimum_radius_mm=args.minimum_radius_mm))
+        output = Path(args.output)
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(result.prediction(case_id), indent=2, allow_nan=False) + "\n")
+        if args.diagnostics:
+            diagnostics = Path(args.diagnostics)
+            diagnostics.parent.mkdir(parents=True, exist_ok=True)
+            diagnostics.write_text(json.dumps(result.diagnostics(), indent=2, allow_nan=False) + "\n")
+    except (OSError, RuntimeError, ValueError) as error:
+        print(f"Branchseed: {error}", file=sys.stderr)
+        return 1
+    print(f"Wrote {len(result.branches)} daughter instance(s) for '{case_id}' -> {args.output}"
+          f" ({result.timings['total_s']:.2f}s)")
     return 0
 
 
