@@ -70,9 +70,11 @@ def main() -> int:
             if not pool_path.is_file():
                 raise FileNotFoundError(f"No rendered pool for {case_id}; run autolabel.py render first.")
             rows = [r for r in records if r["case_id"] == case_id]
-            if not rows:
-                raise ValueError(f"{case_id} has no labels.")
-            reference = build_reference(case_id, json.loads(pool_path.read_text()), rows)
+            pool = json.loads(pool_path.read_text())
+            if not rows and pool["candidates"]:
+                raise ValueError(f"{case_id} has rendered candidates but no labels; label it or leave it out.")
+            # An empty pool means nothing was proposed, so the reference is legitimately empty.
+            reference = build_reference(case_id, pool, rows)
             (args.output_dir / f"{case_id}.json").write_text(json.dumps(reference, indent=2, allow_nan=False) + "\n")
             note = f" ({len(reference['provenance']['stale_labels'])} stale labels skipped)" if reference["provenance"]["stale_labels"] else ""
             print(f"{case_id}: {len(reference['daughters'])} reference daughters{note}")

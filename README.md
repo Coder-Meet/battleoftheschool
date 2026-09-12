@@ -221,6 +221,28 @@ axis, position along the aorta, native spacing, wall-connector gap, contact
 volume). External datasets that could supply independent truth are listed in
 [EXTERNAL_DATA_SOURCES.md](EXTERNAL_DATA_SOURCES.md).
 
+### Scoring the pipeline end to end against the labels
+
+Confirmed labels can be turned into reference JSONs and every case run through
+the detector with and without the filter, so the two outputs are scored the
+same way the organiser will score them:
+
+```bash
+python labels_to_references.py --cases $(ls data | grep subject) --output-dir labels/pseudo_references
+python compare_e2e.py --candidate-model labels/candidate-model.json \
+  --references labels/pseudo_references --split labels/split.json --output-dir outputs/e2e
+```
+
+`compare_e2e.py` writes `outputs/e2e/plain/<case>.json` and
+`outputs/e2e/filtered/<case>.json`, then pools precision, recall and F1 per split
+partition. Only the **test** partition is a held-out estimate; train and
+validation labels fitted the weights. These references carry the reviewer's
+judgement, not organiser truth: a branch the detector never proposed cannot be
+in them, and their geometry is the detector's own, so ostium and radius errors
+against them are lower bounds. When the organiser's references arrive, point
+`--references` at them instead and nothing else changes. Two prediction files
+can also be compared directly with `evaluate.py --prediction a.json --reference b.json`.
+
 ### Human review and optional ML
 
 The Explorer now supports **Confirm**, **Reject**, **Clear**, **Next unreviewed**,

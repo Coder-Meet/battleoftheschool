@@ -99,7 +99,7 @@
     "pool_size": 34,
     "stale_labels": [],
     "pool_profile": "review",
-    "generated_at": "2026-09-12T22:44:27.454846+00:00",
+    "generated_at": "2026-09-12T22:51:31.652093+00:00",
     "limitations": [
       "Daughters are detector candidates a reviewer confirmed; branches the detector never proposed are absent.",
       "Geometry is the detector's own measurement, so ostium/radius/direction errors against it are lower bounds."

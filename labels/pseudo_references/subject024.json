@@ -1,0 +1,23 @@
+{
+  "case_id": "subject024",
+  "parent": {
+    "instance_id": "aorta"
+  },
+  "daughters": [],
+  "provenance": {
+    "kind": "pseudo_reference_from_candidate_labels",
+    "labellers": [
+      "claude"
+    ],
+    "confirmed": 0,
+    "rejected": 28,
+    "pool_size": 28,
+    "stale_labels": [],
+    "pool_profile": "review",
+    "generated_at": "2026-09-12T22:51:31.663988+00:00",
+    "limitations": [
+      "Daughters are detector candidates a reviewer confirmed; branches the detector never proposed are absent.",
+      "Geometry is the detector's own measurement, so ostium/radius/direction errors against it are lower bounds."
+    ]
+  }
+}
