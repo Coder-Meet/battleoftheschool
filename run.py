@@ -21,6 +21,8 @@ import sys
 import numpy as np
 import SimpleITK as sitk
 
+from nifti_io import read_nifti
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -38,7 +40,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def load_volume(path: str) -> sitk.Image:
-    return sitk.ReadImage(path)
+    return read_nifti(path)
 
 
 def voxel_to_physical(image: sitk.Image, index_xyz) -> tuple:

@@ -24,6 +24,8 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from nifti_io import read_nifti
+
 CT_WINDOW = (-100, 600)
 MIP_WINDOW = (100, 600)
 MARGIN_MM = 25.0
@@ -138,8 +140,8 @@ def draw_points(ax, pts, axes_idx, offset, spacing):
 def main():
     args = parse_args()
     ensure_lfs_pulled([args.image, args.aorta_mask])
-    image = sitk.ReadImage(args.image)
-    mask = sitk.ReadImage(args.aorta_mask)
+    image = read_nifti(args.image)
+    mask = read_nifti(args.aorta_mask)
 
     ct = sitk.GetArrayFromImage(image).astype(np.float32)  # zyx
     mk = sitk.GetArrayFromImage(mask) > 0
