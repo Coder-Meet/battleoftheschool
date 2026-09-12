@@ -413,6 +413,9 @@ def main():
     args = parser.parse_args()
     for directory in ("assets", "slides", "evidence"):
         (args.output / directory).mkdir(parents=True, exist_ok=True)
+    shutil.copy2(Path(__file__).with_name("favicon.svg"), args.output / "assets/favicon.svg")
+    for name in ("README.md", "FILM_CUES.md"):
+        shutil.copy2(Path(__file__).with_name(name), args.output / name)
     fonts(args.output)
     if not args.skip_evidence:
         evidence(args.output, args.predictions)

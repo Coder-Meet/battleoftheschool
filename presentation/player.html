@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
     <title>Branchseed — Find the branch. Keep the evidence.</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <style>
       @font-face {
         font-family: Manrope;
@@ -300,8 +301,8 @@
         Fullscreen
       </button>
     </nav>
-    <dialog id="notes-dialog">
-      <h2 id="notes-title"></h2>
+    <dialog id="notes-dialog" aria-labelledby="notes-title">
+      <h2 id="notes-title" tabindex="-1" autofocus></h2>
       <p id="notes-copy"></p>
       <p class="hint">
         ← / → slides · A timed rehearsal · V film on slide 5 · F fullscreen ·
