@@ -99,16 +99,38 @@ def _to_index_zyx(meta: dict, point_mm: Any) -> np.ndarray:
     return np.linalg.solve(basis, np.asarray(point_mm, dtype=float) - origin)[::-1]
 
 
+OPPOSITE = {"A": "P", "P": "A", "L": "R", "R": "L", "S": "I", "I": "S"}
+
+
+def _orientation(meta: dict) -> dict[str, str]:
+    # Image axes follow the header's direction matrix; LPS means +x = left, +y = posterior, +z = superior.
+    basis = np.asarray(meta["basis"], dtype=float)
+    return {
+        "x_right": "L" if basis[0, 0] > 0 else "R",
+        "y_up": "P" if basis[1, 1] > 0 else "A",
+        "z_up": "S" if basis[2, 2] > 0 else "I",
+    }
+
+
 def _panel(ax: Any, image: np.ndarray, mask: np.ndarray, point: tuple[float, float] | None,
-           tip: tuple[float, float] | None, title: str) -> None:
-    ax.imshow(np.clip((image - WINDOW[0]) / (WINDOW[1] - WINDOW[0]), 0, 1), cmap="gray",
+           path: np.ndarray | None, title: str, edges: tuple[str, str] | None = None,
+           window: tuple[float, float] = WINDOW) -> None:
+    ax.imshow(np.clip((image - window[0]) / (window[1] - window[0]), 0, 1), cmap="gray",
               origin="lower", vmin=0, vmax=1, interpolation="nearest")
     if mask.any():
         ax.contour(mask, levels=[0.5], colors="#48e0c0", linewidths=1.0, origin="lower")
+    if path is not None and len(path) > 1:
+        ax.plot(path[:, 0], path[:, 1], "-", color="#ff5c5c", lw=1.8, solid_capstyle="round")
+        ax.plot(path[-1, 0], path[-1, 1], "s", color="#ff5c5c", ms=4)
     if point is not None:
         ax.plot(point[0], point[1], "o", color="#ffd43b", ms=6, mec="black")
-    if point is not None and tip is not None:
-        ax.annotate("", xy=tip, xytext=point, arrowprops=dict(arrowstyle="->", color="#ff5c5c", lw=2))
+    if edges:
+        up, right = edges
+        style = dict(transform=ax.transAxes, color="#48e0c0", fontsize=9, fontweight="bold")
+        ax.text(0.5, 0.98, up, ha="center", va="top", **style)
+        ax.text(0.5, 0.02, OPPOSITE[up], ha="center", va="bottom", **style)
+        ax.text(0.98, 0.5, right, ha="right", va="center", **style)
+        ax.text(0.02, 0.5, OPPOSITE[right], ha="left", va="center", **style)
     ax.set_title(title, color="#c9d1d9", fontsize=9)
     ax.set_xticks([])
     ax.set_yticks([])
@@ -126,30 +148,45 @@ def render_candidate(case: "CaseData", branch: dict) -> bytes:
     spacing = float(np.linalg.norm(np.asarray(meta["basis"], dtype=float)[:, 0]))
     ost = _to_index_zyx(meta, branch["ostium_xyz_mm"])
     tip = _to_index_zyx(meta, np.asarray(branch["ostium_xyz_mm"]) + 8.0 * np.asarray(branch["direction_xyz"]))
+    path = np.asarray([_to_index_zyx(meta, p) for p in branch.get("path_xyz_mm", [])], dtype=float)
+    if len(path) < 2:
+        path = np.vstack((ost, tip))
     half = max(4, int(round(HALF_MM / spacing)))
     centre = np.clip(np.round(ost).astype(int), 0, np.asarray(ct.shape) - 1)
     lo = np.maximum(centre - half, 0)
     hi = np.minimum(centre + half + 1, ct.shape)
     iz, iy, ix = (int(v) for v in centre)
+    axes_of = _orientation(meta)
+    mip_window = (100.0, 600.0)
     with _render_lock:
-        fig = Figure(figsize=(13, 5.4), dpi=88)
+        fig = Figure(figsize=(16, 5.6), dpi=88)
         fig.patch.set_facecolor("#0d1117")
-        grid = fig.add_gridspec(2, 15, hspace=0.25, wspace=0.15)
+        grid = fig.add_gridspec(2, 20, hspace=0.28, wspace=0.18)
+        # Whole-aorta locators: where along the aorta, and on which wall, this candidate sits.
+        _panel(fig.add_subplot(grid[0, 0:4]), ct.max(axis=1), mask.max(axis=1), (ost[2], ost[0]),
+               path[:, [2, 0]], "locator · coronal MIP", (axes_of["z_up"], axes_of["x_right"]), mip_window)
+        _panel(fig.add_subplot(grid[1, 0:4]), ct.max(axis=2), mask.max(axis=2), (ost[1], ost[0]),
+               path[:, [1, 0]], "locator · sagittal MIP", (axes_of["z_up"], axes_of["y_up"]), mip_window)
+        offset = np.asarray([lo[0], lo[1], lo[2]], dtype=float)
+        local = path - offset
         views = [
-            ("axial · top = anterior", ct[iz, lo[1]:hi[1], lo[2]:hi[2]], mask[iz, lo[1]:hi[1], lo[2]:hi[2]],
-             (ost[2] - lo[2], ost[1] - lo[1]), (tip[2] - lo[2], tip[1] - lo[1])),
-            ("coronal · top = head", ct[lo[0]:hi[0], iy, lo[2]:hi[2]], mask[lo[0]:hi[0], iy, lo[2]:hi[2]],
-             (ost[2] - lo[2], ost[0] - lo[0]), (tip[2] - lo[2], tip[0] - lo[0])),
-            ("sagittal · top = head", ct[lo[0]:hi[0], lo[1]:hi[1], ix], mask[lo[0]:hi[0], lo[1]:hi[1], ix],
-             (ost[1] - lo[1], ost[0] - lo[0]), (tip[1] - lo[1], tip[0] - lo[0])),
+            ("axial slice at the origin", ct[iz, lo[1]:hi[1], lo[2]:hi[2]], mask[iz, lo[1]:hi[1], lo[2]:hi[2]],
+             (ost[2] - lo[2], ost[1] - lo[1]), local[:, [2, 1]], (axes_of["y_up"], axes_of["x_right"])),
+            ("coronal slice at the origin", ct[lo[0]:hi[0], iy, lo[2]:hi[2]], mask[lo[0]:hi[0], iy, lo[2]:hi[2]],
+             (ost[2] - lo[2], ost[0] - lo[0]), local[:, [2, 0]], (axes_of["z_up"], axes_of["x_right"])),
+            ("sagittal slice at the origin", ct[lo[0]:hi[0], lo[1]:hi[1], ix], mask[lo[0]:hi[0], lo[1]:hi[1], ix],
+             (ost[1] - lo[1], ost[0] - lo[0]), local[:, [1, 0]], (axes_of["z_up"], axes_of["y_up"])),
         ]
-        for column, (title, image, outline, point, arrow_tip) in enumerate(views):
-            _panel(fig.add_subplot(grid[0, column * 5:(column + 1) * 5]), image, outline, point, arrow_tip, title)
-        for column, offset in enumerate(STRIP_OFFSETS_MM):
-            z = int(np.clip(iz + round(offset / spacing), 0, ct.shape[0] - 1))
-            marker: tuple[float, float] | None = (ost[2] - lo[2], ost[1] - lo[1]) if offset == 0 else None
-            _panel(fig.add_subplot(grid[1, column * 3:(column + 1) * 3]), ct[z, lo[1]:hi[1], lo[2]:hi[2]],
-                   mask[z, lo[1]:hi[1], lo[2]:hi[2]], marker, None, f"axial {offset:+d} mm")
+        for column, (title, image, outline, point, trace, edges) in enumerate(views):
+            start = 5 + column * 5
+            _panel(fig.add_subplot(grid[0, start:start + 5]), image, outline, point, trace, title, edges)
+        for column, offset_mm in enumerate(STRIP_OFFSETS_MM):
+            z = int(np.clip(iz + round(offset_mm / spacing), 0, ct.shape[0] - 1))
+            marker: tuple[float, float] | None = (ost[2] - lo[2], ost[1] - lo[1]) if offset_mm == 0 else None
+            start = 5 + column * 3
+            _panel(fig.add_subplot(grid[1, start:start + 3]), ct[z, lo[1]:hi[1], lo[2]:hi[2]],
+                   mask[z, lo[1]:hi[1], lo[2]:hi[2]], marker, None, f"axial {offset_mm:+d} mm",
+                   (axes_of["y_up"], axes_of["x_right"]))
         buffer = io.BytesIO()
         fig.savefig(buffer, format="png", facecolor=fig.get_facecolor())
     if len(_png_cache) > 400:
