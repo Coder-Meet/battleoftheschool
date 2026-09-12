@@ -226,3 +226,19 @@ def test_background_overlap_is_reported_without_claiming_a_noise_measurement():
     result = detect(image, mask, DetectorConfig(native_contrast_scale=1.2))
     assert result.blood_model["contrast_to_background_mad"] <= 1
     assert any("Parent/background intensities overlap" in warning for warning in result.warnings)
+
+
+def test_same_relative_daughter_contrast_keeps_both_origins():
+    template, mask = phantom()
+    parent = sitk.GetArrayFromImage(mask) > 0
+    daughters = (sitk.GetArrayFromImage(template) > 20) & ~parent
+    for hu in (150, 550):
+        intensity = np.full(parent.shape, 20, dtype=np.float32)
+        intensity[parent] = hu
+        intensity[daughters] = 20 + 0.65 * (hu - 20)
+        image = sitk.GetImageFromArray(intensity)
+        image.CopyInformation(mask)
+        result = detect(image, mask)
+        assert len(result.branches) == 2
+        for branch, height in zip(result.branches, (20, 39)):
+            assert np.linalg.norm(np.asarray(branch.ostium_xyz_mm) - (33, 25, height)) < 3

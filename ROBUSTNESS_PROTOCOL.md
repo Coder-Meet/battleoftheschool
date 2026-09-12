@@ -246,3 +246,31 @@ by that MAD, and warn when their intensity distributions overlap. This MAD
 measures heterogeneous tissue, **not image noise**. It does not set the intensity
 threshold or establish a clinical CNR/visibility cutoff. A low absolute parent
 HU warning is retained; decisions still require complete expert references.
+
+### New frozen result and promotion
+
+Selection and implementation were committed at `d9fc6c7` before opening the new
+frozen predictions. Both variants' four reports record that revision, clean
+working trees and the manifest hashes above.
+
+| Variant / seed | TP | FP | FN | F1 |
+|---|---:|---:|---:|---:|
+| Existing midpoint / 582743 | 25 | 1 | 7 | 0.8621 |
+| Native 1.2 / 582743 | 26 | 1 | 6 | 0.8814 |
+| Existing midpoint / 904117 | 26 | 0 | 5 | 0.9123 |
+| Native 1.2 / 904117 | 27 | 0 | 4 | 0.9310 |
+| Existing midpoint / combined | 51 | 1 | 12 | 0.8870 |
+| Native 1.2 / combined | 53 | 1 | 10 | 0.9060 |
+
+The fixed candidate recovered one thick-slice reference per seed without new
+false positives. Both empty controls remained empty. Ten misses and one false
+positive remain, including high-noise branches and vessel/distractor contacts.
+The absolute score is lower than the earlier frozen result because these are
+different procedural draws; all results are retained.
+
+Promote the preselected scale 1.2 as the default, subject to the release checks.
+Historical benchmark variants explicitly disable native adaptation so their
+commands remain reproducible. The controlled contrast regressions and
+voxel-integrated phantoms test separate photometric and sampling behavior.
+The point-sampled, one-voxel-width development probe still exposes subvoxel
+phase sensitivity; it is not evidence of complete small-vessel recovery.

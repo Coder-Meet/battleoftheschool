@@ -32,7 +32,7 @@ class DetectorConfig:
     root_depth_mm: float = 3.5
     blood_lower_scale: float = 1.0
     support_contrast_fraction: float = 0.5
-    native_contrast_scale: float = 0.0
+    native_contrast_scale: float = 1.2
     roots_per_contact: int = 1
     wall_hug_penalty: float = 0.0
     broad_contact_mm3: float = 1200.0

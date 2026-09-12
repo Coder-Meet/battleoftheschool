@@ -354,6 +354,13 @@ deduplicates shared origins, and truncates paths at estimated skeleton junctions
 or 10 mm. The seed lies 5 mm along the estimated proximal path. All output
 coordinates are transformed through the input geometry.
 
+Intensity support uses a fraction of measured parent/background contrast,
+adjusted for the largest **native** voxel spacing and minimum supported radius.
+The conservative scale was selected before new frozen procedural evaluation;
+see [the robustness protocol](ROBUSTNESS_PROTOCOL.md) for the comparison and
+remaining failures. Background-overlap diagnostics measure tissue heterogeneity,
+not scanner noise or a clinically validated CNR.
+
 Topology and bifurcation locations are estimates from image evidence. Small or
 short vessels, touching openings, calcification, veins, and low-contrast scans
 can still cause misses or false detections. A radius is a local distance-transform
