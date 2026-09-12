@@ -7,6 +7,11 @@ Explorer's Manrope body type. Generated media stays outside Git.
 
 ## Start with the delivered kit
 
+Published downloads: [complete offline kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-presentation-2026-09-12/branchseed-presentation-kit.zip)
+and [60-second MP4](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-presentation-2026-09-12/branchseed-film.mp4).
+The film is a segment of the five-minute presentation, not a complete narrated
+submission video. Devpost submission is a separate team action.
+
 Extract the entire ZIP before opening `index.html`. Keep `assets/` and
 `branchseed-film.mp4` beside it. The HTML uses local fonts and media; no account,
 CDN, analytics or internet connection is required. It is the recommended live

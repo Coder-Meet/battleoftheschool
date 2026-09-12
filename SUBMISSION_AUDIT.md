@@ -39,7 +39,7 @@ reason to omit the other supplied cases.
 | Source and pinned dependency file | Present; CPU inference uses `requirements.txt` |
 | One setup command, exact `python run.py ...` command | Documented for Windows and Unix; setup precedes offline evaluation |
 | One prediction per development case | 25 frozen production JSONs; 151 proposed daughters, including three empty cases |
-| At least three visual checks | Regenerate subjects001/002/003 from those same frozen production JSONs |
+| At least three visual checks | Subjects001/002/003 regenerated from those same frozen production JSONs and packaged with all 25 outputs |
 | Physical coordinates, variable counts and parent/instance IDs | Validated by automated tests and all frozen JSONs |
 | Five-minute demo | Existing eight-slide deck, four 75-second roles, film inside that time; native laptop playback still needs checking |
 | Clinician-useful display | Explorer exists; Subject018's final 3D/selection/export interaction remains unverified |
@@ -56,6 +56,16 @@ threshold was changed for the new synthetic seed. At a local 3 mm matching
 tolerance, the new five-case development bundle scored 10 TP / 0 FP / 2 FN:
 one thick-slice miss and one wall-parallel miss remain. This is synthetic
 development evidence, not real-scan accuracy.
+
+The delivered development submission bundle also includes the source,
+prebuilt Explorer assets and an offline Windows x64/Python 3.13 wheelhouse.
+Its package dependencies were resolved without a network index; this is not
+the same as executing the detector on Windows. Native Windows checks run in
+[the CI workflow](https://github.com/Coder-Meet/battleoftheschool/actions/runs/34722306805).
+
+The [presentation release](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-presentation-2026-09-12)
+now hosts both the MP4 and complete offline kit. Publishing these assets does
+not submit the team to Devpost.
 
 ## Challenge contract and evidence
 
