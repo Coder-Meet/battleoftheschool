@@ -24,6 +24,7 @@ from detector import DetectorConfig, detect_pool
 from explorer import ROOT, CaseStore, make_handler
 from learning import FEATURE_NAMES, features as candidate_features
 from nifti_io import read_nifti
+from review_page import ReviewLedger
 
 
 def parse_args() -> argparse.Namespace:
@@ -120,11 +121,13 @@ def main() -> int:
     if not args.skip_detect:
         record_pool([args.data_root / c for c in selected], args.output_dir, config)
         print(f"Candidate pool recorded under {args.output_dir}", flush=True)
-    server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(store, ROOT / "web" / "dist"))
-    url = f"http://127.0.0.1:{args.port}/#case={selected[0]}"
+    ledger = ReviewLedger(args.output_dir / "reviews.json")
+    server = ThreadingHTTPServer(("127.0.0.1", args.port), make_handler(store, ROOT / "web" / "dist", ledger))
+    url = f"http://127.0.0.1:{args.port}/review/{selected[0]}"
     print(f"\nReview {len(selected)} case(s) at {url}", flush=True)
-    print("Confirm or reject every candidate, then Export training reviews. Ctrl+C stops the server.", flush=True)
-    print(f"Afterwards: python review.py --status branchseed-reviews.json --output-dir {args.output_dir}", flush=True)
+    print(f"Verdicts save to {ledger.path} as you click; the 3D explorer stays at http://127.0.0.1:{args.port}/", flush=True)
+    print("Ctrl+C stops the server.", flush=True)
+    print(f"Progress: python review.py --status {ledger.path} --output-dir {args.output_dir}", flush=True)
     if not args.no_browser:
         Timer(1.0, webbrowser.open, [url]).start()
     try:

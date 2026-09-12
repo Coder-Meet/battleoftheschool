@@ -134,12 +134,17 @@ the wall, tolerant wall connection), records every proposal it makes under
 python review.py --cases subject001 subject002 subject003   # or --all
 ```
 
-In the Explorer, select each candidate, look at the CT panels, press **Confirm**
-if a bright tube leaves the aorta outline along the arrow for at least 5 mm,
-**Reject** otherwise, then **Export training reviews**. Check progress with:
+It opens the slice-first review page at `http://127.0.0.1:8000/review/<case>`:
+one card per candidate with axial, coronal and sagittal crops through the
+proposed origin plus a strip of consecutive axial slices. Press **Confirm** if a
+bright tube leaves the aorta outline along the arrow for at least 5 mm,
+**Reject** otherwise (keys `c`, `r`, `x`, `j`, `k`). Every verdict is written
+immediately to `outputs/review/reviews.json` in the training schema, so nothing
+lives only in the browser. `/review` lists all cases with progress. The 3D
+Explorer remains at `/` for context. Check progress with:
 
 ```bash
-python review.py --status branchseed-reviews.json
+python review.py --status outputs/review/reviews.json
 ```
 
 Then hold out five patients and train:
