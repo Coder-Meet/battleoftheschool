@@ -19,7 +19,7 @@ function containPng(filename, box) {
   return { x: box.x + (box.w - w) / 2, y: box.y + (box.h - h) / 2, w, h };
 }
 
-const root = path.resolve(process.argv[2] || "outputs/presentation-kit");
+const root = path.resolve(process.argv[2] || "outputs/live-presentation-kit");
 const slides = JSON.parse(
   fs.readFileSync(path.join(root, "deck.json"), "utf8"),
 );

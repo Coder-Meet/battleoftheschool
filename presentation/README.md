@@ -8,13 +8,14 @@ Manrope body type. Generated media stays outside Git.
 
 ## Start with the delivered kit
 
-Published downloads: [complete offline kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-presentation-2026-09-12/branchseed-presentation-kit.zip)
-and [60-second MP4](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-presentation-2026-09-12/branchseed-film.mp4).
-The film is a segment of the five-minute presentation, not a complete narrated
-submission video. Devpost submission is a separate team action.
+Published downloads: [current offline kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-final-presentation.zip)
+and [separate product showcase](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-showcase.mp4).
+The unchanged [original 60-second film](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-film.mp4)
+is preserved separately. Neither video is included in or played by the current
+presentation. Upload the showcase to Drive or other destinations as needed.
 
-Extract the entire ZIP before opening `index.html`. Keep `assets/` and
-`branchseed-film.mp4` beside it. The HTML uses local fonts and media; no account,
+Extract the entire ZIP before opening `index.html`. Keep `assets/`
+beside it. The HTML uses local fonts and media; no account,
 CDN, analytics or internet connection is required. It is the recommended live
 presentation format.
 
@@ -81,17 +82,18 @@ affect inference.
 npm --prefix presentation ci
 uv pip install --python .venv313/bin/python -r presentation/requirements.txt
 
-# Generate current detector results if this output directory is absent.
+# Generate strict detector results if this output directory is absent.
 OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 \
   .venv313/bin/python batch.py --data-root data --output-dir outputs/accuracy-real-smoke
 
 # Use a real Explorer screenshot from the delivered kit as slide 5's cue card.
 .venv313/bin/python presentation/build.py \
+  --predictions outputs/accuracy-real-smoke \
   --poster /path/to/explorer-screenshot.png
 node presentation/build-pptx.cjs
 ```
 
-Outputs default to `outputs/presentation-kit`. To change copy, timing or composition,
+Outputs default to `outputs/live-presentation-kit`. To change copy, timing or composition,
 edit `create_deck()` in `build.py`; to change controls, edit `player.html`.
 All formats share the same layout data. Supply `--skip-evidence` when only
 updating text or controls. Re-run the PowerPoint builder after editing the deck.
@@ -104,29 +106,26 @@ placeholder cue card.
 
 ## Evidence and wording
 
-The later [robustness supplement](ROBUSTNESS_UPDATE.md) gives frozen stress
-results and a replacement Speaker 4 narration within the existing time slot.
-The original deck and film remain historical evidence from the revisions below.
+The deck reflects the accepted **deterministic strict** configuration:
+1 mm working grid, native contrast scale 1.2, no trained weights.
 
-The deck's metrics are frozen to the algorithm improvement report from
-`29c843e`; product capture uses `4d59d12`, with the same detector and a formatted
-Vite configuration. The kit contains the supporting reports.
+- Five reused cases, 19 judge-approved AI-assisted/non-exhaustive targets:
+  8 TP / 3 FP / 11 FN; precision 0.7273, recall 0.4211, F1 0.5333,
+  daughter-count MAE 2.0. This is development-reference agreement.
+- Frozen topology, 24 synthetic cases: 46 TP / 0 FP / 3 FN; F1 0.9684.
+  Report this separately from real-reference results.
+- Guarded curved-wall recovery: local F1 0.5806, but count MAE rises to 2.2.
+  No added errors across 80 synthetic comparisons; it remains experimental.
+- Strict ran all 25 scans with four-core Linux affinity: maximum 23.21 seconds
+  and 1481 MiB sampled peak RSS. Native organizer-Windows timing is pending.
+- The three CT visuals use released strict outputs for subjects001–003.
+  Their overlays are visual checks, not complete annotations.
 
-- Development seed 2026: five synthetic cases, ten direct daughters.
-  Baseline 8 TP / 0 FP / 2 FN; updated 10 TP / 0 FP / 0 FN.
-- Additional seed 7183: the same five procedural families, with changed
-  geometry/noise/rotation. Baseline 9 TP / 0 FP / 1 FN; updated 10 TP / 0 FP / 0 FN.
-- Local matching is one-to-one at 3 mm. It is not a reproduction of hidden
-  organizer scoring. Both results remain synthetic.
-- All 25 supplied scans completed; measured range 0.998–20.385 seconds on the
-  development machine with four numerical-library threads. This is not a
-  dedicated four-core/8 GB benchmark or a guarantee on the organizer's machine.
-- 50 Python tests passed with network system calls denied. Dependencies,
-  scans, models if explicitly selected, and frontend assets must be prepared
-  before disconnection.
-- The three CT visuals use the supplied scans, parent outlines and current
-  predicted origins/directions. They are native-grid projections, not expert
-  annotations or proof of clinical accuracy.
+Sources: [final evaluation](../FINAL_EVALUATION_RESULTS.md),
+[accuracy recheck](../ACCURACY_RECHECK.md) and
+[strict resource receipt](../labels/finalization/final-batch-resource.json).
+The old [robustness supplement](ROBUSTNESS_UPDATE.md) and original film are
+historical; use the current deck's notes rather than old replacement scripts.
 
 Do not say “100% accurate,” “clinically validated,” “state of the art,”
 “trained on 25 scans,” or “guaranteed to win.” The core demonstrated detector
@@ -147,23 +146,25 @@ positive/negative candidates and cannot recover a branch never proposed.
 5. Keep the PDF open as a fallback. If the live Explorer fails to launch or
    hangs mid-demo, Speaker 3 stays on slide 5's poster and narrates the linked
    3D, CT, wall-map and tour interactions from memory instead.
-6. Preload a case before you start and avoid promising a particular candidate
-   count. Subject018 currently has 13 candidates.
+6. Use the strict default, preload subject018 and keep subject001 as backup.
+   Do not promise a fixed daughter count as anatomical truth. Export JSON
+   before returning to slide 6; skip the optional tour if behind.
 
 Likely questions:
 
 | Question | Grounded answer |
 |---|---|
 | Is this a learned model? | The demonstrated detector is a CPU geometric pipeline. An optional reviewed-candidate classifier exists but is not required. |
-| Why only five labeled cases? | They are analytic training phantoms with labels defined before image generation. Real annotation is the next step. |
+| Why only five reference cases? | The released package has 19 AI-assisted targets approved by the judge. They may be incomplete and have been reused for development. |
 | Why is a common trunk one instance? | The instance is defined at the aortic wall, before downstream splitting. |
 | What fails? | Weak contrast, very small vessels, junction ambiguity and geometry/topology errors remain concerns. A candidate classifier cannot recover missed proposals. |
-| What proves real accuracy? | Independent expert references, a frozen patient-level split and comparison against strong baselines. We do not have that evidence yet. |
+| Why not the higher-F1 recovery? | Its local daughter-count MAE worsens. Synthetic checks do not establish a gain on unseen patients. |
+| What proves unseen accuracy? | Complete expert references and previously unused patients. Current development scores do not establish it. |
 | Will it run on the final machine? | Inference is local and CPU-only. The brief targets four cores/8 GB; measured development times are separate from final-hardware validation. |
 
 ## Skills research and source requirements
 
-Reviewed on 2026-09-12:
+Reviewed for the current revision:
 
 - [Official Branchseed challenge](https://docs.google.com/document/d/1oRb2R9pauvsC-9hDIfr23ojLx90JpCt0jVZjCD5l5Cg/edit):
   “a five-minute demonstration explaining your method, its runtime and known
@@ -177,21 +178,21 @@ Reviewed on 2026-09-12:
 - [Anthropic PPTX skill](https://github.com/anthropics/skills/tree/main/skills/pptx):
   editable shapes/text, explicit layout, independent option objects and
   rendered slide validation.
-- [Remotion skills](https://github.com/remotion-dev/skills):
-  frame-driven motion, one focal point per video scene, safe margins, local
-  assets and still-frame validation. Not used: the kit does not render a
-  video at all — slide 5 hands off to a live Explorer demo instead, so no
-  frame-based renderer applies.
+- [Remotion video layout](https://github.com/remotion-dev/skills/blob/main/skills/remotion/rules/video-layout.md):
+  one focal point per scene, readable short captions, safe margins, consistent
+  composition and still-frame inspection. The separate showcase follows these
+  principles with the existing FFmpeg tools, without adding a Remotion app.
 
 No personal plugins were installed. Local plugin search found no suitable
 presentation skill. External skill guidance informed the authoring; this kit
-does not fabricate rendered footage where a live demo now runs instead.
+does not fabricate UI footage. See [SHOWCASE.md](SHOWCASE.md) for source
+timings, render commands and soundtrack provenance.
 
 ## Authoring checks
 
 ```bash
-.venv313/bin/ruff check presentation/build.py
-.venv313/bin/mypy presentation/build.py
+.venv313/bin/python -m ruff check presentation
+.venv313/bin/python -m mypy presentation/build.py presentation/showcase.py
 npm --prefix presentation run lint
 node presentation/build-pptx.cjs
 ```

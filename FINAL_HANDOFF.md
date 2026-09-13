@@ -52,7 +52,7 @@ Frozen inputs, full prediction checkpoints and the result are stored under
 | Released-case prediction identity | All five exactly equal the frozen selected JSON values |
 | Windows wheel resolution | Complete pinned runtime closure resolves offline for CPython 3.13/x64 |
 | Presentation generation | Eight slides, 300 seconds, 75 seconds per speaker; HTML, PDF and PPTX generated |
-| Demo MP4 | 60 seconds; historical UI demonstration |
+| Product showcase | Separate 40-second 1080p edit; original 60-second film preserved |
 
 Ten normal-suite skips are optional Torch/ONNX/ONNX Runtime tests; the
 remaining test requires denied networking and passed in the separate
@@ -90,6 +90,13 @@ No forced dependency downgrade or security-policy exception was applied.
   AI-assisted references from synthetic topology evidence.
 - Added [one complete demo guide](DEMO_GUIDE.md), including Windows offline
   commands, local case layout, presentation files, timing and recovery.
+- Refreshed the five-minute deck for the accepted strict configuration and the
+  guarded-recovery tradeoff. Speaker 3 demonstrates the Explorer live, with CT
+  inspection and JSON export; a still poster is the on-stage fallback.
+- Separated the [product showcase](presentation/SHOWCASE.md) from the talk.
+  The 40-second edit removes the old opening/ending cards, reframes the recorded
+  interface, adds short feature captions and an original ambient soundtrack.
+  Source footage and the original film remain unchanged.
 
 ## Submission contents and remaining team actions
 
@@ -97,7 +104,9 @@ Use the **Final hackathon submission** release on
 [GitHub Releases](https://github.com/Coder-Meet/battleoftheschool/releases).
 The submission ZIP contains source, built frontend, 25 prediction JSONs,
 three visual checks, Windows runtime wheels, verification and checksums.
-The presentation ZIP contains the complete local deck and supporting media.
+The presentation ZIP contains the local HTML/PPTX/PDF deck, script, live-demo
+cues and CT evidence, with **no MP4 or embedded video**. Download
+`branchseed-showcase.mp4` separately for Drive or other uploads.
 Neither ZIP includes raw CT/mask volumes or a Python installer.
 
 1. Run the offline CLI and website once on the actual Windows laptop using

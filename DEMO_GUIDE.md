@@ -15,13 +15,15 @@ updated presentation kit. The earlier September 12 deck is historical.
 | Download | Purpose |
 |---|---|
 | `branchseed-final-submission.zip` | Current inference source, 25 prediction JSONs, three visual checks, built website and Windows x64 runtime wheels |
-| `branchseed-final-presentation.zip` | Updated five-minute HTML deck, editable PowerPoint, PDF, speaker script, CT evidence and 60-second demonstration MP4 |
-| `branchseed-film.mp4` | Optional prerecorded UI demonstration; also included in the presentation ZIP |
+| `branchseed-final-presentation.zip` | Updated five-minute live-demo deck, editable PowerPoint, PDF, speaker script and CT evidence; no video |
+| `branchseed-showcase.mp4` | Separate edited product showcase for Drive and sharing |
+| `branchseed-film.mp4` | Unchanged original 60-second UI film, preserved separately |
 
-The MP4 demonstrates an earlier UI revision. It is **a 60-second segment,
-not a narrated five-minute presentation**. Use the updated deck and script
-for the five-minute talk. Devpost/organizer submission still requires the team
-to upload the chosen deliverables.
+The showcase uses recorded UI footage from an earlier revision. It is a
+standalone product edit, not the five-minute talk or evidence of current
+accuracy. **Present the Explorer live at slide 5; no video plays in the deck.**
+The original film remains available. Upload the showcase to Drive or other
+destinations as needed; organizer/Devpost uploads remain a team action.
 
 ## Fastest website launch: downloaded submission
 
@@ -167,7 +169,7 @@ review pool, synthetic labels or the retrospective RF predictions.
 
 Extract the **whole final presentation ZIP** and open `index.html` in a
 browser. Keep the `assets` directory beside it. For a Git checkout, the
-generated final kit is under `outputs/final-presentation-kit/`; generated
+generated current kit is under `outputs/live-presentation-kit/`; generated
 media are distributed through Releases rather than committed to Git.
 
 | File | Use |
@@ -177,7 +179,6 @@ media are distributed through Releases rather than committed to Git.
 | `branchseed-slides.pdf` | Eight-page visual fallback |
 | `SPEAKER_SCRIPT.md` | Full timed narration with final reference results |
 | `LIVE_DEMO_CUES.md` | Detailed 75-second Explorer sequence |
-| `branchseed-film.mp4` | 60-second historical UI-demo fallback |
 
 Deck controls: arrows/Space change slides, **F** fullscreen, **N** notes,
 **A** timed rehearsal, Home/End first/last slide. The rehearsal clock does
@@ -191,9 +192,9 @@ not control the live app or play the video.
 | 3:45–5:00 | Speaker 4 | Three CT checks, final evidence, runtime and limits |
 
 Assign your names before presenting. Keep one person operating the laptop.
-If live rendering fails, use the poster or 60-second film within Speaker 3's
-existing slot, then return to slide 6. Do not debug on stage or add another
-minute after the five-minute talk.
+If live rendering fails, use the still poster and then the three CT checks.
+The separate showcase is not part of the talk. Do not debug on stage or add
+another minute after the five-minute talk.
 
 ## What to say about accuracy
 
@@ -208,6 +209,11 @@ selection composite scored **0.4444** and is not one deployable algorithm.
 The fixed strict detector remains the defensible submission. Synthetic
 topology F1 **0.9684** is reported separately. No official weighted score was
 available. Avoid converting any of these numbers into “percent accurate.”
+
+The later guarded wall-recovery experiment reached F1 **0.5806** but worsened
+count MAE from **2.0 to 2.2**. It preserved baseline matches across 80 synthetic
+comparisons, but that does not establish better unseen-patient performance.
+Strict is the accepted submission choice; recovery remains opt-in.
 
 ## Troubleshooting and the final laptop check
 
@@ -227,8 +233,9 @@ Stop Python and any optional Vite server with **Ctrl+C** in their terminals.
 Restarting clears the backend cache, so preload the demo again.
 
 On the actual Windows laptop, disconnect external internet after setup, run
-the CLI on a supplied case, open the website, analyze/select/export, and play
-the deck/video. To time a CLI run in PowerShell:
+the CLI on a supplied case, open the website, analyze/select/export, and rehearse
+the deck-to-app switch. Check the showcase separately if sharing it.
+To time a CLI run in PowerShell:
 
 ```powershell
 Measure-Command { .\.venv313\Scripts\python.exe run.py --image data\subject001\orig1.nii --aorta-mask data\subject001\mask1.nii --output prediction.json }
