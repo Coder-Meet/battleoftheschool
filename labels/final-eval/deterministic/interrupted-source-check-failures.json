@@ -1,0 +1,365 @@
+{
+  "failures": [
+    {
+      "name": "deterministic-review-union-contrast0.7-native0",
+      "case_id": "subject019",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6032998270000007
+    },
+    {
+      "name": "deterministic-review-union-contrast0.7-native0",
+      "case_id": "subject020",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6037407709999343
+    },
+    {
+      "name": "deterministic-review-union-contrast0.7-native0",
+      "case_id": "subject021",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6036804340000117
+    },
+    {
+      "name": "deterministic-review-union-contrast0.7-native0",
+      "case_id": "subject022",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6037836880000214
+    },
+    {
+      "name": "deterministic-review-union-contrast0.7-native0",
+      "case_id": "subject023",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6036676459999626
+    },
+    {
+      "name": "deterministic-review-union-contrast0.7-native1.2",
+      "case_id": "subject019",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6036542389999795
+    },
+    {
+      "name": "deterministic-review-union-contrast0.7-native1.2",
+      "case_id": "subject020",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6036969169999793
+    },
+    {
+      "name": "deterministic-review-union-contrast0.7-native1.2",
+      "case_id": "subject021",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035708419999537
+    },
+    {
+      "name": "deterministic-review-union-contrast0.7-native1.2",
+      "case_id": "subject022",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6036897120000049
+    },
+    {
+      "name": "deterministic-review-union-contrast0.7-native1.2",
+      "case_id": "subject023",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6051582679999683
+    },
+    {
+      "name": "deterministic-review-union-spacing0.75",
+      "case_id": "subject019",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.602177107999978
+    },
+    {
+      "name": "deterministic-review-union-spacing0.75",
+      "case_id": "subject020",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6036569469999904
+    },
+    {
+      "name": "deterministic-review-union-spacing0.75",
+      "case_id": "subject021",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6037052869999116
+    },
+    {
+      "name": "deterministic-review-union-spacing0.75",
+      "case_id": "subject022",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6033235259999401
+    },
+    {
+      "name": "deterministic-review-union-spacing0.75",
+      "case_id": "subject023",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6037800990000051
+    },
+    {
+      "name": "deterministic-review-union-spacing1.5",
+      "case_id": "subject019",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6034581799999614
+    },
+    {
+      "name": "deterministic-review-union-spacing1.5",
+      "case_id": "subject020",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6036050970000133
+    },
+    {
+      "name": "deterministic-review-union-spacing1.5",
+      "case_id": "subject021",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035763019999649
+    },
+    {
+      "name": "deterministic-review-union-spacing1.5",
+      "case_id": "subject022",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6036926780000158
+    },
+    {
+      "name": "deterministic-review-union-spacing1.5",
+      "case_id": "subject023",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.603752112000052
+    },
+    {
+      "name": "deterministic-review-union-wall-parallel",
+      "case_id": "subject019",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035596320000423
+    },
+    {
+      "name": "deterministic-review-union-wall-parallel",
+      "case_id": "subject020",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035822029999736
+    },
+    {
+      "name": "deterministic-review-union-wall-parallel",
+      "case_id": "subject021",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035258570000224
+    },
+    {
+      "name": "deterministic-review-union-wall-parallel",
+      "case_id": "subject022",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035794859999442
+    },
+    {
+      "name": "deterministic-review-union-wall-parallel",
+      "case_id": "subject023",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035855779999793
+    },
+    {
+      "name": "deterministic-strict-origin-disabled",
+      "case_id": "subject019",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6039326759999994
+    },
+    {
+      "name": "deterministic-strict-origin-disabled",
+      "case_id": "subject020",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6031893379999929
+    },
+    {
+      "name": "deterministic-strict-origin-disabled",
+      "case_id": "subject021",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035671199999797
+    },
+    {
+      "name": "deterministic-strict-origin-disabled",
+      "case_id": "subject022",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035841959999289
+    },
+    {
+      "name": "deterministic-strict-origin-disabled",
+      "case_id": "subject023",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6036239580000711
+    },
+    {
+      "name": "deterministic-paper-contact-growth-origin-disabled",
+      "case_id": "subject019",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035380620000979
+    },
+    {
+      "name": "deterministic-paper-contact-growth-origin-disabled",
+      "case_id": "subject020",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6034093010000561
+    },
+    {
+      "name": "deterministic-paper-contact-growth-origin-disabled",
+      "case_id": "subject021",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6036088630000904
+    },
+    {
+      "name": "deterministic-paper-contact-growth-origin-disabled",
+      "case_id": "subject022",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6037977250000495
+    },
+    {
+      "name": "deterministic-paper-contact-growth-origin-disabled",
+      "case_id": "subject023",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035741420000704
+    },
+    {
+      "name": "deterministic-paper-border-cleaning-origin-disabled",
+      "case_id": "subject019",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6034496419999869
+    },
+    {
+      "name": "deterministic-paper-border-cleaning-origin-disabled",
+      "case_id": "subject020",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6034858570000097
+    },
+    {
+      "name": "deterministic-paper-border-cleaning-origin-disabled",
+      "case_id": "subject021",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6038560260000168
+    },
+    {
+      "name": "deterministic-paper-border-cleaning-origin-disabled",
+      "case_id": "subject022",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6034389569999803
+    },
+    {
+      "name": "deterministic-paper-border-cleaning-origin-disabled",
+      "case_id": "subject023",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6037552700000788
+    },
+    {
+      "name": "deterministic-paper-pca-direction-origin-disabled",
+      "case_id": "subject019",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6035618040000372
+    },
+    {
+      "name": "deterministic-paper-pca-direction-origin-disabled",
+      "case_id": "subject020",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6034531139999899
+    },
+    {
+      "name": "deterministic-paper-pca-direction-origin-disabled",
+      "case_id": "subject021",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6034340239999665
+    },
+    {
+      "name": "deterministic-paper-pca-direction-origin-disabled",
+      "case_id": "subject022",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6034946760000821
+    },
+    {
+      "name": "deterministic-paper-pca-direction-origin-disabled",
+      "case_id": "subject023",
+      "exit_code": 1,
+      "reason": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 631, in <module>\n    main()\n    ~~~~^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 620, in main\n    worker(args.output_dir, args.name, args.case)\n    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 278, in worker\n    frozen = verify_matrix(output)\n  File \"/home/ubuntu/repos/battleoftheschool-final-deterministic/final_eval_deterministic.py\", line 176, in verify_matrix\n    raise ValueError(\"Frozen detector/scorer source changed; do not mix extractions.\")\nValueError: Frozen detector/scorer source changed; do not mix extractions.\n",
+      "elapsed_s": 0.6036834310000359
+    }
+  ],
+  "completed_at_utc": "2026-09-13T02:16:24.225017+00:00"
+}

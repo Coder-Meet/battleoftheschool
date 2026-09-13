@@ -1,6 +1,6 @@
 # Deterministic family handoff
 
-## Status: partial checkpoint; extraction still running
+## Status: partial checkpoint; extraction resumed from frozen source
 
 The source and exact 26-extraction matrix were committed and pushed before scoring
 in `a3cf586031caf67b3f6ef7965ed30d0db717e257`. This checkpoint preserves completed
@@ -9,6 +9,16 @@ worker records; it does **not** claim a complete comparison or selected winner.
 case/configuration pairs at each checkpoint. Each completed worker record includes
 predictions, runtime/RSS, candidate ordering/features, rejected trace evidence,
 and matrix/source identity. No scores have been inspected at this checkpoint.
+
+Checkpoint `263ae97301b86264ab00b263b2f8253256b32cb4` preserved 83 pairs.
+The second concurrent rebase brought in a two-line protocol-only addition:
+`Handoff note: wait on the workers.` Its changed file hash correctly stopped the
+remaining 45 worker attempts after 85 successful records. Detector, scorer,
+requirements, and all other frozen sources were unchanged. All 45 interrupted
+attempts are preserved in `interrupted-source-check-failures.json`; no empty
+predictions were substituted. Recovery uses a detached worktree at the exact
+frozen commit, with existing results copied in and the remaining pairs resumed.
+No source guard was disabled or source hash rewritten.
 
 Seven focused tests passed (5.79 seconds); Ruff and mypy passed for both assigned
 Python files. The existing detector, paper, accuracy, stress, and input-validation
@@ -52,12 +62,24 @@ uv pip install --python .venv313/bin/python -r requirements-dev.txt
 .venv313/bin/mypy final_eval_deterministic.py tests/test_final_eval_deterministic.py
 OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=4 .venv313/bin/python -m pytest -q tests/test_final_eval_deterministic.py
 OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=4 .venv313/bin/python -m pytest -q tests/test_detector.py tests/test_paper_methods.py tests/test_accuracy.py tests/test_stress.py tests/test_input_validation.py
-.venv313/bin/python final_eval_deterministic.py run
-.venv313/bin/python final_eval_deterministic.py report
 ```
 
 Skip virtualenv creation/install when this VM's existing environment remains
 usable. Do **not** run `freeze` again: the committed matrix is immutable.
+Because current main's protocol hash changed, run the frozen replay in an
+isolated detached worktree. On this VM it already exists at
+`/home/ubuntu/repos/battleoftheschool-deterministic-frozen`; skip worktree
+creation when resuming there. From the main checkout on a fresh machine:
+
+```bash
+GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach ../battleoftheschool-deterministic-frozen a3cf586031caf67b3f6ef7965ed30d0db717e257
+git -C ../battleoftheschool-deterministic-frozen lfs pull --include="data/subject019/*,data/subject020/*,data/subject021/*,data/subject022/*,data/subject023/*"
+cp -a labels/final-eval/deterministic/runs ../battleoftheschool-deterministic-frozen/labels/final-eval/deterministic/
+.venv313/bin/python ../battleoftheschool-deterministic-frozen/final_eval_deterministic.py run
+.venv313/bin/python ../battleoftheschool-deterministic-frozen/final_eval_deterministic.py report
+cp -a ../battleoftheschool-deterministic-frozen/labels/final-eval/deterministic/{runs,predictions,report.json,reference-diagnostics.json,failures.json} labels/final-eval/deterministic/
+```
+
 The `run` command resumes completed matching worker records without rerunning
 CT processing, caps worker numerical threads at four, enforces 7168 MB RSS and
 1800 seconds per worker, and records explicit failures. Before starting on the
@@ -101,7 +123,9 @@ diagnostics are evidence of nearby failures, not proof of vessel identity.
   verdict is recorded above.
 - Results completed after the latest checkpoint may still be untracked until the
   next checkpoint. Inspect `git status --short` and commit only owned files.
-- No task blocker is known. The initial stale checkout's setup failure was
+- The protocol-hash interruption has a verified frozen-worktree recovery path.
+  Keep the detached replay's new results copied back to main and checkpointed.
+  The initial stale checkout's setup failure was
   avoided by cloning the requested `Coder-Meet` repository and installing its
   pinned development dependencies. No credentials are required beyond existing
   repository/LFS access.
