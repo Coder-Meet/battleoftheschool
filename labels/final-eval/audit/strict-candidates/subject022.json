@@ -480,10 +480,10 @@
       }
     ],
     "timings": {
-      "prepare_s": 0.349,
-      "enhance_s": 5.31,
-      "trace_s": 0.094,
-      "total_s": 5.753
+      "prepare_s": 0.34,
+      "enhance_s": 5.242,
+      "trace_s": 0.126,
+      "total_s": 5.708
     },
     "blood_model": {
       "median_hu": 240.0,

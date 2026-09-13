@@ -27,10 +27,10 @@
   "diagnostics": {
     "branches": [],
     "timings": {
-      "prepare_s": 0.112,
-      "enhance_s": 1.313,
+      "prepare_s": 0.11,
+      "enhance_s": 1.317,
       "trace_s": 0.009,
-      "total_s": 1.433
+      "total_s": 1.436
     },
     "blood_model": {
       "median_hu": 557.0,

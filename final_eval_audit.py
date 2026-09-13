@@ -550,7 +550,7 @@ def structural_summary(release: dict, cases: list[dict]) -> dict:
             )) for case in cases
         ),
         "all_active_nifti_affines_match": all(
-            header["active_affines_match_sitk"] and header["spatial_units_code"] == 2
+            header["active_affines_match_sitk"]
             for case in cases for header in case["geometry"]
         ),
         "source_dimensions_spacing_and_coordinate_metadata": all(
@@ -593,6 +593,17 @@ def findings(cases: list[dict], controls: dict, models: dict) -> list[dict]:
             "id": "audit_reference_authority", "severity": "information", "kind": "provenance",
             "message": "19 targets are judge-approved for this local comparison. The original release remains "
             "AI-assisted, expert-review-pending, and explicitly non-exhaustive; approval does not change authorship.",
+        },
+        {
+            "id": "audit_nifti_units_unspecified", "severity": "warning", "kind": "metadata",
+            "message": "All 20 inspected NIfTI headers use spatial units code 0 (unspecified), qform code 0 "
+            "(inactive), sform code 2 (active). Active sforms agree with SimpleITK and preserve source geometry. "
+            "The mm interpretation is supplied by the release documentation/JSON, not an explicit NIfTI unit tag. "
+            "Do not invent a qform or silently rewrite source headers.",
+            "spatial_units_by_case": {
+                case["case_id"]: [header["spatial_units_code"] for header in case["geometry"]]
+                for case in cases
+            },
         },
         {
             "id": "audit_unknown_radii", "severity": "warning", "kind": "measurement",

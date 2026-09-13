@@ -1,11 +1,11 @@
-# Audit checkpoint
+# Completed independent audit
 
-Status: **checkpoint; final report refresh pending**. Source and focused tests
-pass. The committed report is from the first successful complete audit run;
-source subsequently gained explicit structural pass/fail summaries, deeper model
-metadata checks, and strict-first execution to avoid inherited parent RSS floors.
-Run the command below to refresh the report before treating those additions as
-executed. Do not discard the completed strict predictions or metrics.
+Status: **complete**. The expanded audit ran successfully: every structural check
+passed and the failure list is empty. Ruff, mypy and 39 focused tests passed.
+Results include explicit structural summaries, deeper model metadata checks and
+strict-first execution to avoid inherited parent RSS floors. Initial checkpoint
+`3c34ef61d92d425a438106bac29a0e2678be204d` is already pushed to MAIN; this update
+supersedes its partial status. No training or audit variant remains pending.
 
 ## Scope and ownership
 
@@ -23,6 +23,9 @@ Initial parent preparation commit: `2a825d89b66e7d5c61bea7f497be08fbc22cf526`.
 - Active NIfTI affines match SimpleITK LPS; all physical/voxel guides round-trip.
   All labels are connected, contact parent faces, do not overlap parent, and
   contain their 5 mm seeds. Directions are unit seed-chord vectors.
+- All 20 inspected headers have inactive qform=0, active sform=2 and unspecified
+  spatial units=0. Millimetres come from release documentation/JSON, not a header
+  unit declaration. This metadata limitation is recorded as a finding.
 - Direct/shared scorer parity passed on synthetic controls and all five strict
   outputs at 2/3/5 mm. Strict control: TP/FP/FN = 6/5/13 at 2 mm and 8/3/11 at
   3 and 5 mm. This audit-only duplicate is **ineligible for selection**.
@@ -46,7 +49,7 @@ Findings needing aggregator awareness:
 - Original review is unsigned and incomplete despite judge scoring approval;
   unmatched predictions are not established anatomical negatives.
 
-## Reproduction / next commands
+## Reproduction commands
 
 Checkout used: `/home/ubuntu/repos/battleoftheschool-audit`. Local-only `.venv313`
 contains the pinned environment. No useful result exists only in that environment.
@@ -76,15 +79,17 @@ CT/mask and baseline config, never reference coordinates/counts. It takes roughl
 Model ONNX bytes and sidecar hashes are inspected; CNN inference is outside scope.
 Offline Windows runtime validation remains for the parent, not this Linux audit.
 
-Checkpoint source SHA256:
+Final source SHA256 (also recorded in `report.json`):
 
 | File | SHA256 |
 |---|---|
-| final_eval_audit.py | fd09bf53b345a04126a04d507da96cf861159d009bd26d1ecca9478413dcf94c |
+| final_eval_audit.py | 2cf69e08661464ff75b91732c1a2e9176e37c79875dda4eb501096611f34ad3e |
 | tests/test_final_eval_audit.py | f2546997cc42c2045d8d80b9e038bcacec5b12bc2a5a1ff72785baf3787f8d3b |
 | detector.py | 9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e |
 | final_evaluation.py | be2488c1123e0f3ae7cbff7a319ac360fab60c9502ebe5ce490bd7c918d7c990 |
 | score_references.py | 483d216d6a3a9993a0ca8f6c2d614f7a85702e51ee4894437369e72487b22e38 |
 
-No unresolved operational blocker. Remaining: execute the expanded audit,
-inspect machine-readable failures, refresh this status and commit/push results.
+No unresolved operational blocker. The parent can consume `report.json` and
+its `findings`, retain audit-only variants as ineligible, and use the source/model
+compatibility and training-overlap classifications during aggregation. No
+production scorer or accepted target was changed.

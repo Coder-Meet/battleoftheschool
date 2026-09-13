@@ -723,26 +723,29 @@
       },
       "runtime": {
         "subject019": {
-          "runtime_s": 1.646275136999975,
-          "peak_rss_mb": 510.28125
+          "runtime_s": 1.6498481730000094,
+          "peak_rss_mb": 330.03125
         },
         "subject020": {
-          "runtime_s": 2.088250595999966,
-          "peak_rss_mb": 510.28125
+          "runtime_s": 2.2977286980000144,
+          "peak_rss_mb": 366.34375
         },
         "subject021": {
-          "runtime_s": 3.137420975999987,
-          "peak_rss_mb": 510.28125
+          "runtime_s": 3.1007363809999333,
+          "peak_rss_mb": 430.03125
         },
         "subject022": {
-          "runtime_s": 6.111580648999961,
-          "peak_rss_mb": 625.296875
+          "runtime_s": 6.0625815119999515,
+          "peak_rss_mb": 625.47265625
         },
         "subject023": {
-          "runtime_s": 1.5013117070000135,
-          "peak_rss_mb": 510.28125
+          "runtime_s": 1.46916227600002,
+          "peak_rss_mb": 311.41015625
         }
-      }
+      },
+      "direct_shared_case_metrics_equal": true,
+      "direct_mirror_warning": false,
+      "pooled_signed_count_error": -8
     }
   ],
   "failures": [],
@@ -1218,6 +1221,7 @@
       "input_identity": {
         "image_sha256": "5e3140eeaa821b6c964620256c1696df6a228564896b1c66d3846f625b7c8c96",
         "mask_sha256": "c18f4c8f43904e1658164e762984d042b1bc88e789494e6fdeec79ec95d82b0f",
+        "canonical_reference_sha256": "38435a327008a660a826c250dc9ec119ef6eae6cee2bd1ca62dd7f59b1a9dbf2",
         "release_image_identical": true,
         "release_mask_identical": true,
         "canonical_source_hash_matches": true
@@ -1432,6 +1436,8 @@
       ],
       "metadata_shape_matches": true,
       "metadata_spacing_matches": true,
+      "raw_coordinate_system": "SimpleITK physical LPS millimetres",
+      "annotation_status": "draft_CT_guided_annotations_not_expert_validated_ground_truth",
       "parent_labels": [
         0,
         1
@@ -1580,8 +1586,8 @@
       ],
       "review_notes": "# Case 19: review priorities\n\nThree draft instances are retained. The anterior origin (branch_003) is affected by adjacent calcification and possible early branching; its boundary and single-instance interpretation need particular attention. Subtle posterior tracks around voxel z136-138 were not established as eligible. Small retained origins also need review against the 2 mm threshold.\n\nCoordinates here are zero-based native voxel indices (x, y, z). Physical LPS coordinates of retained tracing guides and seeds are in annotations.json.\n\nEvery branch remains expert-review-pending. Confidence labels are qualitative, not calibrated probabilities. These notes do not establish exhaustive detection.\n",
       "excluded_candidates": null,
-      "runtime_s": 0.7285901650000142,
-      "process_peak_rss_mb": 391.91015625
+      "runtime_s": 0.6861474810000345,
+      "process_peak_rss_mb": 392.3984375
     },
     {
       "case_id": "subject020",
@@ -1590,6 +1596,7 @@
       "input_identity": {
         "image_sha256": "f9b0ff4e3af19ca8e63cddfcc1a5ec5d5d302b1f7d97e54b7d57b06680cc7d81",
         "mask_sha256": "dee54f9885040b24bf59e1e11843c4cf08992f12b4ac9479f622a79a279092ca",
+        "canonical_reference_sha256": "dd9f3b2d780f04613daf2e114668c4589b6d4971644f4d64a28cd7056ae874f3",
         "release_image_identical": true,
         "release_mask_identical": true,
         "canonical_source_hash_matches": true
@@ -1804,6 +1811,8 @@
       ],
       "metadata_shape_matches": true,
       "metadata_spacing_matches": true,
+      "raw_coordinate_system": "SimpleITK physical LPS millimetres",
+      "annotation_status": "draft_CT_guided_annotations_not_expert_validated_ground_truth",
       "parent_labels": [
         0,
         1
@@ -2038,8 +2047,8 @@
         "threshold_hu": 210,
         "notes": "Small posterior daughter with visible curved contrast-filled continuation. Origin and proximal voxels are strongly affected by partial volume; particularly borderline for the 2 mm minimum and must be adjudicated before scoring."
       },
-      "runtime_s": 1.210248293999996,
-      "process_peak_rss_mb": 510.28125
+      "runtime_s": 1.177021233000005,
+      "process_peak_rss_mb": 528.0859375
     },
     {
       "case_id": "subject021",
@@ -2048,6 +2057,7 @@
       "input_identity": {
         "image_sha256": "11e3ce094db5632f7f4df2dbe5849923e9f51a7a17eeeeaf1fa6a296abb48519",
         "mask_sha256": "0ef0d75f4a912a947ab566da3ef5e614f458f3ee5cba328cf1976b320e7f444b",
+        "canonical_reference_sha256": "9f7e48a9f6be02c032aae5fefd3c77b0376292056eb107ecaad68886ce494029",
         "release_image_identical": true,
         "release_mask_identical": true,
         "canonical_source_hash_matches": true
@@ -2262,6 +2272,8 @@
       ],
       "metadata_shape_matches": true,
       "metadata_spacing_matches": true,
+      "raw_coordinate_system": "SimpleITK physical LPS millimetres",
+      "annotation_status": "draft_CT_guided_annotations_not_expert_validated_ground_truth",
       "parent_labels": [
         0,
         1
@@ -2410,8 +2422,8 @@
       ],
       "review_notes": "# Case 21: review priorities\n\nThree clear major branch candidates are retained. A looping vessel near [92,130,143] and [93,134,158] was excluded: tracking did not establish an independent aortic origin. A small posterior structure near [110,123,136] may originate at or below the inferior mask cap (z135). Other structures near [98,123,154] and [100,124,155] have unresolved diameter and separate-origin versus common-trunk anatomy. These omissions require review; this case is not certified exhaustive.\n\nCoordinates here are zero-based native voxel indices (x, y, z). Physical LPS coordinates of retained tracing guides and seeds are in annotations.json.\n\nEvery branch remains expert-review-pending. Confidence labels are qualitative, not calibrated probabilities. These notes do not establish exhaustive detection.\n",
       "excluded_candidates": null,
-      "runtime_s": 0.600977662000048,
-      "process_peak_rss_mb": 510.28125
+      "runtime_s": 0.6039739619999409,
+      "process_peak_rss_mb": 528.0859375
     },
     {
       "case_id": "subject022",
@@ -2420,6 +2432,7 @@
       "input_identity": {
         "image_sha256": "56b888fd4a43396ea38d44c7f3ffa7f4f2972815e8173fa73e47d694f3a3ba81",
         "mask_sha256": "96fac7941744573e8e14f0e4402d60d00fdd9099f984df76514b929bd52b3d0d",
+        "canonical_reference_sha256": "ea72c9717b11d43f9bef7da748698a9ec72575a03f004f762e7f30baddca14d3",
         "release_image_identical": true,
         "release_mask_identical": true,
         "canonical_source_hash_matches": true
@@ -2634,6 +2647,8 @@
       ],
       "metadata_shape_matches": true,
       "metadata_spacing_matches": true,
+      "raw_coordinate_system": "SimpleITK physical LPS millimetres",
+      "annotation_status": "draft_CT_guided_annotations_not_expert_validated_ground_truth",
       "parent_labels": [
         0,
         1
@@ -2954,8 +2969,8 @@
           ]
         }
       ],
-      "runtime_s": 1.2903219519999993,
-      "process_peak_rss_mb": 510.28125
+      "runtime_s": 1.246027746999971,
+      "process_peak_rss_mb": 528.0859375
     },
     {
       "case_id": "subject023",
@@ -2964,6 +2979,7 @@
       "input_identity": {
         "image_sha256": "9e2747d40b4f63ec23d4d4a99dd6d4f4cf0125d608c1e782df6f094af51cbb49",
         "mask_sha256": "bb10d5cbe26775e76beddf2c3c7d9f447e39784e129fe40f9204e5d48be00cd8",
+        "canonical_reference_sha256": "19172eae21cfab45382a88bcf4bd3cfc4743f97b9234f8a588f918ee2601cb5b",
         "release_image_identical": true,
         "release_mask_identical": true,
         "canonical_source_hash_matches": true
@@ -3178,6 +3194,8 @@
       ],
       "metadata_shape_matches": true,
       "metadata_spacing_matches": true,
+      "raw_coordinate_system": "SimpleITK physical LPS millimetres",
+      "annotation_status": "draft_CT_guided_annotations_not_expert_validated_ground_truth",
       "parent_labels": [
         0,
         1
@@ -3326,8 +3344,8 @@
       ],
       "review_notes": "# Case 23: review priorities\n\nThree draft instances are retained. Branch_001 is a small anterior vessel. Branch_002 and branch_003 are low-confidence posterior candidates: both their minimum diameter and separate ostia versus a short common origin must be adjudicated. They remain separately labelled for review, not as a settled branch count. The terminal iliac split near z143-147 was excluded. No upper origin was inferred beyond the superior scan boundary.\n\nCoordinates here are zero-based native voxel indices (x, y, z). Physical LPS coordinates of retained tracing guides and seeds are in annotations.json.\n\nEvery branch remains expert-review-pending. Confidence labels are qualitative, not calibrated probabilities. These notes do not establish exhaustive detection.\n",
       "excluded_candidates": null,
-      "runtime_s": 0.694296683999994,
-      "process_peak_rss_mb": 510.28125
+      "runtime_s": 0.6712088770000264,
+      "process_peak_rss_mb": 528.0859375
     }
   ],
   "controls": {
@@ -3386,12 +3404,42 @@
             "subject021"
           ]
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": true,
         "source_checks": {},
+        "training_source_checks": {},
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "file_sha256_only"
         },
         "source_contract_available": false,
+        "data_classification": "retrospective_released_image_overlap",
+        "manifest_source": null,
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": null,
+        "threshold_selected_on": null,
+        "normalizer_fit_partition": null,
+        "prior_exposure": null,
+        "current_source_compatible": null,
+        "clean_selection_data_eligible": false,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3410,12 +3458,42 @@
             "subject021"
           ]
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": true,
         "source_checks": {},
+        "training_source_checks": {},
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "file_sha256_only"
         },
         "source_contract_available": false,
+        "data_classification": "retrospective_released_image_overlap",
+        "manifest_source": null,
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": null,
+        "threshold_selected_on": null,
+        "normalizer_fit_partition": null,
+        "prior_exposure": null,
+        "current_source_compatible": null,
+        "clean_selection_data_eligible": false,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3427,6 +3505,24 @@
           "validation": [],
           "test": []
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 122,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 42,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": false,
         "source_checks": {
           "detector.py": {
@@ -3450,11 +3546,44 @@
             "matches": false
           }
         },
+        "training_source_checks": {
+          "detector.py": {
+            "expected": "17495723df18c79e4302edc19bd949bb16f615b902403a88c68d6e74fa200063",
+            "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "matches": false
+          },
+          "learning.py": {
+            "expected": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "current": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "matches": true
+          },
+          "tabular_learning.py": {
+            "expected": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+            "current": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+            "matches": true
+          },
+          "train_trees.py": {
+            "expected": "49b992307e925cfa5a889e2c22b7193025eff90f03885277622831d543007b6e",
+            "current": "843df39cd09d4cc8cca7ab57380505b5aa78f8176d107f70cc4260a2a0d9e1f5",
+            "matches": false
+          }
+        },
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "TreeModel.load",
           "passed": true
         },
         "source_contract_available": true,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": "validation_threshold",
+        "normalizer_fit_partition": null,
+        "prior_exposure": {},
+        "current_source_compatible": false,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3466,6 +3595,24 @@
           "validation": [],
           "test": []
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 122,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 42,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": false,
         "source_checks": {
           "detector.py": {
@@ -3489,11 +3636,44 @@
             "matches": false
           }
         },
+        "training_source_checks": {
+          "detector.py": {
+            "expected": "17495723df18c79e4302edc19bd949bb16f615b902403a88c68d6e74fa200063",
+            "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "matches": false
+          },
+          "learning.py": {
+            "expected": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "current": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "matches": true
+          },
+          "tabular_learning.py": {
+            "expected": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+            "current": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+            "matches": true
+          },
+          "train_trees.py": {
+            "expected": "49b992307e925cfa5a889e2c22b7193025eff90f03885277622831d543007b6e",
+            "current": "843df39cd09d4cc8cca7ab57380505b5aa78f8176d107f70cc4260a2a0d9e1f5",
+            "matches": false
+          }
+        },
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "TreeModel.load",
           "passed": true
         },
         "source_contract_available": true,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": "validation_threshold",
+        "normalizer_fit_partition": null,
+        "prior_exposure": {},
+        "current_source_compatible": false,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3505,12 +3685,42 @@
           "validation": [],
           "test": []
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": false,
         "source_checks": {},
+        "training_source_checks": {},
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "file_sha256_only"
         },
         "source_contract_available": false,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": null,
+        "normalizer_fit_partition": null,
+        "prior_exposure": null,
+        "current_source_compatible": null,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3522,6 +3732,24 @@
           "validation": [],
           "test": []
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 122,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 42,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": false,
         "source_checks": {
           "detector.py": {
@@ -3545,11 +3773,44 @@
             "matches": false
           }
         },
+        "training_source_checks": {
+          "detector.py": {
+            "expected": "17495723df18c79e4302edc19bd949bb16f615b902403a88c68d6e74fa200063",
+            "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "matches": false
+          },
+          "learning.py": {
+            "expected": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "current": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "matches": true
+          },
+          "tabular_learning.py": {
+            "expected": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+            "current": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+            "matches": true
+          },
+          "train_trees.py": {
+            "expected": "49b992307e925cfa5a889e2c22b7193025eff90f03885277622831d543007b6e",
+            "current": "843df39cd09d4cc8cca7ab57380505b5aa78f8176d107f70cc4260a2a0d9e1f5",
+            "matches": false
+          }
+        },
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "TreeModel.load",
           "passed": true
         },
         "source_contract_available": true,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": "validation_threshold",
+        "normalizer_fit_partition": null,
+        "prior_exposure": {},
+        "current_source_compatible": false,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3561,6 +3822,24 @@
           "validation": [],
           "test": []
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 122,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 42,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": false,
         "source_checks": {
           "detector.py": {
@@ -3584,11 +3863,44 @@
             "matches": false
           }
         },
+        "training_source_checks": {
+          "detector.py": {
+            "expected": "17495723df18c79e4302edc19bd949bb16f615b902403a88c68d6e74fa200063",
+            "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "matches": false
+          },
+          "learning.py": {
+            "expected": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "current": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "matches": true
+          },
+          "tabular_learning.py": {
+            "expected": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+            "current": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+            "matches": true
+          },
+          "train_trees.py": {
+            "expected": "49b992307e925cfa5a889e2c22b7193025eff90f03885277622831d543007b6e",
+            "current": "843df39cd09d4cc8cca7ab57380505b5aa78f8176d107f70cc4260a2a0d9e1f5",
+            "matches": false
+          }
+        },
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "TreeModel.load",
           "passed": true
         },
         "source_contract_available": true,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": "validation_threshold",
+        "normalizer_fit_partition": null,
+        "prior_exposure": {},
+        "current_source_compatible": false,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3599,6 +3911,24 @@
           "train": [],
           "validation": [],
           "test": []
+        },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 122,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 39,
+            "released_overlap": []
+          }
         },
         "fit_or_validation_overlap": false,
         "source_checks": {
@@ -3613,12 +3943,66 @@
             "matches": true
           }
         },
+        "training_source_checks": {},
+        "sidecar_current_source_checks": {
+          "patch_learning.py": {
+            "expected": "aa63a79a10c31702eda7115e478c10dbbfe96df753a2852324bd8f8e703a2250",
+            "current": "aa63a79a10c31702eda7115e478c10dbbfe96df753a2852324bd8f8e703a2250",
+            "matches": true
+          },
+          "patch_inference.py": {
+            "expected": "e539d4f8e080a4a219d9c49dda247e2576d19c8269daf638d031116c43c81188",
+            "current": "e539d4f8e080a4a219d9c49dda247e2576d19c8269daf638d031116c43c81188",
+            "matches": true
+          },
+          "detector.py": {
+            "expected": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "matches": true
+          },
+          "candidate_patches.py": {
+            "expected": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "current": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "matches": true
+          },
+          "research_corpus.py": {
+            "expected": "4cdf57b023dc75e8bae5a11457ffcbd5c6a801a9359625784e3768186d7018be",
+            "current": "4cdf57b023dc75e8bae5a11457ffcbd5c6a801a9359625784e3768186d7018be",
+            "matches": true
+          },
+          "evaluate.py": {
+            "expected": "b5a2c04aa93020ea7034d59844fb7d3a56166985ee2633f0194b5f02ee332092",
+            "current": "b5a2c04aa93020ea7034d59844fb7d3a56166985ee2633f0194b5f02ee332092",
+            "matches": true
+          },
+          "research_validation.py": {
+            "expected": "955f79bde91c3706c2bbc317655d0150167cf943936b91ad98e48a7fbba2b335",
+            "current": "955f79bde91c3706c2bbc317655d0150167cf943936b91ad98e48a7fbba2b335",
+            "matches": true
+          },
+          "train_trees.py": {
+            "expected": "843df39cd09d4cc8cca7ab57380505b5aa78f8176d107f70cc4260a2a0d9e1f5",
+            "current": "843df39cd09d4cc8cca7ab57380505b5aa78f8176d107f70cc4260a2a0d9e1f5",
+            "matches": true
+          }
+        },
         "integrity": {
           "kind": "onnx_file_hash_only_no_inference",
           "sha256": "a562a0f4027b028eeda9c8e1af9c5b792d29cbc31d586d9c0814f32573a8353d",
-          "matches_sidecar": true
+          "matches_sidecar": true,
+          "sidecar_integrity_matches": true
         },
         "source_contract_available": true,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": "validation",
+        "normalizer_fit_partition": "train",
+        "prior_exposure": true,
+        "current_source_compatible": true,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3630,8 +4014,43 @@
           "validation": [],
           "test": []
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 122,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 42,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": false,
         "source_checks": {
+          "detector.py": {
+            "expected": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "matches": true
+          },
+          "candidate_patches.py": {
+            "expected": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "current": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "matches": true
+          },
+          "learning.py": {
+            "expected": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "current": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "matches": true
+          }
+        },
+        "training_source_checks": {
           "detector.py": {
             "expected": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
             "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
@@ -3653,11 +4072,22 @@
             "matches": true
           }
         },
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "TreeModel.load",
           "passed": true
         },
         "source_contract_available": true,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": "validation_threshold",
+        "normalizer_fit_partition": null,
+        "prior_exposure": {},
+        "current_source_compatible": true,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3669,8 +4099,43 @@
           "validation": [],
           "test": []
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 122,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 42,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": false,
         "source_checks": {
+          "detector.py": {
+            "expected": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "matches": true
+          },
+          "candidate_patches.py": {
+            "expected": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "current": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "matches": true
+          },
+          "learning.py": {
+            "expected": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "current": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "matches": true
+          }
+        },
+        "training_source_checks": {
           "detector.py": {
             "expected": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
             "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
@@ -3692,11 +4157,22 @@
             "matches": true
           }
         },
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "TreeModel.load",
           "passed": true
         },
         "source_contract_available": true,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": "validation_threshold",
+        "normalizer_fit_partition": null,
+        "prior_exposure": {},
+        "current_source_compatible": true,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3708,12 +4184,42 @@
           "validation": [],
           "test": []
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": false,
         "source_checks": {},
+        "training_source_checks": {},
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "file_sha256_only"
         },
         "source_contract_available": false,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": null,
+        "normalizer_fit_partition": null,
+        "prior_exposure": null,
+        "current_source_compatible": null,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3725,8 +4231,43 @@
           "validation": [],
           "test": []
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 122,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 42,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": false,
         "source_checks": {
+          "detector.py": {
+            "expected": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "matches": true
+          },
+          "candidate_patches.py": {
+            "expected": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "current": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "matches": true
+          },
+          "learning.py": {
+            "expected": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "current": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "matches": true
+          }
+        },
+        "training_source_checks": {
           "detector.py": {
             "expected": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
             "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
@@ -3748,11 +4289,22 @@
             "matches": true
           }
         },
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "TreeModel.load",
           "passed": true
         },
         "source_contract_available": true,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": "validation_threshold",
+        "normalizer_fit_partition": null,
+        "prior_exposure": {},
+        "current_source_compatible": true,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3764,8 +4316,43 @@
           "validation": [],
           "test": []
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 122,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 42,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 0,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": false,
         "source_checks": {
+          "detector.py": {
+            "expected": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "matches": true
+          },
+          "candidate_patches.py": {
+            "expected": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "current": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "matches": true
+          },
+          "learning.py": {
+            "expected": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "current": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+            "matches": true
+          }
+        },
+        "training_source_checks": {
           "detector.py": {
             "expected": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
             "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
@@ -3787,11 +4374,22 @@
             "matches": true
           }
         },
+        "sidecar_current_source_checks": {},
         "integrity": {
           "kind": "TreeModel.load",
           "passed": true
         },
         "source_contract_available": true,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": "validation_threshold",
+        "normalizer_fit_partition": null,
+        "prior_exposure": {},
+        "current_source_compatible": true,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3806,6 +4404,27 @@
           "validation": [],
           "test": []
         },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 135,
+            "released_overlap": [
+              "subject022",
+              "subject023"
+            ]
+          },
+          "validation_records": {
+            "count": 39,
+            "released_overlap": []
+          }
+        },
         "fit_or_validation_overlap": true,
         "source_checks": {
           "detector.py": {
@@ -3819,12 +4438,69 @@
             "matches": true
           }
         },
+        "training_source_checks": {},
+        "sidecar_current_source_checks": {
+          "patch_learning.py": {
+            "expected": "45867357bb0e10a9e5a935a890523f518c60d0977562d7714a75cd28ec76b866",
+            "current": "aa63a79a10c31702eda7115e478c10dbbfe96df753a2852324bd8f8e703a2250",
+            "matches": false
+          },
+          "patch_inference.py": {
+            "expected": "e539d4f8e080a4a219d9c49dda247e2576d19c8269daf638d031116c43c81188",
+            "current": "e539d4f8e080a4a219d9c49dda247e2576d19c8269daf638d031116c43c81188",
+            "matches": true
+          },
+          "detector.py": {
+            "expected": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "matches": true
+          },
+          "candidate_patches.py": {
+            "expected": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "current": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "matches": true
+          },
+          "research_corpus.py": {
+            "expected": "4cdf57b023dc75e8bae5a11457ffcbd5c6a801a9359625784e3768186d7018be",
+            "current": "4cdf57b023dc75e8bae5a11457ffcbd5c6a801a9359625784e3768186d7018be",
+            "matches": true
+          },
+          "evaluate.py": {
+            "expected": "b5a2c04aa93020ea7034d59844fb7d3a56166985ee2633f0194b5f02ee332092",
+            "current": "b5a2c04aa93020ea7034d59844fb7d3a56166985ee2633f0194b5f02ee332092",
+            "matches": true
+          },
+          "research_validation.py": {
+            "expected": "955f79bde91c3706c2bbc317655d0150167cf943936b91ad98e48a7fbba2b335",
+            "current": "955f79bde91c3706c2bbc317655d0150167cf943936b91ad98e48a7fbba2b335",
+            "matches": true
+          },
+          "train_trees.py": {
+            "expected": "49b992307e925cfa5a889e2c22b7193025eff90f03885277622831d543007b6e",
+            "current": "843df39cd09d4cc8cca7ab57380505b5aa78f8176d107f70cc4260a2a0d9e1f5",
+            "matches": false
+          }
+        },
         "integrity": {
           "kind": "onnx_file_hash_only_no_inference",
           "sha256": "8787a20a9738f12c4016c1b7d61874836974e55d759cf17b45aa61eb18d4096f",
-          "matches_sidecar": true
+          "matches_sidecar": true,
+          "sidecar_integrity_matches": true
         },
         "source_contract_available": true,
+        "data_classification": "retrospective_released_image_overlap",
+        "manifest_source": "analytic_synthetic_geometry_and_historical_candidate_pseudo",
+        "manifest_released_case_ids": [
+          "subject022",
+          "subject023"
+        ],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": "validation",
+        "normalizer_fit_partition": "train",
+        "prior_exposure": true,
+        "current_source_compatible": false,
+        "clean_selection_data_eligible": false,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       },
       {
@@ -3835,6 +4511,24 @@
           "train": [],
           "validation": [],
           "test": []
+        },
+        "extra_case_evidence": {
+          "metadata_fit_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "metadata_threshold_case_ids": {
+            "count": 0,
+            "released_overlap": []
+          },
+          "training_records": {
+            "count": 122,
+            "released_overlap": []
+          },
+          "validation_records": {
+            "count": 39,
+            "released_overlap": []
+          }
         },
         "fit_or_validation_overlap": false,
         "source_checks": {
@@ -3849,12 +4543,66 @@
             "matches": true
           }
         },
+        "training_source_checks": {},
+        "sidecar_current_source_checks": {
+          "patch_learning.py": {
+            "expected": "373d6f329dd3c73dbd336df056e317b898c1ec3da35a3a255dac8b0528c806c6",
+            "current": "aa63a79a10c31702eda7115e478c10dbbfe96df753a2852324bd8f8e703a2250",
+            "matches": false
+          },
+          "patch_inference.py": {
+            "expected": "e539d4f8e080a4a219d9c49dda247e2576d19c8269daf638d031116c43c81188",
+            "current": "e539d4f8e080a4a219d9c49dda247e2576d19c8269daf638d031116c43c81188",
+            "matches": true
+          },
+          "detector.py": {
+            "expected": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "current": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+            "matches": true
+          },
+          "candidate_patches.py": {
+            "expected": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "current": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+            "matches": true
+          },
+          "research_corpus.py": {
+            "expected": "4cdf57b023dc75e8bae5a11457ffcbd5c6a801a9359625784e3768186d7018be",
+            "current": "4cdf57b023dc75e8bae5a11457ffcbd5c6a801a9359625784e3768186d7018be",
+            "matches": true
+          },
+          "evaluate.py": {
+            "expected": "b5a2c04aa93020ea7034d59844fb7d3a56166985ee2633f0194b5f02ee332092",
+            "current": "b5a2c04aa93020ea7034d59844fb7d3a56166985ee2633f0194b5f02ee332092",
+            "matches": true
+          },
+          "research_validation.py": {
+            "expected": "955f79bde91c3706c2bbc317655d0150167cf943936b91ad98e48a7fbba2b335",
+            "current": "955f79bde91c3706c2bbc317655d0150167cf943936b91ad98e48a7fbba2b335",
+            "matches": true
+          },
+          "train_trees.py": {
+            "expected": "49b992307e925cfa5a889e2c22b7193025eff90f03885277622831d543007b6e",
+            "current": "843df39cd09d4cc8cca7ab57380505b5aa78f8176d107f70cc4260a2a0d9e1f5",
+            "matches": false
+          }
+        },
         "integrity": {
           "kind": "onnx_file_hash_only_no_inference",
           "sha256": "a562a0f4027b028eeda9c8e1af9c5b792d29cbc31d586d9c0814f32573a8353d",
-          "matches_sidecar": true
+          "matches_sidecar": true,
+          "sidecar_integrity_matches": true
         },
         "source_contract_available": true,
+        "data_classification": "analytic_synthetic_only_by_manifest",
+        "manifest_source": "analytic_synthetic_geometry",
+        "manifest_released_case_ids": [],
+        "manifest_split_coverage_complete": true,
+        "threshold_selected_on": "validation",
+        "normalizer_fit_partition": "train",
+        "prior_exposure": true,
+        "current_source_compatible": false,
+        "clean_selection_data_eligible": true,
+        "eligibility_caveat": "Data-only eligibility; source compatibility, synthetic regressions and runtime gates must pass separately. No model is promoted by this audit.",
         "inference_run": false
       }
     ],
@@ -3863,7 +4611,8 @@
         "reviewed_candidates": 0,
         "labels": {},
         "pseudo_reference_exists": true,
-        "pseudo_reference_sha256": "fe43d3623493bfa3024143e75c9476f0a0487c762747f16c2a0e4c92cb65e6e2"
+        "pseudo_reference_sha256": "fe43d3623493bfa3024143e75c9476f0a0487c762747f16c2a0e4c92cb65e6e2",
+        "pseudo_reference_daughters": 0
       },
       "subject020": {
         "reviewed_candidates": 3,
@@ -3872,7 +4621,8 @@
           "rejected": 1
         },
         "pseudo_reference_exists": true,
-        "pseudo_reference_sha256": "661d1991627164f6914bb374307853b926fb8dea0eefa4ab6480e02935230663"
+        "pseudo_reference_sha256": "661d1991627164f6914bb374307853b926fb8dea0eefa4ab6480e02935230663",
+        "pseudo_reference_daughters": 2
       },
       "subject021": {
         "reviewed_candidates": 5,
@@ -3881,7 +4631,8 @@
           "confirmed": 3
         },
         "pseudo_reference_exists": true,
-        "pseudo_reference_sha256": "c7bb77ae6826b9a9e20205ee58e630b69f1927c6b7d7bf2554869b4d07c0ac3a"
+        "pseudo_reference_sha256": "c7bb77ae6826b9a9e20205ee58e630b69f1927c6b7d7bf2554869b4d07c0ac3a",
+        "pseudo_reference_daughters": 3
       },
       "subject022": {
         "reviewed_candidates": 20,
@@ -3890,7 +4641,8 @@
           "confirmed": 7
         },
         "pseudo_reference_exists": true,
-        "pseudo_reference_sha256": "1816277f93a3dfb8893fbcdfc14e3d2649c4c7ff866bbd3ef5d192e7191fed25"
+        "pseudo_reference_sha256": "1816277f93a3dfb8893fbcdfc14e3d2649c4c7ff866bbd3ef5d192e7191fed25",
+        "pseudo_reference_daughters": 7
       },
       "subject023": {
         "reviewed_candidates": 1,
@@ -3898,7 +4650,8 @@
           "rejected": 1
         },
         "pseudo_reference_exists": true,
-        "pseudo_reference_sha256": "42f80896b8061360dc6ccd69ed5039efe57b2e288702facec4e59c7211cda988"
+        "pseudo_reference_sha256": "42f80896b8061360dc6ccd69ed5039efe57b2e288702facec4e59c7211cda988",
+        "pseudo_reference_daughters": 0
       }
     },
     "reviews_sha256": "319138ab8e6778f4378d5938901e934d5997dc303adc01f54e3ed7be901a7b5f",
@@ -3906,12 +4659,73 @@
     "expert_negatives": false,
     "selection_scope": "Any fitting/calibration overlap excludes the entire variant from clean five-case selection."
   },
+  "structural_summary": {
+    "all_passed": true,
+    "checks": {
+      "all_55_manifest_files_and_checksums_verified": true,
+      "inventory_3_4_3_6_3": true,
+      "three_known_sixteen_unknown_radii": true,
+      "exact_input_identity": true,
+      "all_active_nifti_affines_match": true,
+      "source_dimensions_spacing_and_coordinate_metadata": true,
+      "exact_integer_label_inventory": true,
+      "canonical_reference_fields_unchanged": true,
+      "connected_parent_contact_without_overlap": true,
+      "lps_voxel_roundtrip_and_domain": true,
+      "seed_at_5mm_and_ostium_at_guide_start": true,
+      "unit_directions_match_seed_chord": true
+    }
+  },
+  "reviewer_checklist": {
+    "path": "eval/docs/REVIEWER_CHECKLIST.md",
+    "sha256": "dc80f642d8dfb3b63e3cdf5ba9a37acde604a62d5568342fd4da077d204fe9c4",
+    "pending_register_rows": 19,
+    "expert_signoff_in_original_package": false
+  },
   "findings": [
     {
       "id": "audit_reference_authority",
       "severity": "information",
       "kind": "provenance",
       "message": "19 targets are judge-approved for this local comparison. The original release remains AI-assisted, expert-review-pending, and explicitly non-exhaustive; approval does not change authorship."
+    },
+    {
+      "id": "audit_nifti_units_unspecified",
+      "severity": "warning",
+      "kind": "metadata",
+      "message": "All 20 inspected NIfTI headers use spatial units code 0 (unspecified), qform code 0 (inactive), sform code 2 (active). Active sforms agree with SimpleITK and preserve source geometry. The mm interpretation is supplied by the release documentation/JSON, not an explicit NIfTI unit tag. Do not invent a qform or silently rewrite source headers.",
+      "spatial_units_by_case": {
+        "subject019": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "subject020": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "subject021": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "subject022": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "subject023": [
+          0,
+          0,
+          0,
+          0
+        ]
+      }
     },
     {
       "id": "audit_unknown_radii",
@@ -4039,7 +4853,7 @@
     }
   ],
   "source_sha256": {
-    "final_eval_audit.py": "70d951982f8592077da3f168d664c29b5a45f462c1ac571a30fc709f9926378f",
+    "final_eval_audit.py": "2cf69e08661464ff75b91732c1a2e9176e37c79875dda4eb501096611f34ad3e",
     "tests/test_final_eval_audit.py": "f2546997cc42c2045d8d80b9e038bcacec5b12bc2a5a1ff72785baf3787f8d3b",
     "final_evaluation.py": "be2488c1123e0f3ae7cbff7a319ac360fab60c9502ebe5ce490bd7c918d7c990",
     "score_references.py": "483d216d6a3a9993a0ca8f6c2d614f7a85702e51ee4894437369e72487b22e38",
@@ -4070,6 +4884,10 @@
   "python": "3.13.3 (main, May 30 2025, 05:38:56) [Clang 20.1.4 ]",
   "platform": "linux",
   "threads": 4,
+  "machine": {
+    "system": "Linux-5.15.200-x86_64-with-glibc2.35",
+    "processor": "x86_64"
+  },
   "total_instances": 19,
   "known_radii": 3,
   "exclusions": [
