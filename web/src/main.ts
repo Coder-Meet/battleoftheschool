@@ -5,6 +5,7 @@ import {
   ArrowLeft,
   ArrowRight,
   Box,
+  Camera,
   Check,
   ChevronDown,
   ChevronRight,
@@ -26,6 +27,7 @@ import {
   ShieldCheck,
   SlidersHorizontal,
   Sparkles,
+  TriangleAlert,
   X,
   ZoomIn,
   ZoomOut,
@@ -37,8 +39,15 @@ import { FEATURE_NAMES, ReviewStore } from "./reviews";
 import type { ReviewLabel } from "./reviews";
 import { AortaViewer } from "./viewer";
 import { SliceViews } from "./slices";
+import { selfCheckWarnings } from "./qc";
 import type { Branch, Case, Point } from "./types";
-import { branchName, COLORS } from "./types";
+import {
+  branchName,
+  COLORS,
+  UNSCORED_COLOR,
+  diameterGradientCSS,
+  viridisGradientCSS,
+} from "./types";
 import "./style.css";
 
 const icons = {
@@ -47,6 +56,7 @@ const icons = {
   ArrowLeft,
   ArrowRight,
   Box,
+  Camera,
   Check,
   ChevronDown,
   ChevronRight,
@@ -68,6 +78,7 @@ const icons = {
   ShieldCheck,
   SlidersHorizontal,
   Sparkles,
+  TriangleAlert,
   X,
   ZoomIn,
   ZoomOut,
@@ -135,19 +146,23 @@ $("#app").innerHTML = `
           <div class="model-area" id="model-area">
             <div id="viewer"></div>
             <div class="model-caption"><span class="small-label">PARENT AORTA + DAUGHTER INSTANCES</span><div><span class="live-dot"></span>CT-derived surface</div></div>
-            <div class="model-tools"><button class="tool-button" id="reset-camera" title="Reset camera" aria-label="Reset camera">${icon("rotate-ccw")}</button><button class="tool-button" id="zoom-in" title="Zoom in" aria-label="Zoom in">${icon("zoom-in")}</button><button class="tool-button" id="zoom-out" title="Zoom out" aria-label="Zoom out">${icon("zoom-out")}</button><div></div><button class="tool-button" id="rotate" title="Auto rotate" aria-label="Auto rotate">${icon("orbit")}</button></div>
+            <div class="model-tools"><button class="tool-button" id="reset-camera" title="Reset camera" aria-label="Reset camera">${icon("rotate-ccw")}</button><button class="tool-button" id="zoom-in" title="Zoom in" aria-label="Zoom in">${icon("zoom-in")}</button><button class="tool-button" id="zoom-out" title="Zoom out" aria-label="Zoom out">${icon("zoom-out")}</button><div></div><button class="tool-button" id="rotate" title="Auto rotate" aria-label="Auto rotate">${icon("orbit")}</button><div></div><button class="tool-button" id="export-visual-check" title="Export visual check (aorta, ostia, direction arrows)" aria-label="Export visual check image">${icon("camera")}</button></div>
             <div class="orientation"><canvas width="90" height="90" aria-label="Camera-linked anatomical orientation"></canvas><small>LPS · camera-linked axes</small></div>
+            <div class="legend-stack">
+              <div class="color-legend" id="diameter-legend" aria-label="Vessel diameter color scale"><span class="small-label">VESSEL DIAMETER</span><div class="legend-bar" id="diameter-legend-bar"></div><div class="legend-current" id="diameter-current-row" hidden><span>At this position</span><strong id="diameter-current">— mm</strong></div><div class="legend-values"><span id="diameter-min">— mm</span><span id="diameter-max">— mm</span></div><div class="legend-ticks"><span>Thinnest</span><span>Widest</span></div></div>
+              <div class="color-legend" id="evidence-legend" aria-label="Detection evidence color scale"><span class="small-label">DETECTION EVIDENCE</span><div class="legend-bar" id="legend-bar"></div><div class="legend-ticks"><span>0.0 low</span><span>1.0 high</span></div><div class="legend-unscored"><span class="legend-swatch" id="legend-swatch"></span>Unscored</div></div>
+            </div>
             <div class="model-bottom"><span>${icon("orbit")} Drag to orbit <b>·</b> Scroll to zoom</span><button class="fly-button" id="flythrough">${icon("play")} Enter aorta <span>3D TOUR</span></button></div>
             <div class="flight-controls" id="flight-controls" hidden><button class="icon-button" id="play-flight" aria-label="Play or pause fly-through">${icon("play")}</button><span>Endoluminal view</span><input type="range" id="flight-position" min="2" max="98" value="10" aria-label="Position inside aorta" /><select id="flight-speed" aria-label="Fly-through speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select><button class="icon-button" id="exit-flight" aria-label="Exit fly-through">${icon("x")}</button></div>
           </div>
           <div class="wall-map" id="wall-map" hidden></div>
           <div class="ct-mode-heading" id="ct-mode-heading" hidden><strong>Linked multiplanar review</strong><span>Scroll through slices or click to move the crosshair. Select a branch to locate its ostium.</span></div>
-          <div class="layers-bar"><span>${icon("layers")} Layers</span><label><input id="parent-layer" type="checkbox" checked /><span class="swatch aorta"></span>Parent aorta</label><label><input id="labels-layer" type="checkbox" checked /><span class="swatch daughters"></span>Branch labels</label><label><input id="centerline-layer" type="checkbox" /><span class="swatch line"></span>Centerline</label><div class="opacity"><span>Opacity</span><input id="opacity" type="range" min="15" max="100" value="92" aria-label="Aorta opacity" /></div></div>
+          <div class="layers-bar"><span>${icon("layers")} Layers</span><label><input id="parent-layer" type="checkbox" checked /><span class="swatch aorta"></span>Parent aorta</label><label><input id="labels-layer" type="checkbox" checked /><span class="swatch daughters"></span>Branch labels</label><label><input id="centerline-layer" type="checkbox" /><span class="swatch line"></span>Centerline</label><label><input id="diameter-layer" type="checkbox" /><span class="swatch diameter"></span>Diameter color</label><div class="opacity"><span>Opacity</span><input id="opacity" type="range" min="15" max="100" value="92" aria-label="Aorta opacity" /></div></div>
         </div>
         <div class="evidence-panel" id="evidence-panel"><div class="section-heading"><h3>${icon("crosshair")} CT evidence <span>LINKED TO SELECTION</span></h3><label>Window <select id="ct-window" aria-label="CT window"><option value="cta">Angiography</option><option value="soft">Soft tissue</option><option value="bone">Bone</option></select></label></div><div class="slices" id="slices"></div></div>
       </div>
       <aside class="inspector"><div class="inspector-heading"><div><h3>Branch instances <span id="branch-count" class="count">0</span></h3><p>Direct daughters of the parent aorta</p></div>${icon("git-branch")}</div>
-        <div class="review-toolbar"><label>Show <select id="branch-filter" aria-label="Filter branch reviews"><option value="all">All candidates</option><option value="unreviewed">Needs review</option><option value="confirmed">Confirmed</option><option value="rejected">Rejected</option></select></label><button id="export-reviews" class="icon-button" title="Export training reviews for all cases" aria-label="Export training reviews">${icon("arrow-down-to-line")}</button><span id="review-progress" role="status"></span></div>
+        <div class="review-toolbar"><label>Show <select id="branch-filter" aria-label="Filter branch reviews"><option value="all">All candidates</option><option value="unreviewed">Needs review</option><option value="confirmed">Confirmed</option><option value="rejected">Rejected</option></select></label><button id="export-reviews" class="icon-button" title="Export training reviews for all cases" aria-label="Export training reviews">${icon("arrow-down-to-line")}</button><span id="review-progress" role="status"></span><span id="qc-summary" class="qc-summary" role="status" hidden></span></div>
         <div class="branch-list" id="branch-list"><div class="empty-branches">Analyze a case to discover branches.</div></div>
         <div class="branch-details" id="branch-details"><div class="no-selection">${icon("crosshair")}<h4>Follow an origin</h4><p>Select a branch to inspect its coordinates and proximal path.</p></div></div>
         <div class="inspector-note">${icon("circle-help")}<p>Detections are candidates for review.<br>Evidence scores are not probabilities.</p></div>
@@ -166,6 +181,9 @@ $("#app").innerHTML = `
   <div class="toast" id="toast" role="status" hidden></div>
 `;
 refreshIcons();
+$("#legend-bar").style.background = viridisGradientCSS();
+$("#legend-swatch").style.background = UNSCORED_COLOR;
+$("#diameter-legend-bar").style.background = diameterGradientCSS();
 
 let data: Case | undefined;
 let cases: { id: string; available: boolean }[] = [];
@@ -190,6 +208,13 @@ try {
   viewer.onFlightPlaying = (playing) => {
     $("#play-flight").innerHTML = icon(playing ? "pause" : "play");
     refreshIcons();
+  };
+  viewer.onWallDiameterRange = (minMm, maxMm) => {
+    $("#diameter-min").textContent = `${minMm.toFixed(1)} mm`;
+    $("#diameter-max").textContent = `${maxMm.toFixed(1)} mm`;
+  };
+  viewer.onCurrentDiameter = (mm) => {
+    $("#diameter-current").textContent = `${mm.toFixed(1)} mm`;
   };
 } catch {
   $("#viewer").innerHTML =
@@ -371,14 +396,18 @@ function renderBranches() {
   $("#review-progress").textContent =
     `${data.branches.length - pending.length}/${data.branches.length} reviewed`;
   $("#branch-count").textContent = String(data.branches.length);
+  const flaggedCount = data.branches.filter((b) => selfCheckWarnings(b).length).length;
+  $("#qc-summary").hidden = flaggedCount === 0;
+  $("#qc-summary").innerHTML = `${icon("triangle-alert")} ${flaggedCount} flagged`;
   $("#branch-list").innerHTML =
     data.branches
       .map((branch, i) => {
         const status = reviews.status(data!.case_id, branch);
         if (filter !== "all" && status !== filter) return "";
+        const flags = selfCheckWarnings(branch);
         return `
     <button class="branch-item ${branch.instance_id === selectedBranch ? "selected" : ""}" data-branch="${branch.instance_id}" style="--branch-color:${COLORS[i % COLORS.length]}">
-      <span class="branch-symbol">${icon(status === "confirmed" ? "check" : status === "rejected" ? "x" : "git-branch")}</span><div><strong>${branchName(branch.instance_id)}</strong><small>${status === "unreviewed" ? `Radius ${branch.radius_mm.toFixed(2)} mm` : status}</small></div><span class="branch-evidence">${branch.evidence_score.toFixed(2)}<small>evidence</small></span>
+      <span class="branch-symbol">${icon(status === "confirmed" ? "check" : status === "rejected" ? "x" : "git-branch")}</span><div><strong>${branchName(branch.instance_id)}</strong><small>${status === "unreviewed" ? `Radius ${branch.radius_mm.toFixed(2)} mm` : status}</small></div>${flags.length ? `<span class="branch-qc-flag" title="${escape(flags.join(" "))}">${icon("triangle-alert")}</span>` : ""}<span class="branch-evidence">${branch.evidence_score.toFixed(2)}<small>evidence</small></span>
     </button>
   `;
       })
@@ -421,6 +450,7 @@ function selectBranch(id: string) {
     <div class="evidence-score"><span>Geometric evidence <strong>${branch.evidence_score.toFixed(2)}</strong></span><div><i style="width:${branch.evidence_score * 100}%;background:${color}"></i></div><small>Heuristic score · uncalibrated</small></div>
     <button class="button inspect-button" id="inspect-ct">${icon("layers")} Inspect CT evidence ${icon("arrow-right")}</button>
     ${branch.warnings.length ? `<p class="branch-warning">${branch.warnings.map(escape).join("<br>")}</p>` : ""}
+    ${selfCheckWarnings(branch).length ? `<p class="branch-qc">${icon("triangle-alert")}${selfCheckWarnings(branch).map(escape).join("<br>")}</p>` : ""}
     <section class="review-actions" aria-label="Candidate review"><span class="small-label">HUMAN REVIEW · ${reviews.status(data.case_id, branch).toUpperCase()}</span><div>
       <button class="button secondary" data-review="confirmed" aria-pressed="${reviews.status(data.case_id, branch) === "confirmed"}">Confirm</button>
       <button class="button secondary" data-review="rejected" aria-pressed="${reviews.status(data.case_id, branch) === "rejected"}">Reject</button>
@@ -566,6 +596,7 @@ function setFlythrough(enabled: boolean) {
   viewer?.setFlythrough(enabled);
   if (!enabled) applyLayers();
   $("#flight-controls").hidden = !enabled;
+  $("#diameter-current-row").hidden = !enabled;
   $(".model-bottom").classList.toggle("touring", enabled);
   $(".model-caption").classList.toggle("touring", enabled);
   $(".orientation").classList.toggle("touring", enabled);
@@ -579,6 +610,9 @@ function applyLayers() {
   viewer?.setCenterline($<HTMLInputElement>("#centerline-layer").checked);
   viewer?.setOpacity(Number($<HTMLInputElement>("#opacity").value) / 100);
   slices.setOverlay($<HTMLInputElement>("#parent-layer").checked);
+  const diameterOn = $<HTMLInputElement>("#diameter-layer").checked;
+  viewer?.setDiameterColoring(diameterOn);
+  $("#diameter-legend").hidden = !diameterOn;
 }
 
 function showHelp() {
@@ -606,6 +640,16 @@ function download() {
   anchor.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
   toast("Prediction exported in physical LPS coordinates.");
+}
+function exportVisualCheck() {
+  if (!data || !viewer) return;
+  if (flythrough) setFlythrough(false);
+  setMode("3d");
+  const anchor = document.createElement("a");
+  anchor.href = viewer.captureImage();
+  anchor.download = `${data.case_id}_visual_check.png`;
+  anchor.click();
+  toast("Visual check exported: aorta, ostia and direction arrows.");
 }
 function stepCase(direction: number) {
   const available = cases.filter((c) => c.available);
@@ -669,6 +713,7 @@ $("#zoom-in").onclick = () => viewer?.zoom(0.8);
 $("#zoom-out").onclick = () => viewer?.zoom(1.25);
 $("#rotate").onclick = () =>
   $("#rotate").classList.toggle("active", viewer?.toggleOrbit());
+$("#export-visual-check").onclick = exportVisualCheck;
 $("#fullscreen").onclick = () => {
   if (document.fullscreenElement) void document.exitFullscreen();
   else
@@ -693,6 +738,7 @@ for (const id of [
   "parent-layer",
   "labels-layer",
   "centerline-layer",
+  "diameter-layer",
   "opacity",
 ])
   $(`#${id}`).oninput = applyLayers;
@@ -720,6 +766,19 @@ window.addEventListener("keydown", (event) => {
     viewer?.reset();
   }
   if (event.key === "Escape" && flythrough) setFlythrough(false);
+  if (
+    event.key === "ArrowUp" ||
+    event.key === "ArrowDown" ||
+    event.key === "ArrowLeft" ||
+    event.key === "ArrowRight"
+  ) {
+    event.preventDefault();
+    viewer?.handleKeyDown(event.key);
+  }
+});
+window.addEventListener("keyup", (event) => {
+  if (event.key === "ArrowUp" || event.key === "ArrowDown")
+    viewer?.handleKeyUp(event.key);
 });
 
 async function initialize() {
