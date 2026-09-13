@@ -1,0 +1,58 @@
+{
+  "status": "passed",
+  "cases": 210,
+  "sidecars": 437,
+  "partitions": {
+    "train": {
+      "shape": [
+        307,
+        12,
+        32,
+        32
+      ],
+      "groups": 10
+    },
+    "validation": {
+      "shape": [
+        95,
+        12,
+        32,
+        32
+      ],
+      "groups": 3
+    },
+    "test": {
+      "shape": [
+        66,
+        12,
+        32,
+        32
+      ],
+      "groups": 2
+    }
+  },
+  "source_sha256": {
+    "research_corpus.py": "4cdf57b023dc75e8bae5a11457ffcbd5c6a801a9359625784e3768186d7018be",
+    "stress.py": "1d641e985119538f2a2286718570e026192198e6d646f8f7aec9712c56ed0122",
+    "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+    "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+    "synthetic_reviews.py": "9189ac56e6def4b4090e6cee3cf768cbebd1af3417994524c6dfd78a8751074d",
+    "evaluate.py": "b5a2c04aa93020ea7034d59844fb7d3a56166985ee2633f0194b5f02ee332092",
+    "learning.py": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+    "nifti_io.py": "d8cd2795046affe798a2c2ed0822dc615f73930b94381c1ef5af0de36127cb02",
+    "research_validation.py": "955f79bde91c3706c2bbc317655d0150167cf943936b91ad98e48a7fbba2b335",
+    "score_references.py": "483d216d6a3a9993a0ca8f6c2d614f7a85702e51ee4894437369e72487b22e38",
+    "tabular_learning.py": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+    "train_trees.py": "843df39cd09d4cc8cca7ab57380505b5aa78f8176d107f70cc4260a2a0d9e1f5",
+    "requirements.txt": "5e116a3cdd95e6e2b836aba60de2763db8940f2b20934a35dfdba5212266abb4",
+    "requirements-trees.txt": "c792efbaeb9c7d812e684726faa1dd30d203c4c7f8a7895c36026415b34d3f9d"
+  },
+  "summary_sha256": "1b70dc295fcb9ffd2a708e6ba2c47a23e8ab907603bb74c65e0d3c7012709f64",
+  "cnn_status": "retrospective_research_evaluated",
+  "selected_model": "gradient_boosting-base",
+  "cnn_stop_go": "go_research_only",
+  "clinical_accuracy_claim": false,
+  "limitations": [
+    "Already exposed synthetic seed groups; not clinical or official eligibility validation."
+  ]
+}

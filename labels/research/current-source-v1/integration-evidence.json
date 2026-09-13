@@ -1,0 +1,1033 @@
+{
+  "scope": "research_integration",
+  "functional_commit": "ef344557650c1b2b6faf924275217df447c7ec96",
+  "clinical_accuracy_claim": false,
+  "checks": {
+    "base-final": {
+      "summary": "344 passed, 38 skipped, 49 warnings in 141.17s (0:02:21)",
+      "xml": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "38",
+        "tests": "382",
+        "time": "141.164",
+        "timestamp": "2026-09-13T01:07:05.225154+00:00",
+        "hostname": "devin-box"
+      },
+      "test_files": [
+        "tests/test_accuracy.py",
+        "tests/test_autolabel.py",
+        "tests/test_candidate_patches.py",
+        "tests/test_compare_e2e.py",
+        "tests/test_detector.py",
+        "tests/test_evaluate.py",
+        "tests/test_explorer.py",
+        "tests/test_input_validation.py",
+        "tests/test_learning.py",
+        "tests/test_model_artifacts.py",
+        "tests/test_offline.py",
+        "tests/test_paper_methods.py",
+        "tests/test_patch_learning.py",
+        "tests/test_prepare_annotations.py",
+        "tests/test_research_corpus.py",
+        "tests/test_research_resources.py",
+        "tests/test_research_run.py",
+        "tests/test_research_validation.py",
+        "tests/test_score_references.py",
+        "tests/test_stress.py",
+        "tests/test_synthetic.py",
+        "tests/test_synthetic_reviews.py",
+        "tests/test_tabular_learning.py",
+        "tests/test_training_recall.py"
+      ],
+      "xml_sha256": "d5ce663669011058a26f8c42ea42c19caebbcc6da1d1bfdcd7c012053b92bca3"
+    },
+    "optional-full": {
+      "summary": "381 passed, 1 skipped, 53 warnings in 150.25s (0:02:30)",
+      "xml": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "1",
+        "tests": "382",
+        "time": "150.250",
+        "timestamp": "2026-09-13T01:03:03.836123+00:00",
+        "hostname": "devin-box"
+      },
+      "test_files": [
+        "tests/test_accuracy.py",
+        "tests/test_autolabel.py",
+        "tests/test_candidate_patches.py",
+        "tests/test_compare_e2e.py",
+        "tests/test_detector.py",
+        "tests/test_evaluate.py",
+        "tests/test_explorer.py",
+        "tests/test_input_validation.py",
+        "tests/test_learning.py",
+        "tests/test_model_artifacts.py",
+        "tests/test_offline.py",
+        "tests/test_paper_methods.py",
+        "tests/test_patch_learning.py",
+        "tests/test_prepare_annotations.py",
+        "tests/test_research_corpus.py",
+        "tests/test_research_resources.py",
+        "tests/test_research_run.py",
+        "tests/test_research_validation.py",
+        "tests/test_score_references.py",
+        "tests/test_stress.py",
+        "tests/test_synthetic.py",
+        "tests/test_synthetic_reviews.py",
+        "tests/test_tabular_learning.py",
+        "tests/test_training_recall.py"
+      ],
+      "xml_sha256": "0a77696989055b4ff29b840d724409bb29ad5e87f292c880d841b33c90bdc63b"
+    },
+    "offline-final": {
+      "summary": "136 passed, 4 warnings in 37.09s",
+      "xml": {
+        "name": "pytest",
+        "errors": "0",
+        "failures": "0",
+        "skipped": "0",
+        "tests": "136",
+        "time": "37.084",
+        "timestamp": "2026-09-13T01:03:43.790862+00:00",
+        "hostname": "devin-box"
+      },
+      "test_files": [
+        "tests/test_offline.py",
+        "tests/test_patch_learning.py",
+        "tests/test_research_resources.py",
+        "tests/test_research_run.py",
+        "tests/test_tabular_learning.py"
+      ],
+      "xml_sha256": "c4dea921c025b81a6bb3bd095918ea3e6a74bc913bb30501bdbfc377596bab63"
+    },
+    "ruff-final": {
+      "output": "All checks passed!"
+    },
+    "mypy-final": {
+      "output": "Success: no issues found in 27 source files"
+    },
+    "mypy-win32-final": {
+      "output": "Success: no issues found in 27 source files"
+    }
+  },
+  "measurements": {
+    "real-baseline-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+        "run.py",
+        "--image",
+        "data/subject001/orig1.nii",
+        "--aorta-mask",
+        "data/subject001/mask1.nii",
+        "--case-id",
+        "subject001",
+        "--output",
+        "outputs/integration-evidence/real-baseline-prediction.json",
+        "--threads",
+        "4"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "subject001": {
+          "runtime_s": 2.9834051210000325,
+          "peak_rss_mb": 545.026048,
+          "peak_rss_mib": 519.77734375,
+          "samples": 264,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "real-cnn-scores-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+        "research_run.py",
+        "--image",
+        "data/subject001/orig1.nii",
+        "--aorta-mask",
+        "data/subject001/mask1.nii",
+        "--case-id",
+        "subject001",
+        "--output",
+        "outputs/integration-evidence/real-cnn-scores-prediction.json",
+        "--threads",
+        "4",
+        "--onnx-model",
+        "outputs/current-source-v1/cnn-synthetic/model.onnx",
+        "--mode",
+        "scores-only",
+        "--diagnostics",
+        "outputs/integration-evidence/real-cnn-scores-scores.json",
+        "--proposals-output",
+        "outputs/integration-evidence/real-cnn-scores-proposals.json"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "subject001": {
+          "runtime_s": 7.496988042000112,
+          "peak_rss_mb": 559.22688,
+          "peak_rss_mib": 533.3203125,
+          "samples": 662,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "real-combined-filter-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+        "research_run.py",
+        "--image",
+        "data/subject001/orig1.nii",
+        "--aorta-mask",
+        "data/subject001/mask1.nii",
+        "--case-id",
+        "subject001",
+        "--output",
+        "outputs/integration-evidence/real-combined-filter-prediction.json",
+        "--threads",
+        "4",
+        "--tree-model",
+        "outputs/current-source-v1/models/gradient_boosting-base.json",
+        "--onnx-model",
+        "outputs/current-source-v1/cnn-synthetic/model.onnx",
+        "--blend-model",
+        "outputs/current-source-v1/cnn-synthetic/blend.json",
+        "--mode",
+        "filter",
+        "--diagnostics",
+        "outputs/integration-evidence/real-combined-filter-scores.json",
+        "--proposals-output",
+        "outputs/integration-evidence/real-combined-filter-proposals.json"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "subject001": {
+          "runtime_s": 7.507540943000095,
+          "peak_rss_mb": 560.00512,
+          "peak_rss_mib": 534.0625,
+          "samples": 662,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "real-combined-scores-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+        "research_run.py",
+        "--image",
+        "data/subject001/orig1.nii",
+        "--aorta-mask",
+        "data/subject001/mask1.nii",
+        "--case-id",
+        "subject001",
+        "--output",
+        "outputs/integration-evidence/real-combined-scores-prediction.json",
+        "--threads",
+        "4",
+        "--tree-model",
+        "outputs/current-source-v1/models/gradient_boosting-base.json",
+        "--onnx-model",
+        "outputs/current-source-v1/cnn-synthetic/model.onnx",
+        "--blend-model",
+        "outputs/current-source-v1/cnn-synthetic/blend.json",
+        "--mode",
+        "scores-only",
+        "--diagnostics",
+        "outputs/integration-evidence/real-combined-scores-scores.json",
+        "--proposals-output",
+        "outputs/integration-evidence/real-combined-scores-proposals.json"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "subject001": {
+          "runtime_s": 7.621934394999926,
+          "peak_rss_mb": 559.722496,
+          "peak_rss_mib": 533.79296875,
+          "samples": 672,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "real-offline-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": false,
+      "network_evidence": "socket creation denied",
+      "target_Windows_verified": false,
+      "command": [
+        ".venv313/bin/python",
+        "research_run.py",
+        "--image",
+        "data/subject001/orig1.nii",
+        "--aorta-mask",
+        "data/subject001/mask1.nii",
+        "--case-id",
+        "subject001",
+        "--output",
+        "outputs/integration-evidence/real-offline-prediction.json",
+        "--threads",
+        "4",
+        "--tree-model",
+        "outputs/current-source-v1/models/gradient_boosting-base.json",
+        "--onnx-model",
+        "outputs/current-source-v1/cnn-synthetic/model.onnx",
+        "--blend-model",
+        "outputs/current-source-v1/cnn-synthetic/blend.json",
+        "--mode",
+        "scores-only",
+        "--diagnostics",
+        "outputs/integration-evidence/real-offline-scores.json",
+        "--proposals-output",
+        "outputs/integration-evidence/real-offline-proposals.json"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "subject001": {
+          "runtime_s": 7.899288512000112,
+          "peak_rss_mb": 559.161344,
+          "peak_rss_mib": 533.2578125,
+          "samples": 218,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "real-tree-filter-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+        "research_run.py",
+        "--image",
+        "data/subject001/orig1.nii",
+        "--aorta-mask",
+        "data/subject001/mask1.nii",
+        "--case-id",
+        "subject001",
+        "--output",
+        "outputs/integration-evidence/real-tree-filter-prediction.json",
+        "--threads",
+        "4",
+        "--tree-model",
+        "outputs/current-source-v1/models/gradient_boosting-base.json",
+        "--mode",
+        "filter",
+        "--diagnostics",
+        "outputs/integration-evidence/real-tree-filter-scores.json",
+        "--proposals-output",
+        "outputs/integration-evidence/real-tree-filter-proposals.json"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "subject001": {
+          "runtime_s": 3.0609871770000154,
+          "peak_rss_mb": 559.67744,
+          "peak_rss_mib": 533.75,
+          "samples": 270,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "real-tree-scores-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+        "research_run.py",
+        "--image",
+        "data/subject001/orig1.nii",
+        "--aorta-mask",
+        "data/subject001/mask1.nii",
+        "--case-id",
+        "subject001",
+        "--output",
+        "outputs/integration-evidence/real-tree-scores-prediction.json",
+        "--threads",
+        "4",
+        "--tree-model",
+        "outputs/current-source-v1/models/gradient_boosting-base.json",
+        "--mode",
+        "scores-only",
+        "--diagnostics",
+        "outputs/integration-evidence/real-tree-scores-scores.json",
+        "--proposals-output",
+        "outputs/integration-evidence/real-tree-scores-proposals.json"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "subject001": {
+          "runtime_s": 3.085978870999952,
+          "peak_rss_mb": 559.341568,
+          "peak_rss_mib": 533.4296875,
+          "samples": 272,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "reproduction-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        ".venv313/bin/python",
+        "research_reproduce.py",
+        "--root",
+        "outputs/current-source-v1",
+        "--workers",
+        "4",
+        "--cnn"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "current-source-synthetic-cohort": {
+          "runtime_s": 773.373832808,
+          "peak_rss_mb": 3784.015872,
+          "peak_rss_mib": 3608.71875,
+          "samples": 65960,
+          "max_processes": 8
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "subject018-baseline-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        ".venv313/bin/python",
+        "run.py",
+        "--image",
+        "data/subject018/orig18.nii",
+        "--aorta-mask",
+        "data/subject018/mask18.nii",
+        "--case-id",
+        "subject018",
+        "--threads",
+        "4",
+        "--output",
+        "outputs/integration-evidence/subject018-baseline-prediction.json"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "subject018": {
+          "runtime_s": 21.684252756999967,
+          "peak_rss_mb": 1549.664256,
+          "peak_rss_mib": 1477.875,
+          "samples": 1902,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "subject018-combined-scores-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        ".venv313/bin/python",
+        "research_run.py",
+        "--image",
+        "data/subject018/orig18.nii",
+        "--aorta-mask",
+        "data/subject018/mask18.nii",
+        "--case-id",
+        "subject018",
+        "--threads",
+        "4",
+        "--output",
+        "outputs/integration-evidence/subject018-combined-scores-prediction.json",
+        "--tree-model",
+        "outputs/current-source-v1/models/gradient_boosting-base.json",
+        "--onnx-model",
+        "outputs/current-source-v1/cnn-synthetic/model.onnx",
+        "--blend-model",
+        "outputs/current-source-v1/cnn-synthetic/blend.json",
+        "--mode",
+        "scores-only",
+        "--diagnostics",
+        "outputs/integration-evidence/subject018-combined-scores-scores.json",
+        "--proposals-output",
+        "outputs/integration-evidence/subject018-combined-scores-proposals.json"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "subject018": {
+          "runtime_s": 30.21269029899986,
+          "peak_rss_mb": 1565.14304,
+          "peak_rss_mib": 1492.63671875,
+          "samples": 2654,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "subject025-baseline-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        ".venv313/bin/python",
+        "run.py",
+        "--image",
+        "data/subject025/orig25.nii",
+        "--aorta-mask",
+        "data/subject025/mask25.nii",
+        "--case-id",
+        "subject025",
+        "--threads",
+        "4",
+        "--output",
+        "outputs/integration-evidence/subject025-baseline-prediction.json"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "subject025": {
+          "runtime_s": 21.598039815999982,
+          "peak_rss_mb": 1509.265408,
+          "peak_rss_mib": 1439.34765625,
+          "samples": 1895,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "subject025-combined-scores-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        ".venv313/bin/python",
+        "research_run.py",
+        "--image",
+        "data/subject025/orig25.nii",
+        "--aorta-mask",
+        "data/subject025/mask25.nii",
+        "--case-id",
+        "subject025",
+        "--threads",
+        "4",
+        "--output",
+        "outputs/integration-evidence/subject025-combined-scores-prediction.json",
+        "--tree-model",
+        "outputs/current-source-v1/models/gradient_boosting-base.json",
+        "--onnx-model",
+        "outputs/current-source-v1/cnn-synthetic/model.onnx",
+        "--blend-model",
+        "outputs/current-source-v1/cnn-synthetic/blend.json",
+        "--mode",
+        "scores-only",
+        "--diagnostics",
+        "outputs/integration-evidence/subject025-combined-scores-scores.json",
+        "--proposals-output",
+        "outputs/integration-evidence/subject025-combined-scores-proposals.json"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "subject025": {
+          "runtime_s": 29.56557796900006,
+          "peak_rss_mb": 1524.273152,
+          "peak_rss_mib": 1453.66015625,
+          "samples": 2597,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "synthetic-baseline-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+        "run.py",
+        "--image",
+        "outputs/current-source-v1/cases/stress_00_tortuous_low_contrast_3312207072/orig.nii.gz",
+        "--aorta-mask",
+        "outputs/current-source-v1/cases/stress_00_tortuous_low_contrast_3312207072/mask.nii.gz",
+        "--case-id",
+        "stress_00_tortuous_low_contrast_3312207072",
+        "--output",
+        "outputs/integration-evidence/synthetic-baseline-prediction.json",
+        "--threads",
+        "4"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "stress_00_tortuous_low_contrast_3312207072": {
+          "runtime_s": 1.657351510000126,
+          "peak_rss_mb": 327.827456,
+          "peak_rss_mib": 312.640625,
+          "samples": 147,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    },
+    "synthetic-review-union-resources": {
+      "schema_version": 1,
+      "platform": "Linux",
+      "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+      "python": "3.13.3",
+      "cpu_cores": 4,
+      "cpu_affinity": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "gpu": null,
+      "network": null,
+      "network_evidence": "not verified",
+      "target_Windows_verified": false,
+      "command": [
+        "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+        "research_run.py",
+        "--image",
+        "outputs/current-source-v1/cases/stress_00_tortuous_low_contrast_3312207072/orig.nii.gz",
+        "--aorta-mask",
+        "outputs/current-source-v1/cases/stress_00_tortuous_low_contrast_3312207072/mask.nii.gz",
+        "--case-id",
+        "stress_00_tortuous_low_contrast_3312207072",
+        "--output",
+        "outputs/integration-evidence/synthetic-review-union-prediction.json",
+        "--threads",
+        "4",
+        "--tree-model",
+        "outputs/current-source-v1/models/gradient_boosting-base.json",
+        "--onnx-model",
+        "outputs/current-source-v1/cnn-synthetic/model.onnx",
+        "--blend-model",
+        "outputs/current-source-v1/cnn-synthetic/blend.json",
+        "--mode",
+        "scores-only",
+        "--proposals",
+        "review-union",
+        "--diagnostics",
+        "outputs/integration-evidence/synthetic-review-union-scores.json",
+        "--proposals-output",
+        "outputs/integration-evidence/synthetic-review-union-proposals.json"
+      ],
+      "exit_code": 0,
+      "thread_environment": {
+        "OPENBLAS_NUM_THREADS": "4",
+        "OMP_NUM_THREADS": "4",
+        "MKL_NUM_THREADS": "4",
+        "NUMEXPR_NUM_THREADS": "4",
+        "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+        "VECLIB_MAXIMUM_THREADS": "4"
+      },
+      "cases": {
+        "stress_00_tortuous_low_contrast_3312207072": {
+          "runtime_s": 3.791865404999953,
+          "peak_rss_mb": 342.253568,
+          "peak_rss_mib": 326.3984375,
+          "samples": 334,
+          "max_processes": 2
+        }
+      },
+      "measurement": {
+        "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+        "interval_s": 0.01,
+        "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper."
+      }
+    }
+  },
+  "scores_only_preservation": {
+    "real-tree-scores": {
+      "byte_identical_to": "real-baseline",
+      "sha256": "49085cbbcfc4fd5b68142b0f1ea8b35893ccc028abfa46daa408cb82a32c4b17"
+    },
+    "real-cnn-scores": {
+      "byte_identical_to": "real-baseline",
+      "sha256": "49085cbbcfc4fd5b68142b0f1ea8b35893ccc028abfa46daa408cb82a32c4b17"
+    },
+    "real-combined-scores": {
+      "byte_identical_to": "real-baseline",
+      "sha256": "49085cbbcfc4fd5b68142b0f1ea8b35893ccc028abfa46daa408cb82a32c4b17"
+    },
+    "real-offline": {
+      "byte_identical_to": "real-baseline",
+      "sha256": "49085cbbcfc4fd5b68142b0f1ea8b35893ccc028abfa46daa408cb82a32c4b17"
+    },
+    "subject018-combined-scores": {
+      "byte_identical_to": "subject018-baseline",
+      "sha256": "cc198b2545f4f11610646eea066f55d9dc4702594aff3c401168006eea482082"
+    },
+    "subject025-combined-scores": {
+      "byte_identical_to": "subject025-baseline",
+      "sha256": "2138effbb47e58f7562ef724ad97fb4ea3a04658f4a14bc984d42ee038c69996"
+    }
+  },
+  "prediction_counts": {
+    "real-baseline-prediction": 8,
+    "real-cnn-scores-prediction": 8,
+    "real-combined-filter-prediction": 4,
+    "real-combined-scores-prediction": 8,
+    "real-offline-prediction": 8,
+    "real-tree-filter-prediction": 7,
+    "real-tree-scores-prediction": 8,
+    "subject018-baseline-prediction": 16,
+    "subject018-combined-scores-prediction": 16,
+    "subject025-baseline-prediction": 16,
+    "subject025-combined-scores-prediction": 16,
+    "synthetic-baseline-prediction": 2,
+    "synthetic-review-union-prediction": 2
+  },
+  "historical_model_rejections": {
+    "tree_path": "Tree lacks a verified extraction contract; train from source-hashed candidate records.",
+    "onnx_path": "ONNX extraction source differs; use its frozen source or re-extract/retrain."
+  },
+  "windows_limitations": {
+    "optional_windows_dispatch": "403 Resource not accessible by integration",
+    "workflow_url": "https://github.com/Coder-Meet/battleoftheschool/actions/workflows/checks.yml",
+    "optional_job_native_execution": "not performed; needs workflow_dispatch with optional_research=true",
+    "functional_commit": "ef344557650c1b2b6faf924275217df447c7ec96"
+  },
+  "production_source_sha256": {
+    "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+    "run.py": "6827f2df94282aa5d0a0c1cbff4b90e561528802d5fbbc3c4aefeb87ee881a55",
+    "learning.py": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+    "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a"
+  },
+  "limitations": [
+    "Exposed synthetic seeds and all 25 prior real-case exposures are retained.",
+    "Analytic references are not clinical or official diameter eligibility validation.",
+    "Sampled process-tree RSS can miss brief peaks and double-count shared pages.",
+    "Linux resource observations do not verify organizer Windows hardware.",
+    "Generic GPU state is unknown; ONNX model execution uses the CPU provider.",
+    "Network denial covers the injected Linux process tree, not Windows execution."
+  ]
+}

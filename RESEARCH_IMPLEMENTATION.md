@@ -1,10 +1,15 @@
 # Branchseed research implementation and evidence gates
 
-**Status: research specification; implementation and integration pending.**
-Reviewed 12 September 2026 against main commit
-`ff91eed3cbe5f7241c511b25cc69f2bfac042410`. This document changes no detector,
-labels, model, dependency configuration, or submission interface. Module names
-below are assigned contracts, not claims that those modules have been integrated.
+**Status: optional research implementation integrated; production promotion gated.**
+The original evidence review was made on 12 September 2026 against
+`ff91eed3cbe5f7241c511b25cc69f2bfac042410`. The final integration is on `main`,
+starting from `9aeb32e055cada051b2ec0509ab8d98e574b8963`; see the
+[current-source results](labels/research/current-source-v1/RESULTS.md) and
+[final status matrix](#11-final-integration-status).
+The specification and acceptance criteria below remain the research protocol;
+implemented modules do not imply that their models passed those criteria.
+Production `detector.py`, `run.py`, existing labels and the submission schema
+were not changed by this integration.
 
 The supplied 35-page *Research task: ML for direct abdominal-aorta daughters*
 report was read in full. Its SHA-256 is
@@ -140,7 +145,7 @@ The permitted use and label audit, not physical availability alone, determine
 admission. Existing organizer data retains its original scope and exposure
 history; this document authorizes no new annotation work.
 
-## 5. Shared implementation contracts — pending
+## 5. Shared implementation contracts
 
 ### 5.1 Candidate extraction: `candidate_patches.py`
 
@@ -202,7 +207,8 @@ implementation. Metadata must specify:
 locations; channel co-registration, path ownership, branch ordering, empty
 results, finite features, crop-edge padding, and nonmutation of `Detection` must
 be demonstrated. Feature/patch metadata must identify extractor and detector
-hashes. Gate P is pending; this document does not choose implementation-specific
+hashes. Gate P now has the physical extractor and regression evidence in §11;
+this protocol does not choose alternate implementation-specific
 formulas on behalf of the extractor owner.
 
 ### 5.2 Review and corpus contract
@@ -506,7 +512,7 @@ default classical entry point remains usable without optional dependencies.
 
 ## 8. Experiments E0-1 through E4-1
 
-**All experiments below are pending at this documentation handoff.** Each run
+**This table defines the original protocol; executed/gated status is in §11.** Each run
 must publish a compact manifest, split/exposure ledger, per-case results and
 reference-completeness counts, predictions before/after filtering, unproposed
 misses, model/threshold/feature configuration, timings/memory, and hashes.
@@ -601,11 +607,12 @@ Training can use separate hardware; no GPU/network is allowed at inference.
     optional CPU ONNX be included? Are confidence/proposal-only fields allowed
     in submission JSON, or must they stay in separate diagnostics?
 
-### Validation performed for this document
+### Checks performed for the original specification
 
-No E0–E4 experiment, neural training, target-device benchmark, or clinical
-evaluation was run. The following checks passed on the inspected source revision
-as background contract checks; they do not validate future modules:
+At the original documentation-only revision, no E0–E4 experiment, neural
+training, target-device benchmark, or clinical evaluation had been run.
+These historical contract checks do not validate the subsequently integrated
+modules; their current verification is recorded in the final status below:
 
 ```bash
 .venv313/bin/ruff check detector.py learning.py synthetic.py synthetic_reviews.py evaluate.py compare_e2e.py score_references.py
@@ -678,14 +685,90 @@ bcb407443fdfff39d190a6f32c60bab88daab26863b763c7865a594d65177edd  compare_e2e.py
 [ort-quant]: https://onnxruntime.ai/docs/performance/model-optimizations/quantization.html
 [calibration]: https://scikit-learn.org/stable/modules/calibration.html
 
+## 11. Final integration status
+
+The executable entry points and failure semantics are documented in
+[README](README.md#optional-ml-research). `research_run.py` defaults to
+scores-only, preserves all proposals and the standard JSON fields, and writes
+scores/model hashes to sidecars. Explicit filtering uses the frozen threshold.
+If scoring fails, all candidates are marked unscored with the error; scores-only
+still writes the unfiltered prediction, while filter mode withholds its filtered
+output. Both return failure status. No zeros or silent candidate deletion
+substitute for unsupported physical features.
+
+New tree training binds source-hashed candidate records to detector/extractor/
+feature sources and the physical preprocessing contract. CNN/blend inference
+checks ordered candidate identities, model/sidecar hashes, extraction contracts
+and compatible splits. Original archived models remain immutable and use their
+archived source; changing a source hash in a sidecar is not a migration.
+
+The current detector hash is
+`9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e`.
+It preserves the separately confirmed strict 2 mm origin-diameter rule,
+0.7 mm seed-radius setting, existing review override of zero, common-trunk
+logic and CT warnings. The prior cohort/CNN detector hash is
+`17495723df18c79e4302edc19bd949bb16f615b902403a88c68d6e74fa200063`.
+The current replay uses the same already-exposed synthetic seed groups with
+fresh source/config exports. Neither archive nor replay is official 2 mm
+eligibility validation. Their complete analytic references are retained without
+retrospective relabelling.
+
+### Experiment status and evidence
+
+| Experiment | Status | Evidence and remaining gate |
+| --- | --- | --- |
+| E0-1 | DONE for analytic synthetic research; real accuracy BLOCKED | Current-source unfiltered strict/pool counts, per-family misses and hashed configurations are in the linked results/summary. Existing synthetic failure/regression tests remain unchanged. Complete expert references are required for real proposal recall. |
+| E1-1 | DONE synthetic tree/logistic experiments; promotion GATED | Four frozen current-source tree models, train-only weights and validation/test reports. Validation-selected base-feature tree removed four pool FPs on the replayed test with no extra misses (63/0/7); E1 is `go_research_only`. These are source-specific research counts. No pseudo-label tree ablation or clinical calibration is claimed. |
+| E1-2 | DONE physical extractor and base/extended ablations; added-feature benefit GATED | Exact three-extra contract, finite physical patch tests and source-bound tree inference. Current base and extended models all scored 63/0/7 on test; extended gradient boosting retained two validation FPs versus one for base, failing its validation gate. No added benefit demonstrated; grouped feature importance and external generalization remain unrun. |
+| E2-1 | DONE current and historical retrospective CNN; REJECTED for promotion | Current-source CNN reproduced 59/2/11 versus tree 63/0/7, losing four pool TPs. [Historical CNN results](labels/research/patch-cnn-retrospective-v1/RESULTS.md) remain archived separately. Current execution followed unchanged E1 `go_research_only`; native/ONNX parity maximum error 1.19e-7 does not establish model quality. |
+| E2-2 | DONE historical mixed ablation; REJECTED for promotion | Historical mixed CNN 58/2/12; 45 exact historical pseudo patches retained with original provenance; mismatches excluded explicitly. All 25 real-case exposures remain visible. No new labelling, broader pseudo sweep, or proof of real transfer. |
+| E3-1 | DONE frozen blend experiments and inference integration; REJECTED for promotion | Current blend reproduced 62/0/8, selected CNN weight zero and a stricter tree threshold, losing one pool TP. Both historical blends also failed. No CNN ensemble benefit or activation; group-OOF CNN-in-tree stacking remains unimplemented. |
+| E3-2 | TOOLING DONE; expert experiment BLOCKED | `research_validation.py --manifest ... --output ...` ingests references, runs one-to-one/tolerance/geometry/bootstrap comparisons and rejects incomplete/pseudo, contaminated or unknown-history promotion bases. Organizer references have not been supplied; overlapping organizer cases are exposed-case audits. |
+| E4-1 | DONE comparison of existing strict versus review union; new tuning GATED | Source/config-hashed unfiltered pools expose the proposal ceiling. No new classical broadening or production tracing changes were authorized. Upstream misses cannot be recovered by a classifier. |
+
+### Every report action: implemented or explicitly gated
+
+| Report action | Status and exact implementation/evidence |
+| --- | --- |
+| Preserve classical proposals, variable instance count and physical geometry | DONE: unchanged `run.py`/`detector.py`; `research_run.py`, proposal-preservation/error tests. |
+| Generate a diverse complete synthetic cohort; sample/balance negatives | DONE: `research_corpus.py` + `research_reproduce.py`; 15 seed groups × 14 families, real negative counts and source weights in reports. No invented negatives; seed reuse is exposed. |
+| Add local contrast, vesselness patch statistics and wall curvature | DONE: `candidate_patches.py`; physical/reorientation/boundary/curvature tests; extended model contract rejects unavailable support. |
+| Boosted-tree/random-forest models with logistic/keep-all controls | DONE: `train_trees.py`/`tabular_learning.py`, four fixed experiments and native/NumPy probability parity. |
+| Small three-view patch model | DONE: `patch_learning.py`/`patch_inference.py`, 34,465-parameter model and CPU ONNX export; alternate towers/3D architecture GATED on a demonstrated benefit. |
+| Downweight noisy real labels, smoothing and early selection | DONE historical mixed CNN and train-only source balancing tests. Additional pseudo weights, expert fine-tuning and tree-mixing ablations GATED; prior labels immutable. |
+| HU/preprocessing, coherent augmentation, noise and blur | DONE bounded physical extractor and tested allowed transforms. Cached planes cannot support arbitrary physically coherent translations; unsupported transforms remain disabled, not claimed implemented. |
+| Optional origin/radius/direction regression and multitask loss | GATED on complete expert geometry, masks and a valid adapter. No trained localization head or real localization improvement is claimed. |
+| CNN-plus-tabular inference and thresholded proposal scoring | DONE explicit frozen probability blend, sidecar scores and preserved JSON. Group-OOF stacking and new Explorer score visualization are GATED; CLI does not modify the UI. |
+| Export, CPU batching, quantization and under-10-second overhead | DONE NumPy tree/ONNX export, batching/parity, bounded optional Windows CI and portable psutil command. Quantization, native Windows/offline hardware measurements and guaranteed overhead are GATED. |
+| Calibration, branch matching, geometry, uncertainty and failure strata | DONE tree calibration support, one-to-one/tolerance sensitivity, full-reference conditional/end-to-end separation, paired group bootstrap. Clinically calibrated probabilities and official weighted challenge scoring are BLOCKED on expert/organizer evidence. |
+| Broaden weak strata | DONE existing review-union comparison only; new E4 proposal changes GATED and production untouched. |
+| Use approximately five organizer cases | BLOCKED until supplied; choose development versus frozen audit before use, preserve overlap with all 25 prior images. |
+| Heavy 3D segmentation, DRL, graph/topology models or external pretraining | GATED on §4 permissions, model-specific dense/trajectory/graph annotations, more independent cases and resource evidence. These methods are documented prerequisites, not implementations. |
+
+### Verification scope
+
+See the [result bundle](labels/research/current-source-v1/RESULTS.md) for exact
+test counts, source hashes, wheel verification, resource observations and
+remaining limitations. Ruff and mypy cover all 27 Python modules, including
+optional research modules; optional Torch/scikit-learn/ONNX packages are actually
+installed for their checks. A separate base-only environment tests the absence
+of those dependencies. Network-denied Linux tests include a socket-denial
+assertion and real training/export/inference, rather than an offline claim based
+only on import inspection.
+
+`research_resources.py` measures sampled summed process-tree RSS and wall time
+with inherited CPU affinity and numerical thread caps. Sampling limitations,
+wrapper overhead and unverified GPU/network status are explicit. Linux evidence
+is labelled Linux; verified Windows wheels and a manual CI job do not constitute
+organizer-hardware measurements. The parent's prior base Windows CI evidence
+does not establish native optional-CNN execution.
+
 ## Next experiment
 
-Run E0-1 on the extended, grouped synthetic corpus with the current strict
-source/config hashes and complete references. It reveals which eligible branches
-are absent before any classifier acts. If proposal coverage supports filtering,
-run the synthetic-only E1-1 tree versus logistic comparison at the locked
-true-positive-retention gate. This is the cheapest useful test of added learning
-under the available labels and CPU constraints; it cannot be mistaken for
-clinical validation.
+Use complete expert references to audit frozen choices and their proposal
+misses, preserving case/group/image exposure. If source-matched synthetic gates
+reject a classifier, retain strict production and investigate the unfiltered
+failure strata before considering more model complexity. No clinical claim can
+be made from synthetic accuracy or agreement with candidate-derived labels.
 
 If this were my submission, here is the next experiment I would run and why.

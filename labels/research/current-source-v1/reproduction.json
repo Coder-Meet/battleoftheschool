@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "source_sha256": {
+    "research_corpus.py": "4cdf57b023dc75e8bae5a11457ffcbd5c6a801a9359625784e3768186d7018be",
+    "stress.py": "1d641e985119538f2a2286718570e026192198e6d646f8f7aec9712c56ed0122",
+    "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+    "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+    "synthetic_reviews.py": "9189ac56e6def4b4090e6cee3cf768cbebd1af3417994524c6dfd78a8751074d",
+    "evaluate.py": "b5a2c04aa93020ea7034d59844fb7d3a56166985ee2633f0194b5f02ee332092",
+    "learning.py": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+    "nifti_io.py": "d8cd2795046affe798a2c2ed0822dc615f73930b94381c1ef5af0de36127cb02",
+    "research_validation.py": "955f79bde91c3706c2bbc317655d0150167cf943936b91ad98e48a7fbba2b335",
+    "score_references.py": "483d216d6a3a9993a0ca8f6c2d614f7a85702e51ee4894437369e72487b22e38",
+    "tabular_learning.py": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+    "train_trees.py": "843df39cd09d4cc8cca7ab57380505b5aa78f8176d107f70cc4260a2a0d9e1f5",
+    "requirements.txt": "5e116a3cdd95e6e2b836aba60de2763db8940f2b20934a35dfdba5212266abb4",
+    "requirements-trees.txt": "c792efbaeb9c7d812e684726faa1dd30d203c4c7f8a7895c36026415b34d3f9d"
+  },
+  "versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.16.2",
+    "SimpleITK": "2.5.6",
+    "scikit-image": "0.26.0",
+    "scikit-learn": "1.7.2",
+    "joblib": "1.5.2",
+    "threadpoolctl": "3.6.0"
+  },
+  "driver_sha256": "a8dfc77380e5ee81ed6ffe93e597b294ae0341c1ff0b10a764fee7b49859a1ee",
+  "commands": [
+    [
+      "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+      "/home/ubuntu/repos/battleoftheschool/research_corpus.py",
+      "plan",
+      "--root",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1"
+    ],
+    [
+      "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+      "/home/ubuntu/repos/battleoftheschool/research_corpus.py",
+      "generate",
+      "--workers",
+      "4",
+      "--root",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1"
+    ],
+    [
+      "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+      "/home/ubuntu/repos/battleoftheschool/research_corpus.py",
+      "export",
+      "--workers",
+      "4",
+      "--root",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1"
+    ],
+    [
+      "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+      "/home/ubuntu/repos/battleoftheschool/research_corpus.py",
+      "train-baselines",
+      "--root",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1"
+    ],
+    [
+      "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+      "/home/ubuntu/repos/battleoftheschool/research_corpus.py",
+      "export",
+      "--partition",
+      "test",
+      "--workers",
+      "4",
+      "--root",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1"
+    ],
+    [
+      "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+      "/home/ubuntu/repos/battleoftheschool/research_corpus.py",
+      "train-baselines",
+      "--evaluate-test",
+      "--root",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1"
+    ],
+    [
+      "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+      "/home/ubuntu/repos/battleoftheschool/patch_learning.py",
+      "--corpus",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1",
+      "--output",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1/cnn-synthetic",
+      "--threads",
+      "4",
+      "--tree-model",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1/models/gradient_boosting-base.json"
+    ],
+    [
+      "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+      "/home/ubuntu/repos/battleoftheschool/patch_learning.py",
+      "--corpus",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1",
+      "--output",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1/cnn-synthetic",
+      "--threads",
+      "4",
+      "--tree-model",
+      "/home/ubuntu/repos/battleoftheschool/outputs/current-source-v1/models/gradient_boosting-base.json",
+      "--evaluate-test"
+    ]
+  ],
+  "cohort_status": "previously_exposed_seeds_current_source_replay",
+  "clinical_accuracy_claim": false,
+  "cnn_status": "retrospective_research_evaluated",
+  "summary_sha256": "1b70dc295fcb9ffd2a708e6ba2c47a23e8ab907603bb74c65e0d3c7012709f64",
+  "plan_sha256": "5eb47427b29204e7be67531976a405328d5e45d716a3a0ad056de613268ffd80",
+  "source_files": [
+    "research_corpus.py",
+    "stress.py",
+    "detector.py",
+    "candidate_patches.py",
+    "synthetic_reviews.py",
+    "evaluate.py",
+    "learning.py",
+    "nifti_io.py",
+    "research_validation.py",
+    "score_references.py",
+    "tabular_learning.py",
+    "train_trees.py",
+    "requirements.txt",
+    "requirements-trees.txt"
+  ],
+  "historical_detector_sha256": "17495723df18c79e4302edc19bd949bb16f615b902403a88c68d6e74fa200063"
+}

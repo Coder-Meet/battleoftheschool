@@ -492,6 +492,9 @@ Sunday 11:00 AM. Have the repo pushed and a working demo before then.
 
 ## Optional ML research
 
+Current-source replay, exact checks, rejected CNN/blend results and remaining
+gates: [research integration results](labels/research/current-source-v1/RESULTS.md).
+
 `run.py` and its legacy `--candidate-model` remain unchanged. No research
 model is enabled by default. `research_run.py` scores a variable number of
 classical proposals using a source-compatible tree, optional CPU ONNX model,
