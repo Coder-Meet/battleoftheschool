@@ -1,4 +1,4 @@
-"""Portable optional process-tree RSS sampler and CPU-affinity wrapper for research commands."""
+"""Portable optional process-tree RSS sampler and CPU-limit wrapper for research commands."""
 
 import argparse
 import errno
@@ -44,11 +44,32 @@ def sample_tree(pid: int) -> tuple[int, int]:
     return total, count
 
 
-def worker(command: list[str], cores: int) -> int:
+def cpu_limit(cores: int, apply: bool = False) -> tuple[list[int] | None, int, str]:
+    """Return an honest process/thread CPU limit, applying affinity where supported."""
     require_psutil()
+    if type(cores) is not int or not 1 <= cores <= 4:
+        raise ValueError("CPU limit must be an integer from 1 to 4.")
     process = psutil.Process()
-    allowed = process.cpu_affinity()
-    process.cpu_affinity(allowed[:cores])
+    affinity_method = getattr(process, "cpu_affinity", None)
+    if affinity_method is not None:
+        try:
+            allowed = affinity_method()
+        except NotImplementedError:
+            pass
+        else:
+            affinity = [int(cpu) for cpu in allowed[:cores]]
+            if not affinity:
+                raise RuntimeError("No CPUs are available to the resource-measurement process.")
+            if apply:
+                affinity_method(affinity)
+            return affinity, len(affinity), "os_affinity_and_thread_environment"
+    logical_cpus = psutil.cpu_count(logical=True) or os.cpu_count() or 1
+    effective = min(cores, int(logical_cpus))
+    return None, effective, "thread_environment_only"
+
+
+def worker(command: list[str], cores: int) -> int:
+    cpu_limit(cores, apply=True)
     return subprocess.call(command)
 
 
@@ -64,12 +85,11 @@ def measure(command: list[str], case_id: str, cores: int = 4, interval: float = 
     require_psutil()
     if not command or type(cores) is not int or not 1 <= cores <= 4 or not 0.001 <= interval <= 1:
         raise ValueError("Supply a command, 1–4 cores, and a sampling interval from 0.001 to 1 second.")
-    allowed = psutil.Process().cpu_affinity()
-    affinity = allowed[:cores]
-    env = dict(os.environ, **{key: str(len(affinity)) for key in THREAD_VARIABLES})
+    affinity, effective_cores, limit_method = cpu_limit(cores)
+    env = dict(os.environ, **{key: str(effective_cores) for key in THREAD_VARIABLES})
     start = perf_counter()
     process = subprocess.Popen([
-        sys.executable, str(Path(__file__).resolve()), "--worker", "--cores", str(cores), "--", *command,
+        sys.executable, str(Path(__file__).resolve()), "--worker", "--cores", str(effective_cores), "--", *command,
     ], env=env)
     peak, samples, max_processes = 0, 0, 0
     try:
@@ -83,16 +103,28 @@ def measure(command: list[str], case_id: str, cores: int = 4, interval: float = 
             except subprocess.TimeoutExpired:
                 continue
     except BaseException:
-        for child in reversed(psutil.Process(process.pid).children(recursive=True)):
+        try:
+            children = psutil.Process(process.pid).children(recursive=True)
+        except psutil.NoSuchProcess:
+            children = []
+        for child in reversed(children):
             child.terminate()
         process.terminate()
         process.wait()
         raise
+    network_denied = network_probe()
+    affinity_limitation = (
+        "OS process affinity and cooperative library thread ceilings were applied."
+        if affinity is not None else
+        "OS process affinity is unavailable; the CPU ceiling is cooperative for runtimes honoring the recorded "
+        "thread environment."
+    )
     return {
         "schema_version": 1, "platform": platform.system(), "platform_detail": platform.platform(),
-        "python": platform.python_version(), "cpu_cores": len(affinity), "cpu_affinity": affinity,
-        "gpu": None, "network": False if network_probe() else None,
-        "network_evidence": "socket creation denied" if network_probe() else "not verified",
+        "python": platform.python_version(), "cpu_cores": effective_cores, "cpu_affinity": affinity,
+        "cpu_limit_method": limit_method,
+        "gpu": None, "network": False if network_denied else None,
+        "network_evidence": "socket creation denied" if network_denied else "not verified",
         "target_Windows_verified": platform.system() == "Windows",
         "command": command, "exit_code": code, "thread_environment": {k: env[k] for k in THREAD_VARIABLES},
         "cases": {case_id: {
@@ -103,7 +135,8 @@ def measure(command: list[str], case_id: str, cores: int = 4, interval: float = 
             "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
             "interval_s": interval,
             "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. "
-                          "Wall time includes process startup. GPU use is not verified by this generic wrapper.",
+            "Wall time includes process startup. GPU use is not verified by this generic wrapper. "
+            + affinity_limitation,
         },
     }
 

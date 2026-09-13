@@ -1,131 +1,82 @@
-# Deterministic family handoff
+# Deterministic family handoff — COMPLETE
 
-## Status: partial checkpoint; extraction resumed from frozen source
+## Final status
 
-The source and exact 26-extraction matrix were committed and pushed before scoring
-in `a3cf586031caf67b3f6ef7965ed30d0db717e257`. This checkpoint preserves completed
-worker records; it does **not** claim a complete comparison or selected winner.
-`checkpoint.json` is the authoritative inventory of committed completed and pending
-case/configuration pairs at each checkpoint. Each completed worker record includes
-predictions, runtime/RSS, candidate ordering/features, rejected trace evidence,
-and matrix/source identity. No scores have been inspected at this checkpoint.
+The immutable deterministic evaluation is complete: **26 extraction
+configurations × 5 cases = 130/130 successful receipts**. It produced 52 scored
+variants (26 final predictions and 26 diagnostic trace ceilings), with five
+predictions per variant and local 2/3/5-mm scores. `failures.json`, the report
+failure list, and the worker-failure list are empty.
 
-Checkpoint `263ae97301b86264ab00b263b2f8253256b32cb4` preserved 83 pairs.
-The second concurrent rebase brought in a two-line protocol-only addition:
-`Handoff note: wait on the workers.` Its changed file hash correctly stopped the
-remaining 45 worker attempts after 85 successful records. Detector, scorer,
-requirements, and all other frozen sources were unchanged. All 45 interrupted
-attempts are preserved in `interrupted-source-check-failures.json`; no empty
-predictions were substituted. Recovery uses a detached worktree at the exact
-frozen commit, with existing results copied in and the remaining pairs resumed.
-No source guard was disabled or source hash rewritten.
+Durable artifacts:
 
-Seven focused tests passed (5.79 seconds); Ruff and mypy passed for both assigned
-Python files. The existing detector, paper, accuracy, stress, and input-validation
-regressions passed: 77 tests in 98.65 seconds.
+- `matrix.json`: frozen specification, inputs, references, source identities, and
+  runner identity.
+- `runs/`: all 130 inference receipts, including candidate audits, final
+  predictions, runtime/RSS, and matrix/runner identity.
+- `predictions/`: all 260 prediction files (52 variants × 5 cases).
+- `report.json`: complete scores, eligibility, family LOCO, bootstrap, runtimes,
+  prediction hashes, and limitations.
+- `reference-diagnostics.json`: spatial diagnostics for every extraction
+  configuration/reference pair.
+- `failures.json`: zero final worker failures.
 
-## Scope and immutable provenance
+`checkpoint.json` is a superseded historical snapshot. The authoritative
+completion state is the exact 130-receipt set plus `report.json`; no continuation
+work remains.
 
-Own only `final_eval_deterministic.py`, `tests/test_final_eval_deterministic.py`,
-and `labels/final-eval/deterministic/`. Work directly on `main`, commit only these
-files, then `git pull --rebase` and `git push origin main`. No branches or PRs.
-Do not edit production detector, scorer, requirements, model artifacts, or other
-agents' files. Do not amend, force-push, skip hooks, or change Git configuration.
-Resolve only clerical concurrent-push conflicts.
+## Frozen provenance
 
-SHA-256:
+Raw inference was produced from detached frozen revision
+`a3cf586031caf67b3f6ef7965ed30d0db717e257`. Recovery reused verified existing
+receipts and generated only missing pairs under the frozen source guard. No guard
+was bypassed, no empty prediction replaced a failure, and no frozen hash was
+changed.
 
-| Item | Hash |
+| Item | SHA-256 |
 | --- | --- |
-| Runner | `69bc364d810bf402a7035e5abccfdf6a360cf6d5643dbda6ebaf5d6274233de1` |
+| Frozen runner | `69bc364d810bf402a7035e5abccfdf6a360cf6d5643dbda6ebaf5d6274233de1` |
 | Frozen matrix | `fcf4c35fb1aacbd54141a1b09e2d69b9f889b4325c80ad3235c6063108aa8c38` |
 | Production detector | `9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e` |
 | Shared scorer | `be2488c1123e0f3ae7cbff7a319ac360fab60c9502ebe5ce490bd7c918d7c990` |
 
-All other source, input, and reference hashes are in `matrix.json`. The detector
-is byte-identical to baseline `4a43dd4`. The runner verifies frozen sources and
-settings; never bypass a mismatch. Keep the runner itself at the hash above when
-resuming this matrix. The added seventh test changes no extraction source.
+Completion spans Linux and macOS receipts. The report-level `platform` and `cpu`
+fields describe the report-generation host only; individual receipts did not
+record host identity, so per-receipt host attribution is unavailable. Runtime is
+therefore descriptive and is not organizer-Windows/four-core validation.
 
-## Resume commands
+## Interpretation
 
-Run from the repository root. On this VM that is
-`/home/ubuntu/repos/battleoftheschool-final-deterministic`, not the older
-`StevenTB1` checkout at `/home/ubuntu/repos/battleoftheschool`.
+At 3 mm, deterministic-family leakage-safe LOCO is TP/FP/FN **8/9/11**, precision
+**0.470588**, recall **0.421053**, F1 **0.444444**, and count MAE **3.2**. The
+all-five development-only winner is `deterministic-strict-spacing1.5`; that reused
+maximum is not an independent held-out estimate.
 
-```bash
-git pull --rebase
-git lfs pull --include="data/subject019/*,data/subject020/*,data/subject021/*,data/subject022/*,data/subject023/*"
-uv venv --python 3.13.3 .venv313
-uv pip install --python .venv313/bin/python -r requirements-dev.txt
-.venv313/bin/ruff check final_eval_deterministic.py tests/test_final_eval_deterministic.py
-.venv313/bin/mypy final_eval_deterministic.py tests/test_final_eval_deterministic.py
-OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=4 .venv313/bin/python -m pytest -q tests/test_final_eval_deterministic.py
-OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=4 .venv313/bin/python -m pytest -q tests/test_detector.py tests/test_paper_methods.py tests/test_accuracy.py tests/test_stress.py tests/test_input_validation.py
-```
+The cross-family selector keeps `deterministic-strict` as the fixed deployment
+algorithm only after exact matrix/source/receipt and synthetic topology-gate
+replay. See `FINAL_EVALUATION_RESULTS.md` and
+`labels/final-eval/selection/report.json`.
 
-Skip virtualenv creation/install when this VM's existing environment remains
-usable. Do **not** run `freeze` again: the committed matrix is immutable.
-Because current main's protocol hash changed, run the frozen replay in an
-isolated detached worktree. On this VM it already exists at
-`/home/ubuntu/repos/battleoftheschool-deterministic-frozen`; skip worktree
-creation when resuming there. From the main checkout on a fresh machine:
+Origin-disabled rows and trace ceilings remain ineligible. Unknown origin diameter
+is uncertainty, not evidence of a sub-2-mm origin. The 19 judge-approved targets
+retain AI-assisted/non-exhaustive provenance, only three radii are measured, and
+the scorer masks unknown-radius errors. No official weighted score, hidden-test
+accuracy, clinical claim, or native organizer-hardware timing is available.
+
+## Verification and optional raw rerun
+
+Routine verification performs no inference and does not require refreezing:
 
 ```bash
-GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach ../battleoftheschool-deterministic-frozen a3cf586031caf67b3f6ef7965ed30d0db717e257
-git -C ../battleoftheschool-deterministic-frozen lfs pull --include="data/subject019/*,data/subject020/*,data/subject021/*,data/subject022/*,data/subject023/*"
-cp -a labels/final-eval/deterministic/runs ../battleoftheschool-deterministic-frozen/labels/final-eval/deterministic/
-.venv313/bin/python ../battleoftheschool-deterministic-frozen/final_eval_deterministic.py run
-.venv313/bin/python ../battleoftheschool-deterministic-frozen/final_eval_deterministic.py report
-cp -a ../battleoftheschool-deterministic-frozen/labels/final-eval/deterministic/{runs,predictions,report.json,reference-diagnostics.json,failures.json} labels/final-eval/deterministic/
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 \
+ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=4 \
+.venv313/bin/python final_eval_select.py verify
 ```
 
-The `run` command resumes completed matching worker records without rerunning
-CT processing, caps worker numerical threads at four, enforces 7168 MB RSS and
-1800 seconds per worker, and records explicit failures. Before starting on the
-same VM, check whether its original runner is still alive:
-
-```bash
-ps -eo pid,etime,args | rg 'final_eval_deterministic.py (run|worker)'
-```
-
-Do not start a second runner against the same output directory. The original
-Linux invocation is pinned with `taskset -c 0-3`; the portable command above
-works without `taskset` and retains library thread caps.
-
-## Remaining work
-
-1. Finish pending pairs listed in `checkpoint.json` and inspect `failures.json`.
-   There are 26 extraction configurations x five cases. Never substitute an
-   empty prediction for a failed extraction.
-2. Generate `report.json`, `reference-diagnostics.json`, and five predictions
-   for every valid final and trace-ceiling variant (52 derived/scored variants
-   if all extractions succeed).
-3. Validate local 2/3/5 mm scores, origin-size eligibility, reference IDs lost
-   versus strict, support/size rejection evidence, LOCO folds, and bootstrap
-   caveats. Add a concise human-readable interpretation under this directory.
-4. Commit compact JSON results and update this handoff. Pull with rebase before
-   pushing. Return the final pushed SHA and relative `report.json` path.
-
-The 19 judge-approved targets retain AI-assisted provenance and may omit vessels.
-Only three radii are measured. Shared scoring masks unknown radii. No hidden-test,
-clinical, or official weighted-score claim is supported. Origin-disabled and
-trace-ceiling variants are ineligible proposal/recall baselines. Unknown origin
-diameter is uncertain; it is not knowingly below 2 mm. Spatial rejected-root
-diagnostics are evidence of nearby failures, not proof of vessel identity.
-
-## Local-only files and blockers
-
-- `.venv313/` and resolved five-case NIfTI LFS files are local setup/data;
-  recreate them using the commands above.
-- `execution.log` and `regressions.log` in this directory are ignored local logs.
-  Durable predictions/diagnostics are in the committed `runs/` records; the test
-  verdict is recorded above.
-- Results completed after the latest checkpoint may still be untracked until the
-  next checkpoint. Inspect `git status --short` and commit only owned files.
-- The protocol-hash interruption has a verified frozen-worktree recovery path.
-  Keep the detached replay's new results copied back to main and checkpointed.
-  The initial stale checkout's setup failure was
-  avoided by cloning the requested `Coder-Meet` repository and installing its
-  pinned development dependencies. No credentials are required beyond existing
-  repository/LFS access.
+Do **not** run `freeze` for final reproduction. If raw deterministic inference must
+be repeated, use an isolated detached checkout whose `HEAD` is exactly
+`a3cf586031caf67b3f6ef7965ed30d0db717e257`, preserve the existing immutable
+`matrix.json`, use the four thread limits above, and run only the frozen runner's
+`run` command into an isolated output. Do not replace the accepted receipts or
+final report merely to reproduce timing. A source or algorithm change requires a
+new versioned evaluation rather than edits to this frozen evidence.

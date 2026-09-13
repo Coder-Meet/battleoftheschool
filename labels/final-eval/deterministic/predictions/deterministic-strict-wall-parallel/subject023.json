@@ -1,0 +1,28 @@
+{
+  "case_id": "subject023",
+  "parent": {
+    "instance_id": "aorta"
+  },
+  "daughters": [
+    {
+      "instance_id": "branch_001",
+      "parent_instance_id": "aorta",
+      "ostium_xyz_mm": [
+        15.829048925486497,
+        -156.23036347597298,
+        254.5
+      ],
+      "seed_xyz_mm": [
+        16.642578125,
+        -157.857421875,
+        251.3191065917932
+      ],
+      "radius_mm": 1.097,
+      "direction_xyz": [
+        0.22201376630519673,
+        -0.44402753261039735,
+        -0.8680722538215951
+      ]
+    }
+  ]
+}

@@ -14,7 +14,10 @@ pytestmark = pytest.mark.skipif(psutil is None, reason="Optional requirements-re
 def test_measurement_includes_descendants_and_inherits_cpu_limits():
     child = (
         "import os,time; "
-        "assert os.environ['OPENBLAS_NUM_THREADS']=='2'; "
+        "names=('OPENBLAS_NUM_THREADS','OMP_NUM_THREADS','MKL_NUM_THREADS',"
+        "'NUMEXPR_NUM_THREADS','ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS','VECLIB_MAXIMUM_THREADS'); "
+        "values={os.environ[name] for name in names}; assert len(values)==1; "
+        "effective=int(values.pop()); assert 1<=effective<=2; "
         "memory=bytearray(48*1024*1024); time.sleep(0.15)"
     )
     parent = (
@@ -23,7 +26,13 @@ def test_measurement_includes_descendants_and_inherits_cpu_limits():
     )
     result = measure([sys.executable, "-c", parent], "fixture", cores=2, interval=0.005)
     assert result["exit_code"] == 0
-    assert result["cpu_cores"] <= 2
+    assert 1 <= result["cpu_cores"] <= 2
+    assert set(result["thread_environment"].values()) == {str(result["cpu_cores"])}
+    if result["cpu_affinity"] is None:
+        assert result["cpu_limit_method"] == "thread_environment_only"
+    else:
+        assert len(result["cpu_affinity"]) == result["cpu_cores"]
+        assert result["cpu_limit_method"] == "os_affinity_and_thread_environment"
     row = result["cases"]["fixture"]
     assert row["max_processes"] >= 3
     assert row["peak_rss_mib"] > 80

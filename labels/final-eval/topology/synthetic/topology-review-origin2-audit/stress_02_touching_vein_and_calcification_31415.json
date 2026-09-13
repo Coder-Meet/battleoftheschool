@@ -1,0 +1,753 @@
+{
+  "prediction": {
+    "parent": {
+      "instance_id": "aorta"
+    },
+    "daughters": [
+      {
+        "instance_id": "branch_001",
+        "parent_instance_id": "aorta",
+        "ostium_xyz_mm": [
+          -182.05841619150348,
+          68.86789664469117,
+          554.8692906022235
+        ],
+        "seed_xyz_mm": [
+          -186.8588947872109,
+          68.04100229806501,
+          554.8536004205538
+        ],
+        "radius_mm": 1.382,
+        "direction_xyz": [
+          -0.9854816090613496,
+          -0.16975165183853932,
+          -0.00322100914940953
+        ]
+      },
+      {
+        "instance_id": "branch_002",
+        "parent_instance_id": "aorta",
+        "ostium_xyz_mm": [
+          -167.95380673373637,
+          72.15125409324523,
+          579.9597300201783
+        ],
+        "seed_xyz_mm": [
+          -164.8702917352419,
+          75.3579318199019,
+          581.87699174991
+        ],
+        "radius_mm": 2.914,
+        "direction_xyz": [
+          0.6365311925040851,
+          0.6619557220644792,
+          0.39578107963294756
+        ]
+      },
+      {
+        "instance_id": "branch_003",
+        "parent_instance_id": "aorta",
+        "ostium_xyz_mm": [
+          -172.7277442537797,
+          59.722123280547386,
+          583.154091691369
+        ],
+        "seed_xyz_mm": [
+          -171.19363296365492,
+          55.64586948166202,
+          581.6232650125028
+        ],
+        "radius_mm": 1.357,
+        "direction_xyz": [
+          0.33230500956995024,
+          -0.882960425601184,
+          -0.33159352743515846
+        ]
+      }
+    ],
+    "case_id": "stress_02_touching_vein_and_calcification_31415"
+  },
+  "audit": {
+    "configuration": {
+      "spacing_mm": 1.0,
+      "margin_mm": 20.0,
+      "shell_inner_mm": 1.5,
+      "shell_outer_mm": 6.0,
+      "cap_margin_mm": 4.0,
+      "minimum_radius_mm": 0.7,
+      "minimum_origin_diameter_mm": 2,
+      "minimum_path_mm": 5.0,
+      "trace_length_mm": 10.0,
+      "vesselness_floor": 0.03,
+      "maximum_candidates": 160,
+      "shell_vesselness_floor": 0.005,
+      "connector_gap_fraction": 0.35,
+      "root_depth_mm": 2.5,
+      "blood_lower_scale": 2.0,
+      "support_contrast_fraction": 0.5,
+      "native_contrast_scale": 1.2,
+      "roots_per_contact": 6,
+      "wall_hug_penalty": 0.8,
+      "broad_contact_mm3": 1000000.0,
+      "parallel_clearance_mm": 0.0,
+      "profile": "review"
+    },
+    "root_separation_mm": 0,
+    "blood_model": {
+      "median_hu": 284.64056396484375,
+      "mad_hu": 4.832928657531738,
+      "lower_hu": 141.28448563372666,
+      "upper_hu": 404.64056396484375,
+      "background_median_hu": 22.53742218017578,
+      "background_mad_hu": 4.7411932945251465,
+      "support_fraction": 0.45305471214499243,
+      "contrast_to_background_mad": 55.2821042093621
+    },
+    "warnings": [],
+    "candidates": [
+      {
+        "rank": 0,
+        "root_zyx": [
+          55,
+          21,
+          33
+        ],
+        "root_lps_mm": [
+          -166.69595733963686,
+          73.44271531318483,
+          580.9607771741132
+        ],
+        "proposal_quality": 3.8999998569488525,
+        "contact_volume_mm3": 140.0,
+        "branch": {
+          "instance_id": "branch_002",
+          "ostium_xyz_mm": [
+            -167.95380673373637,
+            72.15125409324523,
+            579.9597300201783
+          ],
+          "seed_xyz_mm": [
+            -164.8702917352419,
+            75.3579318199019,
+            581.87699174991
+          ],
+          "radius_mm": 2.914,
+          "direction_xyz": [
+            0.6365311925040851,
+            0.6619557220644792,
+            0.39578107963294756
+          ],
+          "path_xyz_mm": [
+            [
+              -167.95380673373637,
+              72.15125409324523,
+              579.9597300201783
+            ],
+            [
+              -166.69595733963686,
+              73.44271531318483,
+              580.9607771741132
+            ],
+            [
+              -165.72471153707303,
+              74.47048049832426,
+              580.9802788462848
+            ],
+            [
+              -164.7534657345092,
+              75.47927426599534,
+              581.9996005449208
+            ],
+            [
+              -163.78221993194538,
+              76.48806803366642,
+              583.0189222435567
+            ],
+            [
+              -162.78262193617877,
+              76.49744370675641,
+              584.0192801513145
+            ],
+            [
+              -161.85996748871148,
+              77.45576759743585,
+              584.9876052613575
+            ]
+          ],
+          "evidence_score": 0.989,
+          "mean_vesselness": 1.0,
+          "parent_instance_id": "aorta",
+          "warnings": [],
+          "features": {
+            "path_hu_relative": 1.0051,
+            "bone_distance_mm": 10.198,
+            "parent_angle_degrees": 68.72,
+            "arc_position": 0.5887,
+            "native_spacing_mm": 1.498,
+            "connector_gap": 0.0,
+            "candidate_volume_mm3": 140.0,
+            "origin_diameter_mm": 6.007,
+            "origin_diameter_upper_mm": 7.505
+          }
+        },
+        "suppressor_rank": null,
+        "reason": "accepted",
+        "shell_component": 6
+      },
+      {
+        "rank": 1,
+        "root_zyx": [
+          29,
+          38,
+          28
+        ],
+        "root_lps_mm": [
+          -183.54736230165528,
+          68.45698115496467,
+          554.8614935496605
+        ],
+        "proposal_quality": 2.5999999046325684,
+        "contact_volume_mm3": 39.0,
+        "branch": {
+          "instance_id": "branch_001",
+          "ostium_xyz_mm": [
+            -182.05841619150348,
+            68.86789664469117,
+            554.8692906022235
+          ],
+          "seed_xyz_mm": [
+            -186.8588947872109,
+            68.04100229806501,
+            554.8536004205538
+          ],
+          "radius_mm": 1.382,
+          "direction_xyz": [
+            -0.9854816090613496,
+            -0.16975165183853932,
+            -0.00322100914940953
+          ],
+          "path_xyz_mm": [
+            [
+              -182.05841619150348,
+              68.86789664469117,
+              554.8692906022235
+            ],
+            [
+              -183.54736230165528,
+              68.45698115496467,
+              554.8614935496605
+            ],
+            [
+              -184.5469602974219,
+              68.42863406440634,
+              554.8609556683671
+            ],
+            [
+              -185.5465582931885,
+              68.40028697384801,
+              554.8604177870736
+            ],
+            [
+              -186.5461562889551,
+              68.37193988328968,
+              554.8598799057802
+            ],
+            [
+              -187.51740209151893,
+              67.34417469815025,
+              554.8403782336086
+            ],
+            [
+              -188.51700008728554,
+              67.31582760759193,
+              554.8398403523152
+            ],
+            [
+              -189.51659808305214,
+              67.2874805170336,
+              554.8393024710217
+            ],
+            [
+              -190.51619607881875,
+              67.25913342647527,
+              554.8387645897283
+            ],
+            [
+              -191.51579407458536,
+              67.23078633591695,
+              554.8382267084348
+            ]
+          ],
+          "evidence_score": 0.99,
+          "mean_vesselness": 0.959,
+          "parent_instance_id": "aorta",
+          "warnings": [],
+          "features": {
+            "path_hu_relative": 0.8578,
+            "bone_distance_mm": 13.0,
+            "parent_angle_degrees": 88.29,
+            "arc_position": 0.2942,
+            "native_spacing_mm": 1.498,
+            "connector_gap": 0.0,
+            "candidate_volume_mm3": 39.0,
+            "origin_diameter_mm": 3.146,
+            "origin_diameter_upper_mm": 4.644
+          }
+        },
+        "suppressor_rank": null,
+        "reason": "accepted",
+        "shell_component": 4
+      },
+      {
+        "rank": 2,
+        "root_zyx": [
+          9,
+          28,
+          39
+        ],
+        "root_lps_mm": [
+          -173.86325646921978,
+          80.11347945030693,
+          535.0790735329674
+        ],
+        "proposal_quality": 1.8360117673873901,
+        "contact_volume_mm3": 65.0,
+        "branch": null,
+        "suppressor_rank": null,
+        "reason": "no_supported_5mm_path",
+        "shell_component": 1
+      },
+      {
+        "rank": 3,
+        "root_zyx": [
+          57,
+          27,
+          18
+        ],
+        "root_lps_mm": [
+          -172.26826241619483,
+          58.24341851618164,
+          582.6727330761089
+        ],
+        "proposal_quality": 1.6907517910003662,
+        "contact_volume_mm3": 45.0,
+        "branch": {
+          "instance_id": "branch_003",
+          "ostium_xyz_mm": [
+            -172.7277442537797,
+            59.722123280547386,
+            583.154091691369
+          ],
+          "seed_xyz_mm": [
+            -171.19363296365492,
+            55.64586948166202,
+            581.6232650125028
+          ],
+          "radius_mm": 1.357,
+          "direction_xyz": [
+            0.33230500956995024,
+            -0.882960425601184,
+            -0.33159352743515846
+          ],
+          "path_xyz_mm": [
+            [
+              -172.7277442537797,
+              59.722123280547386,
+              583.154091691369
+            ],
+            [
+              -172.26826241619483,
+              58.24341851618164,
+              582.6727330761089
+            ],
+            [
+              -172.23991022299205,
+              57.24400042160054,
+              582.6537692852307
+            ],
+            [
+              -171.21196003402267,
+              56.29190083504611,
+              581.6355233491817
+            ],
+            [
+              -171.1836078408199,
+              55.292482740465005,
+              581.6165595583035
+            ],
+            [
+              -171.1552556476171,
+              54.2930646458839,
+              581.5975957674253
+            ],
+            [
+              -171.12690345441433,
+              53.31261796877114,
+              580.5788119500828
+            ],
+            [
+              -171.09855126121155,
+              52.31319987419004,
+              580.5598481592046
+            ],
+            [
+              -171.0738482025276,
+              51.4589438514561,
+              579.6721892664318
+            ]
+          ],
+          "evidence_score": 0.973,
+          "mean_vesselness": 0.95,
+          "parent_instance_id": "aorta",
+          "warnings": [],
+          "features": {
+            "path_hu_relative": 0.8592,
+            "bone_distance_mm": 15.524,
+            "parent_angle_degrees": 73.2,
+            "arc_position": 0.6329,
+            "native_spacing_mm": 1.498,
+            "connector_gap": 0.0,
+            "candidate_volume_mm3": 45.0,
+            "origin_diameter_mm": 3.281,
+            "origin_diameter_upper_mm": 4.779
+          }
+        },
+        "suppressor_rank": null,
+        "reason": "accepted",
+        "shell_component": 7
+      },
+      {
+        "rank": 4,
+        "root_zyx": [
+          11,
+          32,
+          39
+        ],
+        "root_lps_mm": [
+          -177.8616484522862,
+          79.96214825313695,
+          537.0765620607224
+        ],
+        "proposal_quality": 1.2999999523162842,
+        "contact_volume_mm3": 65.0,
+        "branch": null,
+        "suppressor_rank": null,
+        "reason": "no_supported_5mm_path",
+        "shell_component": 1
+      },
+      {
+        "rank": 5,
+        "root_zyx": [
+          15,
+          35,
+          22
+        ],
+        "root_lps_mm": [
+          -180.3784551551388,
+          62.81111370370984,
+          540.7518440777708
+        ],
+        "proposal_quality": 1.2999999523162842,
+        "contact_volume_mm3": 16.0,
+        "branch": null,
+        "suppressor_rank": null,
+        "reason": "no_supported_5mm_path",
+        "shell_component": 2
+      },
+      {
+        "rank": 6,
+        "root_zyx": [
+          19,
+          35,
+          23
+        ],
+        "root_lps_mm": [
+          -180.40680734834157,
+          63.73464612841757,
+          544.7700879745064
+        ],
+        "proposal_quality": 1.2999999523162842,
+        "contact_volume_mm3": 16.0,
+        "branch": null,
+        "suppressor_rank": null,
+        "reason": "no_supported_5mm_path",
+        "shell_component": 2
+      },
+      {
+        "rank": 7,
+        "root_zyx": [
+          38,
+          19,
+          26
+        ],
+        "root_lps_mm": [
+          -164.4982959956842,
+          66.8259969291956,
+          563.8321659506588
+        ],
+        "proposal_quality": 1.2999999523162842,
+        "contact_volume_mm3": 19.0,
+        "branch": null,
+        "suppressor_rank": null,
+        "reason": "no_supported_5mm_path",
+        "shell_component": 5
+      },
+      {
+        "rank": 8,
+        "root_zyx": [
+          41,
+          19,
+          29
+        ],
+        "root_lps_mm": [
+          -164.58335257529254,
+          69.76733696053387,
+          566.8885174026864
+        ],
+        "proposal_quality": 1.2999999523162842,
+        "contact_volume_mm3": 19.0,
+        "branch": null,
+        "suppressor_rank": null,
+        "reason": "no_supported_5mm_path",
+        "shell_component": 5
+      },
+      {
+        "rank": 9,
+        "root_zyx": [
+          55,
+          32,
+          35
+        ],
+        "root_lps_mm": [
+          -177.7482396794751,
+          75.12973350620544,
+          580.9927880616417
+        ],
+        "proposal_quality": 1.2999999523162842,
+        "contact_volume_mm3": 25.0,
+        "branch": null,
+        "suppressor_rank": null,
+        "reason": "wall_hugging_path",
+        "shell_component": 8
+      },
+      {
+        "rank": 10,
+        "root_zyx": [
+          59,
+          31,
+          35
+        ],
+        "root_lps_mm": [
+          -176.74864168370848,
+          75.0821949268904,
+          584.9926060487926
+        ],
+        "proposal_quality": 1.2485473155975342,
+        "contact_volume_mm3": 25.0,
+        "branch": null,
+        "suppressor_rank": null,
+        "reason": "wall_hugging_path",
+        "shell_component": 8
+      },
+      {
+        "rank": 11,
+        "root_zyx": [
+          13,
+          28,
+          39
+        ],
+        "root_lps_mm": [
+          -173.86325646921978,
+          80.03759378043355,
+          539.0783536388249
+        ],
+        "proposal_quality": 1.1430482864379883,
+        "contact_volume_mm3": 65.0,
+        "branch": null,
+        "suppressor_rank": null,
+        "reason": "no_supported_5mm_path",
+        "shell_component": 1
+      }
+    ],
+    "rejections": {
+      "no_supported_5mm_path": 7,
+      "wall_hugging_path": 2
+    },
+    "runtime_s": 1.2586607080302201,
+    "peak_rss_mb": null,
+    "timings": {
+      "normalize_s": 0.0652698750491254,
+      "enhance_s": 1.164497624966316,
+      "propose_s": 0.004547082993667573,
+      "resolve_s": 0.02434612502111122
+    },
+    "working_geometry": {
+      "size_xyz": [
+        59,
+        59,
+        94
+      ],
+      "spacing_xyz_mm": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "origin_lps_mm": [
+        -144.76877705284645,
+        42.10063505449219,
+        525.3561661267562
+      ],
+      "direction": [
+        -0.028352193202778153,
+        -0.9995979957665944,
+        -3.567813382242193e-18,
+        0.9994180945811018,
+        -0.028347090558324888,
+        -0.018971417468343788,
+        0.01896379087820781,
+        -0.0005378812933930438,
+        0.9998200264643842
+      ]
+    }
+  },
+  "scores": {
+    "2": {
+      "case_id": "stress_02_touching_vein_and_calcification_31415",
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 3,
+        "reference": 3,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.6288686679319139,
+          "seed_error_mm": 0.4938384424693721,
+          "radius_error_mm": 0.3176746239669048,
+          "direction_error_degrees": 3.7533211794430037,
+          "seed_to_reference_centreline_mm": 0.30416062063957744
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 0.9269975459270493,
+          "seed_error_mm": 0.3680025272782021,
+          "radius_error_mm": 0.10224523876564096,
+          "direction_error_degrees": 14.165579636510147,
+          "seed_to_reference_centreline_mm": 0.36649441643702774
+        },
+        {
+          "prediction_id": "branch_003",
+          "reference_id": "branch_003",
+          "ostium_error_mm": 1.3070835083585512,
+          "seed_error_mm": 0.4126556216100812,
+          "radius_error_mm": 0.30496199016582404,
+          "direction_error_degrees": 14.824160313212586,
+          "seed_to_reference_centreline_mm": 0.34238026170664243
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    },
+    "3": {
+      "case_id": "stress_02_touching_vein_and_calcification_31415",
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 3,
+        "reference": 3,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.6288686679319139,
+          "seed_error_mm": 0.4938384424693721,
+          "radius_error_mm": 0.3176746239669048,
+          "direction_error_degrees": 3.7533211794430037,
+          "seed_to_reference_centreline_mm": 0.30416062063957744
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 0.9269975459270493,
+          "seed_error_mm": 0.3680025272782021,
+          "radius_error_mm": 0.10224523876564096,
+          "direction_error_degrees": 14.165579636510147,
+          "seed_to_reference_centreline_mm": 0.36649441643702774
+        },
+        {
+          "prediction_id": "branch_003",
+          "reference_id": "branch_003",
+          "ostium_error_mm": 1.3070835083585512,
+          "seed_error_mm": 0.4126556216100812,
+          "radius_error_mm": 0.30496199016582404,
+          "direction_error_degrees": 14.824160313212586,
+          "seed_to_reference_centreline_mm": 0.34238026170664243
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    },
+    "5": {
+      "case_id": "stress_02_touching_vein_and_calcification_31415",
+      "true_positives": 3,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 3,
+        "reference": 3,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 0.6288686679319139,
+          "seed_error_mm": 0.4938384424693721,
+          "radius_error_mm": 0.3176746239669048,
+          "direction_error_degrees": 3.7533211794430037,
+          "seed_to_reference_centreline_mm": 0.30416062063957744
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 0.9269975459270493,
+          "seed_error_mm": 0.3680025272782021,
+          "radius_error_mm": 0.10224523876564096,
+          "direction_error_degrees": 14.165579636510147,
+          "seed_to_reference_centreline_mm": 0.36649441643702774
+        },
+        {
+          "prediction_id": "branch_003",
+          "reference_id": "branch_003",
+          "ostium_error_mm": 1.3070835083585512,
+          "seed_error_mm": 0.4126556216100812,
+          "radius_error_mm": 0.30496199016582404,
+          "direction_error_degrees": 14.824160313212586,
+          "seed_to_reference_centreline_mm": 0.34238026170664243
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    }
+  }
+}

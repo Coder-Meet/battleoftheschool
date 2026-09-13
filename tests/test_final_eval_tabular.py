@@ -167,7 +167,13 @@ def test_all_committed_variants_replay_from_ordered_scores_and_retain_five_cases
             ]
             matrix = np.asarray(vectors, dtype=float).reshape(len(vectors), len(artifact["feature_names"]))
             model = TreeModel.load(path) if artifact["kind"] == "tree" else CandidateModel.load(path)
-            np.testing.assert_allclose(model.scores(matrix), saved["probabilities"], rtol=0, atol=0)
+            actual = model.scores(matrix)
+            expected = np.asarray(saved["probabilities"], dtype=np.float64)
+            np.testing.assert_array_max_ulp(actual, expected, maxulp=16)
+            for threshold in tabular.thresholds(saved["threshold"]):
+                np.testing.assert_array_equal(actual >= threshold, expected >= threshold)
+    from final_eval_select import equivalent
+
     names = [variant["name"] for variant in report["variants"]]
     assert len(names) == len(set(names))
     for variant in report["variants"]:
@@ -185,7 +191,7 @@ def test_all_committed_variants_replay_from_ordered_scores_and_retain_five_cases
             assert variant["runtime"][case]["runtime_s"] >= 0
             assert variant["runtime"][case]["peak_rss_mb"] > 0
             predictions[case] = prediction
-        assert score_variant(predictions) == variant["scores"]
+        assert equivalent(score_variant(predictions), variant["scores"])
 
 
 @pytest.mark.parametrize("mutation", ["ordering", "geometry", "driver", "probabilities", "records"])

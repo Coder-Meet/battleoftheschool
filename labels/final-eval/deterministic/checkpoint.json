@@ -1,5 +1,15 @@
 {
-  "status": "partial_checkpoint_frozen_source_recovery",
+  "status": "historical_partial_checkpoint_superseded_by_complete_report",
+  "snapshot_completed_pair_count": 85,
+  "snapshot_pending_pair_count": 45,
+  "superseded_by": {
+    "status": "complete",
+    "completed_pairs": 130,
+    "pending_pairs": 0,
+    "report": "labels/final-eval/deterministic/report.json",
+    "failures": "labels/final-eval/deterministic/failures.json",
+    "note": "All remaining pairs were replayed at frozen commit a3cf586031caf67b3f6ef7965ed30d0db717e257; report and run receipts are authoritative."
+  },
   "completed_pairs": [
     {
       "name": "deterministic-paper-border-cleaning",

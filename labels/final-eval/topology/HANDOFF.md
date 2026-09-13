@@ -1,19 +1,22 @@
-# Topology checkpoint — PARTIAL / INCOMPLETE
+# Topology evaluation — COMPLETE / DIAGNOSTIC ONLY
 
-Checkpoint requested because usage credits are nearly exhausted. No production
-promotion or clean model-selection claim is justified. All new experiments are
-**POST-REFERENCE DEVELOPMENT**, ineligible for the frozen-family comparison.
+## Final status
 
-## Latest continuation status
+The topology evaluation is complete. All **9 recovery variants × 5 real cases**
+finished with zero failures, and the frozen synthetic gate contains the exact
+**11 variants × 24 cases = 264/264 checkpoints**. Every recovery variant is
+post-reference development and remains ineligible for frozen-family selection.
+No continuation work or production promotion is pending.
 
-Initial partial checkpoint was pushed successfully as
-`76ce2f13b09da1f66cbeb6d8dd63dcdd5b00b1db`. Subsequently all nine recovery
-variants completed all five cases with zero execution failures. `report.json`
-now contains all nine variants; the original progress table below is historical.
-The synthetic cohort and final interpretation remain pending.
+Frozen source revision:
+`76ce2f13b09da1f66cbeb6d8dd63dcdd5b00b1db`.
+Frozen experiment config SHA-256:
+`db719d635fd57f724cc4ede61edcdc1851d1688073c7c2af96f1da338bb96a94`.
 
-| Variant suffix (topology-) | 3 mm TP / FP / FN | F1 |
-| --- | --- | --- |
+## Real-case results
+
+| Variant suffix (`topology-`) | 3 mm TP / FP / FN | F1 |
+| --- | --- | ---: |
 | alternate-roots | 8 / 14 / 11 | 0.3902 |
 | connector-gap | 8 / 4 / 11 | 0.5161 |
 | parallel-path | 8 / 4 / 11 | 0.5161 |
@@ -24,124 +27,72 @@ The synthetic cohort and final interpretation remain pending.
 | combined-no-parallel | 15 / 38 / 4 | 0.4167 |
 | combined-no-contrast | 8 / 16 / 11 | 0.3721 |
 
-No recovery configuration improves strict baseline aggregate 3 mm F1 (0.5333).
-Contrast sensitivity drives recovered references but introduces unmatched
-origins. Adding gap tolerance to the combined configuration adds two unmatched
-origins with no new matches. The synthetic evidence is still needed.
+None improves the strict real-case baseline at 3 mm (8 / 3 / 11, F1 0.5333).
+The review-origin2 baseline is also not a replacement (9 / 14 / 10, F1 0.4286).
 
-## What is durable
+## Frozen synthetic gate
 
-- `final_eval_topology.py`: faithful instrumented detector resolver, physical LPS
-  diagnosis, bounded alternate-root experiment, frozen configurations, resumable
-  real/synthetic runners. References enter only diagnosis and scoring.
-- `tests/test_final_eval_topology.py`: 12 tests including exact equality against
-  the actual frozen resolver on four synthetic scenarios under strict/review.
-- `baseline_report.json`: complete strict and review-origin2 baselines, all five
-  case outputs and per-candidate diagnosis under their respective directories.
-- `experiment_config.json`: nine configurations and a 24-case synthetic cohort
-  frozen before recovery scoring, including source hashes and rationale.
-- `report.json`: **partial** recovery report, containing only complete five-case
-  variants. Do not interpret absent variants as empty predictions.
-- `resources/`: isolated four-core process-tree RSS samples and command metadata.
-  Baseline RSS is explicitly unknown; baseline runtime excludes loading/diagnosis.
+| Variant suffix (`topology-`) | 3 mm TP / FP / FN | F1 | Negative-control predictions |
+| --- | --- | ---: | ---: |
+| strict-audit | 46 / 0 / 3 | 0.9684 | 0 |
+| review-origin2-audit | 47 / 0 / 2 | 0.9792 | 0 |
+| alternate-roots | 47 / 9 / 2 | 0.8952 | 0 |
+| connector-gap | 46 / 0 / 3 | 0.9684 | 0 |
+| parallel-path | 48 / 3 / 1 | 0.9600 | 0 |
+| contrast-support | 45 / 31 / 4 | 0.7200 | 14 |
+| combined | 46 / 101 / 3 | 0.4694 | 30 |
+| combined-no-roots | 47 / 31 / 2 | 0.7402 | 14 |
+| combined-no-gap | 48 / 90 / 1 | 0.5134 | 30 |
+| combined-no-parallel | 47 / 110 / 2 | 0.4563 | 34 |
+| combined-no-contrast | 47 / 16 / 2 | 0.8393 | 0 |
 
-## Historical initial-checkpoint status (superseded above)
+The strict frozen snapshots are TP/FP/FN **45/1/4 at 2 mm** and **46/0/3 at
+3 mm and 5 mm**, with zero strict detections on both `negative_controls_only`
+cases. Contrast-support recovery causes major false-positive regressions,
+including negative-control detections; combined variants amplify them. Alternate
+roots and wall-parallel recovery also reduce precision. Connector-gap is neutral
+on the synthetic gate and worse on real cases. These procedural regressions are
+diagnostic robustness evidence, not independent clinical evidence.
 
-| Variant | Status | Local 3 mm TP / FP / FN | F1 |
-| --- | --- | --- | --- |
-| topology-strict-audit | complete, five cases | 8 / 3 / 11 | 0.5333 |
-| topology-review-origin2-audit | complete, five cases | 9 / 14 / 10 | 0.4286 |
-| topology-alternate-roots | complete, five cases | 8 / 14 / 11 | 0.3902 |
-| topology-connector-gap | complete, five cases | 8 / 4 / 11 | 0.5161 |
-| topology-parallel-path | subject019 complete; rest pending | incomplete | — |
-| topology-contrast-support | pending | incomplete | — |
-| topology-combined | pending | incomplete | — |
-| topology-combined-no-roots | pending | incomplete | — |
-| topology-combined-no-gap | pending | incomplete | — |
-| topology-combined-no-parallel | pending | incomplete | — |
-| topology-combined-no-contrast | pending | incomplete | — |
+## Durable evidence
 
-No synthetic cohort evaluation has run yet. The 37 existing-detector plus new
-topology tests passed; those tests are separate from the planned 24-case cohort.
-The experiment process was deliberately stopped for a consistent checkpoint
-during the parallel-path variant. No inference process remains running.
-Completed resource checkpoints are reused on resume; an interrupted case without
-its resource JSON reruns. Do not manufacture missing case results.
+- `experiment_config.json`: immutable nine-variant settings, 24-case synthetic
+  cohort settings, source identities, and initial diagnosis identity.
+- `baseline_report.json`: complete strict and review-origin2 real baselines.
+- `report.json`: all nine complete real-case recovery variants.
+- `synthetic/` and `synthetic_report.json`: all 264 checkpoints, aggregate
+  2/3/5-mm scores, runtime maps, and zero failures.
+- `diagnosis/`: per-candidate real-case diagnostic evidence.
+- `resources/`: isolated process-tree samples for all 45 recovery runs; baseline
+  RSS remains unknown and baseline runtime excludes loading/diagnosis.
 
-Preliminary evidence: extra roots and a 20% connector-gap tolerance increased
-unmatched origins without recovering a new 3 mm match. Strict fails through
-disconnected ostia, unsupported 5 mm paths and low support on several reference
-guides. Remaining wall-parallel/contrast ablations must finish before any verdict.
-No final per-reference narrative or consolidated final family report exists yet.
+The selector derives all 24 case IDs from the frozen settings, requires exact
+variant/case path sets, replays every stored prediction against its stored
+reference at 2/3/5 mm, and compares aggregate/runtime maps. It binds every
+checkpoint and supporting artifact in the final evidence manifest.
 
-## Exact continuation commands
+## Verification and frozen-source behavior
 
-Run from the repository root on **main**, after `git pull --rebase`. Only this
-module, its new test, and `labels/final-eval/topology/` are assigned to this agent.
-Never change `detector.py`, production configuration, existing models, or others'
-files. Do not create branches/PRs. Commit only assigned files, pull with rebase,
-and push main frequently.
+Routine raw verification uses the stored evidence and performs no inference:
 
 ```bash
-git lfs pull --include='data/subject019/*,data/subject020/*,data/subject021/*,data/subject022/*,data/subject023/*'
-uv venv --python 3.13.3 .venv313
-uv pip install --python .venv313/bin/python -r requirements-dev.txt -r requirements-resources.txt
-export OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=4
-.venv313/bin/ruff check final_eval_topology.py tests/test_final_eval_topology.py
-.venv313/bin/mypy final_eval_topology.py tests/test_final_eval_topology.py
-.venv313/bin/python -m pytest -q tests/test_detector.py tests/test_final_eval_topology.py
-.venv313/bin/python final_eval_topology.py experiments
-.venv313/bin/python final_eval_topology.py synthetic
+OPENBLAS_NUM_THREADS=4 OMP_NUM_THREADS=4 MKL_NUM_THREADS=4 \
+ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=4 \
+.venv313/bin/python final_eval_select.py verify
 ```
 
-Skip creating/installing the environment if the matching pinned environment
-already exists. On Windows use its corresponding interpreter path and set the
-four environment variables before starting Python. Windows was not tested here.
-Real experiments run sequentially, each worker restricted to four CPU cores.
+A current-main raw topology rerun is **intentionally rejected** by the frozen
+source guard. `research_resources.py` changed after the freeze only to make CPU
+limiting portable and report cooperative-only fallback honestly; its current hash
+therefore differs from the hash in `experiment_config.json`. The selector permits
+that documented wrapper mismatch only for replay of already-frozen evidence and
+requires every other frozen topology source identity to match. It does not claim a
+current-main inference rerun is equivalent.
 
-Do **not** rerun `freeze` or overwrite the frozen config. Do **not** regenerate
-baselines unnecessarily: the frozen config hashes the initial baseline report.
-Do not edit hashed source then bypass `load_frozen` validation. An essential
-algorithm repair requires a new explicitly versioned experiment with documented
-provenance; unchanged settings/results must retain their original hashes.
-
-After completing the remaining runs:
-
-1. Verify nine complete recovery variants and all five case files for each.
-2. Verify 24 synthetic cases for all eleven variants and inspect failures.
-3. Compare standalone and leave-one-component-out ablations; inspect matched
-   reference identities and extra-origin features, not only aggregate F1.
-4. Write a concise per-reference diagnosis and synthetic regression verdict.
-   Unknown reference radii must remain unknown. All reported scores are local
-   one-to-one 2/3/5 mm comparisons, not an official challenge score.
-5. Confirm `detector.py` remains unchanged, inspect `git diff`, run Ruff/mypy/tests,
-   then commit, `git pull --rebase`, push main, and return SHA/report path.
-
-## Source and input provenance
-
-Starting main: `2a825d89b66e7d5c61bea7f497be08fbc22cf526`.
-
-| File | SHA-256 |
-| --- | --- |
-| final_eval_topology.py | b7de4488c0b5771dbf9a10223c008e3e03f22b068bd26c16afcd2eb45aad7fbe |
-| tests/test_final_eval_topology.py | 96e6cb3f6690591483e8e06c34047e39cc09edb4b10a20ff240f6fafd84078d5 |
-| detector.py | 9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e |
-| experiment_config.json | db719d635fd57f724cc4ede61edcdc1851d1688073c7c2af96f1da338bb96a94 |
-
-Full dependency/source/input/reference hashes are in the JSON reports. There are
-no fitted model files. The 2 mm-origin policy is the unchanged detector policy
-using explicit measurement uncertainty, not fabricated radii. Diagnostic support
-connectivity uses positive connected-component labels; unsupported label zero
-does not count as parent-connected.
-
-## Local-only state and blockers
-
-The checkout used was `/home/ubuntu/repos/topology-final`, not the pre-existing
-checkout pointing to the separate StevenTB1 remote. Local `.venv313`, caches and
-the selectively resolved five-case LFS payloads are reproducible dependencies,
-not unique unpublished work. No CT volumes are added by this work.
-
-There is no access or code blocker. Work is incomplete because of the requested
-credit-preservation checkpoint. The stopped shell ID is not a continuation
-mechanism; use the commands above. The checkpoint commit itself is the durable
-revision identifier (reported to the parent after a successful push).
+Do **not** refreeze or bypass the source guard. If raw experiments must be repeated,
+use an isolated detached checkout whose `HEAD` is exactly
+`76ce2f13b09da1f66cbeb6d8dd63dcdd5b00b1db`, preserve the immutable experiment
+config, set the four thread limits above, and run the frozen `experiments` or
+`synthetic` command into isolated output. Do not overwrite accepted checkpoints to
+reproduce timing. Any source or algorithm change requires a new explicitly
+versioned experiment.
