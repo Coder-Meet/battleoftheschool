@@ -1,0 +1,2963 @@
+{
+  "configuration": {
+    "spacing_mm": 1.0,
+    "margin_mm": 20.0,
+    "shell_inner_mm": 1.5,
+    "shell_outer_mm": 3.5,
+    "cap_margin_mm": 4.0,
+    "minimum_radius_mm": 0.7,
+    "minimum_origin_diameter_mm": 2.0,
+    "minimum_path_mm": 5.0,
+    "trace_length_mm": 10.0,
+    "vesselness_floor": 0.06,
+    "maximum_candidates": 160,
+    "shell_vesselness_floor": 0.06,
+    "connector_gap_fraction": 0,
+    "root_depth_mm": 3.5,
+    "blood_lower_scale": 1.0,
+    "support_contrast_fraction": 0.3,
+    "native_contrast_scale": 1.2,
+    "roots_per_contact": 6,
+    "wall_hug_penalty": 0.0,
+    "broad_contact_mm3": 1200.0,
+    "parallel_clearance_mm": 1.5,
+    "profile": "strict"
+  },
+  "root_separation_mm": 2.0,
+  "blood_model": {
+    "median_hu": 374.0,
+    "mad_hu": 20.7564,
+    "lower_hu": 160.5,
+    "upper_hu": 494.0,
+    "background_median_hu": 69.0,
+    "background_mad_hu": 118.60799999999999,
+    "support_fraction": 0.3,
+    "contrast_to_background_mad": 2.571496020504519
+  },
+  "warnings": [],
+  "candidates": [
+    {
+      "rank": 0,
+      "root_zyx": [
+        45,
+        40,
+        21
+      ],
+      "root_lps_mm": [
+        16.642578125,
+        -157.857421875,
+        248.5
+      ],
+      "proposal_quality": 1.5318433046340942,
+      "contact_volume_mm3": 107.0,
+      "branch": {
+        "instance_id": "",
+        "ostium_xyz_mm": [
+          15.829048925486497,
+          -156.23036347597298,
+          254.5
+        ],
+        "seed_xyz_mm": [
+          16.642578125,
+          -157.857421875,
+          251.3191065917932
+        ],
+        "radius_mm": 1.097,
+        "direction_xyz": [
+          0.22201376630519673,
+          -0.44402753261039735,
+          -0.8680722538215951
+        ],
+        "path_xyz_mm": [
+          [
+            15.829048925486497,
+            -156.23036347597298,
+            254.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            254.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            248.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            247.5
+          ],
+          [
+            17.477595861801525,
+            -157.857421875,
+            246.66498226319848
+          ]
+        ],
+        "evidence_score": 0.843,
+        "mean_vesselness": 0.42,
+        "parent_instance_id": "aorta",
+        "warnings": [],
+        "features": {
+          "path_hu_relative": 0.7754,
+          "bone_distance_mm": 14.006,
+          "parent_angle_degrees": 19.96,
+          "arc_position": 0.541,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 107.0,
+          "origin_diameter_mm": 3.154,
+          "origin_diameter_upper_mm": 4.654
+        }
+      },
+      "suppressor_rank": 1,
+      "reason": "opening_on_another_path",
+      "shell_component": 3
+    },
+    {
+      "rank": 1,
+      "root_zyx": [
+        50,
+        40,
+        21
+      ],
+      "root_lps_mm": [
+        16.642578125,
+        -157.857421875,
+        253.5
+      ],
+      "proposal_quality": 1.2901248931884766,
+      "contact_volume_mm3": 107.0,
+      "branch": {
+        "instance_id": "branch_001",
+        "ostium_xyz_mm": [
+          15.829048925486497,
+          -156.23036347597298,
+          259.5
+        ],
+        "seed_xyz_mm": [
+          16.642578125,
+          -157.857421875,
+          256.3191065917932
+        ],
+        "radius_mm": 0.981,
+        "direction_xyz": [
+          0.22201376630519526,
+          -0.4440275326103944,
+          -0.8680722538215971
+        ],
+        "path_xyz_mm": [
+          [
+            15.829048925486497,
+            -156.23036347597298,
+            259.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            259.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            253.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            252.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            251.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            251.3191065917932
+          ]
+        ],
+        "evidence_score": 0.812,
+        "mean_vesselness": 0.382,
+        "parent_instance_id": "aorta",
+        "warnings": [
+          "Origin diameter is unresolved on CT; size eligibility is uncertain."
+        ],
+        "features": {
+          "path_hu_relative": 0.701,
+          "bone_distance_mm": 14.811,
+          "parent_angle_degrees": 21.2,
+          "arc_position": 0.6293,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 107.0
+        }
+      },
+      "suppressor_rank": null,
+      "reason": "accepted",
+      "shell_component": 3
+    },
+    {
+      "rank": 2,
+      "root_zyx": [
+        42,
+        25,
+        34
+      ],
+      "root_lps_mm": [
+        3.642578125,
+        -142.857421875,
+        245.5
+      ],
+      "proposal_quality": 1.124064326286316,
+      "contact_volume_mm3": 35.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 2
+    },
+    {
+      "rank": 3,
+      "root_zyx": [
+        55,
+        40,
+        22
+      ],
+      "root_lps_mm": [
+        15.642578125,
+        -157.857421875,
+        258.5
+      ],
+      "proposal_quality": 1.048914909362793,
+      "contact_volume_mm3": 107.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "small_radius",
+      "shell_component": 3
+    },
+    {
+      "rank": 4,
+      "root_zyx": [
+        43,
+        40,
+        21
+      ],
+      "root_lps_mm": [
+        16.642578125,
+        -157.857421875,
+        246.5
+      ],
+      "proposal_quality": 0.9787915945053101,
+      "contact_volume_mm3": 107.0,
+      "branch": {
+        "instance_id": "",
+        "ostium_xyz_mm": [
+          15.829048925486497,
+          -156.23036347597298,
+          252.5
+        ],
+        "seed_xyz_mm": [
+          16.642578125,
+          -157.857421875,
+          249.3191065917932
+        ],
+        "radius_mm": 1.335,
+        "direction_xyz": [
+          0.22201376630519673,
+          -0.44402753261039735,
+          -0.8680722538215951
+        ],
+        "path_xyz_mm": [
+          [
+            15.829048925486497,
+            -156.23036347597298,
+            252.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            252.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            246.5
+          ],
+          [
+            17.642578125,
+            -157.857421875,
+            245.5
+          ],
+          [
+            17.642578125,
+            -157.857421875,
+            244.73332015416628
+          ]
+        ],
+        "evidence_score": 0.826,
+        "mean_vesselness": 0.4,
+        "parent_instance_id": "aorta",
+        "warnings": [],
+        "features": {
+          "path_hu_relative": 0.7148,
+          "bone_distance_mm": 14.0,
+          "parent_angle_degrees": 19.97,
+          "arc_position": 0.5057,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 107.0,
+          "origin_diameter_mm": 3.116,
+          "origin_diameter_upper_mm": 4.616
+        }
+      },
+      "suppressor_rank": 1,
+      "reason": "opening_on_another_path",
+      "shell_component": 3
+    },
+    {
+      "rank": 5,
+      "root_zyx": [
+        42,
+        25,
+        29
+      ],
+      "root_lps_mm": [
+        8.642578125,
+        -142.857421875,
+        245.5
+      ],
+      "proposal_quality": 0.9762701988220215,
+      "contact_volume_mm3": 35.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 2
+    },
+    {
+      "rank": 6,
+      "root_zyx": [
+        42,
+        25,
+        27
+      ],
+      "root_lps_mm": [
+        10.642578125,
+        -142.857421875,
+        245.5
+      ],
+      "proposal_quality": 0.9707591533660889,
+      "contact_volume_mm3": 35.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 2
+    },
+    {
+      "rank": 7,
+      "root_zyx": [
+        52,
+        40,
+        22
+      ],
+      "root_lps_mm": [
+        15.642578125,
+        -157.857421875,
+        255.5
+      ],
+      "proposal_quality": 0.9297407269477844,
+      "contact_volume_mm3": 107.0,
+      "branch": {
+        "instance_id": "",
+        "ostium_xyz_mm": [
+          15.642578125,
+          -156.357421875,
+          261.5
+        ],
+        "seed_xyz_mm": [
+          15.642578125,
+          -157.857421875,
+          258.0
+        ],
+        "radius_mm": 1.573,
+        "direction_xyz": [
+          0.0,
+          -0.39391929857916763,
+          -0.9191450300180578
+        ],
+        "path_xyz_mm": [
+          [
+            15.642578125,
+            -156.357421875,
+            261.5
+          ],
+          [
+            15.642578125,
+            -157.857421875,
+            261.5
+          ],
+          [
+            15.642578125,
+            -157.857421875,
+            255.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            254.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            253.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            253.4142135623731
+          ]
+        ],
+        "evidence_score": 0.801,
+        "mean_vesselness": 0.356,
+        "parent_instance_id": "aorta",
+        "warnings": [
+          "Origin diameter is unresolved on CT; size eligibility is uncertain."
+        ],
+        "features": {
+          "path_hu_relative": 0.7161,
+          "bone_distance_mm": 15.616,
+          "parent_angle_degrees": 11.74,
+          "arc_position": 0.6641,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 107.0
+        }
+      },
+      "suppressor_rank": 1,
+      "reason": "same_opening_and_path",
+      "shell_component": 3
+    },
+    {
+      "rank": 8,
+      "root_zyx": [
+        59,
+        22,
+        31
+      ],
+      "root_lps_mm": [
+        6.642578125,
+        -139.857421875,
+        262.5
+      ],
+      "proposal_quality": 0.9240812659263611,
+      "contact_volume_mm3": 39.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "short_proximal_segment",
+      "shell_component": 5
+    },
+    {
+      "rank": 9,
+      "root_zyx": [
+        42,
+        25,
+        31
+      ],
+      "root_lps_mm": [
+        6.642578125,
+        -142.857421875,
+        245.5
+      ],
+      "proposal_quality": 0.9213259220123291,
+      "contact_volume_mm3": 35.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 2
+    },
+    {
+      "rank": 10,
+      "root_zyx": [
+        41,
+        26,
+        25
+      ],
+      "root_lps_mm": [
+        12.642578125,
+        -143.857421875,
+        244.5
+      ],
+      "proposal_quality": 0.7687958478927612,
+      "contact_volume_mm3": 35.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 2
+    },
+    {
+      "rank": 11,
+      "root_zyx": [
+        42,
+        28,
+        22
+      ],
+      "root_lps_mm": [
+        15.642578125,
+        -145.857421875,
+        245.5
+      ],
+      "proposal_quality": 0.7684584856033325,
+      "contact_volume_mm3": 35.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 2
+    },
+    {
+      "rank": 12,
+      "root_zyx": [
+        48,
+        40,
+        21
+      ],
+      "root_lps_mm": [
+        16.642578125,
+        -157.857421875,
+        251.5
+      ],
+      "proposal_quality": 0.742412805557251,
+      "contact_volume_mm3": 107.0,
+      "branch": {
+        "instance_id": "",
+        "ostium_xyz_mm": [
+          15.829048925486497,
+          -156.23036347597298,
+          257.5
+        ],
+        "seed_xyz_mm": [
+          16.642578125,
+          -157.857421875,
+          254.3191065917932
+        ],
+        "radius_mm": 1.277,
+        "direction_xyz": [
+          0.22201376630519673,
+          -0.44402753261039735,
+          -0.8680722538215951
+        ],
+        "path_xyz_mm": [
+          [
+            15.829048925486497,
+            -156.23036347597298,
+            257.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            257.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            251.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            250.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            249.5
+          ],
+          [
+            16.642578125,
+            -157.857421875,
+            249.3191065917932
+          ]
+        ],
+        "evidence_score": 0.812,
+        "mean_vesselness": 0.382,
+        "parent_instance_id": "aorta",
+        "warnings": [
+          "Origin diameter is unresolved on CT; size eligibility is uncertain."
+        ],
+        "features": {
+          "path_hu_relative": 0.7095,
+          "bone_distance_mm": 14.286,
+          "parent_angle_degrees": 20.76,
+          "arc_position": 0.594,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 107.0
+        }
+      },
+      "suppressor_rank": 1,
+      "reason": "same_opening_and_path",
+      "shell_component": 3
+    },
+    {
+      "rank": 13,
+      "root_zyx": [
+        59,
+        22,
+        29
+      ],
+      "root_lps_mm": [
+        8.642578125,
+        -139.857421875,
+        262.5
+      ],
+      "proposal_quality": 0.5837916135787964,
+      "contact_volume_mm3": 39.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 5
+    },
+    {
+      "rank": 14,
+      "root_zyx": [
+        59,
+        22,
+        33
+      ],
+      "root_lps_mm": [
+        4.642578125,
+        -139.857421875,
+        262.5
+      ],
+      "proposal_quality": 0.5808112621307373,
+      "contact_volume_mm3": 39.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 5
+    },
+    {
+      "rank": 15,
+      "root_zyx": [
+        57,
+        25,
+        37
+      ],
+      "root_lps_mm": [
+        0.642578125,
+        -142.857421875,
+        260.5
+      ],
+      "proposal_quality": 0.5225183963775635,
+      "contact_volume_mm3": 13.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 4
+    },
+    {
+      "rank": 16,
+      "root_zyx": [
+        61,
+        22,
+        30
+      ],
+      "root_lps_mm": [
+        7.642578125,
+        -139.857421875,
+        264.5
+      ],
+      "proposal_quality": 0.5147366523742676,
+      "contact_volume_mm3": 39.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "short_proximal_segment",
+      "shell_component": 5
+    },
+    {
+      "rank": 17,
+      "root_zyx": [
+        57,
+        25,
+        34
+      ],
+      "root_lps_mm": [
+        3.642578125,
+        -142.857421875,
+        260.5
+      ],
+      "proposal_quality": 0.5124773979187012,
+      "contact_volume_mm3": 13.0,
+      "branch": {
+        "instance_id": "branch_003",
+        "ostium_xyz_mm": [
+          5.513406414534536,
+          -144.357421875,
+          260.232598944432
+        ],
+        "seed_xyz_mm": [
+          1.520243291638069,
+          -141.73508704163808,
+          260.5
+        ],
+        "radius_mm": 0.937,
+        "direction_xyz": [
+          -0.8345666042501544,
+          0.5480650325895774,
+          0.05588652004689368
+        ],
+        "path_xyz_mm": [
+          [
+            5.513406414534536,
+            -144.357421875,
+            260.232598944432
+          ],
+          [
+            3.642578125,
+            -142.857421875,
+            260.5
+          ],
+          [
+            2.642578125,
+            -142.857421875,
+            260.5
+          ],
+          [
+            1.642578125,
+            -141.857421875,
+            260.5
+          ],
+          [
+            0.642578125,
+            -140.857421875,
+            260.5
+          ],
+          [
+            -0.357421875,
+            -139.857421875,
+            261.5
+          ],
+          [
+            -0.7574218749999977,
+            -139.457421875,
+            261.5
+          ]
+        ],
+        "evidence_score": 0.702,
+        "mean_vesselness": 0.192,
+        "parent_instance_id": "aorta",
+        "warnings": [
+          "Trace stops at an estimated downstream bifurcation."
+        ],
+        "features": {
+          "path_hu_relative": 0.4295,
+          "bone_distance_mm": 3.16,
+          "parent_angle_degrees": 83.2,
+          "arc_position": 0.6751,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 13.0,
+          "origin_diameter_mm": 4.817,
+          "origin_diameter_upper_mm": 6.317
+        }
+      },
+      "suppressor_rank": null,
+      "reason": "accepted",
+      "shell_component": 4
+    },
+    {
+      "rank": 18,
+      "root_zyx": [
+        66,
+        21,
+        26
+      ],
+      "root_lps_mm": [
+        11.642578125,
+        -138.857421875,
+        269.5
+      ],
+      "proposal_quality": 0.49006444215774536,
+      "contact_volume_mm3": 39.0,
+      "branch": {
+        "instance_id": "branch_004",
+        "ostium_xyz_mm": [
+          9.958145799826777,
+          -141.60571334731716,
+          267.81556767482675
+        ],
+        "seed_xyz_mm": [
+          12.429509595102562,
+          -138.07049040489744,
+          270.28693147010256
+        ],
+        "radius_mm": 0.7,
+        "direction_xyz": [
+          0.49713375110059654,
+          0.7111371647110675,
+          0.4971337511006008
+        ],
+        "path_xyz_mm": [
+          [
+            9.958145799826777,
+            -141.60571334731716,
+            267.81556767482675
+          ],
+          [
+            11.642578125,
+            -138.857421875,
+            269.5
+          ],
+          [
+            12.642578125,
+            -137.857421875,
+            270.5
+          ],
+          [
+            13.642578125,
+            -136.857421875,
+            271.5
+          ],
+          [
+            13.642578125,
+            -135.857421875,
+            271.5
+          ],
+          [
+            13.642578125,
+            -134.857421875,
+            271.5
+          ],
+          [
+            13.642578125,
+            -133.95851820184524,
+            271.5
+          ]
+        ],
+        "evidence_score": 0.727,
+        "mean_vesselness": 0.161,
+        "parent_instance_id": "aorta",
+        "warnings": [],
+        "features": {
+          "path_hu_relative": 0.5235,
+          "bone_distance_mm": 9.695,
+          "parent_angle_degrees": 52.41,
+          "arc_position": 0.8203,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 39.0,
+          "origin_diameter_mm": 2.859,
+          "origin_diameter_upper_mm": 4.359
+        }
+      },
+      "suppressor_rank": null,
+      "reason": "accepted",
+      "shell_component": 5
+    },
+    {
+      "rank": 19,
+      "root_zyx": [
+        56,
+        25,
+        32
+      ],
+      "root_lps_mm": [
+        5.642578125,
+        -142.857421875,
+        259.5
+      ],
+      "proposal_quality": 0.4700952470302582,
+      "contact_volume_mm3": 13.0,
+      "branch": {
+        "instance_id": "branch_002",
+        "ostium_xyz_mm": [
+          5.642578125,
+          -144.357421875,
+          259.5
+        ],
+        "seed_xyz_mm": [
+          6.642578125,
+          -140.60729301223867,
+          261.7501288627613
+        ],
+        "radius_mm": 1.026,
+        "direction_xyz": [
+          0.22290272137538777,
+          0.8359139290178884,
+          0.5015598469548004
+        ],
+        "path_xyz_mm": [
+          [
+            5.642578125,
+            -144.357421875,
+            259.5
+          ],
+          [
+            5.642578125,
+            -142.857421875,
+            259.5
+          ],
+          [
+            5.642578125,
+            -141.857421875,
+            260.5
+          ],
+          [
+            6.642578125,
+            -140.857421875,
+            261.5
+          ],
+          [
+            6.642578125,
+            -139.857421875,
+            262.5
+          ],
+          [
+            6.642578125,
+            -138.857421875,
+            262.5
+          ]
+        ],
+        "evidence_score": 0.722,
+        "mean_vesselness": 0.29,
+        "parent_instance_id": "aorta",
+        "warnings": [
+          "Trace stops at an estimated downstream bifurcation.",
+          "Origin diameter is unresolved on CT; size eligibility is uncertain."
+        ],
+        "features": {
+          "path_hu_relative": 0.4866,
+          "bone_distance_mm": 3.0,
+          "parent_angle_degrees": 50.21,
+          "arc_position": 0.6622,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 13.0
+        }
+      },
+      "suppressor_rank": null,
+      "reason": "accepted",
+      "shell_component": 4
+    },
+    {
+      "rank": 20,
+      "root_zyx": [
+        61,
+        22,
+        28
+      ],
+      "root_lps_mm": [
+        9.642578125,
+        -139.857421875,
+        264.5
+      ],
+      "proposal_quality": 0.4498753249645233,
+      "contact_volume_mm3": 39.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 5
+    },
+    {
+      "rank": 21,
+      "root_zyx": [
+        30,
+        29,
+        25
+      ],
+      "root_lps_mm": [
+        12.642578125,
+        -146.857421875,
+        233.5
+      ],
+      "proposal_quality": 0.43394744396209717,
+      "contact_volume_mm3": 7.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 1
+    },
+    {
+      "rank": 22,
+      "root_zyx": [
+        32,
+        28,
+        25
+      ],
+      "root_lps_mm": [
+        12.642578125,
+        -145.857421875,
+        235.5
+      ],
+      "proposal_quality": 0.3625565767288208,
+      "contact_volume_mm3": 7.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 1
+    }
+  ],
+  "rejections": {
+    "opening_on_another_path": 2,
+    "disconnected_ostium": 12,
+    "small_radius": 1,
+    "same_opening_and_path": 2,
+    "short_proximal_segment": 2
+  },
+  "runtime_s": 1.3129007809999393,
+  "peak_rss_mb": null,
+  "timings": {
+    "normalize_s": 0.10284394999996493,
+    "enhance_s": 1.122917918999974,
+    "propose_s": 0.003189162000012402,
+    "resolve_s": 0.08394974999998794
+  },
+  "working_geometry": {
+    "size_xyz": [
+      61,
+      67,
+      75
+    ],
+    "spacing_xyz_mm": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "origin_lps_mm": [
+      37.642578125,
+      -117.857421875,
+      203.5
+    ],
+    "direction": [
+      -1.0,
+      0.0,
+      0.0,
+      0.0,
+      -1.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
+  "diagnosis": {
+    "references": [
+      {
+        "reference_id": "branch_001",
+        "matched_at_3mm": false,
+        "ostium_lps_mm": [
+          13.865448125,
+          -157.45499187500002,
+          265.53016
+        ],
+        "ostium_working_zyx": [
+          62.03016000000002,
+          39.59757000000002,
+          23.77713
+        ],
+        "known_reference_radius_mm": null,
+        "observations": [
+          "nearest_shell_component_roots_displaced_more_than_5mm",
+          "guide_stays_below_radial_endpoint_clearance",
+          "reference_radius_unknown_not_evidence_of_small_origin"
+        ],
+        "nearest_shell_distance_mm": 1.4203487485121211,
+        "nearest_shell_component": 3,
+        "component_root_ranks": [
+          0,
+          1,
+          3,
+          4,
+          7,
+          12
+        ],
+        "nearby_candidates": [
+          {
+            "rank": 3,
+            "root_to_ostium_mm": 7.262457612089747,
+            "root_to_guide_mm": 0.5404522150939904,
+            "same_shell_component": true,
+            "reason": "small_radius",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 7,
+            "root_to_ostium_mm": 10.194324429181192,
+            "root_to_guide_mm": 1.0562853429826595,
+            "same_shell_component": true,
+            "reason": "same_opening_and_path",
+            "suppressor_rank": 1,
+            "traced_ostium_error_mm": 4.539277538045039
+          },
+          {
+            "rank": 1,
+            "root_to_ostium_mm": 12.353102872048,
+            "root_to_guide_mm": 2.5799532410103825,
+            "same_shell_component": true,
+            "reason": "accepted",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": 6.458968373120821
+          },
+          {
+            "rank": 12,
+            "root_to_ostium_mm": 14.308032379310603,
+            "root_to_guide_mm": 4.55399151578041,
+            "same_shell_component": true,
+            "reason": "same_opening_and_path",
+            "suppressor_rank": 1,
+            "traced_ostium_error_mm": 8.356967897806904
+          },
+          {
+            "rank": 0,
+            "root_to_ostium_mm": 17.259801579606897,
+            "root_to_guide_mm": 7.54074656289415,
+            "same_shell_component": true,
+            "reason": "opening_on_another_path",
+            "suppressor_rank": 1,
+            "traced_ostium_error_mm": 11.270309332266585
+          },
+          {
+            "rank": 19,
+            "root_to_ostium_mm": 17.806388476257638,
+            "root_to_guide_mm": 17.806388476257638,
+            "same_shell_component": false,
+            "reason": "accepted",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": 16.59893853737042
+          },
+          {
+            "rank": 20,
+            "root_to_ostium_mm": 18.12645388837543,
+            "root_to_guide_mm": 18.12645388837543,
+            "same_shell_component": false,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 17,
+            "root_to_ostium_mm": 18.517522257780623,
+            "root_to_guide_mm": 18.517522257780623,
+            "same_shell_component": false,
+            "reason": "accepted",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": 16.412406702727242
+          }
+        ],
+        "guide_samples": {
+          "lps_mm": [
+            [
+              13.865448125,
+              -157.45499187500002,
+              265.53016
+            ],
+            [
+              13.952733125000009,
+              -157.554741875,
+              265.318195
+            ],
+            [
+              14.040018125000017,
+              -157.65449187500002,
+              265.10623
+            ],
+            [
+              14.127303124999997,
+              -157.754241875,
+              264.89425
+            ],
+            [
+              14.214573125000015,
+              -157.853991875,
+              264.682285
+            ],
+            [
+              14.301858124999995,
+              -157.95374187500002,
+              264.470305
+            ],
+            [
+              14.389143125000004,
+              -158.05349187500002,
+              264.25834
+            ],
+            [
+              14.450643125,
+              -158.08064187500003,
+              264.01768000000004
+            ],
+            [
+              14.511003125000002,
+              -158.104791875,
+              263.77628500000003
+            ],
+            [
+              14.571363125000005,
+              -158.128926875,
+              263.534875
+            ],
+            [
+              14.631708124999989,
+              -158.15307687499998,
+              263.29348000000005
+            ],
+            [
+              14.692053125000001,
+              -158.177211875,
+              263.05207
+            ],
+            [
+              14.752413125000004,
+              -158.201361875,
+              262.810675
+            ],
+            [
+              14.812758124999988,
+              -158.22549687499998,
+              262.56928000000005
+            ],
+            [
+              14.873103125,
+              -158.24963187500003,
+              262.32787
+            ],
+            [
+              14.933463125000003,
+              -158.273781875,
+              262.086475
+            ],
+            [
+              14.993808124999987,
+              -158.297916875,
+              261.84506500000003
+            ],
+            [
+              15.05416812499999,
+              -158.322051875,
+              261.60367
+            ],
+            [
+              15.114513125000002,
+              -158.34620187500002,
+              261.36226
+            ],
+            [
+              15.175083125000015,
+              -158.35734687500002,
+              261.119965
+            ],
+            [
+              15.23571312499999,
+              -158.357421875,
+              260.87743
+            ],
+            [
+              15.296358124999983,
+              -158.357421875,
+              260.63489500000003
+            ],
+            [
+              15.356988124999987,
+              -158.357421875,
+              260.39236
+            ],
+            [
+              15.41761812499999,
+              -158.357421875,
+              260.14982499999996
+            ],
+            [
+              15.478248124999993,
+              -158.357421875,
+              259.90729
+            ],
+            [
+              15.538893125000016,
+              -158.357421875,
+              259.664755
+            ],
+            [
+              15.599523125000019,
+              -158.357421875,
+              259.42222
+            ],
+            [
+              15.660153124999994,
+              -158.357421875,
+              259.179685
+            ],
+            [
+              15.720783124999997,
+              -158.357421875,
+              258.93715
+            ],
+            [
+              15.78142812499999,
+              -158.357421875,
+              258.694615
+            ],
+            [
+              15.842058124999994,
+              -158.357421875,
+              258.45207999999997
+            ],
+            [
+              15.904083125,
+              -158.357421875,
+              258.20989000000003
+            ],
+            [
+              15.972723125000016,
+              -158.357421875,
+              257.9695
+            ],
+            [
+              16.041393125000013,
+              -158.357421875,
+              257.729125
+            ],
+            [
+              16.110078125,
+              -158.357421875,
+              257.488735
+            ],
+            [
+              16.178763125000017,
+              -158.357421875,
+              257.24836000000005
+            ],
+            [
+              16.229388125000014,
+              -158.357421875,
+              257.003545
+            ],
+            [
+              16.275483124999994,
+              -158.357421875,
+              256.75783
+            ],
+            [
+              16.32156312500001,
+              -158.357421875,
+              256.512115
+            ],
+            [
+              16.36762812500001,
+              -158.357421875,
+              256.26640000000003
+            ],
+            [
+              16.413708125,
+              -158.357421875,
+              256.02067
+            ]
+          ],
+          "inside_working_crop": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "smoothed_hu": [
+            278.56270788559027,
+            279.70048486437804,
+            281.85726360148027,
+            285.03257882850664,
+            289.24819509422997,
+            288.77976618817536,
+            286.07875739746805,
+            286.0828782321902,
+            286.3317101270397,
+            286.7191134264539,
+            282.49512759830435,
+            273.3559003265497,
+            264.22345103147467,
+            256.1414440318022,
+            248.02528674244752,
+            240.44300488478478,
+            233.8093607071613,
+            228.1128373906327,
+            223.81923903958187,
+            220.99215409309681,
+            219.15945780985004,
+            218.00539447870005,
+            220.30328820939994,
+            226.66035569200068,
+            233.56150436545016,
+            241.0070785102375,
+            247.8176574120507,
+            251.1845716235627,
+            251.3232356051255,
+            251.35824052462544,
+            250.49059724480014,
+            246.31824564665015,
+            241.93057076749915,
+            237.64056203937443,
+            233.68371691249962,
+            234.94861864819842,
+            237.68593944665002,
+            241.1430213885499,
+            245.12145922467485,
+            249.22682783999915,
+            253.88779144395014
+          ],
+          "tubularity": [
+            0.2112625164983053,
+            0.22527667019089992,
+            0.23993270295590335,
+            0.25524773546061286,
+            0.2721285933096328,
+            0.2745629974783128,
+            0.27125820845887144,
+            0.27307626717820166,
+            0.27511000981837613,
+            0.2771331961408514,
+            0.2697904980931379,
+            0.25104469675447105,
+            0.23083387807950595,
+            0.21147634713444566,
+            0.18441949083139667,
+            0.15605680244981282,
+            0.129805324337691,
+            0.10542125915250372,
+            0.08869050866360084,
+            0.08155946505354754,
+            0.07978633561044823,
+            0.08226674315022467,
+            0.09571655528042528,
+            0.1197181633517811,
+            0.1450269095695903,
+            0.1716447808979177,
+            0.1953489425403174,
+            0.20629040615525188,
+            0.20610503033192568,
+            0.2045074106045555,
+            0.20002235473662638,
+            0.1889407144427226,
+            0.17730026377194238,
+            0.16593546729398564,
+            0.15534731512204977,
+            0.15588737389828586,
+            0.15998124825685076,
+            0.16570700958092247,
+            0.1725342473464077,
+            0.1840410091713447,
+            0.1972173234534423
+          ],
+          "enhanced_support": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "outside_parent_mm": [
+            0.7424247127504214,
+            0.8807826999145432,
+            1.0089401784216618,
+            1.1268971482716734,
+            1.2346473661225281,
+            1.3580901432638215,
+            1.4792305757050845,
+            1.5257982462873239,
+            1.5688137700071465,
+            1.6112974121108146,
+            1.6532689469639403,
+            1.710506073937255,
+            1.766755107820996,
+            1.8185772805153888,
+            1.872185767413356,
+            1.9275933943465664,
+            1.9829989906076013,
+            2.0384325648113024,
+            2.093888828472296,
+            2.138763075691757,
+            2.1745404606783505,
+            2.210264780175667,
+            2.2459802635811035,
+            2.2816957469865398,
+            2.317411230391976,
+            2.3531355498893105,
+            2.388851033294746,
+            2.419221721305395,
+            2.436498801024626,
+            2.4537801551327005,
+            2.4710572348519317,
+            2.488731832733926,
+            2.508291436097413,
+            2.527859588238589,
+            2.5474320147686083,
+            2.5670044412986357,
+            2.5814305036569722,
+            2.594565700583536,
+            2.607696623121263,
+            2.6208232712701385,
+            2.633954193807858
+          ],
+          "cap_excluded": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent_connected_support": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      },
+      {
+        "reference_id": "branch_002",
+        "matched_at_3mm": true,
+        "ostium_lps_mm": [
+          2.9209231250000016,
+          -144.635766875,
+          260.07388000000003
+        ],
+        "ostium_working_zyx": [
+          56.57388000000003,
+          26.778345,
+          34.721655
+        ],
+        "known_reference_radius_mm": null,
+        "observations": [
+          "reference_radius_unknown_not_evidence_of_small_origin"
+        ],
+        "nearest_shell_distance_mm": 1.6029114549625136,
+        "nearest_shell_component": 4,
+        "component_root_ranks": [
+          15,
+          17,
+          19
+        ],
+        "nearby_candidates": [
+          {
+            "rank": 17,
+            "root_to_ostium_mm": 1.9659285674840723,
+            "root_to_guide_mm": 1.786012294883492,
+            "same_shell_component": true,
+            "reason": "accepted",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": 2.6122092659016447
+          },
+          {
+            "rank": 15,
+            "root_to_ostium_mm": 2.921462841189322,
+            "root_to_guide_mm": 0.47274066233508677,
+            "same_shell_component": true,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 19,
+            "root_to_ostium_mm": 3.3014019949788045,
+            "root_to_guide_mm": 3.3014019949788045,
+            "same_shell_component": true,
+            "reason": "accepted",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": 2.7953926615862086
+          },
+          {
+            "rank": 14,
+            "root_to_ostium_mm": 5.62874187829304,
+            "root_to_guide_mm": 5.034156769591597,
+            "same_shell_component": false,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 8,
+            "root_to_ostium_mm": 6.524519532689733,
+            "root_to_guide_mm": 6.397047752279946,
+            "same_shell_component": false,
+            "reason": "short_proximal_segment",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 13,
+            "root_to_ostium_mm": 7.839386145129595,
+            "root_to_guide_mm": 7.839386145129595,
+            "same_shell_component": false,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 16,
+            "root_to_ostium_mm": 8.044696708543444,
+            "root_to_guide_mm": 7.975473963535037,
+            "same_shell_component": false,
+            "reason": "short_proximal_segment",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 20,
+            "root_to_ostium_mm": 9.359688303167458,
+            "root_to_guide_mm": 9.359688303167458,
+            "same_shell_component": false,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          }
+        ],
+        "guide_samples": {
+          "lps_mm": [
+            [
+              2.9209231250000016,
+              -144.635766875,
+              260.07388000000003
+            ],
+            [
+              2.748858124999998,
+              -144.463701875,
+              260.13124000000005
+            ],
+            [
+              2.5767931249999947,
+              -144.291636875,
+              260.18859999999995
+            ],
+            [
+              2.40474312500001,
+              -144.119586875,
+              260.245945
+            ],
+            [
+              2.2326781250000067,
+              -143.947521875,
+              260.30330499999997
+            ],
+            [
+              2.0606131250000033,
+              -143.775456875,
+              260.36065
+            ],
+            [
+              1.8885481249999998,
+              -143.603391875,
+              260.41801
+            ],
+            [
+              1.7164981249999869,
+              -143.431341875,
+              260.475355
+            ],
+            [
+              1.5246781250000083,
+              -143.30078187499998,
+              260.559715
+            ],
+            [
+              1.3210981249999918,
+              -143.19668187500002,
+              260.66074
+            ],
+            [
+              1.1169781250000028,
+              -143.094621875,
+              260.76279999999997
+            ],
+            [
+              0.9128431249999949,
+              -142.992561875,
+              260.86485999999996
+            ],
+            [
+              0.7087231250000059,
+              -142.890501875,
+              260.96692
+            ],
+            [
+              0.5046031249999885,
+              -142.788426875,
+              261.06899500000003
+            ],
+            [
+              0.3004831249999995,
+              -142.68636687499998,
+              261.171055
+            ],
+            [
+              0.09634812499999157,
+              -142.58430687499998,
+              261.273115
+            ],
+            [
+              -0.10777187499999741,
+              -142.482246875,
+              261.375175
+            ],
+            [
+              -0.3118918750000148,
+              -142.380186875,
+              261.477235
+            ],
+            [
+              -0.5160268749999943,
+              -142.278126875,
+              261.579295
+            ],
+            [
+              -0.7201468749999833,
+              -142.176066875,
+              261.681355
+            ],
+            [
+              -0.9242668750000007,
+              -142.073991875,
+              261.78342999999995
+            ],
+            [
+              -1.1283868749999897,
+              -141.971931875,
+              261.88549
+            ],
+            [
+              -1.3301368749999938,
+              -141.871071875,
+              261.99321999999995
+            ],
+            [
+              -1.520936875000018,
+              -141.775671875,
+              262.12262499999997
+            ],
+            [
+              -1.7066218749999962,
+              -141.682821875,
+              262.26189999999997
+            ],
+            [
+              -1.8923218749999933,
+              -141.589971875,
+              262.40117499999997
+            ],
+            [
+              -2.0780218749999904,
+              -141.497121875,
+              262.54044999999996
+            ],
+            [
+              -2.2637068749999685,
+              -141.404271875,
+              262.67972499999996
+            ],
+            [
+              -2.4494068750000224,
+              -141.311421875,
+              262.818985
+            ],
+            [
+              -2.635106874999991,
+              -141.218586875,
+              262.95826
+            ],
+            [
+              -2.8207918749999976,
+              -141.125736875,
+              263.097535
+            ],
+            [
+              -3.0064918749999947,
+              -141.032886875,
+              263.23681
+            ],
+            [
+              -3.19219187500002,
+              -140.94003687499998,
+              263.37607
+            ],
+            [
+              -3.377891874999989,
+              -140.847186875,
+              263.515345
+            ],
+            [
+              -3.563576874999967,
+              -140.754336875,
+              263.65462
+            ],
+            [
+              -3.749276875000021,
+              -140.661501875,
+              263.793895
+            ],
+            [
+              -3.9349768749999896,
+              -140.568651875,
+              263.933155
+            ],
+            [
+              -4.120661874999996,
+              -140.475801875,
+              264.07243
+            ],
+            [
+              -4.304711874999981,
+              -140.38293687499998,
+              264.21385
+            ],
+            [
+              -4.46315687500001,
+              -140.291331875,
+              264.38218
+            ],
+            [
+              -4.608641875000018,
+              -140.200416875,
+              264.564025
+            ]
+          ],
+          "inside_working_crop": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "smoothed_hu": [
+            217.84962630152583,
+            207.99975621653,
+            200.39920456188645,
+            195.07428478617535,
+            193.22119481345703,
+            191.3510750248662,
+            188.91930532217208,
+            189.94606484518152,
+            190.86845002990185,
+            192.18938171200034,
+            195.84566080000155,
+            202.0022581447015,
+            210.6584306073981,
+            210.84291904413843,
+            209.28778939537284,
+            211.48431201285223,
+            217.47056109612637,
+            227.28484532473558,
+            228.96809032746754,
+            230.966332710882,
+            236.81542212473224,
+            246.62819962487907,
+            260.5337367650683,
+            252.49163010588745,
+            242.98545082595902,
+            235.3858875645946,
+            228.19777329008605,
+            220.37740472041685,
+            213.0883473088232,
+            204.9794827069255,
+            198.61319514469986,
+            193.98728326144985,
+            191.10200999825076,
+            188.49329516747113,
+            176.47480749977765,
+            167.25988996572718,
+            160.6178664177726,
+            156.32093838775873,
+            154.37021424749338,
+            154.31030886062257,
+            152.92208606373228
+          ],
+          "tubularity": [
+            0.23117083488936824,
+            0.22062179684002925,
+            0.21241563161620855,
+            0.20604806863102512,
+            0.1993336520180195,
+            0.18816030220776464,
+            0.17794866184353325,
+            0.175577285546981,
+            0.17173641119410785,
+            0.1659363219158631,
+            0.16314010798267164,
+            0.16308865022141625,
+            0.1652995130343603,
+            0.15635201514176908,
+            0.15149540871263031,
+            0.15966838318407073,
+            0.18204718031696063,
+            0.2198084447285679,
+            0.2276395607932005,
+            0.2272721478896933,
+            0.23295325464452651,
+            0.24726298926937812,
+            0.27313189871350213,
+            0.2585468667779533,
+            0.23704637695670508,
+            0.21460512125581607,
+            0.19054318371607712,
+            0.17458451496956967,
+            0.17308153672979498,
+            0.17194524732666092,
+            0.16570701030642196,
+            0.1525923544673716,
+            0.13083238088887142,
+            0.10424829206177252,
+            0.11253656478238029,
+            0.11253275573062639,
+            0.10559759200431741,
+            0.09309341814867907,
+            0.07650770464311459,
+            0.06704011239165862,
+            0.06847671812779209
+          ],
+          "enhanced_support": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "outside_parent_mm": [
+            0.5924465169543183,
+            0.6774307290345684,
+            0.8116322260623124,
+            1.0035473549026817,
+            1.1818499625215608,
+            1.362885306790335,
+            1.5576869602226244,
+            1.74623647163697,
+            1.9535259571595331,
+            2.17270723862219,
+            2.3810797855001007,
+            2.5798997685139167,
+            2.769148135135196,
+            2.9879354376013003,
+            3.2190139614277338,
+            3.4442690246144556,
+            3.663678246425387,
+            3.8772529244181895,
+            4.102023122706113,
+            4.326972811630522,
+            4.547380256082841,
+            4.763227866370013,
+            4.972089427010919,
+            5.188438961187529,
+            5.399692070679148,
+            5.608037328236173,
+            5.811851546684256,
+            6.008260449176783,
+            6.2050665132643035,
+            6.4013408454282,
+            6.5941611626262215,
+            6.784570710079829,
+            6.9735874660104225,
+            7.162203192138475,
+            7.351661869985654,
+            7.54227814968009,
+            7.7331211219352936,
+            7.923226841610191,
+            8.110376970140814,
+            8.279779910336472,
+            8.443191990765971
+          ],
+          "cap_excluded": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent_connected_support": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            true,
+            true
+          ]
+        }
+      },
+      {
+        "reference_id": "branch_003",
+        "matched_at_3mm": true,
+        "ostium_lps_mm": [
+          6.892578125,
+          -142.607421875,
+          262.0
+        ],
+        "ostium_working_zyx": [
+          58.5,
+          24.75,
+          30.75
+        ],
+        "known_reference_radius_mm": null,
+        "observations": [
+          "guide_stays_below_radial_endpoint_clearance",
+          "reference_radius_unknown_not_evidence_of_small_origin"
+        ],
+        "nearest_shell_distance_mm": 1.8371173070873836,
+        "nearest_shell_component": 5,
+        "component_root_ranks": [
+          8,
+          13,
+          14,
+          16,
+          18,
+          20
+        ],
+        "nearby_candidates": [
+          {
+            "rank": 8,
+            "root_to_ostium_mm": 2.806243040080456,
+            "root_to_guide_mm": 1.881927867918974,
+            "same_shell_component": true,
+            "reason": "short_proximal_segment",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 19,
+            "root_to_ostium_mm": 2.806243040080456,
+            "root_to_guide_mm": 2.806243040080456,
+            "same_shell_component": false,
+            "reason": "accepted",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": 3.29772648956823
+          },
+          {
+            "rank": 13,
+            "root_to_ostium_mm": 3.29772648956823,
+            "root_to_guide_mm": 1.8427784728569512,
+            "same_shell_component": true,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 14,
+            "root_to_ostium_mm": 3.588175023601831,
+            "root_to_guide_mm": 3.297720424789691,
+            "same_shell_component": true,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 17,
+            "root_to_ostium_mm": 3.588175023601831,
+            "root_to_guide_mm": 3.588175023601831,
+            "same_shell_component": false,
+            "reason": "accepted",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": 2.8439973801273126
+          },
+          {
+            "rank": 16,
+            "root_to_ostium_mm": 3.7914377220257753,
+            "root_to_guide_mm": 1.1814546119508964,
+            "same_shell_component": true,
+            "reason": "short_proximal_segment",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 20,
+            "root_to_ostium_mm": 4.623310502226732,
+            "root_to_guide_mm": 0.8660254037844386,
+            "same_shell_component": true,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 15,
+            "root_to_ostium_mm": 6.4323401651343035,
+            "root_to_guide_mm": 6.4323401651343035,
+            "same_shell_component": false,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          }
+        ],
+        "guide_samples": {
+          "lps_mm": [
+            [
+              6.892578125,
+              -142.607421875,
+              262.0
+            ],
+            [
+              6.975918124999993,
+              -142.440756875,
+              262.16666499999997
+            ],
+            [
+              7.059243124999995,
+              -142.274091875,
+              262.33333
+            ],
+            [
+              7.142583124999987,
+              -142.107426875,
+              262.499995
+            ],
+            [
+              7.2259081249999895,
+              -141.940761875,
+              262.66666
+            ],
+            [
+              7.3092481250000105,
+              -141.774081875,
+              262.83334
+            ],
+            [
+              7.392573125000013,
+              -141.607416875,
+              263.000005
+            ],
+            [
+              7.475913125000005,
+              -141.440751875,
+              263.16667
+            ],
+            [
+              7.559238125000007,
+              -141.274086875,
+              263.33333500000003
+            ],
+            [
+              7.642578125,
+              -141.107421875,
+              263.5
+            ],
+            [
+              7.809243124999995,
+              -141.024081875,
+              263.66666499999997
+            ],
+            [
+              7.9759081249999895,
+              -140.940756875,
+              263.83333
+            ],
+            [
+              8.142573125000013,
+              -140.857416875,
+              263.999995
+            ],
+            [
+              8.309238125000007,
+              -140.774091875,
+              264.16666
+            ],
+            [
+              8.475918124999993,
+              -140.690751875,
+              264.33334
+            ],
+            [
+              8.642583124999987,
+              -140.607426875,
+              264.500005
+            ],
+            [
+              8.80924812500001,
+              -140.524086875,
+              264.66667
+            ],
+            [
+              8.975913125000005,
+              -140.440761875,
+              264.83333500000003
+            ],
+            [
+              9.142578125,
+              -140.357421875,
+              265.0
+            ],
+            [
+              9.254388124999991,
+              -140.357421875,
+              265.223605
+            ],
+            [
+              9.366183124999992,
+              -140.357421875,
+              265.44721
+            ],
+            [
+              9.477993124999983,
+              -140.357421875,
+              265.670815
+            ],
+            [
+              9.589788125000013,
+              -140.357421875,
+              265.89442
+            ],
+            [
+              9.701598125000004,
+              -140.357421875,
+              266.11804
+            ],
+            [
+              9.813393125000005,
+              -140.357421875,
+              266.34164499999997
+            ],
+            [
+              9.925203124999996,
+              -140.357421875,
+              266.56525
+            ],
+            [
+              10.036998124999997,
+              -140.357421875,
+              266.788855
+            ],
+            [
+              10.148808125000016,
+              -140.357421875,
+              267.01246000000003
+            ],
+            [
+              10.260618125000008,
+              -140.357421875,
+              267.236065
+            ],
+            [
+              10.372413125000008,
+              -140.357421875,
+              267.45967
+            ],
+            [
+              10.484223125,
+              -140.357421875,
+              267.683275
+            ],
+            [
+              10.596018125,
+              -140.357421875,
+              267.90689499999996
+            ],
+            [
+              10.734948125000017,
+              -140.26505187499998,
+              268.09236999999996
+            ],
+            [
+              10.879278124999985,
+              -140.12072187500002,
+              268.23670000000004
+            ],
+            [
+              11.023623125,
+              -139.976376875,
+              268.381045
+            ],
+            [
+              11.167953124999997,
+              -139.832046875,
+              268.525375
+            ],
+            [
+              11.312298124999984,
+              -139.68770187500002,
+              268.66972
+            ],
+            [
+              11.456643125,
+              -139.543356875,
+              268.814065
+            ],
+            [
+              11.600973124999996,
+              -139.399026875,
+              268.958395
+            ],
+            [
+              11.745318124999983,
+              -139.25468187500002,
+              269.10274000000004
+            ],
+            [
+              11.889648125000008,
+              -139.110351875,
+              269.24707
+            ]
+          ],
+          "inside_working_crop": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "smoothed_hu": [
+            213.0,
+            212.7406201847739,
+            213.42590314832586,
+            214.99990999910023,
+            213.48386574039642,
+            209.30531194578356,
+            204.03098906172568,
+            200.30549569472896,
+            198.0032387149273,
+            197.0,
+            192.8424648144012,
+            191.74073185247403,
+            193.74982375142545,
+            197.39797870464815,
+            202.22706879725183,
+            208.24983875007544,
+            198.49057268572355,
+            191.42596689792583,
+            187.0,
+            187.48943957665048,
+            189.6291319376498,
+            190.83149076867508,
+            193.32527343260043,
+            194.30420095879995,
+            194.36535864773668,
+            194.64168528125012,
+            191.99777676590003,
+            191.80364366420014,
+            194.05963551740004,
+            198.76544446805045,
+            200.8395283523126,
+            203.4487365172001,
+            201.6694866448,
+            198.20605260835663,
+            197.05576750577063,
+            196.8584980267736,
+            192.80953801744843,
+            192.97087159507618,
+            197.41399191359469,
+            200.12049072529658,
+            203.5561280514728
+          ],
+          "tubularity": [
+            0.29125327430665493,
+            0.29348747649946283,
+            0.2964479265854822,
+            0.30007682632191124,
+            0.29608497138638135,
+            0.2930540791541415,
+            0.29070445150161833,
+            0.28843942092458263,
+            0.2862230917665149,
+            0.28401900082826614,
+            0.2675314212214647,
+            0.251645995072853,
+            0.23636723237565108,
+            0.2213150706701396,
+            0.20678823353624354,
+            0.19279370383025354,
+            0.168362670956868,
+            0.144963751462235,
+            0.12261201813817024,
+            0.0979110237278118,
+            0.07439930720095836,
+            0.06508773865696489,
+            0.06345368318187944,
+            0.06195731764859226,
+            0.05787078681366094,
+            0.05460953199902309,
+            0.05653130849864442,
+            0.06300005670187805,
+            0.07401618748478192,
+            0.08957889160467188,
+            0.10087218844637878,
+            0.11101823827457818,
+            0.11665781147792277,
+            0.11813455191980152,
+            0.12051969190816395,
+            0.12123847414861905,
+            0.10884540452697856,
+            0.1066940504203628,
+            0.11543140132546403,
+            0.12179637684086092,
+            0.12773190785165742
+          ],
+          "enhanced_support": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "outside_parent_mm": [
+            0.25,
+            0.41666499999999473,
+            0.5833299999999895,
+            0.7499950000000126,
+            0.9166600000000075,
+            1.0833399999999926,
+            1.2500049999999872,
+            1.4166700000000105,
+            1.5833350000000053,
+            1.75,
+            1.8333399999999926,
+            1.916664999999995,
+            2.0000049999999874,
+            2.0833299999999895,
+            2.1666700000000105,
+            2.2499947855382083,
+            2.3238029353004017,
+            2.3928306961196633,
+            2.4571067811865475,
+            2.4379245048009817,
+            2.4187422284154207,
+            2.3135910933330255,
+            2.181871471580216,
+            2.061766214649406,
+            1.9589322471701465,
+            1.8800963375862467,
+            1.842771951933537,
+            1.808427323964581,
+            1.7770584109901526,
+            1.74866037190002,
+            1.773653103313157,
+            1.810002215688202,
+            1.9372653196205067,
+            2.098493415315113,
+            2.2409381807964466,
+            2.36526367648209,
+            2.4938326579918244,
+            2.6233397117969925,
+            2.7535057399514047,
+            2.8782222574779595,
+            2.9903078139283883
+          ],
+          "cap_excluded": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent_connected_support": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      }
+    ],
+    "extra_origins_at_3mm": [
+      {
+        "prediction_id": "branch_001",
+        "candidate_rank": 1,
+        "nearest_reference_mm": 6.458968373120821,
+        "features": {
+          "path_hu_relative": 0.701,
+          "bone_distance_mm": 14.811,
+          "parent_angle_degrees": 21.2,
+          "arc_position": 0.6293,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 107.0
+        },
+        "warnings": [
+          "Origin diameter is unresolved on CT; size eligibility is uncertain."
+        ],
+        "interpretation": "Unmatched local-reference origin; incomplete references do not prove an anatomical false positive."
+      },
+      {
+        "prediction_id": "branch_004",
+        "candidate_rank": 18,
+        "nearest_reference_mm": 6.64995883625344,
+        "features": {
+          "path_hu_relative": 0.5235,
+          "bone_distance_mm": 9.695,
+          "parent_angle_degrees": 52.41,
+          "arc_position": 0.8203,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 39.0,
+          "origin_diameter_mm": 2.859,
+          "origin_diameter_upper_mm": 4.359
+        },
+        "warnings": [],
+        "interpretation": "Unmatched local-reference origin; incomplete references do not prove an anatomical false positive."
+      }
+    ],
+    "comparison_3mm": {
+      "case_id": "subject023",
+      "true_positives": 2,
+      "false_positives": 2,
+      "false_negatives": 1,
+      "daughter_counts": {
+        "predicted": 4,
+        "reference": 3,
+        "signed_error": 1,
+        "absolute_error": 1
+      },
+      "precision": 0.5,
+      "recall": 0.6666666666666666,
+      "f1": 0.5714285714285714,
+      "matches": [
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 2.7953926615862086,
+          "seed_error_mm": 7.7100280900047276,
+          "radius_error_mm": null,
+          "direction_error_degrees": 64.2339524533357,
+          "seed_to_reference_centreline_mm": 5.703877152889096
+        },
+        {
+          "prediction_id": "branch_003",
+          "reference_id": "branch_003",
+          "ostium_error_mm": 2.8439973801273126,
+          "seed_error_mm": 9.377189542846752,
+          "radius_error_mm": null,
+          "direction_error_degrees": 97.64119219779259,
+          "seed_to_reference_centreline_mm": 5.645613307980855
+        }
+      ],
+      "unmatched_prediction_ids": [
+        "branch_001",
+        "branch_004"
+      ],
+      "unmatched_reference_ids": [
+        "branch_001"
+      ]
+    }
+  }
+}

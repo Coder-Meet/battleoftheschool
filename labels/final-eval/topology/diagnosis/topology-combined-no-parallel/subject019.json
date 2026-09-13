@@ -1,0 +1,2637 @@
+{
+  "configuration": {
+    "spacing_mm": 1.0,
+    "margin_mm": 20.0,
+    "shell_inner_mm": 1.5,
+    "shell_outer_mm": 3.5,
+    "cap_margin_mm": 4.0,
+    "minimum_radius_mm": 0.7,
+    "minimum_origin_diameter_mm": 2.0,
+    "minimum_path_mm": 5.0,
+    "trace_length_mm": 10.0,
+    "vesselness_floor": 0.06,
+    "maximum_candidates": 160,
+    "shell_vesselness_floor": 0.06,
+    "connector_gap_fraction": 0.2,
+    "root_depth_mm": 3.5,
+    "blood_lower_scale": 1.0,
+    "support_contrast_fraction": 0.3,
+    "native_contrast_scale": 1.2,
+    "roots_per_contact": 6,
+    "wall_hug_penalty": 0.0,
+    "broad_contact_mm3": 1200.0,
+    "parallel_clearance_mm": 0,
+    "profile": "strict"
+  },
+  "root_separation_mm": 2.0,
+  "blood_model": {
+    "median_hu": 557.0,
+    "mad_hu": 17.7912,
+    "lower_hu": 220.29999999999998,
+    "upper_hu": 677.0,
+    "background_median_hu": 76.0,
+    "background_mad_hu": 74.13,
+    "support_fraction": 0.3,
+    "contrast_to_background_mad": 6.488601106164846
+  },
+  "warnings": [],
+  "candidates": [
+    {
+      "rank": 0,
+      "root_zyx": [
+        84,
+        41,
+        23
+      ],
+      "root_lps_mm": [
+        20.6337890625,
+        -182.8662109375,
+        305.5999984741211
+      ],
+      "proposal_quality": 0.9815183281898499,
+      "contact_volume_mm3": 26.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "short_proximal_segment",
+      "shell_component": 12
+    },
+    {
+      "rank": 1,
+      "root_zyx": [
+        62,
+        29,
+        40
+      ],
+      "root_lps_mm": [
+        3.6337890625,
+        -170.8662109375,
+        283.5999984741211
+      ],
+      "proposal_quality": 0.8918361663818359,
+      "contact_volume_mm3": 24.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 8
+    },
+    {
+      "rank": 2,
+      "root_zyx": [
+        60,
+        25,
+        31
+      ],
+      "root_lps_mm": [
+        12.6337890625,
+        -166.8662109375,
+        281.5999984741211
+      ],
+      "proposal_quality": 0.8320932388305664,
+      "contact_volume_mm3": 9.0,
+      "branch": {
+        "instance_id": "branch_001",
+        "ostium_xyz_mm": [
+          11.440058102132184,
+          -168.3662109375,
+          282.11102386509015
+        ],
+        "seed_xyz_mm": [
+          13.834592034527134,
+          -164.66540796547287,
+          280.5999984741211
+        ],
+        "radius_mm": 1.265,
+        "direction_xyz": [
+          0.5138800389281784,
+          0.7942124977233974,
+          -0.3242742882979412
+        ],
+        "path_xyz_mm": [
+          [
+            11.440058102132184,
+            -168.3662109375,
+            282.11102386509015
+          ],
+          [
+            12.6337890625,
+            -166.8662109375,
+            281.5999984741211
+          ],
+          [
+            12.6337890625,
+            -165.8662109375,
+            281.5999984741211
+          ],
+          [
+            13.6337890625,
+            -164.8662109375,
+            280.5999984741211
+          ],
+          [
+            14.6337890625,
+            -163.8662109375,
+            280.5999984741211
+          ],
+          [
+            15.6337890625,
+            -162.8662109375,
+            280.5999984741211
+          ]
+        ],
+        "evidence_score": 0.667,
+        "mean_vesselness": 0.191,
+        "parent_instance_id": "aorta",
+        "warnings": [
+          "Origin diameter is unresolved on CT; size eligibility is uncertain."
+        ],
+        "features": {
+          "path_hu_relative": 0.4732,
+          "bone_distance_mm": 3.606,
+          "parent_angle_degrees": 65.81,
+          "arc_position": 0.5808,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 9.0
+        }
+      },
+      "suppressor_rank": null,
+      "reason": "accepted",
+      "shell_component": 7
+    },
+    {
+      "rank": 3,
+      "root_zyx": [
+        82,
+        42,
+        23
+      ],
+      "root_lps_mm": [
+        20.6337890625,
+        -183.8662109375,
+        303.5999984741211
+      ],
+      "proposal_quality": 0.8143485188484192,
+      "contact_volume_mm3": 26.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "short_proximal_segment",
+      "shell_component": 12
+    },
+    {
+      "rank": 4,
+      "root_zyx": [
+        62,
+        31,
+        40
+      ],
+      "root_lps_mm": [
+        3.6337890625,
+        -172.8662109375,
+        283.5999984741211
+      ],
+      "proposal_quality": 0.6854487061500549,
+      "contact_volume_mm3": 24.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "small_radius",
+      "shell_component": 8
+    },
+    {
+      "rank": 5,
+      "root_zyx": [
+        46,
+        23,
+        32
+      ],
+      "root_lps_mm": [
+        11.6337890625,
+        -164.8662109375,
+        267.5999984741211
+      ],
+      "proposal_quality": 0.6717406511306763,
+      "contact_volume_mm3": 8.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 4
+    },
+    {
+      "rank": 6,
+      "root_zyx": [
+        45,
+        24,
+        35
+      ],
+      "root_lps_mm": [
+        8.6337890625,
+        -165.8662109375,
+        266.5999984741211
+      ],
+      "proposal_quality": 0.6626409888267517,
+      "contact_volume_mm3": 7.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 5
+    },
+    {
+      "rank": 7,
+      "root_zyx": [
+        83,
+        41,
+        25
+      ],
+      "root_lps_mm": [
+        18.6337890625,
+        -182.8662109375,
+        304.5999984741211
+      ],
+      "proposal_quality": 0.6350111365318298,
+      "contact_volume_mm3": 26.0,
+      "branch": {
+        "instance_id": "branch_002",
+        "ostium_xyz_mm": [
+          17.1337890625,
+          -182.1055523032695,
+          303.83933983989056
+        ],
+        "seed_xyz_mm": [
+          21.3001314803645,
+          -183.5325533553645,
+          305.2663408919856
+        ],
+        "radius_mm": 1.254,
+        "direction_xyz": [
+          0.899980295601954,
+          -0.3082494667701952,
+          0.3082494667701952
+        ],
+        "path_xyz_mm": [
+          [
+            17.1337890625,
+            -182.1055523032695,
+            303.83933983989056
+          ],
+          [
+            18.6337890625,
+            -182.8662109375,
+            304.5999984741211
+          ],
+          [
+            19.6337890625,
+            -182.8662109375,
+            304.5999984741211
+          ],
+          [
+            20.6337890625,
+            -182.8662109375,
+            304.5999984741211
+          ],
+          [
+            21.6337890625,
+            -183.8662109375,
+            305.5999984741211
+          ],
+          [
+            21.967122395833332,
+            -184.19954427083334,
+            305.9333318074544
+          ]
+        ],
+        "evidence_score": 0.872,
+        "mean_vesselness": 0.493,
+        "parent_instance_id": "aorta",
+        "warnings": [
+          "Trace stops at an estimated downstream bifurcation."
+        ],
+        "features": {
+          "path_hu_relative": 0.6,
+          "bone_distance_mm": 3.464,
+          "parent_angle_degrees": 84.3,
+          "arc_position": 0.9006,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.0,
+          "candidate_volume_mm3": 26.0,
+          "origin_diameter_mm": 5.604,
+          "origin_diameter_upper_mm": 7.104
+        }
+      },
+      "suppressor_rank": null,
+      "reason": "accepted",
+      "shell_component": 12
+    },
+    {
+      "rank": 8,
+      "root_zyx": [
+        37,
+        34,
+        20
+      ],
+      "root_lps_mm": [
+        23.6337890625,
+        -175.8662109375,
+        258.5999984741211
+      ],
+      "proposal_quality": 0.6041490435600281,
+      "contact_volume_mm3": 9.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 3
+    },
+    {
+      "rank": 9,
+      "root_zyx": [
+        60,
+        27,
+        39
+      ],
+      "root_lps_mm": [
+        4.6337890625,
+        -168.8662109375,
+        281.5999984741211
+      ],
+      "proposal_quality": 0.5410362482070923,
+      "contact_volume_mm3": 24.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 8
+    },
+    {
+      "rank": 10,
+      "root_zyx": [
+        39,
+        34,
+        19
+      ],
+      "root_lps_mm": [
+        24.6337890625,
+        -175.8662109375,
+        260.5999984741211
+      ],
+      "proposal_quality": 0.50984126329422,
+      "contact_volume_mm3": 9.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 3
+    },
+    {
+      "rank": 11,
+      "root_zyx": [
+        28,
+        30,
+        21
+      ],
+      "root_lps_mm": [
+        22.6337890625,
+        -171.8662109375,
+        249.5999984741211
+      ],
+      "proposal_quality": 0.5025657415390015,
+      "contact_volume_mm3": 10.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 1
+    },
+    {
+      "rank": 12,
+      "root_zyx": [
+        46,
+        22,
+        30
+      ],
+      "root_lps_mm": [
+        13.6337890625,
+        -163.8662109375,
+        267.5999984741211
+      ],
+      "proposal_quality": 0.48813772201538086,
+      "contact_volume_mm3": 8.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 4
+    },
+    {
+      "rank": 13,
+      "root_zyx": [
+        45,
+        36,
+        20
+      ],
+      "root_lps_mm": [
+        23.6337890625,
+        -177.8662109375,
+        266.5999984741211
+      ],
+      "proposal_quality": 0.4670942425727844,
+      "contact_volume_mm3": 6.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 6
+    },
+    {
+      "rank": 14,
+      "root_zyx": [
+        80,
+        43,
+        26
+      ],
+      "root_lps_mm": [
+        17.6337890625,
+        -184.8662109375,
+        301.5999984741211
+      ],
+      "proposal_quality": 0.4602619409561157,
+      "contact_volume_mm3": 26.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "wall_hugging_path",
+      "shell_component": 12
+    },
+    {
+      "rank": 15,
+      "root_zyx": [
+        72,
+        45,
+        32
+      ],
+      "root_lps_mm": [
+        11.6337890625,
+        -186.8662109375,
+        293.5999984741211
+      ],
+      "proposal_quality": 0.45771729946136475,
+      "contact_volume_mm3": 13.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 9
+    },
+    {
+      "rank": 16,
+      "root_zyx": [
+        84,
+        19,
+        31
+      ],
+      "root_lps_mm": [
+        12.6337890625,
+        -160.8662109375,
+        305.5999984741211
+      ],
+      "proposal_quality": 0.450512170791626,
+      "contact_volume_mm3": 2.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 14
+    },
+    {
+      "rank": 17,
+      "root_zyx": [
+        30,
+        31,
+        21
+      ],
+      "root_lps_mm": [
+        22.6337890625,
+        -172.8662109375,
+        251.5999984741211
+      ],
+      "proposal_quality": 0.4342324137687683,
+      "contact_volume_mm3": 10.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 1
+    },
+    {
+      "rank": 18,
+      "root_zyx": [
+        44,
+        22,
+        31
+      ],
+      "root_lps_mm": [
+        12.6337890625,
+        -163.8662109375,
+        265.5999984741211
+      ],
+      "proposal_quality": 0.4185962677001953,
+      "contact_volume_mm3": 8.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 4
+    },
+    {
+      "rank": 19,
+      "root_zyx": [
+        70,
+        45,
+        33
+      ],
+      "root_lps_mm": [
+        10.6337890625,
+        -186.8662109375,
+        291.5999984741211
+      ],
+      "proposal_quality": 0.41218775510787964,
+      "contact_volume_mm3": 13.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 9
+    },
+    {
+      "rank": 20,
+      "root_zyx": [
+        62,
+        27,
+        39
+      ],
+      "root_lps_mm": [
+        4.6337890625,
+        -168.8662109375,
+        283.5999984741211
+      ],
+      "proposal_quality": 0.3991999924182892,
+      "contact_volume_mm3": 24.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 8
+    },
+    {
+      "rank": 21,
+      "root_zyx": [
+        75,
+        45,
+        28
+      ],
+      "root_lps_mm": [
+        15.6337890625,
+        -186.8662109375,
+        296.5999984741211
+      ],
+      "proposal_quality": 0.39087003469467163,
+      "contact_volume_mm3": 13.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 9
+    },
+    {
+      "rank": 22,
+      "root_zyx": [
+        47,
+        36,
+        20
+      ],
+      "root_lps_mm": [
+        23.6337890625,
+        -177.8662109375,
+        268.5999984741211
+      ],
+      "proposal_quality": 0.3876398205757141,
+      "contact_volume_mm3": 6.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 6
+    },
+    {
+      "rank": 23,
+      "root_zyx": [
+        84,
+        27,
+        41
+      ],
+      "root_lps_mm": [
+        2.6337890625,
+        -168.8662109375,
+        305.5999984741211
+      ],
+      "proposal_quality": 0.3832554221153259,
+      "contact_volume_mm3": 3.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 13
+    },
+    {
+      "rank": 24,
+      "root_zyx": [
+        73,
+        45,
+        30
+      ],
+      "root_lps_mm": [
+        13.6337890625,
+        -186.8662109375,
+        294.5999984741211
+      ],
+      "proposal_quality": 0.3830323815345764,
+      "contact_volume_mm3": 13.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 9
+    },
+    {
+      "rank": 25,
+      "root_zyx": [
+        26,
+        30,
+        22
+      ],
+      "root_lps_mm": [
+        21.6337890625,
+        -171.8662109375,
+        247.5999984741211
+      ],
+      "proposal_quality": 0.3784179389476776,
+      "contact_volume_mm3": 10.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 1
+    },
+    {
+      "rank": 26,
+      "root_zyx": [
+        27,
+        21,
+        33
+      ],
+      "root_lps_mm": [
+        10.6337890625,
+        -162.8662109375,
+        248.5999984741211
+      ],
+      "proposal_quality": 0.3699828088283539,
+      "contact_volume_mm3": 4.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 2
+    },
+    {
+      "rank": 27,
+      "root_zyx": [
+        68,
+        45,
+        33
+      ],
+      "root_lps_mm": [
+        10.6337890625,
+        -186.8662109375,
+        289.5999984741211
+      ],
+      "proposal_quality": 0.3662736415863037,
+      "contact_volume_mm3": 13.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "no_supported_5mm_path",
+      "shell_component": 9
+    },
+    {
+      "rank": 28,
+      "root_zyx": [
+        29,
+        21,
+        33
+      ],
+      "root_lps_mm": [
+        10.6337890625,
+        -162.8662109375,
+        250.5999984741211
+      ],
+      "proposal_quality": 0.3623124361038208,
+      "contact_volume_mm3": 4.0,
+      "branch": null,
+      "suppressor_rank": null,
+      "reason": "disconnected_ostium",
+      "shell_component": 2
+    }
+  ],
+  "rejections": {
+    "short_proximal_segment": 2,
+    "disconnected_ostium": 10,
+    "small_radius": 1,
+    "no_supported_5mm_path": 13,
+    "wall_hugging_path": 1
+  },
+  "runtime_s": 1.4841163379999216,
+  "peak_rss_mb": null,
+  "timings": {
+    "normalize_s": 0.1109061219999603,
+    "enhance_s": 1.3187388329999976,
+    "propose_s": 0.004057953000028647,
+    "resolve_s": 0.05041342999993503
+  },
+  "working_geometry": {
+    "size_xyz": [
+      66,
+      64,
+      90
+    ],
+    "spacing_xyz_mm": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "origin_lps_mm": [
+      43.6337890625,
+      -141.8662109375,
+      221.5999984741211
+    ],
+    "direction": [
+      -1.0,
+      0.0,
+      0.0,
+      0.0,
+      -1.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
+  "diagnosis": {
+    "references": [
+      {
+        "reference_id": "branch_001",
+        "matched_at_3mm": false,
+        "ostium_lps_mm": [
+          5.3837890625,
+          -173.3662109375,
+          283.0999984741211
+        ],
+        "ostium_working_zyx": [
+          61.5,
+          31.5,
+          38.25
+        ],
+        "known_reference_radius_mm": null,
+        "observations": [
+          "reference_radius_unknown_not_evidence_of_small_origin"
+        ],
+        "nearest_shell_distance_mm": 1.8874586088176875,
+        "nearest_shell_component": 8,
+        "component_root_ranks": [
+          1,
+          4,
+          9,
+          20
+        ],
+        "nearby_candidates": [
+          {
+            "rank": 4,
+            "root_to_ostium_mm": 1.8874586088176875,
+            "root_to_guide_mm": 0.6153704737798203,
+            "same_shell_component": true,
+            "reason": "small_radius",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 1,
+            "root_to_ostium_mm": 3.092329219213245,
+            "root_to_guide_mm": 1.1404909171602313,
+            "same_shell_component": true,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 20,
+            "root_to_ostium_mm": 4.589389937671455,
+            "root_to_guide_mm": 2.7508524276712985,
+            "same_shell_component": true,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 9,
+            "root_to_ostium_mm": 4.802343178074636,
+            "root_to_guide_mm": 1.8827153067710405,
+            "same_shell_component": true,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 2,
+            "root_to_ostium_mm": 9.852030247619016,
+            "root_to_guide_mm": 9.852030247619016,
+            "same_shell_component": false,
+            "reason": "accepted",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": 7.915583709222918
+          },
+          {
+            "rank": 27,
+            "root_to_ostium_mm": 15.876476309307428,
+            "root_to_guide_mm": 15.876476309307428,
+            "same_shell_component": false,
+            "reason": "no_supported_5mm_path",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 19,
+            "root_to_ostium_mm": 16.794716431068434,
+            "root_to_guide_mm": 16.794716431068434,
+            "same_shell_component": false,
+            "reason": "no_supported_5mm_path",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 15,
+            "root_to_ostium_mm": 18.208857734630143,
+            "root_to_guide_mm": 18.208857734630143,
+            "same_shell_component": false,
+            "reason": "no_supported_5mm_path",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          }
+        ],
+        "guide_samples": {
+          "lps_mm": [
+            [
+              5.3837890625,
+              -173.3662109375,
+              283.0999984741211
+            ],
+            [
+              5.133784062500013,
+              -173.3662109375,
+              283.0999984741211
+            ],
+            [
+              4.883794062499987,
+              -173.3662109375,
+              283.0999984741211
+            ],
+            [
+              4.6337890625,
+              -173.3662109375,
+              283.0999984741211
+            ],
+            [
+              4.4570140624999794,
+              -173.18943593749998,
+              283.0999984741211
+            ],
+            [
+              4.280239062500016,
+              -173.01266093750002,
+              283.0999984741211
+            ],
+            [
+              4.103464062499995,
+              -172.8358859375,
+              283.0999984741211
+            ],
+            [
+              3.926689062500003,
+              -172.6591109375,
+              283.0999984741211
+            ],
+            [
+              3.749899062499992,
+              -172.4823209375,
+              283.0999984741211
+            ],
+            [
+              3.5731240625,
+              -172.3055459375,
+              283.0999984741211
+            ],
+            [
+              3.3963490625000077,
+              -172.1287709375,
+              283.0999984741211
+            ],
+            [
+              3.2195740625000155,
+              -171.95199593750002,
+              283.0999984741211
+            ],
+            [
+              3.1337890625,
+              -171.74402093749998,
+              282.9981784741211
+            ],
+            [
+              3.1337890625,
+              -171.5519759375,
+              282.8381284741211
+            ],
+            [
+              3.1337890625,
+              -171.3599159375,
+              282.6780784741211
+            ],
+            [
+              3.1337890625,
+              -171.1678559375,
+              282.5180434741211
+            ],
+            [
+              3.1337890625,
+              -170.9758109375,
+              282.3579934741211
+            ],
+            [
+              3.1337890625,
+              -170.7837509375,
+              282.1979434741211
+            ],
+            [
+              3.1337890625,
+              -170.5916909375,
+              282.0379084741211
+            ],
+            [
+              3.1337890625,
+              -170.3996459375,
+              281.87785847412107
+            ],
+            [
+              3.1327990624999984,
+              -170.2081409375,
+              281.7171784741211
+            ],
+            [
+              3.118414062499994,
+              -170.0252309375,
+              281.54877347412105
+            ],
+            [
+              3.0613990625000156,
+              -169.8731759375,
+              281.3586934741211
+            ],
+            [
+              3.0043840625000087,
+              -169.7211059375,
+              281.1686284741211
+            ],
+            [
+              2.9473540624999828,
+              -169.56905093749998,
+              280.9785484741211
+            ],
+            [
+              2.8903390625000043,
+              -169.4169959375,
+              280.7884834741211
+            ],
+            [
+              2.833309062500007,
+              -169.2649409375,
+              280.5984034741211
+            ],
+            [
+              2.7762940625,
+              -169.1128859375,
+              280.4083384741211
+            ],
+            [
+              2.714149062500013,
+              -168.9646559375,
+              280.2175984741211
+            ],
+            [
+              2.598634062499997,
+              -168.8662109375,
+              280.0290334741211
+            ],
+            [
+              2.406574062499999,
+              -168.8662109375,
+              279.8689834741211
+            ],
+            [
+              2.214514062500001,
+              -168.8662109375,
+              279.7089334741211
+            ],
+            [
+              2.0224690624999937,
+              -168.8662109375,
+              279.5488984741211
+            ],
+            [
+              1.8304090624999958,
+              -168.8662109375,
+              279.3888484741211
+            ],
+            [
+              1.638349062499998,
+              -168.8662109375,
+              279.22879847412105
+            ],
+            [
+              1.446304062500019,
+              -168.8662109375,
+              279.0687484741211
+            ],
+            [
+              1.2542440624999927,
+              -168.8662109375,
+              278.9087134741211
+            ],
+            [
+              1.0621840625000232,
+              -168.8662109375,
+              278.7486634741211
+            ],
+            [
+              0.8592340625000077,
+              -168.8627459375,
+              278.6156134741211
+            ],
+            [
+              0.610549062500013,
+              -168.84435593749998,
+              278.5999984741211
+            ],
+            [
+              0.3613390625000079,
+              -168.8244209375,
+              278.5999984741211
+            ]
+          ],
+          "inside_working_crop": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "smoothed_hu": [
+            281.8125,
+            269.3747512500006,
+            256.9377487499994,
+            244.5,
+            241.50384494437492,
+            242.9451047774997,
+            248.28205673187514,
+            255.0009341899999,
+            265.40828039390055,
+            273.6512147622625,
+            272.51499742720006,
+            272.2850127102625,
+            268.2643348888024,
+            263.4161264002007,
+            260.7816080103998,
+            254.80645854855044,
+            245.09910254399924,
+            237.16405922859786,
+            232.89749670159853,
+            232.4397579441981,
+            235.6333190467992,
+            241.32631061382278,
+            244.50759877713426,
+            246.55039871515018,
+            251.6946806371011,
+            260.10886491812624,
+            271.78148704309876,
+            285.28775062318186,
+            301.04580506042277,
+            310.7346778676997,
+            299.0734905651004,
+            292.08466211849844,
+            288.2976913920004,
+            286.8590339519984,
+            291.3223034880033,
+            292.76452078125106,
+            295.8192591944241,
+            300.65809293757667,
+            303.88991137225366,
+            293.23024156319934,
+            279.697870968001
+          ],
+          "tubularity": [
+            0.21229991596192122,
+            0.2022577918612776,
+            0.19221627027602817,
+            0.18217414617538452,
+            0.1755691413530051,
+            0.16999969684692243,
+            0.16561530179318362,
+            0.16344929540248143,
+            0.1631057095808256,
+            0.16228156472776809,
+            0.15756254997354263,
+            0.15271629850697496,
+            0.14476536396931147,
+            0.13742733759578588,
+            0.13179248444572383,
+            0.12959461670598818,
+            0.12646874397570526,
+            0.12539643993477392,
+            0.1317151286142399,
+            0.13877205959938088,
+            0.14636254038062474,
+            0.15413173989490891,
+            0.15955115219418425,
+            0.16231180134861978,
+            0.16765118617056007,
+            0.17618447909260565,
+            0.18829357391882662,
+            0.20236910036666944,
+            0.22180724082198258,
+            0.23792250179389904,
+            0.22129630538752457,
+            0.20435537058325393,
+            0.18519996191503685,
+            0.17063357909210058,
+            0.16933262591712428,
+            0.17157475170841288,
+            0.17393163646327015,
+            0.1764887735730775,
+            0.17529236445465016,
+            0.15695856251687743,
+            0.13380999918762973
+          ],
+          "enhanced_support": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "outside_parent_mm": [
+            0.25,
+            0.5000049999999874,
+            0.7499950000000126,
+            1.0,
+            1.1767750000000206,
+            1.3535499999999843,
+            1.5400210701664108,
+            1.7667959162789275,
+            1.9824547023912809,
+            2.190510241562826,
+            2.398605450525275,
+            2.602088853110654,
+            2.762444802461598,
+            2.861888849402777,
+            2.9613406635896853,
+            3.060792477776593,
+            3.1602365247177873,
+            3.275297225281731,
+            3.4111041536764173,
+            3.546900475469393,
+            3.6829930813756113,
+            3.82846087140336,
+            3.995506761323255,
+            4.155799323366004,
+            4.318555386961998,
+            4.4840316530685635,
+            4.652572892398477,
+            4.861249068344067,
+            5.072002821866329,
+            5.284476151753611,
+            5.449772583977357,
+            5.613181140993443,
+            5.782472856018482,
+            5.966001991358335,
+            6.146908282667733,
+            6.342927377141256,
+            6.536905738294938,
+            6.72841489045002,
+            6.916780739485028,
+            7.101552363009801,
+            7.297341344998269
+          ],
+          "cap_excluded": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent_connected_support": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      },
+      {
+        "reference_id": "branch_002",
+        "matched_at_3mm": true,
+        "ostium_lps_mm": [
+          13.6337890625,
+          -168.1162109375,
+          281.5999984741211
+        ],
+        "ostium_working_zyx": [
+          60.0,
+          26.25,
+          30.0
+        ],
+        "known_reference_radius_mm": null,
+        "observations": [
+          "reference_radius_unknown_not_evidence_of_small_origin"
+        ],
+        "nearest_shell_distance_mm": 1.25,
+        "nearest_shell_component": 7,
+        "component_root_ranks": [
+          2
+        ],
+        "nearby_candidates": [
+          {
+            "rank": 2,
+            "root_to_ostium_mm": 1.6007810593582121,
+            "root_to_guide_mm": 1.0277257034101923,
+            "same_shell_component": true,
+            "reason": "accepted",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": 2.2662970848261206
+          },
+          {
+            "rank": 9,
+            "root_to_ostium_mm": 9.031195934094221,
+            "root_to_guide_mm": 9.031195934094221,
+            "same_shell_component": false,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 20,
+            "root_to_ostium_mm": 9.25,
+            "root_to_guide_mm": 9.25,
+            "same_shell_component": false,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 1,
+            "root_to_ostium_mm": 10.562315087138805,
+            "root_to_guide_mm": 10.562315087138805,
+            "same_shell_component": false,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 4,
+            "root_to_ostium_mm": 11.25,
+            "root_to_guide_mm": 11.25,
+            "same_shell_component": false,
+            "reason": "small_radius",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 5,
+            "root_to_ostium_mm": 14.51077186093145,
+            "root_to_guide_mm": 13.44165080807601,
+            "same_shell_component": false,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 12,
+            "root_to_ostium_mm": 14.630874888399532,
+            "root_to_guide_mm": 13.075195082531293,
+            "same_shell_component": false,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 6,
+            "root_to_ostium_mm": 15.970676253684438,
+            "root_to_guide_mm": 15.468767774010006,
+            "same_shell_component": false,
+            "reason": "disconnected_ostium",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          }
+        ],
+        "guide_samples": {
+          "lps_mm": [
+            [
+              13.6337890625,
+              -168.1162109375,
+              281.5999984741211
+            ],
+            [
+              13.6337890625,
+              -167.8662059375,
+              281.5999984741211
+            ],
+            [
+              13.6337890625,
+              -167.6162159375,
+              281.5999984741211
+            ],
+            [
+              13.6337890625,
+              -167.3662109375,
+              281.5999984741211
+            ],
+            [
+              13.6337890625,
+              -167.1162059375,
+              281.5999984741211
+            ],
+            [
+              13.661329062499988,
+              -166.8693959375,
+              281.5807234741211
+            ],
+            [
+              13.7807740625,
+              -166.6663259375,
+              281.4971134741211
+            ],
+            [
+              13.900234062499976,
+              -166.4632559375,
+              281.4134884741211
+            ],
+            [
+              14.019694062500008,
+              -166.26018593749998,
+              281.3298634741211
+            ],
+            [
+              14.139139062499993,
+              -166.0571159375,
+              281.2462534741211
+            ],
+            [
+              14.258599062499997,
+              -165.8540459375,
+              281.1626284741211
+            ],
+            [
+              14.37804406250001,
+              -165.6509609375,
+              281.0790184741211
+            ],
+            [
+              14.497504062500013,
+              -165.4478909375,
+              280.9953934741211
+            ],
+            [
+              14.616964062500017,
+              -165.2448209375,
+              280.9117834741211
+            ],
+            [
+              14.736409062500002,
+              -165.0417509375,
+              280.8281584741211
+            ],
+            [
+              14.855869062500005,
+              -164.83868093750002,
+              280.7445484741211
+            ],
+            [
+              14.975329062500009,
+              -164.6355959375,
+              280.6609234741211
+            ],
+            [
+              15.096889062499997,
+              -164.4337859375,
+              280.5806734741211
+            ],
+            [
+              15.287149062499992,
+              -164.2767509375,
+              280.61389847412113
+            ],
+            [
+              15.490324062500008,
+              -164.1582359375,
+              280.6985584741211
+            ],
+            [
+              15.693514062499986,
+              -164.0397059375,
+              280.7832184741211
+            ],
+            [
+              15.89670406250002,
+              -163.9211759375,
+              280.8678784741211
+            ],
+            [
+              16.09987906250001,
+              -163.8026609375,
+              280.9525384741211
+            ],
+            [
+              16.303069062500015,
+              -163.68413093750002,
+              281.03719847412106
+            ],
+            [
+              16.506259062499993,
+              -163.5656009375,
+              281.1218584741211
+            ],
+            [
+              16.7094490625,
+              -163.4470859375,
+              281.20651847412114
+            ],
+            [
+              16.913344062499988,
+              -163.3346459375,
+              281.2951534741211
+            ],
+            [
+              17.122909062500014,
+              -163.2725609375,
+              281.41638347412106
+            ],
+            [
+              17.331829062499992,
+              -163.2243509375,
+              281.5449484741211
+            ],
+            [
+              17.540749062499998,
+              -163.1761409375,
+              281.67351347412114
+            ],
+            [
+              17.749669062500004,
+              -163.1279309375,
+              281.80207847412106
+            ],
+            [
+              17.95858906250001,
+              -163.0797209375,
+              281.9306434741211
+            ],
+            [
+              18.167494062499998,
+              -163.0315109375,
+              282.0592084741211
+            ],
+            [
+              18.376414062500004,
+              -162.9833009375,
+              282.1877734741211
+            ],
+            [
+              18.58533406250001,
+              -162.93509093749998,
+              282.3163384741211
+            ],
+            [
+              18.793054062500005,
+              -162.8894759375,
+              282.44736347412106
+            ],
+            [
+              18.98995906249999,
+              -162.8662109375,
+              282.59908847412106
+            ],
+            [
+              19.172734062499984,
+              -162.8662109375,
+              282.7696684741211
+            ],
+            [
+              19.355494062499986,
+              -162.8662109375,
+              282.94024847412106
+            ],
+            [
+              19.538254062500016,
+              -162.8662109375,
+              283.1108284741211
+            ],
+            [
+              19.72101406249999,
+              -162.8662109375,
+              283.28140847412106
+            ]
+          ],
+          "inside_working_crop": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "smoothed_hu": [
+            347.75,
+            330.99986500000034,
+            324.25013499999966,
+            317.5,
+            310.74986500000034,
+            298.90789013054,
+            278.3294276531899,
+            260.2407005182198,
+            244.27927149114163,
+            230.17949078932284,
+            217.89457939428644,
+            212.506319813515,
+            212.1575802904061,
+            216.80157596551206,
+            225.405790035985,
+            235.25691851191013,
+            238.9206233770292,
+            243.6093629043514,
+            242.62015950563816,
+            236.84083253580835,
+            233.3452386032532,
+            231.296730126781,
+            228.7060956755274,
+            227.3098204687568,
+            230.35601618176412,
+            235.0493738624594,
+            239.18538952208007,
+            244.30108004022907,
+            253.24987190216544,
+            258.3316225013636,
+            254.90154081366896,
+            250.84903322674103,
+            250.77111863150722,
+            254.80750454492394,
+            263.0981877715899,
+            266.8595623538684,
+            270.40664905339895,
+            264.70132265940003,
+            263.66951959500005,
+            267.37634705220046,
+            268.18229324775
+          ],
+          "tubularity": [
+            0.13469115644693375,
+            0.14822438622444803,
+            0.16102145349055594,
+            0.17381928861141205,
+            0.18661712373226816,
+            0.1900453785137076,
+            0.15751150144119086,
+            0.13253712620840175,
+            0.1136238408078993,
+            0.09915269083987643,
+            0.08740209615764064,
+            0.07874399313416505,
+            0.07628144767116189,
+            0.07876237553400572,
+            0.09053817219426041,
+            0.09911535439727492,
+            0.10358015960715543,
+            0.10749022480374135,
+            0.10248883171327361,
+            0.08914830349705162,
+            0.07600922171220868,
+            0.060100175749810615,
+            0.045427780521184555,
+            0.039244620088982815,
+            0.041295757008049445,
+            0.0508141962978811,
+            0.06282499064708023,
+            0.0737207488899226,
+            0.08836507364624742,
+            0.09855799344715449,
+            0.09562829452893046,
+            0.09073946766325283,
+            0.090292952654052,
+            0.09518031204456674,
+            0.10629313312386747,
+            0.11033625816598991,
+            0.11216742272989157,
+            0.10261999736345861,
+            0.09913098432975859,
+            0.10177987042239961,
+            0.10356132841272248
+          ],
+          "enhanced_support": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "outside_parent_mm": [
+            0.75,
+            1.0000049999999874,
+            1.2499950000000126,
+            1.5,
+            1.7500049999999874,
+            1.996814999999998,
+            2.1998849999999948,
+            2.4029549999999915,
+            2.6060250000000167,
+            2.809095000000014,
+            3.01216500000001,
+            3.2152499999999975,
+            3.4183199999999943,
+            3.6213899999999914,
+            3.8244599999999878,
+            4.0275299999999845,
+            4.230615,
+            4.432424999999994,
+            4.5894600000000025,
+            4.707975000000004,
+            4.8265049999999965,
+            4.94503499999999,
+            5.063549999999992,
+            5.182079999999985,
+            5.300610000000006,
+            5.419125000000008,
+            5.5315650000000005,
+            5.593649999999997,
+            5.641860000000008,
+            5.6900699999999915,
+            5.738280000000002,
+            5.786489999999986,
+            5.834699999999998,
+            5.882910000000009,
+            5.931120000000021,
+            5.9899764113917975,
+            6.029477530416316,
+            6.044604451891573,
+            6.059730131928875,
+            6.074855811966181,
+            6.103852906409328
+          ],
+          "cap_excluded": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "parent_connected_support": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            false,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      },
+      {
+        "reference_id": "branch_003",
+        "matched_at_3mm": true,
+        "ostium_lps_mm": [
+          17.042569062500007,
+          -181.7300909375,
+          305.3620384741211
+        ],
+        "ostium_working_zyx": [
+          83.76204000000001,
+          39.863879999999995,
+          26.591219999999993
+        ],
+        "known_reference_radius_mm": null,
+        "observations": [
+          "reference_radius_unknown_not_evidence_of_small_origin"
+        ],
+        "nearest_shell_distance_mm": 2.0984410176128394,
+        "nearest_shell_component": 12,
+        "component_root_ranks": [
+          0,
+          3,
+          7,
+          14
+        ],
+        "nearby_candidates": [
+          {
+            "rank": 7,
+            "root_to_ostium_mm": 2.0984410176128394,
+            "root_to_guide_mm": 0.5061775641511537,
+            "same_shell_component": true,
+            "reason": "accepted",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": 1.570956223538097
+          },
+          {
+            "rank": 0,
+            "root_to_ostium_mm": 3.7741561579245704,
+            "root_to_guide_mm": 0.3963124081769142,
+            "same_shell_component": true,
+            "reason": "short_proximal_segment",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 3,
+            "root_to_ostium_mm": 4.534826865978459,
+            "root_to_guide_mm": 2.071270634109635,
+            "same_shell_component": true,
+            "reason": "short_proximal_segment",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 14,
+            "root_to_ostium_mm": 4.93332896778637,
+            "root_to_guide_mm": 4.2365760897126234,
+            "same_shell_component": true,
+            "reason": "wall_hugging_path",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 21,
+            "root_to_ostium_mm": 10.25366932880129,
+            "root_to_guide_mm": 9.939003256184693,
+            "same_shell_component": false,
+            "reason": "no_supported_5mm_path",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 24,
+            "root_to_ostium_mm": 12.402460026317376,
+            "root_to_guide_mm": 12.347423147477997,
+            "same_shell_component": false,
+            "reason": "no_supported_5mm_path",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 15,
+            "root_to_ostium_mm": 13.92767800835446,
+            "root_to_guide_mm": 13.92767800835446,
+            "same_shell_component": false,
+            "reason": "no_supported_5mm_path",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          },
+          {
+            "rank": 19,
+            "root_to_ostium_mm": 16.026413656972682,
+            "root_to_guide_mm": 16.026413656972682,
+            "same_shell_component": false,
+            "reason": "no_supported_5mm_path",
+            "suppressor_rank": null,
+            "traced_ostium_error_mm": null
+          }
+        ],
+        "guide_samples": {
+          "lps_mm": [
+            [
+              17.042569062500007,
+              -181.7300909375,
+              305.3620384741211
+            ],
+            [
+              17.259289062499988,
+              -181.84830593750002,
+              305.32263347412106
+            ],
+            [
+              17.476024062500016,
+              -181.9665209375,
+              305.2832284741211
+            ],
+            [
+              17.692759062499988,
+              -182.0847359375,
+              305.2438234741211
+            ],
+            [
+              17.909494062500016,
+              -182.20295093750002,
+              305.2044184741211
+            ],
+            [
+              18.126214062499997,
+              -182.32116593749998,
+              305.1650134741211
+            ],
+            [
+              18.342949062499997,
+              -182.4393959375,
+              305.1256084741211
+            ],
+            [
+              18.559684062499997,
+              -182.5576109375,
+              305.0862034741211
+            ],
+            [
+              18.776404062500006,
+              -182.6758259375,
+              305.0467984741211
+            ],
+            [
+              18.998029062499995,
+              -182.78679593750002,
+              305.02978847412106
+            ],
+            [
+              19.2234640625,
+              -182.87040593749998,
+              305.0812834741211
+            ],
+            [
+              19.44571906249999,
+              -182.93390093749997,
+              305.17653347412113
+            ],
+            [
+              19.66795906249999,
+              -182.99741093750004,
+              305.2717834741211
+            ],
+            [
+              19.890214062500007,
+              -183.06090593750002,
+              305.3670334741211
+            ],
+            [
+              20.112469062499997,
+              -183.1244009375,
+              305.4622834741211
+            ],
+            [
+              20.334709062499996,
+              -183.1879109375,
+              305.5575334741211
+            ],
+            [
+              20.556964062499986,
+              -183.25140593749998,
+              305.65278347412107
+            ],
+            [
+              20.779219062500005,
+              -183.3149009375,
+              305.7480334741211
+            ],
+            [
+              21.001459062499976,
+              -183.3784109375,
+              305.8432834741211
+            ],
+            [
+              21.182569062500022,
+              -183.4912109375,
+              305.9529334741211
+            ],
+            [
+              21.313144062499987,
+              -183.66282593749997,
+              306.0793534741211
+            ],
+            [
+              21.439894062500002,
+              -183.8370959375,
+              306.20610347412105
+            ],
+            [
+              21.5666290625,
+              -184.0113659375,
+              306.3328384741211
+            ],
+            [
+              21.693379062499986,
+              -184.18565093750001,
+              306.4595884741211
+            ],
+            [
+              21.8201290625,
+              -184.3599209375,
+              306.5863384741211
+            ],
+            [
+              21.946864062499998,
+              -184.5341909375,
+              306.7130734741211
+            ],
+            [
+              22.073614062499985,
+              -184.70846093749998,
+              306.8398234741211
+            ],
+            [
+              22.2003640625,
+              -184.88274593750003,
+              306.9665734741211
+            ],
+            [
+              22.2932140625,
+              -185.0715509375,
+              307.09591847412105
+            ],
+            [
+              22.302964062499996,
+              -185.2819559375,
+              307.2232834741211
+            ],
+            [
+              22.272199062499993,
+              -185.49737093749997,
+              307.3463734741211
+            ],
+            [
+              22.2414190625,
+              -185.7127709375,
+              307.4694634741211
+            ],
+            [
+              22.210654062499998,
+              -185.92818593750002,
+              307.59255347412113
+            ],
+            [
+              22.179874062500005,
+              -186.1436009375,
+              307.71564347412107
+            ],
+            [
+              22.149109062500003,
+              -186.35900093749999,
+              307.8387334741211
+            ],
+            [
+              22.11832906250001,
+              -186.57441593750002,
+              307.96183847412107
+            ],
+            [
+              22.087564062500007,
+              -186.78983093750003,
+              308.0849284741211
+            ],
+            [
+              22.056784062500014,
+              -187.00523093750002,
+              308.2080184741211
+            ],
+            [
+              22.03008406250001,
+              -187.2266609375,
+              308.2111084741211
+            ],
+            [
+              22.01229406249999,
+              -187.42424093749997,
+              308.0634784741211
+            ],
+            [
+              21.996964062500012,
+              -187.60818593750002,
+              307.8948634741211
+            ]
+          ],
+          "inside_working_crop": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "smoothed_hu": [
+            314.28245560311404,
+            290.19685965795856,
+            271.33782287430427,
+            257.2916470181501,
+            250.9480821331992,
+            246.95293999132275,
+            245.41468450145516,
+            246.44380903072445,
+            252.77837088581708,
+            260.92425882008024,
+            265.8691093964659,
+            264.43716109405176,
+            263.62119247853764,
+            266.82239205175966,
+            275.5855317053519,
+            289.92466672957744,
+            307.3119345193172,
+            325.4199902124724,
+            347.11966352401805,
+            370.51578685270266,
+            396.17637652634676,
+            427.6914856796643,
+            457.6875102995223,
+            483.1326083768912,
+            502.5101520312436,
+            518.4128544496676,
+            534.087431452522,
+            548.9739961613748,
+            553.7377147555992,
+            554.2899157705251,
+            554.3129832666498,
+            556.3732069428497,
+            559.8827702702374,
+            559.4405652130184,
+            559.658755348125,
+            560.7975474385305,
+            562.8623343923298,
+            567.202124939901,
+            569.7541313097499,
+            568.8271402363994,
+            567.5345466800011
+          ],
+          "tubularity": [
+            0.2240604786942352,
+            0.24199555328265182,
+            0.25778111142679355,
+            0.27070569293588137,
+            0.2805347151509075,
+            0.290064626375239,
+            0.29932229956855544,
+            0.308333879476193,
+            0.3168673389944918,
+            0.3248965232524013,
+            0.33168416752271734,
+            0.3375501173360378,
+            0.34626791960564857,
+            0.35622233312968865,
+            0.36973253224820685,
+            0.386834325555718,
+            0.4050904359195051,
+            0.4343702525998357,
+            0.47290842536636646,
+            0.515716845992308,
+            0.5652502482728892,
+            0.6226593396788176,
+            0.6698153783670434,
+            0.7179068998802189,
+            0.7692445231399696,
+            0.8117157087335469,
+            0.8584395382078975,
+            0.9069834170918618,
+            0.9160792414119074,
+            0.9130782364347012,
+            0.909298677818836,
+            0.913142958928965,
+            0.9258881675367719,
+            0.9341862044469719,
+            0.9437140497512981,
+            0.9552826597974489,
+            0.9689630971334878,
+            0.9787549508786625,
+            0.9793639199108508,
+            0.9724866590106322,
+            0.9651991286346913
+          ],
+          "enhanced_support": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "outside_parent_mm": [
+            0.7423435639285476,
+            0.8800816570117114,
+            0.9739341853508995,
+            1.067726331225816,
+            1.1539032266293707,
+            1.2780758968928267,
+            1.4427740460548888,
+            1.6504823993125255,
+            1.848118800202162,
+            2.011723460618795,
+            2.1411630862052715,
+            2.2305573784432395,
+            2.3466230878914596,
+            2.5297662502959213,
+            2.7168118472400478,
+            2.9068987409285483,
+            3.0951434748490083,
+            3.3034247836288366,
+            3.5206886388315013,
+            3.7403217758627574,
+            3.9608573900211796,
+            4.172973782773828,
+            4.3830263345226985,
+            4.608419930114536,
+            4.850041373232241,
+            5.098018980260333,
+            5.339611717637125,
+            5.574993954150032,
+            5.80190445708169,
+            5.993092400284905,
+            6.16547226030721,
+            6.341591724279416,
+            6.5252520549100215,
+            6.726260489913083,
+            6.926450328086139,
+            7.125493435584568,
+            7.323340001091712,
+            7.513110234005274,
+            7.664786571502167,
+            7.742224025793428,
+            7.795655383079879
+          ],
+          "cap_excluded": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ],
+          "parent_connected_support": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            false,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      }
+    ],
+    "extra_origins_at_3mm": [],
+    "comparison_3mm": {
+      "case_id": "subject019",
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "daughter_counts": {
+        "predicted": 2,
+        "reference": 3,
+        "signed_error": -1,
+        "absolute_error": 1
+      },
+      "precision": 1.0,
+      "recall": 0.6666666666666666,
+      "f1": 0.8,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 2.2662970848261206,
+          "seed_error_mm": 1.9728888006327756,
+          "radius_error_mm": null,
+          "direction_error_degrees": 10.582474360239733,
+          "seed_to_reference_centreline_mm": 1.0022864334417414
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_003",
+          "ostium_error_mm": 1.570956223538097,
+          "seed_error_mm": 0.8333705147584695,
+          "radius_error_mm": null,
+          "direction_error_degrees": 10.634529280111993,
+          "seed_to_reference_centreline_mm": 0.6668240137074094
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": [
+        "branch_001"
+      ]
+    }
+  }
+}

@@ -4,6 +4,31 @@ Checkpoint requested because usage credits are nearly exhausted. No production
 promotion or clean model-selection claim is justified. All new experiments are
 **POST-REFERENCE DEVELOPMENT**, ineligible for the frozen-family comparison.
 
+## Latest continuation status
+
+Initial partial checkpoint was pushed successfully as
+`76ce2f13b09da1f66cbeb6d8dd63dcdd5b00b1db`. Subsequently all nine recovery
+variants completed all five cases with zero execution failures. `report.json`
+now contains all nine variants; the original progress table below is historical.
+The synthetic cohort and final interpretation remain pending.
+
+| Variant suffix (topology-) | 3 mm TP / FP / FN | F1 |
+| --- | --- | --- |
+| alternate-roots | 8 / 14 / 11 | 0.3902 |
+| connector-gap | 8 / 4 / 11 | 0.5161 |
+| parallel-path | 8 / 4 / 11 | 0.5161 |
+| contrast-support | 10 / 9 / 9 | 0.5263 |
+| combined | 14 / 34 / 5 | 0.4179 |
+| combined-no-roots | 11 / 13 / 8 | 0.5116 |
+| combined-no-gap | 14 / 32 / 5 | 0.4308 |
+| combined-no-parallel | 15 / 38 / 4 | 0.4167 |
+| combined-no-contrast | 8 / 16 / 11 | 0.3721 |
+
+No recovery configuration improves strict baseline aggregate 3 mm F1 (0.5333).
+Contrast sensitivity drives recovered references but introduces unmatched
+origins. Adding gap tolerance to the combined configuration adds two unmatched
+origins with no new matches. The synthetic evidence is still needed.
+
 ## What is durable
 
 - `final_eval_topology.py`: faithful instrumented detector resolver, physical LPS
@@ -20,7 +45,7 @@ promotion or clean model-selection claim is justified. All new experiments are
 - `resources/`: isolated four-core process-tree RSS samples and command metadata.
   Baseline RSS is explicitly unknown; baseline runtime excludes loading/diagnosis.
 
-## Completed and pending at this checkpoint
+## Historical initial-checkpoint status (superseded above)
 
 | Variant | Status | Local 3 mm TP / FP / FN | F1 |
 | --- | --- | --- | --- |
