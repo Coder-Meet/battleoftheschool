@@ -1,0 +1,13 @@
+{
+  "wall_seconds": 3.5019324580000557,
+  "process_peak_rss_mib": 550.21484375,
+  "exit_code": 0,
+  "platform": "Linux",
+  "cpu_affinity": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "windows_performance_verified": false
+}

@@ -67,6 +67,18 @@ def test_exact_cache_roundtrip_and_review_fingerprint_rejection(tmp_path: Path) 
         training.load_partition(tmp_path, "train", SPLIT, reviews)
 
 
+def test_cache_case_metadata_cannot_omit_declared_training_cases(tmp_path: Path) -> None:
+    part = partition("train")
+    part.metadata["cases"] = []
+    reviews = save_partition(tmp_path, part)
+    with pytest.raises(ValueError, match="omits split cases"):
+        training.load_partition(tmp_path, "train", SPLIT, reviews)
+    part.metadata["cases"] = [{"case_id": "train"}]
+    reviews = save_partition(tmp_path, part)
+    loaded = training.load_partition(tmp_path, "train", SPLIT, reviews)
+    np.testing.assert_array_equal(loaded.patches, part.patches)
+
+
 @pytest.mark.parametrize("field", ["features", "label", "extra_features", "input_sha256"])
 def test_review_metadata_mismatch_rejected(tmp_path: Path, field: str) -> None:
     part = partition("train")

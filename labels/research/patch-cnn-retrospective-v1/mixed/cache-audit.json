@@ -1,0 +1,379 @@
+{
+  "parent_manifest_sha256": "404a3ddb24ff32ab9b5d9a6be8017bbc5125458d68f48211cba013293698f5a1",
+  "real_reviews_sha256": "319138ab8e6778f4378d5938901e934d5997dc303adc01f54e3ed7be901a7b5f",
+  "historical_split_sha256": "8709b34e8ade6eb55aba0e222f06bb707076dd08b95cd7d046f541ac9d611989",
+  "historical_split": {
+    "train": [
+      "subject001",
+      "subject002",
+      "subject003",
+      "subject004",
+      "subject006",
+      "subject009",
+      "subject010",
+      "subject012",
+      "subject014",
+      "subject015",
+      "subject022",
+      "subject023",
+      "subject024"
+    ],
+    "validation": [
+      "subject011",
+      "subject020",
+      "subject016",
+      "subject008",
+      "subject007"
+    ],
+    "test": [
+      "subject005",
+      "subject013",
+      "subject018",
+      "subject021",
+      "subject025"
+    ]
+  },
+  "prior_inspected_and_pseudo_trained_cases": [
+    "subject001",
+    "subject002",
+    "subject003",
+    "subject004",
+    "subject005",
+    "subject006",
+    "subject007",
+    "subject008",
+    "subject009",
+    "subject010",
+    "subject011",
+    "subject012",
+    "subject013",
+    "subject014",
+    "subject015",
+    "subject016",
+    "subject017",
+    "subject018",
+    "subject019",
+    "subject020",
+    "subject021",
+    "subject022",
+    "subject023",
+    "subject024",
+    "subject025"
+  ],
+  "real_reference_completeness": "unknown; candidate pseudo-labels only",
+  "cases": [
+    {
+      "case_id": "subject001",
+      "accepted_ids": [
+        "branch_003",
+        "branch_004",
+        "branch_005",
+        "branch_006",
+        "branch_007",
+        "branch_008",
+        "branch_010"
+      ],
+      "rejected_fingerprint_ids": [
+        "branch_009",
+        "branch_013",
+        "branch_015",
+        "branch_018",
+        "branch_019",
+        "branch_020",
+        "branch_023",
+        "branch_024"
+      ],
+      "proposals": 18,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_003",
+        "branch_004",
+        "branch_005",
+        "branch_006",
+        "branch_007",
+        "branch_008",
+        "branch_010"
+      ]
+    },
+    {
+      "case_id": "subject002",
+      "accepted_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_003",
+        "branch_004"
+      ],
+      "rejected_fingerprint_ids": [],
+      "proposals": 6,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_003",
+        "branch_004"
+      ]
+    },
+    {
+      "case_id": "subject003",
+      "accepted_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_003",
+        "branch_005"
+      ],
+      "rejected_fingerprint_ids": [
+        "branch_009",
+        "branch_011",
+        "branch_014"
+      ],
+      "proposals": 11,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_003",
+        "branch_005"
+      ]
+    },
+    {
+      "case_id": "subject004",
+      "accepted_ids": [
+        "branch_001",
+        "branch_002"
+      ],
+      "rejected_fingerprint_ids": [
+        "branch_004",
+        "branch_006",
+        "branch_009"
+      ],
+      "proposals": 6,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_001",
+        "branch_002"
+      ]
+    },
+    {
+      "case_id": "subject006",
+      "accepted_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_003",
+        "branch_006"
+      ],
+      "rejected_fingerprint_ids": [
+        "branch_004",
+        "branch_008",
+        "branch_014",
+        "branch_016",
+        "branch_017",
+        "branch_018",
+        "branch_020",
+        "branch_021"
+      ],
+      "proposals": 17,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_003",
+        "branch_006"
+      ]
+    },
+    {
+      "case_id": "subject009",
+      "accepted_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_003"
+      ],
+      "rejected_fingerprint_ids": [],
+      "proposals": 5,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_003"
+      ]
+    },
+    {
+      "case_id": "subject010",
+      "accepted_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_003",
+        "branch_004"
+      ],
+      "rejected_fingerprint_ids": [
+        "branch_006",
+        "branch_007",
+        "branch_008",
+        "branch_010",
+        "branch_011",
+        "branch_015",
+        "branch_019"
+      ],
+      "proposals": 15,
+      "extraction_errors": [
+        {
+          "instance_id": "branch_001",
+          "error": "Insufficient observed parent wall for curvature."
+        }
+      ],
+      "cached_ids": [
+        "branch_002",
+        "branch_003",
+        "branch_004"
+      ]
+    },
+    {
+      "case_id": "subject012",
+      "accepted_ids": [
+        "branch_002",
+        "branch_003",
+        "branch_004",
+        "branch_005"
+      ],
+      "rejected_fingerprint_ids": [
+        "branch_001"
+      ],
+      "proposals": 5,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_002",
+        "branch_003",
+        "branch_004",
+        "branch_005"
+      ]
+    },
+    {
+      "case_id": "subject014",
+      "accepted_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_004"
+      ],
+      "rejected_fingerprint_ids": [
+        "branch_003",
+        "branch_006"
+      ],
+      "proposals": 5,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_004"
+      ]
+    },
+    {
+      "case_id": "subject015",
+      "accepted_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_003",
+        "branch_004"
+      ],
+      "rejected_fingerprint_ids": [
+        "branch_005",
+        "branch_008"
+      ],
+      "proposals": 8,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_003",
+        "branch_004"
+      ]
+    },
+    {
+      "case_id": "subject022",
+      "accepted_ids": [
+        "branch_001",
+        "branch_003",
+        "branch_004",
+        "branch_005",
+        "branch_006"
+      ],
+      "rejected_fingerprint_ids": [
+        "branch_002",
+        "branch_007",
+        "branch_008",
+        "branch_009",
+        "branch_010",
+        "branch_011",
+        "branch_012",
+        "branch_013",
+        "branch_014",
+        "branch_015",
+        "branch_016",
+        "branch_017",
+        "branch_018",
+        "branch_019",
+        "branch_020"
+      ],
+      "proposals": 16,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_001",
+        "branch_003",
+        "branch_004",
+        "branch_005",
+        "branch_006"
+      ]
+    },
+    {
+      "case_id": "subject023",
+      "accepted_ids": [
+        "branch_001"
+      ],
+      "rejected_fingerprint_ids": [],
+      "proposals": 1,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_001"
+      ]
+    },
+    {
+      "case_id": "subject024",
+      "accepted_ids": [
+        "branch_003"
+      ],
+      "rejected_fingerprint_ids": [
+        "branch_001",
+        "branch_002",
+        "branch_004",
+        "branch_005",
+        "branch_006",
+        "branch_007",
+        "branch_008",
+        "branch_009",
+        "branch_010",
+        "branch_011",
+        "branch_012",
+        "branch_013",
+        "branch_014",
+        "branch_015",
+        "branch_016",
+        "branch_017",
+        "branch_018",
+        "branch_019",
+        "branch_020",
+        "branch_021",
+        "branch_022",
+        "branch_023",
+        "branch_024",
+        "branch_025",
+        "branch_026",
+        "branch_027",
+        "branch_028"
+      ],
+      "proposals": 25,
+      "extraction_errors": [],
+      "cached_ids": [
+        "branch_003"
+      ]
+    }
+  ],
+  "new_labels": false
+}
