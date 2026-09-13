@@ -40,11 +40,7 @@ function distancePointToSegment(point: Point, a: Point, b: Point): number {
     lengthSq > 1e-9
       ? Math.min(1, Math.max(0, dot(subtract(point, a), ab) / lengthSq))
       : 0;
-  const closest: Point = [
-    a[0] + ab[0] * t,
-    a[1] + ab[1] * t,
-    a[2] + ab[2] * t,
-  ];
+  const closest: Point = [a[0] + ab[0] * t, a[1] + ab[1] * t, a[2] + ab[2] * t];
   return length(subtract(point, closest));
 }
 
@@ -56,7 +52,10 @@ export function distancePointToPolyline(
   if (polyline.length === 1) return length(subtract(point, polyline[0]));
   let best = Infinity;
   for (let i = 0; i < polyline.length - 1; i++)
-    best = Math.min(best, distancePointToSegment(point, polyline[i], polyline[i + 1]));
+    best = Math.min(
+      best,
+      distancePointToSegment(point, polyline[i], polyline[i + 1]),
+    );
   return best;
 }
 
@@ -80,13 +79,19 @@ export function directionPathAngleDegrees(
 
 export function selfCheckWarnings(branch: Branch): string[] {
   const warnings: string[] = [];
-  const angle = directionPathAngleDegrees(branch.path_xyz_mm, branch.direction_xyz);
+  const angle = directionPathAngleDegrees(
+    branch.path_xyz_mm,
+    branch.direction_xyz,
+  );
   if (angle !== undefined && angle > DIRECTION_ANGLE_THRESHOLD_DEG) {
     warnings.push(
       `Self-check: direction diverges ${angle.toFixed(0)}° from the overall traced path.`,
     );
   }
-  const seedDistance = distancePointToPolyline(branch.seed_xyz_mm, branch.path_xyz_mm);
+  const seedDistance = distancePointToPolyline(
+    branch.seed_xyz_mm,
+    branch.path_xyz_mm,
+  );
   if (seedDistance > SEED_DISTANCE_THRESHOLD_MM) {
     warnings.push(
       `Self-check: seed sits ${seedDistance.toFixed(1)}mm off its own traced path.`,

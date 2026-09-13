@@ -913,10 +913,10 @@
       },
       "selector_protocol_resource_wrapper": {
         "count": 3,
-        "root_sha256": "1d290dacac7e9a97f417b6bfa5c36616c153ebd5c98b7e7e0994c60ff9c83e6c",
+        "root_sha256": "e6d800db1c128397a40f0128936c2aa533ba848b095321fb185bf808c2b02252",
         "files": {
           "FINAL_EVALUATION_PROTOCOL.md": "d4bc590b89383e51d5114d93ce08c7b4df1c5be69a7d879349659fb92e745293",
-          "final_eval_select.py": "1e59958b31e1d1d8b6e3a264b9933ed5015ff843bc727cf6f31e62b5197999aa",
+          "final_eval_select.py": "fbaddc4db2f96e7f2cc35ff894dd1725222112e7c183d68cb31b2726cb24852d",
           "research_resources.py": "230022e6e2a1fa9569318ce2b08b69bc25b6e1c79239154180faff9d0d71b230"
         }
       },
@@ -2320,8 +2320,8 @@
     "subject023": "6d03b488d61372f8f106589e85e38b16266826f31822db6a8eb503bb35ab950e"
   },
   "outputs": {
-    "labels/final-eval/selection/report.json": "468f9553d2d50d38db4559a4e4a6164bb3cfea5d57f7f72569d1a42d0e3c266b",
-    "labels/final-eval/selection/rankings.json": "178abffb7acfa638ae08edc5951d1f4db7c1e6994771e54d15a199b6b3d874e2",
+    "labels/final-eval/selection/report.json": "8e608a3ddaa7a3762cfd8586a984712e39001a385c617d6675c6099ff957fa0c",
+    "labels/final-eval/selection/rankings.json": "a728f2c4dfbd2b50a1431cc47dd78520c5fdbdbd89b5f69cd61db66fb147c71a",
     "FINAL_EVALUATION_RESULTS.md": "8b11bab91d4b24ab3dc64e2f44738fe75b7b13b31dc9fc432c00f8e45df3a2f6"
   },
   "prediction_bundles": {

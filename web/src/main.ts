@@ -396,9 +396,12 @@ function renderBranches() {
   $("#review-progress").textContent =
     `${data.branches.length - pending.length}/${data.branches.length} reviewed`;
   $("#branch-count").textContent = String(data.branches.length);
-  const flaggedCount = data.branches.filter((b) => selfCheckWarnings(b).length).length;
+  const flaggedCount = data.branches.filter(
+    (b) => selfCheckWarnings(b).length,
+  ).length;
   $("#qc-summary").hidden = flaggedCount === 0;
-  $("#qc-summary").innerHTML = `${icon("triangle-alert")} ${flaggedCount} flagged`;
+  $("#qc-summary").innerHTML =
+    `${icon("triangle-alert")} ${flaggedCount} flagged`;
   $("#branch-list").innerHTML =
     data.branches
       .map((branch, i) => {

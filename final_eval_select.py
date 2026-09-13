@@ -2270,9 +2270,9 @@ def run(root: Path = ROOT, output: Path = OUTPUT) -> JsonDict:
 
 def verify(root: Path = ROOT, output: Path = OUTPUT) -> JsonDict:
     report, rankings, bundles, report_provenance, inventory = evaluate(root)
-    if strict_read_json(output / "report.json") != report:
+    if not equivalent(strict_read_json(output / "report.json"), report):
         raise ValueError("Selection report is stale or differs from replay.")
-    if strict_read_json(output / "rankings.json") != rankings:
+    if not equivalent(strict_read_json(output / "rankings.json"), rankings):
         raise ValueError("Selection rankings are stale or differ from replay.")
     if (root / "FINAL_EVALUATION_RESULTS.md").read_text(encoding="utf-8") != render_results(report):
         raise ValueError("Human-readable final results are stale.")

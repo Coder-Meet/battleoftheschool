@@ -272,7 +272,9 @@ export class AortaViewer {
     });
     this.parent = new THREE.Mesh(
       geometry,
-      this.diameterColoringEnabled ? this.diameterMaterial : this.tissueMaterial,
+      this.diameterColoringEnabled
+        ? this.diameterMaterial
+        : this.tissueMaterial,
     );
     this.anatomy.add(this.parent);
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(
@@ -530,7 +532,9 @@ export class AortaViewer {
   setDiameterColoring(enabled: boolean) {
     this.diameterColoringEnabled = enabled;
     if (!this.parent || !this.tissueMaterial || !this.diameterMaterial) return;
-    this.parent.material = enabled ? this.diameterMaterial : this.tissueMaterial;
+    this.parent.material = enabled
+      ? this.diameterMaterial
+      : this.tissueMaterial;
   }
 
   /**
@@ -613,7 +617,8 @@ export class AortaViewer {
   }
 
   playFlight() {
-    if (this.flightProgress >= MAX_PROGRESS) this.setFlightPosition(MIN_PROGRESS);
+    if (this.flightProgress >= MAX_PROGRESS)
+      this.setFlightPosition(MIN_PROGRESS);
     this.flightPlaying = !this.flightPlaying;
     if (this.flightPlaying) this.heldKeys.clear();
     return this.flightPlaying;

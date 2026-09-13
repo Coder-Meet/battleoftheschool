@@ -1213,7 +1213,7 @@
                 "ostium_error_mm": 2.4439754682556116,
                 "seed_error_mm": 1.8598275904809396,
                 "radius_error_mm": null,
-                "direction_error_degrees": 7.516948192251677,
+                "direction_error_degrees": 7.516948192251578,
                 "seed_to_reference_centreline_mm": 1.7477372362924801
               },
               {
@@ -1256,7 +1256,7 @@
                 "ostium_error_mm": 2.4439754682556116,
                 "seed_error_mm": 1.8598275904809396,
                 "radius_error_mm": null,
-                "direction_error_degrees": 7.516948192251677,
+                "direction_error_degrees": 7.516948192251578,
                 "seed_to_reference_centreline_mm": 1.7477372362924801
               },
               {
@@ -1391,7 +1391,7 @@
                 "ostium_error_mm": 0.9224616140746162,
                 "seed_error_mm": 1.213107554687863,
                 "radius_error_mm": null,
-                "direction_error_degrees": 22.516475914273972,
+                "direction_error_degrees": 22.516475914273954,
                 "seed_to_reference_centreline_mm": 1.1338371687471869
               },
               {
@@ -1400,14 +1400,14 @@
                 "ostium_error_mm": 0.47367695845270263,
                 "seed_error_mm": 0.40443528760813324,
                 "radius_error_mm": 0.18699999999999983,
-                "direction_error_degrees": 9.124024979760666,
+                "direction_error_degrees": 9.124024979760586,
                 "seed_to_reference_centreline_mm": 0.24307633060700531
               },
               {
                 "prediction_id": "branch_007",
                 "reference_id": "branch_003",
                 "ostium_error_mm": 0.5570071322632243,
-                "seed_error_mm": 0.6953063079510707,
+                "seed_error_mm": 0.6953063079510708,
                 "radius_error_mm": null,
                 "direction_error_degrees": 3.188896305457861,
                 "seed_to_reference_centreline_mm": 0.6951076392452364
@@ -1470,7 +1470,7 @@
                 "ostium_error_mm": 0.9224616140746162,
                 "seed_error_mm": 1.213107554687863,
                 "radius_error_mm": null,
-                "direction_error_degrees": 22.516475914273972,
+                "direction_error_degrees": 22.516475914273954,
                 "seed_to_reference_centreline_mm": 1.1338371687471869
               },
               {
@@ -1479,14 +1479,14 @@
                 "ostium_error_mm": 0.47367695845270263,
                 "seed_error_mm": 0.40443528760813324,
                 "radius_error_mm": 0.18699999999999983,
-                "direction_error_degrees": 9.124024979760666,
+                "direction_error_degrees": 9.124024979760586,
                 "seed_to_reference_centreline_mm": 0.24307633060700531
               },
               {
                 "prediction_id": "branch_007",
                 "reference_id": "branch_003",
                 "ostium_error_mm": 0.5570071322632243,
-                "seed_error_mm": 0.6953063079510707,
+                "seed_error_mm": 0.6953063079510708,
                 "radius_error_mm": null,
                 "direction_error_degrees": 3.188896305457861,
                 "seed_to_reference_centreline_mm": 0.6951076392452364
@@ -1549,7 +1549,7 @@
                 "ostium_error_mm": 0.9224616140746162,
                 "seed_error_mm": 1.213107554687863,
                 "radius_error_mm": null,
-                "direction_error_degrees": 22.516475914273972,
+                "direction_error_degrees": 22.516475914273954,
                 "seed_to_reference_centreline_mm": 1.1338371687471869
               },
               {
@@ -1558,14 +1558,14 @@
                 "ostium_error_mm": 0.47367695845270263,
                 "seed_error_mm": 0.40443528760813324,
                 "radius_error_mm": 0.18699999999999983,
-                "direction_error_degrees": 9.124024979760666,
+                "direction_error_degrees": 9.124024979760586,
                 "seed_to_reference_centreline_mm": 0.24307633060700531
               },
               {
                 "prediction_id": "branch_007",
                 "reference_id": "branch_003",
                 "ostium_error_mm": 0.5570071322632243,
-                "seed_error_mm": 0.6953063079510707,
+                "seed_error_mm": 0.6953063079510708,
                 "radius_error_mm": null,
                 "direction_error_degrees": 3.188896305457861,
                 "seed_to_reference_centreline_mm": 0.6951076392452364
@@ -2084,9 +2084,9 @@
             },
             "direction_error_degrees": {
               "n": 7,
-              "mean": 13.06959859832745,
+              "mean": 13.069598598327437,
               "median": 11.31816506720212,
-              "p95": 23.17541773371725
+              "p95": 23.175417733717246
             },
             "seed_to_reference_centreline_mm": {
               "n": 7,
@@ -2210,7 +2210,7 @@
                 "ostium_error_mm": 0.9224616140746162,
                 "seed_error_mm": 1.213107554687863,
                 "radius_error_mm": null,
-                "direction_error_degrees": 22.516475914273972,
+                "direction_error_degrees": 22.516475914273954,
                 "seed_to_reference_centreline_mm": 1.1338371687471869
               },
               {
@@ -2219,14 +2219,14 @@
                 "ostium_error_mm": 0.47367695845270263,
                 "seed_error_mm": 0.40443528760813324,
                 "radius_error_mm": 0.18699999999999983,
-                "direction_error_degrees": 9.124024979760666,
+                "direction_error_degrees": 9.124024979760586,
                 "seed_to_reference_centreline_mm": 0.24307633060700531
               },
               {
                 "prediction_id": "branch_007",
                 "reference_id": "branch_003",
                 "ostium_error_mm": 0.5570071322632243,
-                "seed_error_mm": 0.6953063079510707,
+                "seed_error_mm": 0.6953063079510708,
                 "radius_error_mm": null,
                 "direction_error_degrees": 3.188896305457861,
                 "seed_to_reference_centreline_mm": 0.6951076392452364
@@ -2315,9 +2315,9 @@
             },
             "direction_error_degrees": {
               "n": 8,
-              "mean": 12.375517297567981,
-              "median": 10.221095023481393,
-              "p95": 23.128350460899874
+              "mean": 12.375517297567956,
+              "median": 10.221095023481354,
+              "p95": 23.128350460899867
             },
             "seed_to_reference_centreline_mm": {
               "n": 8,
@@ -2396,7 +2396,7 @@
                 "ostium_error_mm": 2.4439754682556116,
                 "seed_error_mm": 1.8598275904809396,
                 "radius_error_mm": null,
-                "direction_error_degrees": 7.516948192251677,
+                "direction_error_degrees": 7.516948192251578,
                 "seed_to_reference_centreline_mm": 1.7477372362924801
               },
               {
@@ -2448,7 +2448,7 @@
                 "ostium_error_mm": 0.9224616140746162,
                 "seed_error_mm": 1.213107554687863,
                 "radius_error_mm": null,
-                "direction_error_degrees": 22.516475914273972,
+                "direction_error_degrees": 22.516475914273954,
                 "seed_to_reference_centreline_mm": 1.1338371687471869
               },
               {
@@ -2457,14 +2457,14 @@
                 "ostium_error_mm": 0.47367695845270263,
                 "seed_error_mm": 0.40443528760813324,
                 "radius_error_mm": 0.18699999999999983,
-                "direction_error_degrees": 9.124024979760666,
+                "direction_error_degrees": 9.124024979760586,
                 "seed_to_reference_centreline_mm": 0.24307633060700531
               },
               {
                 "prediction_id": "branch_007",
                 "reference_id": "branch_003",
                 "ostium_error_mm": 0.5570071322632243,
-                "seed_error_mm": 0.6953063079510707,
+                "seed_error_mm": 0.6953063079510708,
                 "radius_error_mm": null,
                 "direction_error_degrees": 3.188896305457861,
                 "seed_to_reference_centreline_mm": 0.6951076392452364
@@ -2553,9 +2553,9 @@
             },
             "direction_error_degrees": {
               "n": 8,
-              "mean": 12.375517297567981,
-              "median": 10.221095023481393,
-              "p95": 23.128350460899874
+              "mean": 12.375517297567956,
+              "median": 10.221095023481354,
+              "p95": 23.128350460899867
             },
             "seed_to_reference_centreline_mm": {
               "n": 8,
@@ -2634,7 +2634,7 @@
                 "ostium_error_mm": 2.4439754682556116,
                 "seed_error_mm": 1.8598275904809396,
                 "radius_error_mm": null,
-                "direction_error_degrees": 7.516948192251677,
+                "direction_error_degrees": 7.516948192251578,
                 "seed_to_reference_centreline_mm": 1.7477372362924801
               },
               {
@@ -2686,7 +2686,7 @@
                 "ostium_error_mm": 0.9224616140746162,
                 "seed_error_mm": 1.213107554687863,
                 "radius_error_mm": null,
-                "direction_error_degrees": 22.516475914273972,
+                "direction_error_degrees": 22.516475914273954,
                 "seed_to_reference_centreline_mm": 1.1338371687471869
               },
               {
@@ -2695,14 +2695,14 @@
                 "ostium_error_mm": 0.47367695845270263,
                 "seed_error_mm": 0.40443528760813324,
                 "radius_error_mm": 0.18699999999999983,
-                "direction_error_degrees": 9.124024979760666,
+                "direction_error_degrees": 9.124024979760586,
                 "seed_to_reference_centreline_mm": 0.24307633060700531
               },
               {
                 "prediction_id": "branch_007",
                 "reference_id": "branch_003",
                 "ostium_error_mm": 0.5570071322632243,
-                "seed_error_mm": 0.6953063079510707,
+                "seed_error_mm": 0.6953063079510708,
                 "radius_error_mm": null,
                 "direction_error_degrees": 3.188896305457861,
                 "seed_to_reference_centreline_mm": 0.6951076392452364
@@ -2964,7 +2964,7 @@
             "seed_error_mm": {
               "n": 6,
               "mean": 0.8889689491382561,
-              "median": 0.8672874429622259,
+              "median": 0.8672874429622258,
               "p95": 1.1968544373633323
             },
             "radius_error_mm": {
@@ -2976,8 +2976,8 @@
             "direction_error_degrees": {
               "n": 6,
               "mean": 14.432178628291254,
-              "median": 13.356095475072035,
-              "p95": 19.771005509345386
+              "median": 13.356095475072049,
+              "p95": 19.771005509345382
             },
             "seed_to_reference_centreline_mm": {
               "n": 6,
@@ -3090,7 +3090,7 @@
                 "ostium_error_mm": 1.5359534087406372,
                 "seed_error_mm": 0.8162278860959171,
                 "radius_error_mm": null,
-                "direction_error_degrees": 21.283848744807074,
+                "direction_error_degrees": 21.28384874480707,
                 "seed_to_reference_centreline_mm": 0.6381174798469682
               },
               {
@@ -3099,7 +3099,7 @@
                 "ostium_error_mm": 0.45083174114421926,
                 "seed_error_mm": 0.7377975851878719,
                 "radius_error_mm": 0.2529999999999999,
-                "direction_error_degrees": 13.696329290419913,
+                "direction_error_degrees": 13.69632929041994,
                 "seed_to_reference_centreline_mm": 0.7369527348521344
               },
               {
@@ -3115,9 +3115,9 @@
                 "prediction_id": "branch_006",
                 "reference_id": "branch_004",
                 "ostium_error_mm": 1.5159676653490526,
-                "seed_error_mm": 0.9183469998285346,
+                "seed_error_mm": 0.9183469998285345,
                 "radius_error_mm": null,
-                "direction_error_degrees": 12.046391204633945,
+                "direction_error_degrees": 12.046391204633915,
                 "seed_to_reference_centreline_mm": 0.530742473062693
               },
               {
@@ -3183,7 +3183,7 @@
             "seed_error_mm": {
               "n": 8,
               "mean": 1.2209813783770556,
-              "median": 0.9340113745828188,
+              "median": 0.9340113745828187,
               "p95": 2.324175988777208
             },
             "radius_error_mm": {
@@ -3194,8 +3194,8 @@
             },
             "direction_error_degrees": {
               "n": 8,
-              "mean": 13.95085935145351,
-              "median": 13.356095475072035,
+              "mean": 13.950859351453497,
+              "median": 13.356095475072049,
               "p95": 19.958400881494697
             },
             "seed_to_reference_centreline_mm": {
@@ -3275,7 +3275,7 @@
                 "ostium_error_mm": 2.4439754682556116,
                 "seed_error_mm": 1.8598275904809396,
                 "radius_error_mm": null,
-                "direction_error_degrees": 7.516948192251677,
+                "direction_error_degrees": 7.516948192251578,
                 "seed_to_reference_centreline_mm": 1.7477372362924801
               },
               {
@@ -3321,7 +3321,7 @@
                 "ostium_error_mm": 1.5359534087406372,
                 "seed_error_mm": 0.8162278860959171,
                 "radius_error_mm": null,
-                "direction_error_degrees": 21.283848744807074,
+                "direction_error_degrees": 21.28384874480707,
                 "seed_to_reference_centreline_mm": 0.6381174798469682
               },
               {
@@ -3330,7 +3330,7 @@
                 "ostium_error_mm": 0.45083174114421926,
                 "seed_error_mm": 0.7377975851878719,
                 "radius_error_mm": 0.2529999999999999,
-                "direction_error_degrees": 13.696329290419913,
+                "direction_error_degrees": 13.69632929041994,
                 "seed_to_reference_centreline_mm": 0.7369527348521344
               },
               {
@@ -3346,9 +3346,9 @@
                 "prediction_id": "branch_006",
                 "reference_id": "branch_004",
                 "ostium_error_mm": 1.5159676653490526,
-                "seed_error_mm": 0.9183469998285346,
+                "seed_error_mm": 0.9183469998285345,
                 "radius_error_mm": null,
-                "direction_error_degrees": 12.046391204633945,
+                "direction_error_degrees": 12.046391204633915,
                 "seed_to_reference_centreline_mm": 0.530742473062693
               },
               {
@@ -3414,7 +3414,7 @@
             "seed_error_mm": {
               "n": 8,
               "mean": 1.2209813783770556,
-              "median": 0.9340113745828188,
+              "median": 0.9340113745828187,
               "p95": 2.324175988777208
             },
             "radius_error_mm": {
@@ -3425,8 +3425,8 @@
             },
             "direction_error_degrees": {
               "n": 8,
-              "mean": 13.95085935145351,
-              "median": 13.356095475072035,
+              "mean": 13.950859351453497,
+              "median": 13.356095475072049,
               "p95": 19.958400881494697
             },
             "seed_to_reference_centreline_mm": {
@@ -3506,7 +3506,7 @@
                 "ostium_error_mm": 2.4439754682556116,
                 "seed_error_mm": 1.8598275904809396,
                 "radius_error_mm": null,
-                "direction_error_degrees": 7.516948192251677,
+                "direction_error_degrees": 7.516948192251578,
                 "seed_to_reference_centreline_mm": 1.7477372362924801
               },
               {
@@ -3552,7 +3552,7 @@
                 "ostium_error_mm": 1.5359534087406372,
                 "seed_error_mm": 0.8162278860959171,
                 "radius_error_mm": null,
-                "direction_error_degrees": 21.283848744807074,
+                "direction_error_degrees": 21.28384874480707,
                 "seed_to_reference_centreline_mm": 0.6381174798469682
               },
               {
@@ -3561,7 +3561,7 @@
                 "ostium_error_mm": 0.45083174114421926,
                 "seed_error_mm": 0.7377975851878719,
                 "radius_error_mm": 0.2529999999999999,
-                "direction_error_degrees": 13.696329290419913,
+                "direction_error_degrees": 13.69632929041994,
                 "seed_to_reference_centreline_mm": 0.7369527348521344
               },
               {
@@ -3577,9 +3577,9 @@
                 "prediction_id": "branch_006",
                 "reference_id": "branch_004",
                 "ostium_error_mm": 1.5159676653490526,
-                "seed_error_mm": 0.9183469998285346,
+                "seed_error_mm": 0.9183469998285345,
                 "radius_error_mm": null,
-                "direction_error_degrees": 12.046391204633945,
+                "direction_error_degrees": 12.046391204633915,
                 "seed_to_reference_centreline_mm": 0.530742473062693
               },
               {
@@ -3792,7 +3792,7 @@
             "seed_error_mm": {
               "n": 7,
               "mean": 0.9048742959462973,
-              "median": 0.8462679817062825,
+              "median": 0.8462679817062826,
               "p95": 1.2851475602072675
             },
             "radius_error_mm": {
@@ -3803,9 +3803,9 @@
             },
             "direction_error_degrees": {
               "n": 7,
-              "mean": 14.098872217416872,
+              "mean": 14.09887221741687,
               "median": 13.015861659724159,
-              "p95": 21.371714932216964
+              "p95": 21.371714932216957
             },
             "seed_to_reference_centreline_mm": {
               "n": 7,
@@ -3941,7 +3941,7 @@
                 "prediction_id": "branch_011",
                 "reference_id": "branch_004",
                 "ostium_error_mm": 1.3098453977032154,
-                "seed_error_mm": 0.8462679817062825,
+                "seed_error_mm": 0.8462679817062826,
                 "radius_error_mm": null,
                 "direction_error_degrees": 11.388493043520983,
                 "seed_to_reference_centreline_mm": 0.490793554721221
@@ -3984,7 +3984,7 @@
                 "ostium_error_mm": 0.6484748402334851,
                 "seed_error_mm": 1.377625758234046,
                 "radius_error_mm": null,
-                "direction_error_degrees": 19.375467818486577,
+                "direction_error_degrees": 19.37546781848656,
                 "seed_to_reference_centreline_mm": 1.376632524584803
               }
             ],
@@ -4016,7 +4016,7 @@
             },
             "seed_error_mm": {
               "n": 9,
-              "mean": 1.1947547101680207,
+              "mean": 1.194754710168021,
               "median": 0.949675749337103,
               "p95": 2.279237873836675
             },
@@ -4028,9 +4028,9 @@
             },
             "direction_error_degrees": {
               "n": 9,
-              "mean": 13.929770330273126,
+              "mean": 13.92977033027311,
               "median": 13.015861659724159,
-              "p95": 21.086536773112623
+              "p95": 21.086536773112616
             },
             "seed_to_reference_centreline_mm": {
               "n": 9,
@@ -4107,7 +4107,7 @@
                 "ostium_error_mm": 2.4439754682556116,
                 "seed_error_mm": 1.8598275904809396,
                 "radius_error_mm": null,
-                "direction_error_degrees": 7.516948192251677,
+                "direction_error_degrees": 7.516948192251578,
                 "seed_to_reference_centreline_mm": 1.7477372362924801
               },
               {
@@ -4178,7 +4178,7 @@
                 "prediction_id": "branch_011",
                 "reference_id": "branch_004",
                 "ostium_error_mm": 1.3098453977032154,
-                "seed_error_mm": 0.8462679817062825,
+                "seed_error_mm": 0.8462679817062826,
                 "radius_error_mm": null,
                 "direction_error_degrees": 11.388493043520983,
                 "seed_to_reference_centreline_mm": 0.490793554721221
@@ -4221,7 +4221,7 @@
                 "ostium_error_mm": 0.6484748402334851,
                 "seed_error_mm": 1.377625758234046,
                 "radius_error_mm": null,
-                "direction_error_degrees": 19.375467818486577,
+                "direction_error_degrees": 19.37546781848656,
                 "seed_to_reference_centreline_mm": 1.376632524584803
               }
             ],
@@ -4253,7 +4253,7 @@
             },
             "seed_error_mm": {
               "n": 9,
-              "mean": 1.1947547101680207,
+              "mean": 1.194754710168021,
               "median": 0.949675749337103,
               "p95": 2.279237873836675
             },
@@ -4265,9 +4265,9 @@
             },
             "direction_error_degrees": {
               "n": 9,
-              "mean": 13.929770330273126,
+              "mean": 13.92977033027311,
               "median": 13.015861659724159,
-              "p95": 21.086536773112623
+              "p95": 21.086536773112616
             },
             "seed_to_reference_centreline_mm": {
               "n": 9,
@@ -4344,7 +4344,7 @@
                 "ostium_error_mm": 2.4439754682556116,
                 "seed_error_mm": 1.8598275904809396,
                 "radius_error_mm": null,
-                "direction_error_degrees": 7.516948192251677,
+                "direction_error_degrees": 7.516948192251578,
                 "seed_to_reference_centreline_mm": 1.7477372362924801
               },
               {
@@ -4415,7 +4415,7 @@
                 "prediction_id": "branch_011",
                 "reference_id": "branch_004",
                 "ostium_error_mm": 1.3098453977032154,
-                "seed_error_mm": 0.8462679817062825,
+                "seed_error_mm": 0.8462679817062826,
                 "radius_error_mm": null,
                 "direction_error_degrees": 11.388493043520983,
                 "seed_to_reference_centreline_mm": 0.490793554721221
@@ -4458,7 +4458,7 @@
                 "ostium_error_mm": 0.6484748402334851,
                 "seed_error_mm": 1.377625758234046,
                 "radius_error_mm": null,
-                "direction_error_degrees": 19.375467818486577,
+                "direction_error_degrees": 19.37546781848656,
                 "seed_to_reference_centreline_mm": 1.376632524584803
               }
             ],
@@ -5212,7 +5212,7 @@
               },
               "direction_error_degrees": {
                 "n": 46,
-                "mean": 9.728707802260844,
+                "mean": 9.728707802260837,
                 "median": 9.68574963944604,
                 "p95": 22.764823517846896
               },
@@ -5258,9 +5258,9 @@
               },
               "direction_error_degrees": {
                 "n": 47,
-                "mean": 7.366629958645243,
-                "median": 8.343788812322728,
-                "p95": 14.724605348008248
+                "mean": 7.366629958645253,
+                "median": 8.343788812322773,
+                "p95": 14.724605348008268
               },
               "seed_to_reference_centreline_mm": {
                 "n": 47,
@@ -5304,9 +5304,9 @@
               },
               "direction_error_degrees": {
                 "n": 47,
-                "mean": 9.379921602108926,
+                "mean": 9.379921602108919,
                 "median": 9.5398350530051,
-                "p95": 21.93202897171855
+                "p95": 21.932028971718545
               },
               "seed_to_reference_centreline_mm": {
                 "n": 47,
@@ -5350,7 +5350,7 @@
               },
               "direction_error_degrees": {
                 "n": 46,
-                "mean": 9.728707802260844,
+                "mean": 9.728707802260837,
                 "median": 9.68574963944604,
                 "p95": 22.764823517846896
               },
@@ -5396,7 +5396,7 @@
               },
               "direction_error_degrees": {
                 "n": 48,
-                "mean": 9.869823574251319,
+                "mean": 9.869823574251312,
                 "median": 9.68574963944604,
                 "p95": 22.721362291052458
               },
@@ -5442,9 +5442,9 @@
               },
               "direction_error_degrees": {
                 "n": 45,
-                "mean": 9.67577155680591,
-                "median": 8.49928028798855,
-                "p95": 22.636080075660924
+                "mean": 9.675771556805906,
+                "median": 8.499280287988464,
+                "p95": 22.63608007566092
               },
               "seed_to_reference_centreline_mm": {
                 "n": 45,
@@ -5478,7 +5478,7 @@
                 "n": 46,
                 "mean": 0.7069338055359438,
                 "median": 0.5808233576474133,
-                "p95": 1.407867723721787
+                "p95": 1.4078677237217871
               },
               "radius_error_mm": {
                 "n": 46,
@@ -5489,7 +5489,7 @@
               "direction_error_degrees": {
                 "n": 46,
                 "mean": 12.373430198745522,
-                "median": 11.107554687304912,
+                "median": 11.107554687304948,
                 "p95": 32.53599861845721
               },
               "seed_to_reference_centreline_mm": {
@@ -5534,9 +5534,9 @@
               },
               "direction_error_degrees": {
                 "n": 47,
-                "mean": 9.897400764241299,
+                "mean": 9.897400764241295,
                 "median": 9.062319188339737,
-                "p95": 22.517381821074892
+                "p95": 22.51738182107489
               },
               "seed_to_reference_centreline_mm": {
                 "n": 47,
@@ -5569,7 +5569,7 @@
               "seed_error_mm": {
                 "n": 48,
                 "mean": 0.7856789906887491,
-                "median": 0.6117573697276691,
+                "median": 0.6117573697276693,
                 "p95": 1.7630607611223017
               },
               "radius_error_mm": {
@@ -5580,8 +5580,8 @@
               },
               "direction_error_degrees": {
                 "n": 48,
-                "mean": 11.59573181709625,
-                "median": 11.287637912316463,
+                "mean": 11.595731817096251,
+                "median": 11.28763791231648,
                 "p95": 26.368015692887045
               },
               "seed_to_reference_centreline_mm": {
@@ -5626,9 +5626,9 @@
               },
               "direction_error_degrees": {
                 "n": 47,
-                "mean": 9.358453768349749,
+                "mean": 9.358453768349744,
                 "median": 7.803933178409595,
-                "p95": 22.517381821074892
+                "p95": 22.51738182107489
               },
               "seed_to_reference_centreline_mm": {
                 "n": 47,
@@ -5672,8 +5672,8 @@
               },
               "direction_error_degrees": {
                 "n": 47,
-                "mean": 11.37102899067231,
-                "median": 10.93464858429312,
+                "mean": 11.371028990672311,
+                "median": 10.934648584293187,
                 "p95": 24.98095234837257
               },
               "seed_to_reference_centreline_mm": {
@@ -5719,7 +5719,7 @@
             },
             "direction_error_degrees": {
               "n": 46,
-              "mean": 9.728707802260844,
+              "mean": 9.728707802260837,
               "median": 9.68574963944604,
               "p95": 22.764823517846896
             },
