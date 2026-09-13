@@ -1,0 +1,199 @@
+{
+  "name": "deterministic-strict-contrast0.5-native0",
+  "case_id": "subject019",
+  "matrix_sha256": "fcf4c35fb1aacbd54141a1b09e2d69b9f889b4325c80ad3235c6063108aa8c38",
+  "runner_sha256": "69bc364d810bf402a7035e5abccfdf6a360cf6d5643dbda6ebaf5d6274233de1",
+  "prediction": {
+    "case_id": "subject019",
+    "parent": {
+      "instance_id": "aorta"
+    },
+    "daughters": []
+  },
+  "ordered_candidate_hashes": [],
+  "diagnostics": {
+    "branches": [],
+    "timings": {
+      "prepare_s": 0.119,
+      "enhance_s": 1.409,
+      "trace_s": 0.018,
+      "total_s": 1.546
+    },
+    "blood_model": {
+      "median_hu": 557.0,
+      "mad_hu": 17.7912,
+      "lower_hu": 316.5,
+      "upper_hu": 677.0,
+      "background_median_hu": 76.0,
+      "background_mad_hu": 74.13,
+      "support_fraction": 0.5,
+      "contrast_to_background_mad": 6.488601106164846
+    },
+    "candidates": 3,
+    "rejections": {
+      "disconnected_ostium": 2,
+      "no_supported_5mm_path": 1
+    },
+    "warnings": [
+      "Experimental detector: evidence scores are not calibrated probabilities.",
+      "No daughter reference labels supplied; clinical accuracy is unmeasured."
+    ],
+    "config": {
+      "spacing_mm": 1.0,
+      "margin_mm": 20.0,
+      "shell_inner_mm": 1.5,
+      "shell_outer_mm": 3.5,
+      "cap_margin_mm": 4.0,
+      "minimum_radius_mm": 0.7,
+      "minimum_origin_diameter_mm": 2.0,
+      "minimum_path_mm": 5.0,
+      "trace_length_mm": 10.0,
+      "vesselness_floor": 0.06,
+      "maximum_candidates": 160,
+      "shell_vesselness_floor": 0.06,
+      "connector_gap_fraction": 0.0,
+      "root_depth_mm": 3.5,
+      "blood_lower_scale": 1.0,
+      "support_contrast_fraction": 0.5,
+      "native_contrast_scale": 0.0,
+      "roots_per_contact": 1,
+      "wall_hug_penalty": 0.0,
+      "broad_contact_mm3": 1200.0,
+      "parallel_clearance_mm": 0.0,
+      "profile": "strict"
+    }
+  },
+  "proposal_audit": [
+    {
+      "config": {
+        "spacing_mm": 1.0,
+        "margin_mm": 20.0,
+        "shell_inner_mm": 1.5,
+        "shell_outer_mm": 3.5,
+        "cap_margin_mm": 4.0,
+        "minimum_radius_mm": 0.7,
+        "minimum_origin_diameter_mm": 2.0,
+        "minimum_path_mm": 5.0,
+        "trace_length_mm": 10.0,
+        "vesselness_floor": 0.06,
+        "maximum_candidates": 160,
+        "shell_vesselness_floor": 0.06,
+        "connector_gap_fraction": 0.0,
+        "root_depth_mm": 3.5,
+        "blood_lower_scale": 1.0,
+        "support_contrast_fraction": 0.5,
+        "native_contrast_scale": 0.0,
+        "roots_per_contact": 1,
+        "wall_hug_penalty": 0.0,
+        "broad_contact_mm3": 1200.0,
+        "parallel_clearance_mm": 0.0,
+        "profile": "strict"
+      },
+      "blood_model": {
+        "median_hu": 557.0,
+        "mad_hu": 17.7912,
+        "lower_hu": 316.5,
+        "upper_hu": 677.0,
+        "background_median_hu": 76.0,
+        "background_mad_hu": 74.13,
+        "support_fraction": 0.5,
+        "contrast_to_background_mad": 6.488601106164846
+      },
+      "grid_size_xyz": [
+        66,
+        64,
+        90
+      ],
+      "support_voxels": 23904,
+      "candidates": [
+        {
+          "proposal_index": 0,
+          "root_zyx": [
+            45,
+            24,
+            35
+          ],
+          "root_xyz_mm": [
+            8.6337890625,
+            -165.8662109375,
+            266.5999984741211
+          ],
+          "proposal_quality": 0.5858479738235474,
+          "volume_mm3": 2.0,
+          "root_support": true,
+          "root_radius_mm": 1.0,
+          "root_vesselness": 0.285847932100296,
+          "root_hu": 350.0,
+          "trace_reason": "disconnected_ostium",
+          "branch": null,
+          "retained_after_resolve": false,
+          "measurements": {},
+          "reachable_voxels": 464,
+          "supported_endpoints": 286
+        },
+        {
+          "proposal_index": 1,
+          "root_zyx": [
+            46,
+            22,
+            31
+          ],
+          "root_xyz_mm": [
+            12.6337890625,
+            -163.8662109375,
+            267.5999984741211
+          ],
+          "proposal_quality": 0.4983237683773041,
+          "volume_mm3": 2.0,
+          "root_support": true,
+          "root_radius_mm": 1.0,
+          "root_vesselness": 0.19832375645637512,
+          "root_hu": 339.0,
+          "trace_reason": "disconnected_ostium",
+          "branch": null,
+          "retained_after_resolve": false,
+          "measurements": {},
+          "reachable_voxels": 436,
+          "supported_endpoints": 286
+        },
+        {
+          "proposal_index": 2,
+          "root_zyx": [
+            62,
+            30,
+            40
+          ],
+          "root_xyz_mm": [
+            3.6337890625,
+            -171.8662109375,
+            283.5999984741211
+          ],
+          "proposal_quality": 0.38003480434417725,
+          "volume_mm3": 2.0,
+          "root_support": true,
+          "root_radius_mm": 1.0,
+          "root_vesselness": 0.08003479987382889,
+          "root_hu": 324.0,
+          "trace_reason": "no_supported_5mm_path",
+          "branch": null,
+          "retained_after_resolve": false,
+          "measurements": {},
+          "reachable_voxels": 8,
+          "supported_endpoints": 0
+        }
+      ],
+      "rejections": {
+        "disconnected_ostium": 2,
+        "no_supported_5mm_path": 1
+      },
+      "resolution_caveat": "Trace-pass candidates not retained were removed by duplicate/topology resolution; the frozen API provides aggregate, not per-candidate, resolution reason counts."
+    }
+  ],
+  "runtime": {
+    "runtime_s": 1.7974364829999558,
+    "inference_s": 1.5463835090000089,
+    "input_loading_s": 0.25105297399994697,
+    "peak_rss_mb": 328.5,
+    "measurement": "Fresh sequential subprocess; CT loading and observational audit included."
+  }
+}

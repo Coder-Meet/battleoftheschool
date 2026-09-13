@@ -62,6 +62,58 @@
       "case_id": "subject023"
     },
     {
+      "name": "deterministic-review-union-contrast0.3-native0",
+      "case_id": "subject019"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.3-native0",
+      "case_id": "subject020"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.3-native0",
+      "case_id": "subject021"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.3-native0",
+      "case_id": "subject022"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.3-native0",
+      "case_id": "subject023"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.3-native1.2",
+      "case_id": "subject019"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.3-native1.2",
+      "case_id": "subject020"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.3-native1.2",
+      "case_id": "subject021"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.3-native1.2",
+      "case_id": "subject022"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.3-native1.2",
+      "case_id": "subject023"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.5-native0",
+      "case_id": "subject019"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.5-native0",
+      "case_id": "subject020"
+    },
+    {
+      "name": "deterministic-review-union-contrast0.5-native0",
+      "case_id": "subject021"
+    },
+    {
       "name": "deterministic-review-union",
       "case_id": "subject019"
     },
@@ -132,6 +184,134 @@
     {
       "name": "deterministic-strict-contrast0.3-native1.2",
       "case_id": "subject021"
+    },
+    {
+      "name": "deterministic-strict-contrast0.3-native1.2",
+      "case_id": "subject022"
+    },
+    {
+      "name": "deterministic-strict-contrast0.3-native1.2",
+      "case_id": "subject023"
+    },
+    {
+      "name": "deterministic-strict-contrast0.5-native0",
+      "case_id": "subject019"
+    },
+    {
+      "name": "deterministic-strict-contrast0.5-native0",
+      "case_id": "subject020"
+    },
+    {
+      "name": "deterministic-strict-contrast0.5-native0",
+      "case_id": "subject021"
+    },
+    {
+      "name": "deterministic-strict-contrast0.5-native0",
+      "case_id": "subject022"
+    },
+    {
+      "name": "deterministic-strict-contrast0.5-native0",
+      "case_id": "subject023"
+    },
+    {
+      "name": "deterministic-strict-contrast0.7-native0",
+      "case_id": "subject019"
+    },
+    {
+      "name": "deterministic-strict-contrast0.7-native0",
+      "case_id": "subject020"
+    },
+    {
+      "name": "deterministic-strict-contrast0.7-native0",
+      "case_id": "subject021"
+    },
+    {
+      "name": "deterministic-strict-contrast0.7-native0",
+      "case_id": "subject022"
+    },
+    {
+      "name": "deterministic-strict-contrast0.7-native0",
+      "case_id": "subject023"
+    },
+    {
+      "name": "deterministic-strict-contrast0.7-native1.2",
+      "case_id": "subject019"
+    },
+    {
+      "name": "deterministic-strict-contrast0.7-native1.2",
+      "case_id": "subject020"
+    },
+    {
+      "name": "deterministic-strict-contrast0.7-native1.2",
+      "case_id": "subject021"
+    },
+    {
+      "name": "deterministic-strict-contrast0.7-native1.2",
+      "case_id": "subject022"
+    },
+    {
+      "name": "deterministic-strict-contrast0.7-native1.2",
+      "case_id": "subject023"
+    },
+    {
+      "name": "deterministic-strict-spacing0.75",
+      "case_id": "subject019"
+    },
+    {
+      "name": "deterministic-strict-spacing0.75",
+      "case_id": "subject020"
+    },
+    {
+      "name": "deterministic-strict-spacing0.75",
+      "case_id": "subject021"
+    },
+    {
+      "name": "deterministic-strict-spacing0.75",
+      "case_id": "subject022"
+    },
+    {
+      "name": "deterministic-strict-spacing0.75",
+      "case_id": "subject023"
+    },
+    {
+      "name": "deterministic-strict-spacing1.5",
+      "case_id": "subject019"
+    },
+    {
+      "name": "deterministic-strict-spacing1.5",
+      "case_id": "subject020"
+    },
+    {
+      "name": "deterministic-strict-spacing1.5",
+      "case_id": "subject021"
+    },
+    {
+      "name": "deterministic-strict-spacing1.5",
+      "case_id": "subject022"
+    },
+    {
+      "name": "deterministic-strict-spacing1.5",
+      "case_id": "subject023"
+    },
+    {
+      "name": "deterministic-strict-wall-parallel",
+      "case_id": "subject019"
+    },
+    {
+      "name": "deterministic-strict-wall-parallel",
+      "case_id": "subject020"
+    },
+    {
+      "name": "deterministic-strict-wall-parallel",
+      "case_id": "subject021"
+    },
+    {
+      "name": "deterministic-strict-wall-parallel",
+      "case_id": "subject022"
+    },
+    {
+      "name": "deterministic-strict-wall-parallel",
+      "case_id": "subject023"
     },
     {
       "name": "deterministic-strict",
@@ -155,186 +335,6 @@
     }
   ],
   "pending_pairs": [
-    {
-      "name": "deterministic-strict-contrast0.3-native1.2",
-      "case_id": "subject022"
-    },
-    {
-      "name": "deterministic-strict-contrast0.3-native1.2",
-      "case_id": "subject023"
-    },
-    {
-      "name": "deterministic-strict-contrast0.5-native0",
-      "case_id": "subject019"
-    },
-    {
-      "name": "deterministic-strict-contrast0.5-native0",
-      "case_id": "subject020"
-    },
-    {
-      "name": "deterministic-strict-contrast0.5-native0",
-      "case_id": "subject021"
-    },
-    {
-      "name": "deterministic-strict-contrast0.5-native0",
-      "case_id": "subject022"
-    },
-    {
-      "name": "deterministic-strict-contrast0.5-native0",
-      "case_id": "subject023"
-    },
-    {
-      "name": "deterministic-strict-contrast0.7-native0",
-      "case_id": "subject019"
-    },
-    {
-      "name": "deterministic-strict-contrast0.7-native0",
-      "case_id": "subject020"
-    },
-    {
-      "name": "deterministic-strict-contrast0.7-native0",
-      "case_id": "subject021"
-    },
-    {
-      "name": "deterministic-strict-contrast0.7-native0",
-      "case_id": "subject022"
-    },
-    {
-      "name": "deterministic-strict-contrast0.7-native0",
-      "case_id": "subject023"
-    },
-    {
-      "name": "deterministic-strict-contrast0.7-native1.2",
-      "case_id": "subject019"
-    },
-    {
-      "name": "deterministic-strict-contrast0.7-native1.2",
-      "case_id": "subject020"
-    },
-    {
-      "name": "deterministic-strict-contrast0.7-native1.2",
-      "case_id": "subject021"
-    },
-    {
-      "name": "deterministic-strict-contrast0.7-native1.2",
-      "case_id": "subject022"
-    },
-    {
-      "name": "deterministic-strict-contrast0.7-native1.2",
-      "case_id": "subject023"
-    },
-    {
-      "name": "deterministic-strict-spacing0.75",
-      "case_id": "subject019"
-    },
-    {
-      "name": "deterministic-strict-spacing0.75",
-      "case_id": "subject020"
-    },
-    {
-      "name": "deterministic-strict-spacing0.75",
-      "case_id": "subject021"
-    },
-    {
-      "name": "deterministic-strict-spacing0.75",
-      "case_id": "subject022"
-    },
-    {
-      "name": "deterministic-strict-spacing0.75",
-      "case_id": "subject023"
-    },
-    {
-      "name": "deterministic-strict-spacing1.5",
-      "case_id": "subject019"
-    },
-    {
-      "name": "deterministic-strict-spacing1.5",
-      "case_id": "subject020"
-    },
-    {
-      "name": "deterministic-strict-spacing1.5",
-      "case_id": "subject021"
-    },
-    {
-      "name": "deterministic-strict-spacing1.5",
-      "case_id": "subject022"
-    },
-    {
-      "name": "deterministic-strict-spacing1.5",
-      "case_id": "subject023"
-    },
-    {
-      "name": "deterministic-strict-wall-parallel",
-      "case_id": "subject019"
-    },
-    {
-      "name": "deterministic-strict-wall-parallel",
-      "case_id": "subject020"
-    },
-    {
-      "name": "deterministic-strict-wall-parallel",
-      "case_id": "subject021"
-    },
-    {
-      "name": "deterministic-strict-wall-parallel",
-      "case_id": "subject022"
-    },
-    {
-      "name": "deterministic-strict-wall-parallel",
-      "case_id": "subject023"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.3-native0",
-      "case_id": "subject019"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.3-native0",
-      "case_id": "subject020"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.3-native0",
-      "case_id": "subject021"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.3-native0",
-      "case_id": "subject022"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.3-native0",
-      "case_id": "subject023"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.3-native1.2",
-      "case_id": "subject019"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.3-native1.2",
-      "case_id": "subject020"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.3-native1.2",
-      "case_id": "subject021"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.3-native1.2",
-      "case_id": "subject022"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.3-native1.2",
-      "case_id": "subject023"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.5-native0",
-      "case_id": "subject019"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.5-native0",
-      "case_id": "subject020"
-    },
-    {
-      "name": "deterministic-review-union-contrast0.5-native0",
-      "case_id": "subject021"
-    },
     {
       "name": "deterministic-review-union-contrast0.5-native0",
       "case_id": "subject022"
@@ -536,6 +536,6 @@
     "requirements-dev.txt": "01192f3022d4d032dbc75f3556c46bf948b4e7c4655580cb79b59e30a85c3bab",
     "FINAL_EVALUATION_PROTOCOL.md": "07b68af4be1413fe734b2ae36c657879e26646c0bbadbeacd9f74d970fda119e"
   },
-  "checked_at_utc": "2026-09-13T02:12:06Z",
+  "checked_at_utc": "2026-09-13T02:15:55Z",
   "checks": "Ruff and mypy passed; 7 focused tests passed; 77 existing regressions passed."
 }
