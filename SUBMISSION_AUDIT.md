@@ -136,6 +136,28 @@ the final runtime limit is still pending. The local 3 mm matching threshold is a
 official tolerance. Terminal iliac division is an optional extension and is
 not claimed as a separately validated feature.
 
+## Confirmed-diameter verification (`b10ff41`)
+
+The 25 supplied cases completed with four-core affinity, four-thread limits
+and an **8,000,000,000-byte address-space cap** on Linux. The batch took
+129.24 s; mean/maximum per-case end-to-end times were 5.150/21.612 s.
+Peak process RSS was 1,514,432 KiB (1.444 GiB). This bounded Linux run does
+not establish performance on the organizer's Windows hardware.
+
+All 25 prediction JSONs were byte-identical to `b67fea2`, containing 150
+instances. No candidate was rejected by the diameter rule. Of accepted
+instances, 82 had unresolved proximal cross-sections and one measured below
+2 mm but remained within the voxel allowance. Thus this update establishes
+separate diameter semantics and diagnostics, not a measured accuracy gain
+or complete size adjudication. Expert references remain necessary.
+
+Ruff and Windows-targeted mypy passed for the production and five research
+modules. The full suite passed 329 tests with one expected sandbox skip
+before the corpus-only merge; 46 detector/corpus/sandbox tests passed afterward
+with socket syscalls denied. A denied-network Subject018 CLI run produced the
+same JSON as ordinary inference. Windows compatibility CI is tracked at
+[this run](https://github.com/Coder-Meet/battleoftheschool/actions/runs/34727866100).
+
 ## Initial release checks (before the native-contrast update)
 
 - Full Python suite: **77 passed, 1 skipped**. The skip is the test requiring
