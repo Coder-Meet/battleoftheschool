@@ -1,9 +1,6 @@
 # Branchseed teammate handoff
 
-For the current detector, algorithm changes, model decisions and evidence limits,
-read the [algorithm review for Steven](STEVEN_ALGORITHM_REVIEW.md).
-The follow-up [label analytics](STEVEN_LABEL_ANALYTICS.md) records model disagreements
-and candidate-identity checks on all supplied cases.
+For current settings and release decisions, read [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md), [DEMO_GUIDE.md](DEMO_GUIDE.md) and [FINAL_HANDOFF.md](FINAL_HANDOFF.md). The archived algorithm review and label analytics describe earlier experiments.
 
 ## What is committed
 
@@ -16,18 +13,17 @@ The backend and frontend are in this repository's `main` branch:
 | `web/` | Explorer source, local fonts and locked npm dependencies |
 | `synthetic.py` | Five reproducible synthetic CT/ground-truth training cases |
 | `benchmark.py`, `evaluate.py` | One-to-one reference matching and geometric errors |
-| `learning.py` | Optional classifier trained from human candidate reviews |
+| `learning.py` | Optional classifier; saved review labels are AI pseudo-labels |
 | `tests/`, `.github/workflows/checks.yml` | Regression and offline checks |
 
-Generated volumes, predictions, local environments and `web/dist` are not
-committed. Build/download these using the commands below. No API keys or app
+Local generated volumes, environments and `web/dist` are not committed. Frozen evaluation and release prediction evidence is committed under `labels/`; new scratch predictions use ignored output directories. Build/download these using the commands below. No API keys or app
 login are required.
 
 ## 1. Start on a teammate's machine
 
 Prerequisites: Git, Git LFS, Node **20.18.1**, npm and **uv 0.7.9**.
 Install uv from <https://docs.astral.sh/uv/getting-started/installation/>.
-The commands below use a POSIX shell (Linux/macOS); Windows users can use WSL.
+The commands below use a POSIX shell (Linux/macOS). For native Windows and offline setup, use [DEMO_GUIDE.md](DEMO_GUIDE.md).
 
 ```bash
 git clone https://github.com/Coder-Meet/battleoftheschool.git
@@ -36,7 +32,7 @@ git lfs install
 git lfs pull
 uv python install 3.13.3
 uv venv --python 3.13.3 .venv313
-uv pip install --python .venv313/bin/python -r requirements-dev.txt
+uv pip install --python .venv313/bin/python -r requirements-dev.txt -r requirements-resources.txt
 npm --prefix web ci
 npm --prefix web run build
 ```
@@ -75,7 +71,7 @@ bifurcation. CT and binary aorta masks must have matching physical geometry.
 
 `--spacing-mm 0.8` selects a finer working grid; it costs more CPU/memory and
 must be evaluated rather than assumed more accurate. `--candidate-model`
-applies an explicitly supplied reviewed-candidate model; it is off by default.
+overrides the bundled synthetic logistic model. Normal inference already applies score-before-merge filtering at 0.15; use `--pipeline strict` for the previous unfiltered baseline.
 
 ## 3. Use the backend from another program
 

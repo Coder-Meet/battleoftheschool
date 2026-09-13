@@ -1,3 +1,5 @@
+> Historical strict-release evidence: the current default was restored to fusion on 2026-09-13. See [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md) for current settings and validation. Figures and decisions below remain tied to their original source.
+
 # Accuracy recheck: a useful recovery method, with a scoring tradeoff
 
 ## Decision

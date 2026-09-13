@@ -1,3 +1,5 @@
+> Strict-release material retained from the published presenter kit. The current checkout now defaults to fusion (five-reference F1 0.75676); see [current workflow](PRODUCTION_WORKFLOW.md). Update algorithm, synthetic FP and resource claims before reusing this as current submission copy.
+
 # Devpost submission — ready-to-paste copy
 
 [Download the complete copy, gallery and presenter kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-devpost-kit.zip).

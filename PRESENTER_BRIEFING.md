@@ -1,3 +1,5 @@
+> Strict-release material retained from the published presenter kit. The current checkout now defaults to fusion (five-reference F1 0.75676); see [current workflow](PRODUCTION_WORKFLOW.md). Update algorithm, synthetic FP and resource claims before reusing this as current submission copy.
+
 # Branchseed — complete presenter briefing
 
 **Team reference for the five-minute talk, live Explorer demo and judge Q&A.**

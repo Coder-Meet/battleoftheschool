@@ -8,8 +8,8 @@ volume and writes one prediction JSON per case.
 CLI contract (required by the challenge spec):
     python run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz --output prediction.json
 
-The deterministic detector uses adaptive CT intensity, multiscale tubularity,
-wall contact components and physical proximal paths.
+The default scores strict and review proposals at 0.15 before merging survivors.
+Use --pipeline strict to reproduce the previous unfiltered release baseline.
 """
 
 import argparse
@@ -19,10 +19,9 @@ import sys
 
 import SimpleITK as sitk
 
-from detector import DetectorConfig, detect
-from learning import CandidateModel, filter_detection
+from detector import DetectorConfig
 from nifti_io import read_nifti
-from origin_recovery import detect_connected
+from pipeline import add_pipeline_arguments, run_pipeline
 
 
 def parse_args() -> argparse.Namespace:
@@ -38,7 +37,7 @@ def parse_args() -> argparse.Namespace:
         help="Case identifier to embed in the output JSON. Defaults to the image filename stem.",
     )
     parser.add_argument("--diagnostics", help="Optional JSON path for timings, paths and evidence.")
-    parser.add_argument("--candidate-model", type=Path, help="Optional model trained from labelled candidate features.")
+    add_pipeline_arguments(parser)
     parser.add_argument(
         "--minimum-radius-mm", type=float, default=0.7,
         help="Minimum tracing/seed lumen radius; not the organizer's minimum origin size.",
@@ -51,7 +50,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--threads", type=int, default=4, help="SimpleITK CPU threads (default: 4).")
     parser.add_argument(
         "--recover-connected-origins", action="store_true",
-        help="Experimental: recover curved wall connections while retaining the original vessel root.",
+        help="Experimental, requires --pipeline strict: recover curved wall connections retaining the original root.",
     )
     parser.add_argument(
         "--parallel-clearance-mm", type=float, default=0.0,
@@ -72,7 +71,8 @@ def voxel_to_physical(image: sitk.Image, index_xyz) -> tuple:
 
 
 def find_daughter_branches(image: sitk.Image, aorta_mask: sitk.Image) -> list:
-    return [branch.prediction() for branch in detect(image, aorta_mask).branches]
+    result, _ = run_pipeline(image, aorta_mask)
+    return [branch.prediction() for branch in result.branches]
 
 
 def build_output(case_id: str, daughters: list) -> dict:
@@ -102,13 +102,11 @@ def main() -> int:
             minimum_origin_diameter_mm=args.minimum_origin_diameter_mm,
             parallel_clearance_mm=args.parallel_clearance_mm,
         )
-        result = (
-            detect_connected(image, aorta_mask, config, require_root=True)
-            if args.recover_connected_origins else detect(image, aorta_mask, config)
+        result, workflow_diagnostics = run_pipeline(
+            image, aorta_mask, config, workflow=args.pipeline,
+            model_path=args.candidate_model, threshold=args.candidate_threshold,
+            recover_connected_origins=args.recover_connected_origins,
         )
-        model_diagnostics = None
-        if args.candidate_model:
-            model_diagnostics = filter_detection(result, CandidateModel.load(args.candidate_model))
         output = Path(args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(result.prediction(case_id), indent=2, allow_nan=False) + "\n")
@@ -116,8 +114,7 @@ def main() -> int:
             diagnostics = Path(args.diagnostics)
             diagnostics.parent.mkdir(parents=True, exist_ok=True)
             payload = result.diagnostics()
-            if model_diagnostics is not None:
-                payload["candidate_model"] = model_diagnostics
+            payload["workflow"] = workflow_diagnostics
             diagnostics.write_text(json.dumps(payload, indent=2, allow_nan=False) + "\n")
     except (OSError, RuntimeError, ValueError, KeyError, TypeError) as error:
         print(f"Branchseed: {error}", file=sys.stderr)

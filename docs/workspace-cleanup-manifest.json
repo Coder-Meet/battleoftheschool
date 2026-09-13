@@ -1,0 +1,172 @@
+{
+  "baseline_commit": "51a4011a6237d46d6bb48adf096723ed2685153d",
+  "removed_cache_bytes": 69527579,
+  "actions": [
+    {
+      "action": "archive_document_with_redirect",
+      "path": "CURSOR_HANDOFF.md",
+      "destination": "docs/archive/CURSOR_HANDOFF.md",
+      "original_sha256": "2ecb855db88217db1e42e83da531bc4490448ce11870354e989e2a85ade2c42e"
+    },
+    {
+      "action": "archive_document_with_redirect",
+      "path": "PROMPT.md",
+      "destination": "docs/archive/PROMPT.md",
+      "original_sha256": "3de9714a863398a5d1c7d7300f4bd7fff156fd1192c7ded57b046fd506cb4503"
+    },
+    {
+      "action": "archive_document_with_redirect",
+      "path": "MEET_PATEL_BRANCHSEED_MASTER_PLAN.md",
+      "destination": "docs/archive/MEET_PATEL_BRANCHSEED_MASTER_PLAN.md",
+      "original_sha256": "3aef34ec67db40a4c91531294ad532b0bf787636df713c17494a97467e826355"
+    },
+    {
+      "action": "archive_document_with_redirect",
+      "path": "RESEARCH_IMPLEMENTATION.md",
+      "destination": "docs/archive/RESEARCH_IMPLEMENTATION.md",
+      "original_sha256": "c4cc8d15d506074793e1d3d93dda0e9375ad4ae74e580c261803bb3e4ff7dfe3"
+    },
+    {
+      "action": "archive_document_with_redirect",
+      "path": "STEVEN_ALGORITHM_REVIEW.md",
+      "destination": "docs/archive/STEVEN_ALGORITHM_REVIEW.md",
+      "original_sha256": "46c330cf96c9f24ade7854c9025808f62b9f6218a796746e94c981c9538407e6"
+    },
+    {
+      "action": "archive_document_with_redirect",
+      "path": "STEVEN_LABEL_ANALYTICS.md",
+      "destination": "docs/archive/STEVEN_LABEL_ANALYTICS.md",
+      "original_sha256": "72ca684e245ec7b2597faf243259b22b8e700e5504fe57d405b04a110fccba8f"
+    },
+    {
+      "action": "archive_document_with_redirect",
+      "path": "SUBMISSION_AUDIT.md",
+      "destination": "docs/archive/SUBMISSION_AUDIT.md",
+      "original_sha256": "9f98d7aed9ec2971953a1249b121d0401d399fe9181d0a8adeece1e7aa4baf88"
+    },
+    {
+      "action": "archive_document_with_redirect",
+      "path": "ROBUSTNESS_PROTOCOL.md",
+      "destination": "docs/archive/ROBUSTNESS_PROTOCOL.md",
+      "original_sha256": "f1aa4e6ca294ece1eed1c039e9aec750b55eb35a0fa6acf0e90d2d9e00780d3c"
+    },
+    {
+      "action": "archive_document_with_redirect",
+      "path": "ADDITIONAL_PAPERS.md",
+      "destination": "docs/archive/ADDITIONAL_PAPERS.md",
+      "original_sha256": "816f83046ff7fd53bd955febea0f52e893433a5d98231ff4ec8b4d1a724781d0"
+    },
+    {
+      "action": "archive_recovery_payload",
+      "path": "HANDOFF_RECOVERY.json",
+      "destination": "docs/archive/HANDOFF_RECOVERY.json"
+    },
+    {
+      "action": "archive_local_output",
+      "path": "outputs/audit",
+      "destination": "outputs/archive/pre-release-2a498a4/audit"
+    },
+    {
+      "action": "archive_local_output",
+      "path": "outputs/autolabel",
+      "destination": "outputs/archive/pre-release-2a498a4/autolabel"
+    },
+    {
+      "action": "archive_local_output",
+      "path": "outputs/current-e2e-20260913",
+      "destination": "outputs/archive/pre-release-2a498a4/current-e2e-20260913"
+    },
+    {
+      "action": "archive_local_output",
+      "path": "outputs/e2e",
+      "destination": "outputs/archive/pre-release-2a498a4/e2e"
+    },
+    {
+      "action": "archive_local_output",
+      "path": "outputs/e2e_pool",
+      "destination": "outputs/archive/pre-release-2a498a4/e2e_pool"
+    },
+    {
+      "action": "archive_local_output",
+      "path": "outputs/e2e_review",
+      "destination": "outputs/archive/pre-release-2a498a4/e2e_review"
+    },
+    {
+      "action": "archive_local_output",
+      "path": "outputs/e2e_strict",
+      "destination": "outputs/archive/pre-release-2a498a4/e2e_strict"
+    },
+    {
+      "action": "archive_local_output",
+      "path": "outputs/next-steps-v1",
+      "destination": "outputs/archive/pre-release-2a498a4/next-steps-v1"
+    },
+    {
+      "action": "archive_local_output",
+      "path": "outputs/production-v1-validation",
+      "destination": "outputs/archive/pre-release-2a498a4/production-v1-validation"
+    },
+    {
+      "action": "archive_local_output",
+      "path": "outputs/review",
+      "destination": "outputs/archive/pre-release-2a498a4/review"
+    },
+    {
+      "action": "remove_generated_cache",
+      "path": ".pytest_cache",
+      "bytes": 15878
+    },
+    {
+      "action": "remove_generated_cache",
+      "path": ".ruff_cache",
+      "bytes": 3927
+    },
+    {
+      "action": "remove_generated_cache",
+      "path": ".mypy_cache",
+      "bytes": 68332870
+    },
+    {
+      "action": "remove_generated_cache",
+      "path": "__pycache__",
+      "bytes": 740096
+    },
+    {
+      "action": "remove_generated_cache",
+      "path": "tests/__pycache__",
+      "bytes": 418588
+    },
+    {
+      "action": "remove_generated_cache",
+      "path": "web/.test-dist",
+      "bytes": 3924
+    },
+    {
+      "action": "remove_os_metadata",
+      "path": ".DS_Store",
+      "bytes": 6148
+    },
+    {
+      "action": "remove_os_metadata",
+      "path": "data/.DS_Store",
+      "bytes": 6148
+    },
+    {
+      "action": "archive_and_refresh_cheatsheet",
+      "path": "CHEATSHEET.md",
+      "destination": "docs/archive/CHEATSHEET.md",
+      "original_sha256": "ee9e61918d63f1d242b4a67cd32c167cc298dc74cf68e7efb73c6d98a1ab73fc"
+    }
+  ],
+  "verification": {
+    "local_markdown_files_checked": 36,
+    "broken_local_links": [],
+    "git_diff_check": "passed",
+    "frozen_selector_exit_code": 0,
+    "validated_variants": 280,
+    "eligible_variants": 180,
+    "deployment": "deterministic:deterministic-strict",
+    "frontend_build": "passed; existing nonfatal bundle-size warning",
+    "tracked_code_data_models_changed": false
+  }
+}

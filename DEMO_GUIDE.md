@@ -2,10 +2,9 @@
 
 ## Start here
 
-**Submit the deterministic strict detector with `native_contrast_scale=1.2`.**
-These are already the defaults in `run.py`, `batch.py` and `explorer.py`.
-Use no candidate model, review mode, spacing override or experimental flag.
-The [final evaluation](FINAL_EVALUATION_RESULTS.md) documents the decision.
+**The current checkout now defaults to score-before-merge fusion, F1 0.75676 on five reused references.** See [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md) for exact commands and evidence. Include `pipeline.py` and `models/production-v1/logistic.json` when packaging this version.
+
+The download bundles, measured resources, presentation and evaluation numbers below describe the **previous strict release**. Downloading those ZIPs will not restore fusion. Rebuild packages from this checkout and remeasure resources before treating them as current. Use `--pipeline strict` in this checkout to reproduce that baseline.
 
 For the public entry, use the [ready-to-paste Devpost submission](DEVPOST_SUBMISSION.md).
 For rehearsal, use the [complete presenter briefing and judge Q&A](PRESENTER_BRIEFING.md).

@@ -1,5 +1,7 @@
 # Five difficult cases: annotation head start
 
+Current reference inventory: 19 judge-approved, AI-assisted targets are already preserved under `labels/organizer-v1/references/`. The preparation procedures below are for additional annotation/development work. Keep the released package immutable, and consult [the current plan](CURRENT_E2E_REVIEW.md) before creating new labels.
+
 The **real-case packet contains unreviewed model proposals, not ground truth**.
 Nothing is confirmed automatically, including predictions shared by both
 variants. They share a detector and can share the same errors. The separate

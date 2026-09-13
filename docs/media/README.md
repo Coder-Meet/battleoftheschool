@@ -1,3 +1,5 @@
+> These figures and their frozen inputs describe the earlier strict release. The current fusion default has different real-reference and synthetic results; see [current workflow](../../PRODUCTION_WORKFLOW.md). Regenerating from the old frozen inputs does not validate the new workflow.
+
 # Project media and provenance
 
 The PNGs are ready for the README and a Devpost gallery. Use `branchseed-cover.png`

@@ -43,7 +43,7 @@ jobs:
           strace -f -e trace=%network -e inject=%network:error=ENETUNREACH \
             -o offline-network.log python -m pytest -q tests/test_offline.py \
             tests/test_detector.py tests/test_input_validation.py tests/test_learning.py \
-            tests/test_synthetic.py tests/test_accuracy.py
+            tests/test_synthetic.py tests/test_accuracy.py tests/test_pipeline.py
       - run: npm ci
         working-directory: web
       - run: npm run lint && npm test && npm run build

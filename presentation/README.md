@@ -1,3 +1,5 @@
+> This presentation describes the earlier strict release (F1 0.533). The current checkout defaults to fusion (five-reference F1 0.757); see [current workflow](../PRODUCTION_WORKFLOW.md). Refresh the deck and its synthetic/resource evidence before presenting it as the current default.
+
 # Branchseed presentation studio
 
 An eight-slide, five-minute presentation with four equal speaking slots and a
