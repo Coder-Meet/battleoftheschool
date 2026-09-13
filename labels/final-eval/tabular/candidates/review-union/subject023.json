@@ -1,0 +1,707 @@
+{
+  "case_id": "subject023",
+  "profile": "review-union",
+  "input_sha256": {
+    "image": "9e2747d40b4f63ec23d4d4a99dd6d4f4cf0125d608c1e782df6f094af51cbb49",
+    "mask": "bb10d5cbe26775e76beddf2c3c7d9f447e39784e129fe40f9204e5d48be00cd8"
+  },
+  "source_sha256": {
+    "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+    "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+    "learning.py": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+    "tabular_learning.py": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+    "patch_inference.py": "e539d4f8e080a4a219d9c49dda247e2576d19c8269daf638d031116c43c81188",
+    "nifti_io.py": "d8cd2795046affe798a2c2ed0822dc615f73930b94381c1ef5af0de36127cb02",
+    "research_run.py": "b02739a64608d51c39909a6dcaf3d6772f15b2bd7606ced9d7f82f8654727ca1"
+  },
+  "driver_sha256": "3e542aedba80539321dc15e65ef86c49520bae5afc04b2a47c66b1a194951d2c",
+  "detector_config": {
+    "spacing_mm": 1.0,
+    "margin_mm": 20.0,
+    "shell_inner_mm": 1.5,
+    "shell_outer_mm": 6.0,
+    "cap_margin_mm": 4.0,
+    "minimum_radius_mm": 0.7,
+    "minimum_origin_diameter_mm": 0.0,
+    "minimum_path_mm": 5.0,
+    "trace_length_mm": 10.0,
+    "vesselness_floor": 0.03,
+    "maximum_candidates": 160,
+    "shell_vesselness_floor": 0.005,
+    "connector_gap_fraction": 0.35,
+    "root_depth_mm": 2.5,
+    "blood_lower_scale": 2.0,
+    "support_contrast_fraction": 0.5,
+    "native_contrast_scale": 1.2,
+    "roots_per_contact": 6,
+    "wall_hug_penalty": 0.8,
+    "broad_contact_mm3": 1000000.0,
+    "parallel_clearance_mm": 0.0,
+    "profile": "review"
+  },
+  "strict_config": {
+    "spacing_mm": 1.0,
+    "margin_mm": 20.0,
+    "shell_inner_mm": 1.5,
+    "shell_outer_mm": 3.5,
+    "cap_margin_mm": 4.0,
+    "minimum_radius_mm": 0.7,
+    "minimum_origin_diameter_mm": 2.0,
+    "minimum_path_mm": 5.0,
+    "trace_length_mm": 10.0,
+    "vesselness_floor": 0.06,
+    "maximum_candidates": 160,
+    "shell_vesselness_floor": 0.06,
+    "connector_gap_fraction": 0.0,
+    "root_depth_mm": 3.5,
+    "blood_lower_scale": 1.0,
+    "support_contrast_fraction": 0.5,
+    "native_contrast_scale": 1.2,
+    "roots_per_contact": 1,
+    "wall_hug_penalty": 0.0,
+    "broad_contact_mm3": 1200.0,
+    "parallel_clearance_mm": 0.0,
+    "profile": "strict"
+  },
+  "feature_names": [
+    "radius_mm",
+    "mean_vesselness",
+    "evidence_score",
+    "path_length_mm",
+    "seed_distance_mm",
+    "tortuosity",
+    "path_hu_relative",
+    "bone_distance_mm",
+    "parent_angle_degrees",
+    "arc_position",
+    "native_spacing_mm",
+    "connector_gap",
+    "candidate_volume_mm3"
+  ],
+  "extra_feature_names": [
+    "ostium_local_contrast",
+    "patch_vesselness_std",
+    "parent_wall_curvature"
+  ],
+  "prediction": {
+    "case_id": "subject023",
+    "parent": {
+      "instance_id": "aorta"
+    },
+    "daughters": [
+      {
+        "instance_id": "branch_001",
+        "parent_instance_id": "aorta",
+        "ostium_xyz_mm": [
+          2.4561073245135034,
+          -144.484480274027,
+          260.5
+        ],
+        "seed_xyz_mm": [
+          -0.3774149595639934,
+          -140.837428790436,
+          261.519993084564
+        ],
+        "radius_mm": 0.961,
+        "direction_xyz": [
+          -0.5990892339203997,
+          0.7710930285074911,
+          0.2156562801956253
+        ]
+      }
+    ]
+  },
+  "records": [
+    {
+      "case_id": "subject023",
+      "instance_id": "branch_001",
+      "features": [
+        0.961,
+        0.095,
+        0.435,
+        6.120071500114399,
+        4.729716582511619,
+        1.06015020875361,
+        0.4893,
+        4.138,
+        70.71,
+        0.6778,
+        1.5,
+        0.2222,
+        16.0
+      ],
+      "fingerprint": "[[2.4561073245135034, -144.484480274027, 260.5], [-0.3774149595639934, -140.837428790436, 261.519993084564], [-0.5990892339203997, 0.7710930285074911, 0.2156562801956253], 0.961, [0.961, 0.095, 0.435, 6.120071500114399, 4.729716582511619, 1.06015020875361, 0.4893, 4.138, 70.71, 0.6778, 1.5, 0.2222, 16.0]]",
+      "branch": {
+        "instance_id": "branch_001",
+        "ostium_xyz_mm": [
+          2.4561073245135034,
+          -144.484480274027,
+          260.5
+        ],
+        "seed_xyz_mm": [
+          -0.3774149595639934,
+          -140.837428790436,
+          261.519993084564
+        ],
+        "radius_mm": 0.961,
+        "direction_xyz": [
+          -0.5990892339203997,
+          0.7710930285074911,
+          0.2156562801956253
+        ],
+        "path_xyz_mm": [
+          [
+            2.4561073245135034,
+            -144.484480274027,
+            260.5
+          ],
+          [
+            1.642578125,
+            -142.857421875,
+            260.5
+          ],
+          [
+            0.642578125,
+            -141.857421875,
+            260.5
+          ],
+          [
+            -0.357421875,
+            -140.857421875,
+            261.5
+          ],
+          [
+            -1.0240885416666665,
+            -140.19075520833334,
+            262.1666666666667
+          ]
+        ],
+        "evidence_score": 0.435,
+        "mean_vesselness": 0.095,
+        "parent_instance_id": "aorta",
+        "warnings": [
+          "Trace stops at an estimated downstream bifurcation.",
+          "Wall connector crosses unsupported voxels; verify the ostium on CT."
+        ],
+        "features": {
+          "path_hu_relative": 0.4893,
+          "bone_distance_mm": 4.138,
+          "parent_angle_degrees": 70.71,
+          "arc_position": 0.6778,
+          "native_spacing_mm": 1.5,
+          "connector_gap": 0.2222,
+          "candidate_volume_mm3": 16.0,
+          "origin_diameter_mm": 3.174,
+          "origin_diameter_upper_mm": 4.674
+        }
+      },
+      "candidate_sha256": "b77527067a4985544e849311f34ab17a6046adfdbdb83c4216178fc2603e86a2",
+      "extra_features": {
+        "ostium_local_contrast": 0.0961395651102066,
+        "patch_vesselness_std": 0.04580680924626898,
+        "parent_wall_curvature": 0.12081021859078075
+      }
+    }
+  ],
+  "model_scores": {
+    "tabular-original-logistic": {
+      "probabilities": [
+        0.02150737797004781
+      ],
+      "threshold": 0.37631433544133275,
+      "scoring_s": 0.00016277899999295187,
+      "model_sha256": "a45747a0382ae41d0a37f2104f2348190905c847a1b89347f9c9703448ddccc6",
+      "contract": {
+        "feature_names": [
+          "radius_mm",
+          "mean_vesselness",
+          "evidence_score",
+          "path_length_mm",
+          "seed_distance_mm",
+          "tortuosity",
+          "path_hu_relative",
+          "bone_distance_mm",
+          "parent_angle_degrees",
+          "arc_position",
+          "native_spacing_mm",
+          "connector_gap",
+          "candidate_volume_mm3"
+        ],
+        "scaler": "saved train-only mean/std"
+      }
+    },
+    "tabular-synthetic-augmented-logistic": {
+      "probabilities": [
+        0.030065148026187
+      ],
+      "threshold": 0.5,
+      "scoring_s": 0.00010718499999029518,
+      "model_sha256": "9d7026550b834b5f427d4b6404cd6ff02b182b9db7ffd207f0f24b802a83e2f1",
+      "contract": {
+        "feature_names": [
+          "radius_mm",
+          "mean_vesselness",
+          "evidence_score",
+          "path_length_mm",
+          "seed_distance_mm",
+          "tortuosity",
+          "path_hu_relative",
+          "bone_distance_mm",
+          "parent_angle_degrees",
+          "arc_position",
+          "native_spacing_mm",
+          "connector_gap",
+          "candidate_volume_mm3"
+        ],
+        "scaler": "saved train-only mean/std"
+      }
+    },
+    "tabular-excluded-five-logistic": {
+      "probabilities": [
+        0.012604998148129432
+      ],
+      "threshold": 0.5,
+      "scoring_s": 8.901699999341872e-05,
+      "model_sha256": "1d1bfaf6517df214fecaaae9ed2eab7b20c07f1b6af6097dc1cb605e4c64924c",
+      "contract": {
+        "feature_names": [
+          "radius_mm",
+          "mean_vesselness",
+          "evidence_score",
+          "path_length_mm",
+          "seed_distance_mm",
+          "tortuosity",
+          "path_hu_relative",
+          "bone_distance_mm",
+          "parent_angle_degrees",
+          "arc_position",
+          "native_spacing_mm",
+          "connector_gap",
+          "candidate_volume_mm3"
+        ],
+        "scaler": "saved train-only mean/std"
+      }
+    },
+    "tabular-current-source-v1-gradient_boosting-base": {
+      "probabilities": [
+        0.786665168311217
+      ],
+      "threshold": 0.5630076829578097,
+      "scoring_s": 0.0037537839999686184,
+      "model_sha256": "7e37a395f6ee376c76e68be177b5992259945758fc4c382040db06921fe2380f",
+      "contract": {
+        "feature_names": [
+          "radius_mm",
+          "mean_vesselness",
+          "evidence_score",
+          "path_length_mm",
+          "seed_distance_mm",
+          "tortuosity",
+          "path_hu_relative",
+          "bone_distance_mm",
+          "parent_angle_degrees",
+          "arc_position",
+          "native_spacing_mm",
+          "connector_gap",
+          "candidate_volume_mm3"
+        ],
+        "extra_feature_names": [
+          "ostium_local_contrast",
+          "patch_vesselness_std",
+          "parent_wall_curvature"
+        ],
+        "preprocessing": {
+          "version": "physical-candidate-patches-v1",
+          "size": 32,
+          "spacing_mm": 1.0,
+          "channel_names": [
+            "xy_ct",
+            "xy_parent",
+            "xy_vesselness",
+            "xy_path",
+            "xz_ct",
+            "xz_parent",
+            "xz_vesselness",
+            "xz_path",
+            "yz_ct",
+            "yz_parent",
+            "yz_vesselness",
+            "yz_path"
+          ],
+          "extra_feature_names": [
+            "ostium_local_contrast",
+            "patch_vesselness_std",
+            "parent_wall_curvature"
+          ],
+          "physical_axes": [
+            "xy",
+            "xz",
+            "yz"
+          ],
+          "center_pixel": 16,
+          "ct_normalization": "clip((HU-body_median)/max(abs(parent_median-body_median),3*parent_MAD,1),0,1)",
+          "body_min_hu": -300.0,
+          "mad_factor": 1.4826,
+          "samples_per_population": 65536,
+          "sampling": "evenly spaced population indices in native C-order",
+          "ct_interpolation": "linear",
+          "parent_interpolation": "nearest",
+          "padding": 0.0,
+          "halo_mm": 12.0,
+          "smoothing_sigma_mm": 0.6,
+          "sato_sigmas_mm": [
+            0.8,
+            1.5,
+            2.5
+          ],
+          "sato_black_ridges": false,
+          "sato_scaling": "raw response clipped to [0,1]",
+          "path_sigma_mm": 0.75,
+          "path_truncation_sigma": 3.0,
+          "contrast_radii_mm": [
+            3.0,
+            5.0,
+            8.0
+          ],
+          "curvature_fit_radius_mm": 5.0,
+          "curvature_units": "1/mm"
+        },
+        "source_sha256": {
+          "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+          "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a"
+        },
+        "manifest_sha256": "7e1f6125d393e07a884b0f1df74b9cba436b9b0d069731395bfd74fd4b0e91b0"
+      }
+    },
+    "tabular-current-source-v1-gradient_boosting-extended": {
+      "probabilities": [
+        0.8088594363173741
+      ],
+      "threshold": 0.3878033228645144,
+      "scoring_s": 0.6082784060000108,
+      "model_sha256": "a591c6ea936c6b12b41419efc40313cfabc333199cadd455161b1a047fa814cc",
+      "contract": {
+        "feature_names": [
+          "radius_mm",
+          "mean_vesselness",
+          "evidence_score",
+          "path_length_mm",
+          "seed_distance_mm",
+          "tortuosity",
+          "path_hu_relative",
+          "bone_distance_mm",
+          "parent_angle_degrees",
+          "arc_position",
+          "native_spacing_mm",
+          "connector_gap",
+          "candidate_volume_mm3"
+        ],
+        "extra_feature_names": [
+          "ostium_local_contrast",
+          "patch_vesselness_std",
+          "parent_wall_curvature"
+        ],
+        "preprocessing": {
+          "version": "physical-candidate-patches-v1",
+          "size": 32,
+          "spacing_mm": 1.0,
+          "channel_names": [
+            "xy_ct",
+            "xy_parent",
+            "xy_vesselness",
+            "xy_path",
+            "xz_ct",
+            "xz_parent",
+            "xz_vesselness",
+            "xz_path",
+            "yz_ct",
+            "yz_parent",
+            "yz_vesselness",
+            "yz_path"
+          ],
+          "extra_feature_names": [
+            "ostium_local_contrast",
+            "patch_vesselness_std",
+            "parent_wall_curvature"
+          ],
+          "physical_axes": [
+            "xy",
+            "xz",
+            "yz"
+          ],
+          "center_pixel": 16,
+          "ct_normalization": "clip((HU-body_median)/max(abs(parent_median-body_median),3*parent_MAD,1),0,1)",
+          "body_min_hu": -300.0,
+          "mad_factor": 1.4826,
+          "samples_per_population": 65536,
+          "sampling": "evenly spaced population indices in native C-order",
+          "ct_interpolation": "linear",
+          "parent_interpolation": "nearest",
+          "padding": 0.0,
+          "halo_mm": 12.0,
+          "smoothing_sigma_mm": 0.6,
+          "sato_sigmas_mm": [
+            0.8,
+            1.5,
+            2.5
+          ],
+          "sato_black_ridges": false,
+          "sato_scaling": "raw response clipped to [0,1]",
+          "path_sigma_mm": 0.75,
+          "path_truncation_sigma": 3.0,
+          "contrast_radii_mm": [
+            3.0,
+            5.0,
+            8.0
+          ],
+          "curvature_fit_radius_mm": 5.0,
+          "curvature_units": "1/mm"
+        },
+        "source_sha256": {
+          "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+          "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a"
+        },
+        "manifest_sha256": "7e1f6125d393e07a884b0f1df74b9cba436b9b0d069731395bfd74fd4b0e91b0"
+      }
+    },
+    "tabular-current-source-v1-logistic": {
+      "probabilities": [
+        0.05665065208793008
+      ],
+      "threshold": 0.08833933000710323,
+      "scoring_s": 0.00022316799999089199,
+      "model_sha256": "e9f864956aa65c3f05c038b13b0c8ca9e7289e4a44f6f0eb7837ab85814c730e",
+      "contract": {
+        "feature_names": [
+          "radius_mm",
+          "mean_vesselness",
+          "evidence_score",
+          "path_length_mm",
+          "seed_distance_mm",
+          "tortuosity",
+          "path_hu_relative",
+          "bone_distance_mm",
+          "parent_angle_degrees",
+          "arc_position",
+          "native_spacing_mm",
+          "connector_gap",
+          "candidate_volume_mm3"
+        ],
+        "scaler": "saved train-only mean/std"
+      }
+    },
+    "tabular-current-source-v1-random_forest-base": {
+      "probabilities": [
+        0.9210415384357195
+      ],
+      "threshold": 0.619174558982323,
+      "scoring_s": 0.007108572999982243,
+      "model_sha256": "f66277b2d3243e1a52bb959f3bbaf1ed91e7bc638def5c6177dad04d14e3966b",
+      "contract": {
+        "feature_names": [
+          "radius_mm",
+          "mean_vesselness",
+          "evidence_score",
+          "path_length_mm",
+          "seed_distance_mm",
+          "tortuosity",
+          "path_hu_relative",
+          "bone_distance_mm",
+          "parent_angle_degrees",
+          "arc_position",
+          "native_spacing_mm",
+          "connector_gap",
+          "candidate_volume_mm3"
+        ],
+        "extra_feature_names": [
+          "ostium_local_contrast",
+          "patch_vesselness_std",
+          "parent_wall_curvature"
+        ],
+        "preprocessing": {
+          "version": "physical-candidate-patches-v1",
+          "size": 32,
+          "spacing_mm": 1.0,
+          "channel_names": [
+            "xy_ct",
+            "xy_parent",
+            "xy_vesselness",
+            "xy_path",
+            "xz_ct",
+            "xz_parent",
+            "xz_vesselness",
+            "xz_path",
+            "yz_ct",
+            "yz_parent",
+            "yz_vesselness",
+            "yz_path"
+          ],
+          "extra_feature_names": [
+            "ostium_local_contrast",
+            "patch_vesselness_std",
+            "parent_wall_curvature"
+          ],
+          "physical_axes": [
+            "xy",
+            "xz",
+            "yz"
+          ],
+          "center_pixel": 16,
+          "ct_normalization": "clip((HU-body_median)/max(abs(parent_median-body_median),3*parent_MAD,1),0,1)",
+          "body_min_hu": -300.0,
+          "mad_factor": 1.4826,
+          "samples_per_population": 65536,
+          "sampling": "evenly spaced population indices in native C-order",
+          "ct_interpolation": "linear",
+          "parent_interpolation": "nearest",
+          "padding": 0.0,
+          "halo_mm": 12.0,
+          "smoothing_sigma_mm": 0.6,
+          "sato_sigmas_mm": [
+            0.8,
+            1.5,
+            2.5
+          ],
+          "sato_black_ridges": false,
+          "sato_scaling": "raw response clipped to [0,1]",
+          "path_sigma_mm": 0.75,
+          "path_truncation_sigma": 3.0,
+          "contrast_radii_mm": [
+            3.0,
+            5.0,
+            8.0
+          ],
+          "curvature_fit_radius_mm": 5.0,
+          "curvature_units": "1/mm"
+        },
+        "source_sha256": {
+          "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+          "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a"
+        },
+        "manifest_sha256": "7e1f6125d393e07a884b0f1df74b9cba436b9b0d069731395bfd74fd4b0e91b0"
+      }
+    },
+    "tabular-current-source-v1-random_forest-extended": {
+      "probabilities": [
+        0.8904320352791735
+      ],
+      "threshold": 0.6209693278491709,
+      "scoring_s": 0.6182947849999891,
+      "model_sha256": "cee9e454f5ac44dacddb4baff9cd84ec4967b6eec7da57b801fbda73c2a0b970",
+      "contract": {
+        "feature_names": [
+          "radius_mm",
+          "mean_vesselness",
+          "evidence_score",
+          "path_length_mm",
+          "seed_distance_mm",
+          "tortuosity",
+          "path_hu_relative",
+          "bone_distance_mm",
+          "parent_angle_degrees",
+          "arc_position",
+          "native_spacing_mm",
+          "connector_gap",
+          "candidate_volume_mm3"
+        ],
+        "extra_feature_names": [
+          "ostium_local_contrast",
+          "patch_vesselness_std",
+          "parent_wall_curvature"
+        ],
+        "preprocessing": {
+          "version": "physical-candidate-patches-v1",
+          "size": 32,
+          "spacing_mm": 1.0,
+          "channel_names": [
+            "xy_ct",
+            "xy_parent",
+            "xy_vesselness",
+            "xy_path",
+            "xz_ct",
+            "xz_parent",
+            "xz_vesselness",
+            "xz_path",
+            "yz_ct",
+            "yz_parent",
+            "yz_vesselness",
+            "yz_path"
+          ],
+          "extra_feature_names": [
+            "ostium_local_contrast",
+            "patch_vesselness_std",
+            "parent_wall_curvature"
+          ],
+          "physical_axes": [
+            "xy",
+            "xz",
+            "yz"
+          ],
+          "center_pixel": 16,
+          "ct_normalization": "clip((HU-body_median)/max(abs(parent_median-body_median),3*parent_MAD,1),0,1)",
+          "body_min_hu": -300.0,
+          "mad_factor": 1.4826,
+          "samples_per_population": 65536,
+          "sampling": "evenly spaced population indices in native C-order",
+          "ct_interpolation": "linear",
+          "parent_interpolation": "nearest",
+          "padding": 0.0,
+          "halo_mm": 12.0,
+          "smoothing_sigma_mm": 0.6,
+          "sato_sigmas_mm": [
+            0.8,
+            1.5,
+            2.5
+          ],
+          "sato_black_ridges": false,
+          "sato_scaling": "raw response clipped to [0,1]",
+          "path_sigma_mm": 0.75,
+          "path_truncation_sigma": 3.0,
+          "contrast_radii_mm": [
+            3.0,
+            5.0,
+            8.0
+          ],
+          "curvature_fit_radius_mm": 5.0,
+          "curvature_units": "1/mm"
+        },
+        "source_sha256": {
+          "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+          "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a"
+        },
+        "manifest_sha256": "7e1f6125d393e07a884b0f1df74b9cba436b9b0d069731395bfd74fd4b0e91b0"
+      }
+    },
+    "tabular-cohort-v1-logistic": {
+      "probabilities": [
+        0.05665065208793008
+      ],
+      "threshold": 0.08833933000710323,
+      "scoring_s": 0.0002111119999881339,
+      "model_sha256": "e9f864956aa65c3f05c038b13b0c8ca9e7289e4a44f6f0eb7837ab85814c730e",
+      "contract": {
+        "feature_names": [
+          "radius_mm",
+          "mean_vesselness",
+          "evidence_score",
+          "path_length_mm",
+          "seed_distance_mm",
+          "tortuosity",
+          "path_hu_relative",
+          "bone_distance_mm",
+          "parent_angle_degrees",
+          "arc_position",
+          "native_spacing_mm",
+          "connector_gap",
+          "candidate_volume_mm3"
+        ],
+        "scaler": "saved train-only mean/std"
+      }
+    }
+  },
+  "failures": [],
+  "detection_and_input_load_s": 2.526368630000036,
+  "total_case_job_s": 3.7657505340000057,
+  "peak_rss_mb": 316.5859375,
+  "records_sha256": "f67e316e5e388e834c8ad6c544b7a1de25eb6e2f3bbadd25a494bde65772fd06"
+}
