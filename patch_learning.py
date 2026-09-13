@@ -8,7 +8,7 @@ augmentation is disabled. HU jitter requires an explicit per-case HU scale.
 
 import argparse
 from collections import Counter
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 import hashlib
 import json
 import math
@@ -86,6 +86,8 @@ def load_partition(root: Path, name: str, split: dict[str, list[str]], reviews: 
     for key in ("feature_names", "extra_feature_names", "manifest_sha256", "source_sha256"):
         if reviews.get(key) != metadata.get(key):
             raise ValueError("Review/cache feature or provenance metadata mismatch.")
+    if "cases" in metadata and {r["case_id"] for r in metadata["cases"]} != set(split[name]):
+        raise ValueError("Patch case metadata omits split cases.")
     path = root / f"patches-{name}.npz"
     if file_sha256(path) != metadata.get("patches_sha256"):
         raise ValueError("Patch NPZ integrity mismatch.")
@@ -545,29 +547,50 @@ Only the historical real training cases are considered; no labels are changed.
                 rejected.append(row["instance_id"])
                 continue
             accepted.append((index, row))
-        audit["cases"].append({"case_id": case, "accepted_ids": [r["instance_id"] for _, r in accepted],
-                               "rejected_fingerprint_ids": rejected, "proposals": len(proposal.branches)})
+        case_audit: dict = {
+            "case_id": case, "accepted_ids": [r["instance_id"] for _, r in accepted],
+            "rejected_fingerprint_ids": rejected, "proposals": len(proposal.branches),
+            "extraction_errors": [], "cached_ids": [],
+        }
+        audit["cases"].append(case_audit)
         if not accepted:
             continue
-        extracted = candidate_patches.extract_candidate_data(image, mask, proposal)
+        selected = replace(proposal, branches=[proposal.branches[i] for i, _ in accepted])
+        extracted_rows = []
+        try:
+            extracted = candidate_patches.extract_candidate_data(image, mask, selected)
+        except ValueError:
+            for index, row in accepted:
+                single = replace(proposal, branches=[proposal.branches[index]])
+                try:
+                    extracted = candidate_patches.extract_candidate_data(image, mask, single)
+                except ValueError as error:
+                    case_audit["extraction_errors"].append({"instance_id": row["instance_id"], "error": str(error)})
+                    continue
+                extracted_rows.append((index, row, extracted.patches[0], extracted.extra_features[0]))
+        else:
+            extracted_rows = [(index, row, extracted.patches[i], extracted.extra_features[i])
+                              for i, (index, row) in enumerate(accepted)]
+        if not extracted_rows:
+            continue
         inputs = {p.name: file_sha256(p) for p in (images[0], masks[0])}
         info = {"case_id": case, "group_id": f"real:{case}", "partition": "train",
                 "files": inputs, "prior_inspection": True, "prior_pseudo_training": True}
         manifest["cases"].append(info)
         split["train"].append(case)
         all_reviews["cases"].append(info)
-        for index, row in accepted:
+        for index, row, patch, extra in extracted_rows:
             record = {
                 **row, "group_id": info["group_id"], "input_sha256": inputs,
                 "detector_sha256": expected["detector.py"], "extractor_sha256": expected["candidate_patches.py"],
-                "extra_features": dict(zip(candidate_patches.EXTRA_FEATURE_NAMES,
-                                          extracted.extra_features[index].tolist())),
+                "extra_features": dict(zip(candidate_patches.EXTRA_FEATURE_NAMES, extra.tolist())),
                 "patch_index": len(train.records), "local_patch_index": index,
                 "prior_inspection": True, "prior_pseudo_training": True,
             }
             train.records.append(record)
             all_reviews["records"].append(record)
-            arrays.append(extracted.patches[index:index + 1])
+            arrays.append(patch[np.newaxis])
+            case_audit["cached_ids"].append(row["instance_id"])
     if len(arrays) == 1:
         raise ValueError("No real training fingerprints match; mixed experiment must remain unrun.")
     output.mkdir(parents=True)
@@ -586,6 +609,9 @@ Only the historical real training cases are considered; no labels are changed.
         if part == "train":
             np.savez_compressed(output / "patches-train.npz", patches=train.patches)
             metadata["records"] = train.records
+            existing_cases = {r["case_id"] for r in metadata["cases"]}
+            metadata["cases"].extend(r for r in manifest["cases"]
+                                     if r["partition"] == "train" and r["case_id"] not in existing_cases)
         else:
             shutil.copyfile(root / f"patches-{part}.npz", output / f"patches-{part}.npz")
         metadata["patches_sha256"] = file_sha256(output / f"patches-{part}.npz")
