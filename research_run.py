@@ -175,6 +175,8 @@ def main() -> int:
     parser.add_argument("--threads", type=int, choices=(1, 2, 3, 4), default=4)
     args = parser.parse_args()
     start = perf_counter()
+    result = None
+    case_id = args.case_id or "unknown"
     try:
         destinations = [args.output.resolve(), args.diagnostics.resolve(), args.proposals_output.resolve()]
         if len(set(destinations)) != 3 or any(path.exists() for path in destinations):
@@ -186,6 +188,9 @@ def main() -> int:
             else args.image.name.removesuffix(".gz").removesuffix(".nii")
         )
         result = detect(image, mask) if args.proposals == "strict" else detect_pool(image, mask)
+        for path in destinations:
+            path.parent.mkdir(parents=True, exist_ok=True)
+        write_json(args.proposals_output, result.prediction(case_id))
         values, threshold, diagnostics = score_detection(
             image, mask, result, case_id, args.group_id or f"unknown:{case_id}",
             {"image": file_sha256(args.image), "aorta_mask": file_sha256(args.aorta_mask)},
@@ -198,12 +203,24 @@ def main() -> int:
             "unfiltered_prediction": result.prediction(case_id), "output_sha256": json_sha256(prediction),
             "wall_before_output_s": perf_counter() - start,
         })
-        for path in destinations:
-            path.parent.mkdir(parents=True, exist_ok=True)
-        write_json(args.proposals_output, result.prediction(case_id))
         write_json(args.output, prediction)
         write_json(args.diagnostics, diagnostics)
     except (OSError, RuntimeError, ValueError, KeyError, TypeError) as error:
+        if result is not None:
+            failure = {
+                "schema_version": 1, "scope": "research_only", "status": "scoring_failed",
+                "clinical_accuracy_claim": False, "promotion": "not_authorized", "mode": args.mode,
+                "error": str(error), "scores": None, "source_sha256": source_hashes(),
+                "unscored_candidate_ids": [branch.instance_id for branch in result.branches],
+                "unfiltered_prediction": result.prediction(case_id),
+                "filtered_prediction_withheld": args.mode == "filter",
+            }
+            try:
+                if args.mode == "scores-only":
+                    write_json(args.output, result.prediction(case_id))
+                write_json(args.diagnostics, failure)
+            except OSError as output_error:
+                print(f"Could not preserve research error report: {output_error}", file=sys.stderr)
         print(f"Branchseed research: {error}", file=sys.stderr)
         return 1
     return 0

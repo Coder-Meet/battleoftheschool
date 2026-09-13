@@ -175,3 +175,32 @@ def test_actual_onnx_and_combined_inference_preserve_physical_candidates(tmp_pat
     assert cnn_report["records"] == combined_report["records"]
     assert result.prediction("physical_fixture") == before
     assert select_prediction(result, "physical_fixture", combined, threshold, "scores-only") == before
+
+
+@pytest.mark.parametrize("mode", ["scores-only", "filter"])
+def test_failed_scoring_preserves_proposals_and_reports_every_unscored_candidate(tmp_path, mode):
+    image, mask = phantom()
+    sitk.WriteImage(image, str(tmp_path / "image.nii"))
+    sitk.WriteImage(mask, str(tmp_path / "mask.nii"))
+    tree = model()
+    tree.metadata["inference_contract"]["preprocessing"]["spacing_mm"] = 2.0
+    tree.save(tmp_path / "incompatible.json")
+    output, diagnostics, proposals = [tmp_path / f"{name}.json" for name in ("output", "diagnostics", "proposals")]
+    completed = subprocess.run([
+        sys.executable, str(ROOT / "research_run.py"), "--image", str(tmp_path / "image.nii"),
+        "--aorta-mask", str(tmp_path / "mask.nii"), "--tree-model", str(tmp_path / "incompatible.json"),
+        "--mode", mode, "--output", str(output), "--diagnostics", str(diagnostics),
+        "--proposals-output", str(proposals), "--case-id", "case", "--threads", "1",
+    ], capture_output=True, text=True)
+    assert completed.returncode == 1
+    preserved = json.loads(proposals.read_text())
+    failure = json.loads(diagnostics.read_text())
+    assert failure["scores"] is None
+    assert failure["unscored_candidate_ids"] == [row["instance_id"] for row in preserved["daughters"]]
+    assert len(failure["unscored_candidate_ids"]) == 2
+    assert "physical preprocessing/source" in failure["error"]
+    if mode == "scores-only":
+        assert json.loads(output.read_text()) == preserved
+    else:
+        assert not output.exists()
+        assert failure["filtered_prediction_withheld"]

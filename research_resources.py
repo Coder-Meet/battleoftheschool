@@ -57,7 +57,7 @@ def network_probe() -> bool:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM):
             return False
     except OSError as error:
-        return error.errno in (errno.EPERM, errno.EACCES)
+        return error.errno in (errno.EPERM, errno.EACCES, errno.ENETUNREACH)
 
 
 def measure(command: list[str], case_id: str, cores: int = 4, interval: float = 0.01) -> dict:
