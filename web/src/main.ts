@@ -345,9 +345,7 @@ async function loadCase(id: string) {
     $(".eyebrow").innerHTML =
       data.profile === "review"
         ? '<span class="live-dot"></span>REVIEW POOL · LOOSE DETECTOR · EVERY CANDIDATE NEEDS A VERDICT'
-        : data.profile === "score-before-merge"
-          ? '<span class="live-dot"></span>DETECTION RESULTS · FILTERED CANDIDATES'
-          : '<span class="live-dot"></span>ANATOMY WORKSPACE';
+        : '<span class="live-dot"></span>ANATOMY WORKSPACE';
     const removed = reviews.reconcile(id, data.branches);
     if (removed)
       toast(

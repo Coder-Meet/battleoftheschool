@@ -6,8 +6,6 @@ each one as a separate daughter instance.
 
 Full problem statement: see the [Branchseed challenge doc](https://docs.google.com/document/d/1oRb2R9pauvsC-9hDIfr23ojLx90JpCt0jVZjCD5l5Cg/edit).
 
-**Current production default:** strict + review proposals, scored separately with the bundled synthetic logistic at **0.15**, then merged with strict-first priority. Fresh five-case result: **14 TP / 4 FP / 5 FN, F1 0.757**. CLI, batch and normal Explorer use this shared workflow. See [the current workflow and commands](PRODUCTION_WORKFLOW.md) and [the audit/next-step plan](CURRENT_E2E_REVIEW.md). Use `--pipeline strict` to reproduce the earlier classical default; annotation/review mode stays unfiltered.
-
 ## Working agreement
 
 New teammates: start with the [setup, backend API and training handoff guide](TEAMMATE_GUIDE.md).
@@ -208,7 +206,8 @@ need localhost networking. Bundled frontend assets are served by the local serve
 **AI verdicts are provisional pseudo-labels, not expert ground truth.** A
 `confirmed` status describes that reviewer's decision, not clinical validation.
 Keep the `labeller` provenance, hold out patients, and do not report evaluation
-against these decisions as real branch-detection accuracy. The default submission CLI loads the bundled synthetic logistic model. Candidate reviews are not loaded during inference.
+against these decisions as real branch-detection accuracy. The default
+submission CLI does not load these reviews or an optional candidate model.
 
 There are no branch annotations for the 25 scans, so labels come from judging the
 detector's own proposals against the CT. This is done by an AI reviewer reading
@@ -244,7 +243,8 @@ python learning.py train --reviews labels/reviews.json --split labels/split.json
   --model labels/candidate-model.json --report labels/model-report.json
 ```
 
-The production CLI now runs both strict and review profiles, scores before merging, and uses the bundled filter at 0.15. `--pipeline strict` restores the previous single-profile workflow; `--candidate-model` selects a custom logistic. Each
+The review profile never runs in `run.py`; the submission uses the strict
+detector plus, optionally, the trained filter via `--candidate-model`. Each
 candidate carries thirteen features: six geometric ones and seven context ones
 (brightness relative to the aorta, distance to bone, angle against the aortic
 axis, position along the aorta, native spacing, wall-connector gap, contact
@@ -309,7 +309,8 @@ candidate. Split overlap, conflicting reviews, missing classes, and invalid feat
 fail explicitly. Test results must not be used for parameter selection. Candidate
 metrics are **not whole-vessel detection recall**; use complete independent daughter
 references with `evaluate.py` for that. Synthetic regression fixtures only test the
-training machinery, not real-scan accuracy. Custom models are opt-in; the bundled synthetic logistic is enabled by default. Normal Explorer shows production results; `--review-mode` exposes the unfiltered pool for annotation.
+training machinery, not real-scan accuracy. The model is opt-in at the CLI; the
+Explorer continues to show all classical candidates for unbiased human review.
 
 `--spacing-mm` selects the detector's working resolution (default 1.0 mm);
 finer grids increase CPU/memory requirements. Multi-label masks and sheared
@@ -461,7 +462,10 @@ gzip/LFS handling, reference matching, and the HTTP API.
 
 ## Current scope and limitations
 
-The production workflow combines classical proposals with a trained synthetic logistic filter. There are 25 CT/aorta pairs and 19 released reference targets across five development cases. The current workflow has local 3 mm F1 0.757 on those reused cases; independent accuracy remains unmeasured. Scores are uncalibrated. See `PRODUCTION_WORKFLOW.md` for current defaults and limitations.
+This is an executable **classical research baseline**, not a trained ML model.
+There are 25 CT/aorta pairs and no daughter labels in this repository. Precision
+and recall remain unmeasured; the evidence score is not a calibrated probability.
+Preserve a held-out patient split once annotations exist before fitting a ranker.
 
 The detector resamples a tight ROI to 1 mm, estimates blood intensity from the
 parent, enhances tubular structures at multiple scales, finds wall-contact
@@ -506,7 +510,8 @@ Sunday 11:00 AM. Have the repo pushed and a working demo before then.
 Current-source replay, exact checks, rejected CNN/blend results and remaining
 gates: [research integration results](labels/research/current-source-v1/RESULTS.md).
 
-`run.py` now defaults to the versioned synthetic logistic score-before-merge workflow. Tree/CNN research models remain disabled; `--pipeline strict --candidate-model PATH` preserves the legacy custom-filter behavior. `research_run.py` scores a variable number of
+`run.py` and its legacy `--candidate-model` remain unchanged. No research
+model is enabled by default. `research_run.py` scores a variable number of
 classical proposals using a source-compatible tree, optional CPU ONNX model,
 or frozen probability blend. Synthetic performance and pseudo-label agreement
 are not clinical accuracy. Complete organizer references and measurements on
