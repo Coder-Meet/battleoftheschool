@@ -7,12 +7,19 @@ model. [Read the exact judge installation/run guide](START_HERE.md).
 
 - [Windows x64 / Python 3.13 offline judge ZIP](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-judge-fusion-2026-09-13/branchseed-judge-fusion-windows-x64.zip)
 - [Source-only judge ZIP](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-judge-fusion-2026-09-13/branchseed-judge-fusion-source.zip)
-- [Checksums and package validation](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-judge-fusion-2026-09-13)
+- [Separate predictions and verification evidence](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-judge-fusion-2026-09-13/branchseed-judge-fusion-evidence.zip)
+- [Package validation and measured runtime](VERIFICATION.md)
+- [Release assets and checksums](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-judge-fusion-2026-09-13)
 - [Explorer demo instructions](../DEMO_GUIDE.md)
 
 The judge needs no Git clone, Git LFS, Node/npm, frontend, visualization
 dependencies, research frameworks or training data. Python and the actual CT /
 parent-mask pair are supplied separately.
+
+The source ZIP is approximately **31 KB**; the offline Windows ZIP is
+approximately **90.7 MB**, mostly scientific-library wheels. Matching
+development predictions, three visual checks and resource measurements are
+provided as a separate evidence asset on the release page.
 
 ## Repository layout
 

@@ -2,6 +2,10 @@
 
 Restored at the user's request on 2026-09-13. The five-case CLI/batch replay exactly reproduces the historical `2a498a4` predictions: **14 TP / 4 FP / 5 FN, F1 0.75676**, precision 77.78%, recall 73.68%, count MAE 1.8 at 3 mm. This is a selected development operating point on five reused, AI-assisted and potentially incomplete references.
 
+The [standalone judge package](application/README.md) ships this workflow and
+its bundled model separately from the website, with a ten-wheel Windows
+runtime. [Judge installation and run instructions](application/START_HERE.md).
+
 ## What runs
 
 `run.py`, `batch.py`, `find_daughter_branches()` and normal Explorer use `pipeline.run_pipeline()`:

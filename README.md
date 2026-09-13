@@ -7,7 +7,8 @@ Detect direct daughter arteries from a CT volume and a supplied parent-aorta mas
 **Judges: [download the standalone fusion application](application/README.md).**
 The Windows offline ZIP includes only inference code, its small bundled model
 and numeric runtime wheels. No website, Node/npm, matplotlib, training framework
-or repository clone is needed. [Exact installation and run commands](application/START_HERE.md).
+or repository clone is needed. [Exact installation and run commands](application/START_HERE.md)
+· [Package validation and runtime measurements](application/VERIFICATION.md).
 
 ![Branchseed Explorer: recorded interface from the earlier release.](docs/media/branchseed-cover.png)
 

@@ -41,10 +41,11 @@ Test the final video link while signed out; it must not request access.
 
 The Toralis brief additionally requests source, dependencies, setup/run
 commands, predictions for the development set and visual checks for at least
-three cases. The technical ZIP contains the finalized strict implementation,
-25 prediction JSONs, three checks, built Explorer, Windows x64/Python 3.13
-wheels and verification receipts. Keep that bundle available even if Devpost
-collects only links. Ask the track organizer for any separate upload location.
+three cases. Use the selected **judge-fusion** application ZIP for inference
+and its separate evidence download for matching predictions, visual checks
+and verification receipts. The older full ZIP contains strict outputs and is
+retained for the historical presentation. Ask the track organizer for any
+separate upload location.
 
 ## 2. Project name, elevator pitch and short description
 
