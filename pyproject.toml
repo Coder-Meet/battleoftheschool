@@ -17,7 +17,7 @@ files = [
     "train_trees.py", "patch_learning.py", "patch_inference.py", "research_corpus.py",
     "research_validation.py", "research_run.py", "research_resources.py", "research_reproduce.py",
     "review_analytics.py",
-    "final_evaluation.py",
+    "final_evaluation.py", "pipeline.py",
 ]
 
 [tool.pytest.ini_options]

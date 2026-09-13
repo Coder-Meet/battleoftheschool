@@ -8,8 +8,9 @@ volume and writes one prediction JSON per case.
 CLI contract (required by the challenge spec):
     python run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz --output prediction.json
 
-The deterministic detector uses adaptive CT intensity, multiscale tubularity,
-wall contact components and physical proximal paths.
+The default pipeline scores strict and review detector proposals with the bundled
+logistic model at 0.15, then merges retained origins with strict-first priority.
+Use --pipeline strict for the classical detector without the bundled filter.
 """
 
 import argparse
@@ -19,9 +20,9 @@ import sys
 
 import SimpleITK as sitk
 
-from detector import DetectorConfig, detect
-from learning import CandidateModel, filter_detection
+from detector import DetectorConfig
 from nifti_io import read_nifti
+from pipeline import add_pipeline_arguments, run_pipeline
 
 
 def parse_args() -> argparse.Namespace:
@@ -37,7 +38,7 @@ def parse_args() -> argparse.Namespace:
         help="Case identifier to embed in the output JSON. Defaults to the image filename stem.",
     )
     parser.add_argument("--diagnostics", help="Optional JSON path for timings, paths and evidence.")
-    parser.add_argument("--candidate-model", type=Path, help="Optional model trained from labelled candidate features.")
+    add_pipeline_arguments(parser)
     parser.add_argument(
         "--minimum-radius-mm", type=float, default=0.7,
         help="Minimum tracing/seed lumen radius; not the organizer's minimum origin size.",
@@ -67,7 +68,8 @@ def voxel_to_physical(image: sitk.Image, index_xyz) -> tuple:
 
 
 def find_daughter_branches(image: sitk.Image, aorta_mask: sitk.Image) -> list:
-    return [branch.prediction() for branch in detect(image, aorta_mask).branches]
+    result, _ = run_pipeline(image, aorta_mask)
+    return [branch.prediction() for branch in result.branches]
 
 
 def build_output(case_id: str, daughters: list) -> dict:
@@ -92,14 +94,11 @@ def main() -> int:
             image_path.parent.name if image_path.parent.name.startswith("subject")
             else image_path.name.removesuffix(".gz").removesuffix(".nii")
         )
-        result = detect(image, aorta_mask, DetectorConfig(
+        result, workflow_diagnostics = run_pipeline(image, aorta_mask, DetectorConfig(
             minimum_radius_mm=args.minimum_radius_mm, spacing_mm=args.spacing_mm,
             minimum_origin_diameter_mm=args.minimum_origin_diameter_mm,
             parallel_clearance_mm=args.parallel_clearance_mm,
-        ))
-        model_diagnostics = None
-        if args.candidate_model:
-            model_diagnostics = filter_detection(result, CandidateModel.load(args.candidate_model))
+        ), workflow=args.pipeline, model_path=args.candidate_model, threshold=args.candidate_threshold)
         output = Path(args.output)
         output.parent.mkdir(parents=True, exist_ok=True)
         output.write_text(json.dumps(result.prediction(case_id), indent=2, allow_nan=False) + "\n")
@@ -107,8 +106,7 @@ def main() -> int:
             diagnostics = Path(args.diagnostics)
             diagnostics.parent.mkdir(parents=True, exist_ok=True)
             payload = result.diagnostics()
-            if model_diagnostics is not None:
-                payload["candidate_model"] = model_diagnostics
+            payload["workflow"] = workflow_diagnostics
             diagnostics.write_text(json.dumps(payload, indent=2, allow_nan=False) + "\n")
     except (OSError, RuntimeError, ValueError, KeyError, TypeError) as error:
         print(f"Branchseed: {error}", file=sys.stderr)

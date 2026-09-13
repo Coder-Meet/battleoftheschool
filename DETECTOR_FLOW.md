@@ -1,6 +1,8 @@
 # Detector flow and the voxel-size-adaptive blood cutoff
 
-Written 13 September 2026 for the production detector in `detector.py`.
+Written 13 September 2026 for the classical proposal detector in `detector.py`.
+
+**Production workflow update:** `pipeline.py` now runs strict and review passes, scores each with the bundled synthetic logistic at 0.15, then merges retained candidates with strict-first priority. Both production passes apply the 2 mm origin policy. CLI, batch and normal Explorer share this default; raw annotation mode remains unfiltered. See [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md). The strict-only measurements below remain useful baseline evidence.
 Read this before `STEVEN_ALGORITHM_REVIEW.md`; it is shorter and reflects the
 current default. All scores below are local one-to-one ostium matches against
 the judge-approved five-case references (`labels/organizer-v1/references`),
@@ -45,9 +47,10 @@ flowchart LR
     F --> G[Trace 10 mm outward, connect back to wall]
     G --> H[Rules: 5 mm path, ostium connected, radius, 2 mm origin, tube score, duplicates]
     H --> I[Ostium, seed at 5 mm, radius, direction]
-    I --> J{--candidate-model?}
-    J -- no --> K[prediction.json]
-    J -- yes --> L[Logistic score per branch, keep >= threshold] --> K
+    I --> J[Strict and review proposals scored separately]
+    J --> L[Bundled logistic: keep score >= 0.15]
+    L --> M[Merge survivors, strict first, 3 mm]
+    M --> K[prediction.json]
 ```
 
 Stage detail, with the function that implements it:
@@ -73,9 +76,7 @@ Stage detail, with the function that implements it:
    ostium-to-seed chord under 3.5 mm, seed radius outside 0.7 to 8 mm, measured
    origin diameter plus one native voxel under 2 mm, mean tube score under 0.06.
    Merge two traces that share an opening or a trunk.
-5. **Optional filter** (`learning.filter_detection`, `run.py --candidate-model`).
-   Logistic score from 13 geometry and context features; keep score >= model
-   threshold. Off in the required submission command.
+5. **Default score-before-merge workflow** (`pipeline.run_pipeline`). Run strict and review passes; score all completed proposals using the versioned 13-feature synthetic logistic, retain scores >= 0.15, then merge survivors within 3 mm with strict-first priority. Both passes use the final 2 mm origin rule. `--pipeline strict` selects the previous unfiltered baseline.
 
 The loose review profile (`DetectorConfig.review()`) widens the shell to 6 mm,
 lowers tube-score floors, allows 35% non-blood in the wall link, up to six

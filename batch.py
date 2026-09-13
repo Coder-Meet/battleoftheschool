@@ -7,8 +7,8 @@ from time import perf_counter
 
 import SimpleITK as sitk
 
-from detector import detect
 from nifti_io import read_nifti
+from pipeline import add_pipeline_arguments, run_pipeline
 
 
 def main() -> int:
@@ -16,6 +16,7 @@ def main() -> int:
     parser.add_argument("--data-root", type=Path, default=Path("data"))
     parser.add_argument("--output-dir", type=Path, default=Path("predictions"))
     parser.add_argument("--cases", nargs="*", help="Optional subset of case directory names.")
+    add_pipeline_arguments(parser)
     args = parser.parse_args()
     if not args.data_root.is_dir():
         parser.error("The data directory does not exist.")
@@ -36,14 +37,17 @@ def main() -> int:
             images, masks = list(directory.glob("orig*.nii*")), list(directory.glob("mask*.nii*"))
             if len(images) != 1 or len(masks) != 1:
                 raise ValueError("Expected exactly one CT and one mask.")
-            result = detect(read_nifti(str(images[0])), read_nifti(str(masks[0])))
+            result, workflow = run_pipeline(
+                read_nifti(str(images[0])), read_nifti(str(masks[0])),
+                workflow=args.pipeline, model_path=args.candidate_model, threshold=args.candidate_threshold,
+            )
             (args.output_dir / f"{directory.name}.json").write_text(
                 json.dumps(result.prediction(directory.name), indent=2, allow_nan=False) + "\n"
             )
             diagnostics = args.output_dir / "diagnostics"
             diagnostics.mkdir(exist_ok=True)
             (diagnostics / f"{directory.name}.json").write_text(
-                json.dumps(result.diagnostics(), indent=2, allow_nan=False) + "\n"
+                json.dumps({**result.diagnostics(), "workflow": workflow}, indent=2, allow_nan=False) + "\n"
             )
             record = {
                 "case_id": directory.name,
@@ -52,7 +56,7 @@ def main() -> int:
                 "detection_s": result.timings["total_s"],
                 "end_to_end_s": round(perf_counter() - start, 3),
             }
-        except (ValueError, RuntimeError, OSError) as error:
+        except (ValueError, RuntimeError, OSError, KeyError, TypeError) as error:
             record = {"case_id": directory.name, "status": "failed", "error": str(error)}
         records.append(record)
         print(json.dumps(record), flush=True)

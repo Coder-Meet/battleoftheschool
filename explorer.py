@@ -18,9 +18,10 @@ import SimpleITK as sitk
 from scipy import ndimage as ndi
 from skimage.measure import marching_cubes
 
-from detector import DetectorConfig, detect, detect_pool, parent_curve, physical_points, prepare_roi
+from detector import DetectorConfig, detect_pool, parent_curve, physical_points, prepare_roi
 from learning import FEATURE_NAMES, features as candidate_features
 from nifti_io import read_nifti
+from pipeline import DEFAULT_PIPELINE, add_pipeline_arguments, run_pipeline
 
 ROOT = Path(__file__).resolve().parent
 
@@ -33,12 +34,19 @@ class CaseData:
 
 
 def build_case(
-    image_path: Path, mask_path: Path, case_id: str, config: DetectorConfig | None = None
+    image_path: Path, mask_path: Path, case_id: str, config: DetectorConfig | None = None, *,
+    workflow: str = DEFAULT_PIPELINE, model_path: Path | None = None, threshold: float | None = None,
 ) -> CaseData:
     config = config or DetectorConfig()
     image = read_nifti(str(image_path))
     mask = read_nifti(str(mask_path))
-    result = detect_pool(image, mask, config) if config.profile == "review" else detect(image, mask, config)
+    if config.profile == "review":
+        result = detect_pool(image, mask, config)
+        workflow_diagnostics = {"name": "unfiltered_review_pool"}
+    else:
+        result, workflow_diagnostics = run_pipeline(
+            image, mask, config, workflow=workflow, model_path=model_path, threshold=threshold,
+        )
     if not np.any(sitk.GetArrayViewFromImage(mask) > 0):
         raise ValueError("This mask is empty; the CLI can export an empty prediction, but there is no aorta to view.")
     grid, parent = prepare_roi(image, mask, config)
@@ -62,19 +70,22 @@ def build_case(
         "coverage_mm": round(float(np.linalg.norm(np.diff(centerline, axis=0), axis=1).sum()), 1),
         "mesh": {"vertices": np.round(vertices, 3).ravel().tolist(), "faces": faces.ravel().tolist()},
         "centerline": np.round(centerline, 3).tolist(),
-        "profile": config.profile,
+        "profile": "review" if config.profile == "review" else workflow,
         "feature_names": FEATURE_NAMES,
         "branches": [{**asdict(b), "feature_vector": candidate_features(b)} for b in result.branches],
         "prediction": result.prediction(case_id),
-        "diagnostics": result.diagnostics(),
+        "diagnostics": {**result.diagnostics(), "workflow": workflow_diagnostics},
     }
     return CaseData(metadata, ct.tobytes(), parent.astype(np.uint8).tobytes())
 
 
 class CaseStore:
-    def __init__(self, data_root: Path, config: DetectorConfig | None = None):
+    def __init__(self, data_root: Path, config: DetectorConfig | None = None, *,
+                 workflow: str = DEFAULT_PIPELINE, model_path: Path | None = None,
+                 threshold: float | None = None):
         self.data_root = data_root
         self.config = config or DetectorConfig()
+        self.workflow, self.model_path, self.threshold = workflow, model_path, threshold
         self.lock = Lock()
         self.executor = ThreadPoolExecutor(max_workers=1)
         self.cache: OrderedDict[str, CaseData] = OrderedDict()
@@ -127,7 +138,8 @@ class CaseStore:
         with self.lock:
             self.jobs[case_id] = {"status": "running"}
         try:
-            data = build_case(*paths, case_id, self.config)
+            data = build_case(*paths, case_id, self.config, workflow=self.workflow,
+                              model_path=self.model_path, threshold=self.threshold)
             with self.lock:
                 self.cache[case_id] = data
                 self.cache.move_to_end(case_id)
@@ -187,7 +199,9 @@ def make_handler(store: CaseStore, static_root: Path) -> type[BaseHTTPRequestHan
         def do_GET(self) -> None:
             path = urlparse(self.path).path
             if path == "/api/health":
-                self.send_json({"status": "ok", "profile": store.config.profile})
+                self.send_json({"status": "ok", "profile": (
+                    "review" if store.config.profile == "review" else store.workflow
+                )})
                 return
             if path == "/api/cases":
                 self.send_json(store.list_cases())
@@ -240,13 +254,18 @@ def main() -> None:
         "--review-mode", action="store_true",
         help="Run the loose review-profile detector so weak candidates reach human review.",
     )
+    add_pipeline_arguments(parser)
     args = parser.parse_args()
+    if args.review_mode and (args.candidate_model or args.candidate_threshold is not None):
+        parser.error("Review mode is unfiltered; model/threshold overrides apply to detection mode only.")
     if not args.data_root.is_dir():
         parser.error("The data directory does not exist.")
     sitk.ProcessObject.SetGlobalDefaultNumberOfThreads(4)
-    store = CaseStore(args.data_root, DetectorConfig.review() if args.review_mode else None)
+    store = CaseStore(args.data_root, DetectorConfig.review() if args.review_mode else None,
+                      workflow=args.pipeline, model_path=args.candidate_model, threshold=args.candidate_threshold)
     server = ThreadingHTTPServer((args.host, args.port), make_handler(store, ROOT / "web" / "dist"))
-    print(f"Aorta Explorer listening on port {args.port} ({store.config.profile} detector profile)", flush=True)
+    active = "unfiltered review pool" if args.review_mode else args.pipeline
+    print(f"Aorta Explorer listening on port {args.port} ({active})", flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:
