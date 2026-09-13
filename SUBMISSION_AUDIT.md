@@ -32,8 +32,10 @@ not an implementation of this origin-size rule.
 | Daughter discovery/count carries the main accuracy emphasis; seed/radius/direction carry less | Prioritize missed and extra openings, report per-case count error alongside one-to-one TP/FP/FN, and retain valid physical geometry. Correct count alone does not prove correct branches. |
 | Presentation is 5% | Keep the existing demonstration usable and direct remaining engineering effort toward discovery and runtime. The revised complete numerical weighting has not been supplied. |
 
-The original weight table and historical results below remain records of the
-earlier brief. They are not an inferred replacement scoring formula. Frozen
+The [live challenge document](https://docs.google.com/document/d/1oRb2R9pauvsC-9hDIfr23ojLx90JpCt0jVZjCD5l5Cg/edit),
+retrieved after the 2 mm update, still shows discovery/localization/instance/
+compute/reproducibility at 45/25/15/10/5%. Record the verbal presentation 5%
+separately until the organizer reconciles the scoring formula. Frozen
 synthetic cohorts retain their preregistered eligibility and source hashes;
 evaluate a changed eligibility policy separately instead of relabelling an
 inspected holdout.

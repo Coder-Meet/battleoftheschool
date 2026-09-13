@@ -38,7 +38,10 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--diagnostics", help="Optional JSON path for timings, paths and evidence.")
     parser.add_argument("--candidate-model", type=Path, help="Optional model trained from labelled candidate features.")
-    parser.add_argument("--minimum-radius-mm", type=float, default=0.7)
+    parser.add_argument(
+        "--minimum-radius-mm", type=float, default=0.7,
+        help="Minimum tracing/seed lumen radius; not the organizer's minimum origin size.",
+    )
     parser.add_argument("--spacing-mm", type=float, default=1.0, help="Isotropic working spacing; finer grids cost more CPU.")
     parser.add_argument("--threads", type=int, default=4, help="SimpleITK CPU threads (default: 4).")
     parser.add_argument(

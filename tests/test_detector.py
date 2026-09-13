@@ -147,6 +147,32 @@ def test_nearby_independent_openings_remain_separate():
     assert abs(result.branches[1].ostium_xyz_mm[2] - result.branches[0].ostium_xyz_mm[2]) > 5
 
 
+@pytest.mark.parametrize("heights", [(20, 28), (20, 39)])
+def test_one_returning_vessel_has_two_distinct_aortic_openings(heights):
+    image, mask = phantom(branches=heights)
+    data = sitk.GetArrayFromImage(image)
+    z, y, x = np.indices(data.shape)
+    data[((x - 47) ** 2 + (y - 25) ** 2 <= 2.5**2) & (z >= heights[0]) & (z <= heights[1])] = 330
+    external = (data > 250) & ~sitk.GetArrayFromImage(mask).astype(bool)
+    assert ndi.label(external, structure=np.ones((3, 3, 3)))[1] == 1
+    image = sitk.GetImageFromArray(data)
+    image.CopyInformation(mask)
+    result = detect(image, mask)
+    assert len(result.branches) == 2
+    for branch, height in zip(result.branches, heights):
+        assert np.linalg.norm(np.asarray(branch.ostium_xyz_mm) - (33, 25, height)) < 2
+        assert branch.direction_xyz[0] > 0.9
+
+
+def test_overlapping_openings_keep_a_valid_single_or_double_representation():
+    image, mask = phantom(branches=(24, 28))
+    result = detect(image, mask)
+    assert 1 <= len(result.branches) <= 2
+    for branch in result.branches:
+        assert 22 <= branch.ostium_xyz_mm[2] <= 30
+        assert branch.direction_xyz[0] > 0.9
+
+
 def test_second_generation_vessel_is_not_a_second_aortic_origin():
     image, mask = phantom(branches=(20,))
     data = sitk.GetArrayFromImage(image)
