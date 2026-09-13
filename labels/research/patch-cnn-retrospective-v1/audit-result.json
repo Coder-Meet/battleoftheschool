@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "freeze_commit": "a8bfefb",
+  "all_frozen_hashes_unchanged": true,
+  "synthetic_train_prefix_identical": true,
+  "validation_arrays_identical": true,
+  "test_npz_identical": true,
+  "all_partition_and_group_checks_passed": true,
+  "mixed_train_shape": [
+    352,
+    12,
+    32,
+    32
+  ],
+  "models": {
+    "synthetic": {
+      "model_onnx_sha256": "a562a0f4027b028eeda9c8e1af9c5b792d29cbc31d586d9c0814f32573a8353d",
+      "test_report_sha256": "7c77fac9a6ea08d83205c42b950011eb5c981b239d3bfbf47d4fbec6d9d59a5a",
+      "parameter_count": 34465,
+      "reference_test": {
+        "pool": {
+          "true_positives": 63,
+          "false_positives": 4,
+          "false_negatives": 7
+        },
+        "strict": {
+          "true_positives": 61,
+          "false_positives": 1,
+          "false_negatives": 9
+        },
+        "cnn": {
+          "true_positives": 59,
+          "false_positives": 2,
+          "false_negatives": 11
+        },
+        "tree": {
+          "true_positives": 63,
+          "false_positives": 0,
+          "false_negatives": 7
+        },
+        "blend": {
+          "true_positives": 62,
+          "false_positives": 0,
+          "false_negatives": 8
+        }
+      },
+      "cnn_lost_true_branches": 4,
+      "blend_lost_true_branches": 1,
+      "promotion": "rejected"
+    },
+    "mixed": {
+      "model_onnx_sha256": "8787a20a9738f12c4016c1b7d61874836974e55d759cf17b45aa61eb18d4096f",
+      "test_report_sha256": "b9ac8648509621479da9157554000003a5904451b8929f46056c3b496ad316ba",
+      "parameter_count": 34465,
+      "reference_test": {
+        "pool": {
+          "true_positives": 63,
+          "false_positives": 4,
+          "false_negatives": 7
+        },
+        "strict": {
+          "true_positives": 61,
+          "false_positives": 1,
+          "false_negatives": 9
+        },
+        "cnn": {
+          "true_positives": 58,
+          "false_positives": 2,
+          "false_negatives": 12
+        },
+        "tree": {
+          "true_positives": 63,
+          "false_positives": 0,
+          "false_negatives": 7
+        },
+        "blend": {
+          "true_positives": 62,
+          "false_positives": 0,
+          "false_negatives": 8
+        }
+      },
+      "cnn_lost_true_branches": 5,
+      "blend_lost_true_branches": 1,
+      "promotion": "rejected"
+    }
+  },
+  "retrospective_test_reuse": true,
+  "production_promotion": false,
+  "clinical_accuracy_claim": false,
+  "windows_performance_verified": false,
+  "current_source_sha256": {
+    "patch_learning.py": "aa63a79a10c31702eda7115e478c10dbbfe96df753a2852324bd8f8e703a2250",
+    "patch_inference.py": "e539d4f8e080a4a219d9c49dda247e2576d19c8269daf638d031116c43c81188",
+    "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+    "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a"
+  },
+  "frozen_metadata_erratum": "Mixed review aggregate label_source was inherited from synthetic parent; row labeller, mixed manifest source and mixed_provenance identify historical pseudo labels. Frozen metadata was not changed; future preparation corrects the aggregate header."
+}

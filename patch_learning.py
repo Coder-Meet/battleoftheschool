@@ -598,7 +598,8 @@ Only the historical real training cases are considered; no labels are changed.
     manifest["source"] = "analytic_synthetic_geometry_and_historical_candidate_pseudo"
     write_json(output / "manifest.json", manifest)
     manifest_hash = file_sha256(output / "manifest.json")
-    all_reviews.update({"manifest_sha256": manifest_hash, "mixed_provenance": audit})
+    all_reviews.update({"manifest_sha256": manifest_hash, "mixed_provenance": audit,
+                        "label_source": manifest["source"]})
     train.patches = np.concatenate(arrays).astype(np.float32)
     for partition in (train, validation):
         partition.metadata["manifest_sha256"] = manifest_hash
