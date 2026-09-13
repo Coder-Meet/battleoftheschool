@@ -1,0 +1,46 @@
+{
+  "snapshot_utc": "2026-09-13T02:16:07Z",
+  "source_repository": "https://github.com/Coder-Meet/battleoftheschool",
+  "branch": "main",
+  "worker_checkpoint_observed": "39db197b2687ecd344ad755a9cd8ac06a3408878",
+  "workflow_run_id": "wfr-2df2f65092404cd9a38c48fbea5496b8",
+  "archives": [
+    {
+      "filename": "local-outputs.tar.gz",
+      "url": "https://app.devin.ai/attachments/d5248c34-7550-46d7-8786-c2560d9c7e50/local-outputs.tar.gz",
+      "bytes": 384117813,
+      "sha256": "1afab354e89c7dcca2b179403d507c7686588f9aa1536698049140b65b964b1e",
+      "extract_relative_to": "repository root",
+      "includes": ["outputs/", "predictions/"],
+      "integrity_check": "gzip -t passed"
+    },
+    {
+      "filename": "research-and-submission-assets.tar.gz",
+      "url": "https://app.devin.ai/attachments/68c07258-e74c-46f2-9d77-a7b83e436b4c/research-and-submission-assets.tar.gz",
+      "bytes": 487440537,
+      "sha256": "8848daea82f0f77a254a870243f5818ddb5bb79b615427c8762686107a1cfaae",
+      "extract_relative_to": "separate recovery directory, preserving relative original-home paths",
+      "includes": [
+        "contrast-audit/", "parallel-audit/", "paper-audit/", "steven-audit/",
+        "merge-audit/", "refs-dryrun/", "refactor-check/", "hard-real-review/",
+        "hard-real-review-v2/", "hard-synthetic-731927/",
+        "branchseed-candidate-comparison/", "branchseed-development-submission/",
+        "windows-wheelhouse/", "organizer-brief/", "attachments/",
+        "presentation-validation/", "steven-review-office/"
+      ],
+      "integrity_check": "gzip -t passed"
+    }
+  ],
+  "excluded": [
+    "credentials, environment secret files, browser profiles",
+    "virtual environments, node_modules, Python caches, .git",
+    "25-case original dataset duplicated from Git LFS",
+    "uncommitted future changes on still-running worker machines"
+  ],
+  "continuation": "Pull latest main and read CURSOR_HANDOFF.md plus every labels/final-eval/*/HANDOFF.md. All five workers have pushed checkpoints; their later commits supersede this static snapshot. Do not duplicate a live worker.",
+  "data_recovery": {
+    "original_dataset": "git lfs pull",
+    "five_case_release": "https://drive.google.com/drive/folders/1GoIKqCKIMhtqzHNwLgtNkBhmxT_96ZR6",
+    "release_copy_in_archive": "attachments/organizer-release-2026-09-13/"
+  }
+}

@@ -67,6 +67,31 @@ Those files, not this initial static snapshot, record its latest completed runs.
 Workers own separate files and must not change the production detector, root
 requirements, `pyproject.toml`, or one another's modules.
 
+### Verified checkpoint update — 2026-09-13 02:16 UTC
+
+All five workers have pushed source/results checkpoints to main. The latest
+pulled checkpoint for this update is `39db197b2687ecd344ad755a9cd8ac06a3408878`.
+The independent audit and tabular comparison have finished. Deterministic, CNN
+and topology workers remain active; selection has not started.
+
+- **Audit complete:** structural checks passed; limitations and generic
+  coordinate-normalizer issues are recorded separately below.
+- **Tabular complete:** 106 variants, 530 prediction files, no scoring failures,
+  four explicitly excluded old tree artifacts. Tabular-family held-out selection
+  has F1 0.551724 at 3 mm; the all-five development winner has F1 0.620690. These
+  are different estimates; fold choices are unstable.
+- **Deterministic checkpoint:** frozen 26-extraction matrix, resumable
+  `checkpoint.json`, and completed case records are committed.
+- **CNN checkpoint:** current model extraction finished for both proposal pools;
+  historical-model replay remains in progress.
+- **Topology checkpoint:** nine recovery variants completed all five cases;
+  synthetic regressions and interpretation remain pending. None beats strict
+  aggregate 3 mm F1. No recovery change is promoted.
+
+Ruff over the current repository and the configured 29-file mypy check passed at
+this checkpoint. A complete final-integrated pytest run remains for the next stage.
+Future family handoffs supersede this snapshot.
+
 For another Devin session:
 
 1. Inspect the existing run with `get_workflow_output(run_id=..., timeout_secs=1)`.
@@ -267,6 +292,15 @@ Re-run the selected configuration; do not transfer these timings to a new model.
 
 ## 7. Work still required
 
+Known audit findings for the next agent: the generic `score_references.py`
+normalizer does not rotate/scale supplied voxel-space directions and does not
+automatically convert a RAS marker into LPS. The released references are already
+verified LPS, so their present scores are unaffected. Its direct aggregate omits
+missing prediction files; use the stricter complete-case shared helper for this
+matrix. All NIfTI spatial-unit tags are unspecified; mm units come from the
+release documentation. See `labels/final-eval/audit/report.json` for controls and
+evidence. Do not silently rewrite release headers or misstate these as fixed.
+
 1. Pull all worker checkpoints and inspect their family handoffs and blockers.
 2. Finish every declared supported comparison, or record a precise incompatibility
    and reproduction path. Never bypass source-contract mismatches.
@@ -287,6 +321,17 @@ commands, force pushes, amend, skipped hooks, or blanket `git add .`. Stage
 explicit files. Never commit secrets, venvs, node_modules or new raw CT copies.
 
 ## 8. Recovery assets and previous deliverables
+
+Durable downloads (Devin login required; download in your browser before giving
+them to Cursor):
+
+- [Local generated outputs — 366 MiB](https://app.devin.ai/attachments/d5248c34-7550-46d7-8786-c2560d9c7e50/local-outputs.tar.gz)
+- [Research, release and submission assets — 465 MiB](https://app.devin.ai/attachments/68c07258-e74c-46f2-9d77-a7b83e436b4c/research-and-submission-assets.tar.gz)
+
+`HANDOFF_RECOVERY.json` records exact sizes and SHA-256 hashes. Both gzip streams
+were verified. Extract the first at the repository root. Extract the second into
+a separate recovery directory; its relative paths reflect the original home
+directory. Do not overwrite current source with older bundled submission copies.
 
 The handoff message supplies recovery archives for local outputs and selected
 outside-repository research artifacts. They supplement Git; they do not replace
