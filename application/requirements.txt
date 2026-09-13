@@ -1,0 +1,13 @@
+# Core inference libraries (same versions as the validated checkout).
+SimpleITK==2.5.6
+numpy==2.5.3
+scikit-image==0.26.0
+scipy==1.16.2
+
+# Required transitive dependencies, frozen from the existing runtime wheelhouse.
+imageio==2.37.4
+lazy-loader==0.5
+networkx==3.6.1
+packaging==26.3
+pillow==12.3.0
+tifffile==2026.9.9

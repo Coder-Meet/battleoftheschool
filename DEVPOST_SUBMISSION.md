@@ -28,7 +28,7 @@ Best Slide Aesthetics side-quest.
 | Built with | Copy section 4; distinguish runtime from research tools |
 | Demo video | Upload the [40-second showcase](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-showcase.mp4) to YouTube/Vimeo, or use a public Drive link if accepted by the form |
 | Slides | Link the [five-minute presentation kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-final-presentation.zip); upload its PDF if the form accepts files |
-| Technical deliverables | [Final strict submission ZIP](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-final-submission.zip) |
+| Technical deliverables | [Standalone fusion judge download](application/README.md): selected inference code/model and offline Windows wheels, without the website. Do not substitute the older strict ZIP. |
 | Cover and gallery | Images and captions in section 5 |
 | Team | Add every teammate's real Devpost account; complete your team name and school |
 

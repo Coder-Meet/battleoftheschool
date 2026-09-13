@@ -2,9 +2,14 @@
 
 ## Start here
 
+**For judging, use the [standalone fusion download](application/README.md) and
+[minimal installation guide](application/START_HERE.md).** It includes the
+selected F1 0.75676 workflow, its bundled model and only inference dependencies.
+Judges do not need to install or run the website.
+
 **The current checkout now defaults to score-before-merge fusion, F1 0.75676 on five reused references.** See [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md) for exact commands and evidence. Include `pipeline.py` and `models/production-v1/logistic.json` when packaging this version.
 
-The download bundles, measured resources, presentation and evaluation numbers below describe the **previous strict release**. Downloading those ZIPs will not restore fusion. Rebuild packages from this checkout and remeasure resources before treating them as current. Use `--pipeline strict` in this checkout to reproduce that baseline.
+The older final-release bundles, measured resources, presentation and evaluation numbers below describe **strict**. Downloading those ZIPs will not restore fusion. The separately named **judge-fusion** package contains the selected workflow; its verification receipt reports its own resource measurements. Use `--pipeline strict` in this checkout to reproduce the older baseline.
 
 For the public entry, use the [ready-to-paste Devpost submission](DEVPOST_SUBMISSION.md).
 For rehearsal, use the [complete presenter briefing and judge Q&A](PRESENTER_BRIEFING.md).
@@ -18,7 +23,9 @@ updated presentation kit. The earlier September 12 deck is historical.
 
 | Download | Purpose |
 |---|---|
-| `branchseed-final-submission.zip` | Current inference source, 25 prediction JSONs, three visual checks, built website and Windows x64 runtime wheels |
+| `branchseed-judge-fusion-windows-x64.zip` | Selected fusion inference and Windows offline runtime only; no website |
+| `branchseed-judge-fusion-source.zip` | Same selected fusion code/model without platform wheels |
+| `branchseed-final-submission.zip` | Historical strict source, predictions, visual checks and built website for the earlier demo |
 | `branchseed-final-presentation.zip` | Updated five-minute live-demo deck, editable PowerPoint, PDF, speaker script and CT evidence; no video |
 | `branchseed-showcase.mp4` | Separate edited product showcase for Drive and sharing |
 | `branchseed-film.mp4` | Unchanged original 60-second UI film, preserved separately |

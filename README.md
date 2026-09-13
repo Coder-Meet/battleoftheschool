@@ -4,11 +4,16 @@ Detect direct daughter arteries from a CT volume and a supplied parent-aorta mas
 
 **Current default:** strict + review proposals at native contrast scale **0.9**, bundled logistic filtering at **0.15**, then strict-first merging within **3 mm**. CLI, batch and normal Explorer use this restored workflow. Fresh five-reference replay gives **F1 0.75676 (14 TP / 4 FP / 5 FN)**. Use `--pipeline strict` for the previous 1.2 baseline.
 
+**Judges: [download the standalone fusion application](application/README.md).**
+The Windows offline ZIP includes only inference code, its small bundled model
+and numeric runtime wheels. No website, Node/npm, matplotlib, training framework
+or repository clone is needed. [Exact installation and run commands](application/START_HERE.md).
+
 ![Branchseed Explorer: recorded interface from the earlier release.](docs/media/branchseed-cover.png)
 
 [Watch the showcase](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-showcase.mp4) · [View on Google Drive](https://drive.google.com/file/d/1JvuW4ZvMwT6x4_I_VQ8jplEnPNiR_hV5/view?usp=sharing) · [Devpost copy](DEVPOST_SUBMISSION.md) · [Presenter briefing](PRESENTER_BRIEFING.md)
 
-The showcase, [gallery and chart assets](docs/media/README.md), presenter material and published download kits describe the earlier strict release. Recorded counts, scores and runtime figures are historical; current fusion settings and validation are below. The new default has not been repackaged into those download kits.
+The showcase, [gallery and chart assets](docs/media/README.md), presenter material and earlier final-release kits describe strict. Recorded counts, scores and runtime figures are historical. Use the separately named **judge-fusion** package for the selected fusion submission; current settings and validation are below.
 
 
 | Start here | Purpose |
