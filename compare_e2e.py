@@ -15,8 +15,10 @@ import argparse
 from datetime import datetime, timezone
 import json
 from pathlib import Path
-import resource
 import sys
+
+if sys.platform != "win32":
+    import resource
 
 import SimpleITK as sitk
 
@@ -29,6 +31,12 @@ from score_references import score
 
 PARTITION_ORDER = ("test", "validation", "train", "unsplit")
 PROFILES = ("strict", "review", "pool")
+
+
+def peak_rss_mib() -> float | None:
+    if sys.platform != "win32":
+        return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / (1024 * 1024 if sys.platform == "darwin" else 1024)
+    return None
 
 
 def run_profile(image, mask, profile: str):
@@ -62,19 +70,20 @@ def run_cases(
         if paths is None:
             print(f"{case_id}: skipped (missing or unresolved scan files)", flush=True)
             continue
-        before = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        before = peak_rss_mib()
         result = run_profile(read_nifti(str(paths[0])), read_nifti(str(paths[1])), profile)
         plain = result.prediction(case_id)
         (plain_dir / f"{case_id}.json").write_text(json.dumps(plain, indent=2, allow_nan=False) + "\n")
         decisions = filter_detection(result, model) if model else None
         filtered = result.prediction(case_id)
         (filtered_dir / f"{case_id}.json").write_text(json.dumps(filtered, indent=2, allow_nan=False) + "\n")
-        peak_mb = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / (1024 * 1024 if sys.platform == "darwin" else 1024)
+        peak_mb = peak_rss_mib()
         runs[case_id] = {
             "plain_daughters": len(plain["daughters"]), "filtered_daughters": len(filtered["daughters"]),
             "removed_by_filter": decisions["rejected"] if decisions else 0,
-            "detection_s": result.timings["total_s"], "peak_rss_mb_so_far": round(peak_mb, 1),
-            "rss_grew_mb": round(peak_mb - before / (1024 * 1024 if sys.platform == "darwin" else 1024), 1),
+            "detection_s": result.timings["total_s"],
+            "peak_rss_mb_so_far": round(peak_mb, 1) if peak_mb is not None else None,
+            "rss_grew_mb": round(peak_mb - before, 1) if peak_mb is not None and before is not None else None,
         }
         print(f"{case_id}: {len(plain['daughters'])} -> {len(filtered['daughters'])} daughters "
               f"({result.timings['total_s']:.1f}s)", flush=True)
@@ -122,7 +131,7 @@ def render(report: dict, tolerance: str) -> str:
             f"{row['detection_s']:>7.1f}"
         )
     lines += ["", f"mean detection {report['mean_detection_s']:.1f} s · max {report['max_detection_s']:.1f} s · "
-              f"peak RSS {report['peak_rss_mb']:.0f} MB"]
+              f"peak RSS {fmt(report['peak_rss_mb'], 0)} MiB"]
     return "\n".join(lines)
 
 
@@ -178,7 +187,10 @@ def main() -> int:
             "partitions": partitions, "cases": rows,
             "mean_detection_s": sum(r["detection_s"] for r in rows) / max(len(rows), 1),
             "max_detection_s": max((r["detection_s"] for r in rows), default=0.0),
-            "peak_rss_mb": max((r["peak_rss_mb_so_far"] for r in rows), default=0.0),
+            "peak_rss_mb": max(
+                (r["peak_rss_mb_so_far"] for r in rows if r["peak_rss_mb_so_far"] is not None), default=None,
+            ),
+            "memory_note": "Process lifetime peak RSS in MiB; null when unavailable.",
             "missing_predictions": scored["plain"]["missing_predictions"],
         }
         (args.output_dir / "comparison.json").write_text(json.dumps(report, indent=2, allow_nan=False) + "\n")
