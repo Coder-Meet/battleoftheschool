@@ -10,6 +10,7 @@ predictions in 3D and linked CT, and export measurements offline.
 Built for **Toralis Labs Healthcare · Battle of the Schools**.
 
 **[Watch the 40-second showcase](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-showcase.mp4)**
+· **[View on Google Drive](https://drive.google.com/file/d/1JvuW4ZvMwT6x4_I_VQ8jplEnPNiR_hV5/view?usp=sharing)**
 · **[Run the Explorer](DEMO_GUIDE.md)**
 · **[Download the submission](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-final-2026-09-13)**
 · **[Devpost copy](DEVPOST_SUBMISSION.md)**
