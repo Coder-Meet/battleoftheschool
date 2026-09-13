@@ -12,7 +12,7 @@ or repository clone is needed. [Exact installation and run commands](application
 
 ![Branchseed Explorer: recorded interface from the earlier release.](docs/media/branchseed-cover.png)
 
-[Watch the showcase](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-showcase.mp4) · [View on Google Drive](https://drive.google.com/file/d/1JvuW4ZvMwT6x4_I_VQ8jplEnPNiR_hV5/view?usp=sharing) · [Devpost copy](DEVPOST_SUBMISSION.md) · [Presenter briefing](PRESENTER_BRIEFING.md)
+[Watch the showcase](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-showcase.mp4) · [Devpost copy](DEVPOST_SUBMISSION.md) · [Presenter briefing](PRESENTER_BRIEFING.md)
 
 **[Download the complete current submission kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-submission-fusion-2026-09-13/branchseed-submission-fusion-kit.zip):** editable PPTX, PDF, five-minute speaking script, showcase video, Devpost copy and gallery. The deck, notes and charts describe the selected fusion workflow. The showcase and interface screenshots retain historical UI footage; their visible counts and timings are not current performance evidence.
 

@@ -19,12 +19,12 @@ Best Slide Aesthetics side-quest.
 | Field / deliverable | Use this |
 |---|---|
 | Project name | **Branchseed — Aorta Explorer** |
-| Tagline / elevator pitch | Copy the short pitch in section 2 |
+| Tagline / elevator pitch | Copy the short pitch in section 2; it is 138 characters and Devpost allows 140 |
 | Track | **Toralis Labs Healthcare** |
 | Public repository | https://github.com/Coder-Meet/battleoftheschool |
 | Project story | Copy section 3 |
 | Built with | Copy section 4; distinguish runtime from research tools |
-| Demo video | Upload the [40-second showcase](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-showcase.mp4) to YouTube/Vimeo, or use a public Drive link if accepted by the form |
+| Demo video | Upload the [40-second showcase](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-showcase.mp4) to YouTube, Vimeo or Youku; Devpost embeds only those hosts, so an unlisted YouTube upload is the safe choice and Google Drive links do not embed |
 | Slides | Use the [current fusion PPTX/PDF and script](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-submission-fusion-2026-09-13); upload the PDF if the form accepts files |
 | Technical deliverables | [Standalone fusion judge download](application/README.md): selected inference code/model and offline Windows wheels, without the website. Do not substitute the older strict ZIP. |
 | Cover and gallery | Images and captions in section 5 |

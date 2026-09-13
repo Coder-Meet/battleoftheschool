@@ -101,8 +101,8 @@ predictions for inspection; they do not certify each daughter as correct.
 
 Build with the [maintainer commands](README.md#rebuild), then extract the ZIP and
 use the [judge commands](START_HERE.md). Run `batch.py` against the 25 case
-directories. For the Linux network/CPU measurement, run the repository's
-`research_resources.py` around the isolated Python/batch command with:
+directories. For the Linux network/CPU measurement, use the resource wrapper
+`research_resources.py` from git history before the 2026-09-13 cleanup commit (it is no longer in the working tree) around the isolated Python/batch command:
 
 ```bash
 strace -f -e trace=%network -e inject=%network:error=ENETUNREACH \
@@ -112,5 +112,5 @@ strace -f -e trace=%network -e inject=%network:error=ENETUNREACH \
   --data-root /path/to/cases --output-dir /path/to/predictions
 ```
 
-The measurement wrapper uses `requirements-resources.txt` in the development
-environment; it is not part of the judge runtime.
+The wrapper and its `requirements-resources.txt` live in that same git history;
+neither is part of the judge runtime.

@@ -1,3 +1,5 @@
+> Historical (2026-09-12). Both narrations below describe strict-era development results and are superseded by the fusion default and the current deck notes; see [presentation/README.md](README.md).
+
 # Later robustness audit — 2026-09-12
 
 The existing deck and film preserve the earlier development evidence at
