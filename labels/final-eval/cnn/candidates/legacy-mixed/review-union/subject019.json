@@ -1,0 +1,273 @@
+{
+  "status": "success",
+  "case_id": "subject019",
+  "family": "legacy-mixed",
+  "proposals": "review-union",
+  "unfiltered_prediction": {
+    "case_id": "subject019",
+    "parent": {
+      "instance_id": "aorta"
+    },
+    "daughters": []
+  },
+  "branches": [],
+  "detector": {
+    "branches": [],
+    "timings": {
+      "prepare_s": 0.124,
+      "enhance_s": 1.476,
+      "trace_s": 0.045,
+      "total_s": 3.122,
+      "strict_s": 1.477
+    },
+    "blood_model": {
+      "median_hu": 557.0,
+      "mad_hu": 17.7912,
+      "lower_hu": 293.56,
+      "upper_hu": 677.0,
+      "background_median_hu": 76.0,
+      "background_mad_hu": 74.13,
+      "support_fraction": 0.4523076923076923,
+      "contrast_to_background_mad": 6.488601106164846
+    },
+    "candidates": 25,
+    "rejections": {
+      "short_path": 19,
+      "disconnected_ostium": 2,
+      "short_proximal_segment": 1,
+      "no_supported_5mm_path": 3,
+      "strict_only_added": 0
+    },
+    "warnings": [
+      "Experimental detector: evidence scores are not calibrated probabilities.",
+      "No daughter reference labels supplied; clinical accuracy is unmeasured."
+    ],
+    "config": {
+      "spacing_mm": 1.0,
+      "margin_mm": 20.0,
+      "shell_inner_mm": 1.5,
+      "shell_outer_mm": 6.0,
+      "cap_margin_mm": 4.0,
+      "minimum_radius_mm": 0.7,
+      "minimum_path_mm": 5.0,
+      "trace_length_mm": 10.0,
+      "vesselness_floor": 0.03,
+      "maximum_candidates": 160,
+      "shell_vesselness_floor": 0.005,
+      "connector_gap_fraction": 0.35,
+      "root_depth_mm": 2.5,
+      "blood_lower_scale": 2.0,
+      "support_contrast_fraction": 0.5,
+      "native_contrast_scale": 1.2,
+      "roots_per_contact": 6,
+      "wall_hug_penalty": 0.8,
+      "broad_contact_mm3": 1000000.0,
+      "parallel_clearance_mm": 0.0,
+      "profile": "review"
+    }
+  },
+  "strict_config": {
+    "spacing_mm": 1.0,
+    "margin_mm": 20.0,
+    "shell_inner_mm": 1.5,
+    "shell_outer_mm": 3.5,
+    "cap_margin_mm": 4.0,
+    "minimum_radius_mm": 0.7,
+    "minimum_path_mm": 5.0,
+    "trace_length_mm": 10.0,
+    "vesselness_floor": 0.06,
+    "maximum_candidates": 160,
+    "shell_vesselness_floor": 0.06,
+    "connector_gap_fraction": 0.0,
+    "root_depth_mm": 3.5,
+    "blood_lower_scale": 1.0,
+    "support_contrast_fraction": 0.5,
+    "native_contrast_scale": 1.2,
+    "roots_per_contact": 1,
+    "wall_hug_penalty": 0.0,
+    "broad_contact_mm3": 1200.0,
+    "parallel_clearance_mm": 0.0,
+    "profile": "strict"
+  },
+  "review_config": {
+    "spacing_mm": 1.0,
+    "margin_mm": 20.0,
+    "shell_inner_mm": 1.5,
+    "shell_outer_mm": 6.0,
+    "cap_margin_mm": 4.0,
+    "minimum_radius_mm": 0.7,
+    "minimum_path_mm": 5.0,
+    "trace_length_mm": 10.0,
+    "vesselness_floor": 0.03,
+    "maximum_candidates": 160,
+    "shell_vesselness_floor": 0.005,
+    "connector_gap_fraction": 0.35,
+    "root_depth_mm": 2.5,
+    "blood_lower_scale": 2.0,
+    "support_contrast_fraction": 0.5,
+    "native_contrast_scale": 1.2,
+    "roots_per_contact": 6,
+    "wall_hug_penalty": 0.8,
+    "broad_contact_mm3": 1000000.0,
+    "parallel_clearance_mm": 0.0,
+    "profile": "review"
+  },
+  "schema_version": 1,
+  "scope": "research_only",
+  "clinical_accuracy_claim": false,
+  "promotion": "not_authorized",
+  "source_sha256": {
+    "detector.py": "17495723df18c79e4302edc19bd949bb16f615b902403a88c68d6e74fa200063",
+    "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+    "learning.py": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+    "tabular_learning.py": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+    "patch_inference.py": "e539d4f8e080a4a219d9c49dda247e2576d19c8269daf638d031116c43c81188",
+    "nifti_io.py": "d8cd2795046affe798a2c2ed0822dc615f73930b94381c1ef5af0de36127cb02",
+    "research_run.py": "b02739a64608d51c39909a6dcaf3d6772f15b2bd7606ced9d7f82f8654727ca1"
+  },
+  "model_sha256": {
+    "onnx": "8787a20a9738f12c4016c1b7d61874836974e55d759cf17b45aa61eb18d4096f",
+    "onnx_sidecar": "a8816edf1cc7c03d14e7052ab5a49996df716abbe12e16ec5619e9bdf12294c4"
+  },
+  "input_sha256": {
+    "image": "5e3140eeaa821b6c964620256c1696df6a228564896b1c66d3846f625b7c8c96",
+    "aorta_mask": "c18f4c8f43904e1658164e762984d042b1bc88e789494e6fdeec79ec95d82b0f"
+  },
+  "contract": {
+    "feature_names": [
+      "radius_mm",
+      "mean_vesselness",
+      "evidence_score",
+      "path_length_mm",
+      "seed_distance_mm",
+      "tortuosity",
+      "path_hu_relative",
+      "bone_distance_mm",
+      "parent_angle_degrees",
+      "arc_position",
+      "native_spacing_mm",
+      "connector_gap",
+      "candidate_volume_mm3"
+    ],
+    "extra_feature_names": [
+      "ostium_local_contrast",
+      "patch_vesselness_std",
+      "parent_wall_curvature"
+    ],
+    "preprocessing": {
+      "version": "physical-candidate-patches-v1",
+      "size": 32,
+      "spacing_mm": 1.0,
+      "channel_names": [
+        "xy_ct",
+        "xy_parent",
+        "xy_vesselness",
+        "xy_path",
+        "xz_ct",
+        "xz_parent",
+        "xz_vesselness",
+        "xz_path",
+        "yz_ct",
+        "yz_parent",
+        "yz_vesselness",
+        "yz_path"
+      ],
+      "extra_feature_names": [
+        "ostium_local_contrast",
+        "patch_vesselness_std",
+        "parent_wall_curvature"
+      ],
+      "physical_axes": [
+        "xy",
+        "xz",
+        "yz"
+      ],
+      "center_pixel": 16,
+      "ct_normalization": "clip((HU-body_median)/max(abs(parent_median-body_median),3*parent_MAD,1),0,1)",
+      "body_min_hu": -300.0,
+      "mad_factor": 1.4826,
+      "samples_per_population": 65536,
+      "sampling": "evenly spaced population indices in native C-order",
+      "ct_interpolation": "linear",
+      "parent_interpolation": "nearest",
+      "padding": 0.0,
+      "halo_mm": 12.0,
+      "smoothing_sigma_mm": 0.6,
+      "sato_sigmas_mm": [
+        0.8,
+        1.5,
+        2.5
+      ],
+      "sato_black_ridges": false,
+      "sato_scaling": "raw response clipped to [0,1]",
+      "path_sigma_mm": 0.75,
+      "path_truncation_sigma": 3.0,
+      "contrast_radii_mm": [
+        3.0,
+        5.0,
+        8.0
+      ],
+      "curvature_fit_radius_mm": 5.0,
+      "curvature_units": "1/mm"
+    },
+    "source_sha256": {
+      "detector.py": "17495723df18c79e4302edc19bd949bb16f615b902403a88c68d6e74fa200063",
+      "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a"
+    },
+    "manifest_sha256": "5e4c1021d155209abf4e7c8d952c2de2d509a8eafdd30c447a560bd7aa49457b"
+  },
+  "records": [],
+  "scores": [],
+  "component_scores": {
+    "onnx": []
+  },
+  "threshold": 0.5435895129089355,
+  "below_threshold_ids": [],
+  "model_load_s": 0.019275815000014518,
+  "extraction_s": 0.0379900230000203,
+  "scoring_s": 0.1580128850000051,
+  "history": {
+    "independent_case_claim": false,
+    "prior_exposed_case_ids": [
+      "subject001",
+      "subject002",
+      "subject003",
+      "subject004",
+      "subject005",
+      "subject006",
+      "subject007",
+      "subject008",
+      "subject009",
+      "subject010",
+      "subject011",
+      "subject012",
+      "subject013",
+      "subject014",
+      "subject015",
+      "subject016",
+      "subject017",
+      "subject018",
+      "subject019",
+      "subject020",
+      "subject021",
+      "subject022",
+      "subject023",
+      "subject024",
+      "subject025"
+    ],
+    "note": "All 25 supplied images were inspected/pseudo-trained; renamed cases may also overlap."
+  },
+  "hash_and_preflight_s": 0.03455507200004604,
+  "input_load_s": 0.24868292399997927,
+  "detection_s": 3.1215231099999983,
+  "worker_runtime_s": 3.624074237000002,
+  "network_denied": true,
+  "scorer_sha256": "0bf070cea8826092a590605f062597f4062d894d27d6bc67bcafb1a95c39df47",
+  "dependencies": {
+    "numpy": "2.5.3",
+    "scipy": "1.16.2",
+    "SimpleITK": "2.5.6",
+    "scikit-image": "0.26.0",
+    "onnxruntime": "1.23.2"
+  }
+}

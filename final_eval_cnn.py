@@ -345,13 +345,24 @@ def make_variant(
 def replay(output: Path) -> dict:
     audit = read_json(output / "inventory.json")
     variants = []
-    failures = []
+    failures: list[dict] = []
     cnn_threshold = PatchModel.load(MODELS["current"]).threshold
     tree_threshold = TreeModel.load(TREE).threshold
     blend = BlendModel.load(BLEND)
     for family in MODELS:
         for proposals in ("strict", "review-union"):
             directory = output / "candidates" / family / proposals
+            missing = [
+                case for case in CASES
+                if not (directory / f"{case}.json").exists()
+                or not (directory / f"{case}.resources.json").exists()
+            ]
+            if missing:
+                failures.append({
+                    "family": family, "proposals": proposals, "missing_cases": missing,
+                    "effect": "Incomplete extraction; entire family/pool matrix withheld until all five cases exist.",
+                })
+                continue
             receipts = {case: read_json(directory / f"{case}.json") for case in CASES}
             resources = {case: read_json(directory / f"{case}.resources.json") for case in CASES}
             failed = [case for case in CASES if receipts[case]["status"] != "success"
@@ -440,7 +451,7 @@ def select_folds(variants: list[dict]) -> dict:
     }
 
 
-def extract(output: Path, offline: bool) -> None:
+def extract(output: Path, offline: bool, resume: bool = False) -> None:
     write_json(output / "inventory.json", inventory())
     for family in MODELS:
         for proposals in ("strict", "review-union"):
@@ -448,6 +459,15 @@ def extract(output: Path, offline: bool) -> None:
                 directory = output / "candidates" / family / proposals
                 destination = directory / f"{case}.json"
                 resource_path = directory / f"{case}.resources.json"
+                if resume and destination.exists() and resource_path.exists():
+                    saved = read_json(destination)
+                    measured = read_json(resource_path)
+                    if saved["status"] == "success" and measured["exit_code"] == 0:
+                        validate_saved(saved, family, proposals, case, PatchModel.load(MODELS[family]))
+                        if offline and not saved.get("network_denied"):
+                            raise ValueError("Existing receipt lacks requested offline verification.")
+                    print(f"Preserved {family} {proposals} {case}: {saved['status']}", flush=True)
+                    continue
                 if destination.exists() or resource_path.exists():
                     raise ValueError("Extraction requires new paths; use replay for existing artifacts.")
                 bootstrap = (
@@ -485,13 +505,14 @@ def main() -> None:
     parser.add_argument("--proposals", choices=("strict", "review-union"), default="strict")
     parser.add_argument("--case", choices=CASES, default=CASES[0])
     parser.add_argument("--offline", action="store_true")
+    parser.add_argument("--resume", action="store_true")
     args = parser.parse_args()
     if args.command == "worker":
         raise SystemExit(run_case(args.family, args.proposals, args.case, args.output))
     if args.command == "audit":
         write_json(args.output / "inventory.json", inventory())
     elif args.command == "extract":
-        extract(args.output, args.offline)
+        extract(args.output, args.offline, args.resume)
     else:
         report = replay(args.output)
         print(f"{len(report['variants'])} variants; {len(report['failures'])} failed family/pool combinations.")
