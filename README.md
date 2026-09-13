@@ -1,10 +1,182 @@
-# Branchseed — Toralis Labs Challenge (Battle of the Schools)
+# Branchseed — Aorta Explorer
 
-Team repo for the Toralis Labs track: detect every artery that directly
-branches off the abdominal aorta from a CT volume + aorta mask, and report
-each one as a separate daughter instance.
+**Find the branch. Keep the evidence.**
 
-Full problem statement: see the [Branchseed challenge doc](https://docs.google.com/document/d/1oRb2R9pauvsC-9hDIfr23ojLx90JpCt0jVZjCD5l5Cg/edit).
+![Branchseed: automatic aortic branch discovery, linked 3D and CT inspection, and offline physical measurements. Recorded interface; runtime measured on four-core Linux.](docs/media/branchseed-cover.png)
+
+From CT to a map you can inspect: discover aortic branch origins, verify
+predictions in 3D and linked CT, and export measurements offline.
+
+Built for **Toralis Labs Healthcare · Battle of the Schools**.
+
+**[Watch the 40-second showcase](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-showcase.mp4)**
+· **[Run the Explorer](DEMO_GUIDE.md)**
+· **[Download the submission](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-final-2026-09-13)**
+· **[Devpost copy](DEVPOST_SUBMISSION.md)**
+· **[Presenter briefing](PRESENTER_BRIEFING.md)**
+
+**[Download the Devpost and presenter kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-devpost-kit.zip)**:
+offline HTML, PDFs, editable Word, gallery images, showcase and live-demo slides.
+
+## From a volume to an inspectable branch
+
+A bright structure near the aorta is not enough. A direct daughter needs an
+opening at the parent wall and a supported path into its lumen. Two neighboring
+openings must stay separate; a common trunk counts once.
+
+Branchseed combines automatic discovery with an evidence viewer. Its input
+is a **CT volume plus a binary parent-aorta mask**; its output is a variable
+number of predicted daughter instances with physical measurements.
+
+| Discover | Inspect | Export |
+|---|---|---|
+| Propose direct aortic wall contacts and trace proximal vessels | Orbit the parent, select an origin and inspect linked CT planes | Ostium, 5 mm seed, local radius, unit direction and parent ID |
+| Apply connection, size, length and common-trunk checks | Organize origins on a wall map and enter an interior tour | Challenge JSON in the input image's physical millimetres |
+| Run a deterministic CPU pipeline | Keep prediction geometry connected to its source evidence | Operate locally after setup, without external inference |
+
+### See the product
+
+![Full Aorta Explorer interface: case library, 3D aorta, selected branch measurements and linked CT.](docs/media/explorer-overview.png)
+
+| Linked CT evidence | Inside the reconstructed lumen |
+|---|---|
+| ![Full recorded interface showing linked axial, coronal and sagittal CT views.](docs/media/ct-evidence.png) | ![Full recorded interface showing the interior tour and branch markers.](docs/media/interior-tour.png) |
+
+<details>
+<summary>Open the aortic wall map</summary>
+
+![Full recorded Explorer interface showing the aortic wall map.](docs/media/wall-map.png)
+
+</details>
+
+*These are authentic recorded interface views. Visible counts and timings are
+historical; the current strict measurements are reported below. The 3D view
+supports inspection and does not itself verify a branch.*
+
+## Measured results, with their scope
+
+![Evidence scorecard: strict F1 0.533 on five reused real-reference cases and F1 0.968 on 24 synthetic topology cases. These are separate local 3 mm evaluations, not clinical or hidden-test accuracy.](docs/media/evidence-scorecard.png)
+
+| Evaluation | TP / FP / FN | Precision | Recall | F1 | Count MAE |
+|---|---:|---:|---:|---:|---:|
+| **Five reused reference cases**, 19 targets | 8 / 3 / 11 | 0.727 | 0.421 | **0.533** | 2.0 |
+| **Twenty-four synthetic topology cases**, 49 analytic targets | 46 / 0 / 3 | 1.000 | 0.939 | **0.968** | 0.125 |
+
+Both use local one-to-one ostium matching at **3 mm**. The judge approved the
+five-case reference package for scoring; it is AI-assisted and may omit
+eligible branches. Unmatched predictions are false positives relative to
+those references, not necessarily clinically adjudicated errors. The 11
+missed targets remain a substantial limitation.
+
+Across the **eight matched reference branches**, mean ostium error is
+**1.59 mm**, mean seed error **1.22 mm**, and mean direction error **13.95°**.
+These conditional geometry statistics exclude missed branches. Only one
+strict match has a known reference radius, so a headline radius-accuracy
+claim would be misleading.
+
+**No official weighted score, independent hidden-test result or clinical
+validation is available.** Synthetic F1 is a regression result, not patient
+accuracy. Evidence: [final selection](FINAL_EVALUATION_RESULTS.md),
+[accuracy recheck](ACCURACY_RECHECK.md), and
+[machine-readable chart inputs](docs/media/metrics.json).
+
+### Designed for a local CPU laptop
+
+![Per-case runtime across all 25 supplied scans: 5.32 seconds mean, 23.21 seconds maximum, 1481 MiB maximum sampled process-tree RSS; measured on four-core Linux.](docs/media/runtime.png)
+
+The final strict batch completed **25/25 scans** and emitted **150 predicted
+instances**. Those totals describe execution and output coverage, not how
+many anatomically correct branches exist.
+
+The runtime receipt uses four-core **Linux** affinity and thread limits.
+Maximum memory is sampled process-tree RSS; sampling can miss short peaks.
+Native organizer-**Windows** timing remains unverified. See the
+[batch records](labels/finalization/batch_report.json) and
+[resource measurement](labels/finalization/final-batch-resource.json).
+
+## How the detector works
+
+![Pipeline: validate physical geometry; enhance vessels and propose wall contacts; trace and measure supported proximal paths; inspect in 3D/CT and export physical-coordinate JSON.](docs/media/pipeline.png)
+
+1. **Anchor:** validate CT/mask geometry and crop around the supplied parent;
+   preserve physical-coordinate mapping while resampling to a 1 mm grid.
+2. **Discover:** estimate scan-relative contrast, apply multiscale Sato
+   tubularity and find supported contacts outside the aortic wall.
+3. **Trace:** follow minimum-cost proximal paths, establish a wall origin,
+   apply length/size checks and resolve shared openings.
+4. **Measure:** estimate the ostium, a seed 5 mm along the path, radius and
+   unit direction; return unique daughter IDs linked to the parent.
+5. **Inspect:** use the Explorer's 3D, linked CT, wall map and export tools
+   to examine each prediction.
+
+The accepted configuration is **deterministic strict**, with
+`spacing_mm=1.0` and `native_contrast_scale=1.2`. There are **no learned
+weights in the submitted default**.
+
+### Why we kept strict
+
+We built and compared logistic filters, random forests, gradient boosting,
+small CT-patch CNNs, blends, paper-inspired geometry methods and alternate
+detector settings. The frozen selector validated **280 variants**, with
+**180 eligible** for its case-separated comparison.
+
+The retrospective RF winner reached local F1 0.621 on the same reused cases,
+but lacked independent promotion evidence and used relaxed proposals. The
+leave-one-case-out selection composite reached F1 0.444; it is a selection
+procedure, not one deployable algorithm.
+
+Guarded curved-wall recovery later reached F1 0.581, but increased
+daughter-count MAE from 2.0 to 2.2. Because the judge emphasized counts,
+**strict remains the release choice**. A higher development score alone
+does not establish a better unseen-case detector.
+
+### Known limits and next steps
+
+Weak contrast, thick slices, small lumens, curved or wall-parallel paths,
+nearby bright structures and complex junctions remain difficult. Origin
+diameter is an approximate CT measurement with a native-voxel allowance,
+not a guarantee of eligibility. The supplied mask is required: this project
+does not automatically segment the parent, assign anatomical vessel names
+or reconstruct the full distal vascular tree.
+
+The next priorities are complete expert review, unused-patient evaluation,
+better candidate generation and actual Windows-laptop timing. This is a
+**research prototype for detection and visual verification**, not a clinical
+decision system.
+
+## Quick start
+
+With **Python 3.13.3 x64** already installed, prepare dependencies while online:
+
+```bash
+python -m pip install --only-binary=:all: -r requirements.txt
+```
+
+Then run on a new CT/mask pair:
+
+```bash
+python run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz --output prediction.json
+```
+
+For the website, offline Windows wheels, local data layout and exact laptop
+commands, use **[the demo guide](DEMO_GUIDE.md)**. The release includes a built
+website; serving it does not require Node. Development setup is below.
+
+## Present, submit and go deeper
+
+| Need | Start here |
+|---|---|
+| Paste a complete Devpost entry | [Submission copy, pitch, credits and checklist](DEVPOST_SUBMISSION.md) |
+| Understand every algorithm, result and limitation | [Detailed presenter briefing and judge Q&A](PRESENTER_BRIEFING.md) |
+| Run the live demo | [Website/CLI guide](DEMO_GUIDE.md) and [75-second cues](presentation/LIVE_DEMO_CUES.md) |
+| Present for five minutes | [HTML/PPTX/PDF deck and four speaking roles](presentation/README.md) |
+| Upload polished video separately | [Showcase edit and source provenance](presentation/SHOWCASE.md) |
+| Inspect research decisions | [Selection report](FINAL_EVALUATION_RESULTS.md) and [accuracy recheck](ACCURACY_RECHECK.md) |
+| Reuse images or verify their numbers | [Media, captions and reproducible generator](docs/media/README.md) |
+
+Challenge: [live Branchseed brief](https://docs.google.com/document/d/1oRb2R9pauvsC-9hDIfr23ojLx90JpCt0jVZjCD5l5Cg/edit).
+Thanks to Toralis Labs for the challenge/data and the open-source libraries,
+research and local fonts credited in the [submission notes](DEVPOST_SUBMISSION.md#4-built-with-and-credits).
 
 ## Final submission and live demo
 
@@ -20,6 +192,9 @@ recovery. It raises local F1 to 0.5806 and precision to 0.7500, but worsens
 daughter-count MAE, so it is not enabled in the submitted default.
 
 ## Working agreement
+
+<details>
+<summary>Contributor coordination, label analytics and historical research commands</summary>
 
 New teammates: start with the [setup, backend API and training handoff guide](TEAMMATE_GUIDE.md).
 For a complete detector and ML walkthrough, read the [algorithm review for Steven](STEVEN_ALGORITHM_REVIEW.md).
@@ -73,6 +248,8 @@ git push
 Because everyone pushes to `main` directly, keep commits small and pull
 often to minimize conflicts. If you hit a conflict, resolve it locally
 before pushing — don't push broken code.
+
+</details>
 
 ## What's in this repo
 

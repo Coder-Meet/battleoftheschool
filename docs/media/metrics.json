@@ -1,0 +1,119 @@
+{
+  "strict_reference_3mm": {
+    "cases": 5,
+    "true_positives": 8,
+    "false_positives": 3,
+    "false_negatives": 11,
+    "precision": 0.7272727272727273,
+    "recall": 0.42105263157894735,
+    "f1": 0.5333333333333333,
+    "count_mae": 2.0,
+    "exact_count_cases": 1,
+    "errors": {
+      "ostium_error_mm": {
+        "n": 8,
+        "mean": 1.59178112941638,
+        "median": 1.5372036655400043,
+        "p95": 2.7692011347197343
+      },
+      "seed_error_mm": {
+        "n": 8,
+        "mean": 1.2209813783770556,
+        "median": 0.9340113745828187,
+        "p95": 2.324175988777208
+      },
+      "radius_error_mm": {
+        "n": 1,
+        "mean": 0.2529999999999999,
+        "median": 0.2529999999999999,
+        "p95": 0.2529999999999999
+      },
+      "direction_error_degrees": {
+        "n": 8,
+        "mean": 13.950859351453497,
+        "median": 13.356095475072049,
+        "p95": 19.958400881494697
+      },
+      "seed_to_reference_centreline_mm": {
+        "n": 8,
+        "mean": 1.027251944281762,
+        "median": 0.8431518021601327,
+        "p95": 1.918412160114005
+      }
+    }
+  },
+  "strict_synthetic_topology_3mm": {
+    "cases": 24,
+    "true_positives": 46,
+    "false_positives": 0,
+    "false_negatives": 3,
+    "precision": 1.0,
+    "recall": 0.9387755102040817,
+    "f1": 0.968421052631579,
+    "count_mae": 0.125,
+    "exact_count_cases": 21,
+    "errors": {
+      "ostium_error_mm": {
+        "n": 46,
+        "mean": 0.875828835444028,
+        "median": 0.7701073485401095,
+        "p95": 1.6829622298632736
+      },
+      "seed_error_mm": {
+        "n": 46,
+        "mean": 0.6550868515227062,
+        "median": 0.5767031878904452,
+        "p95": 1.1252538111280188
+      },
+      "radius_error_mm": {
+        "n": 46,
+        "mean": 0.183172689131003,
+        "median": 0.1666457264610235,
+        "p95": 0.3557077418679747
+      },
+      "direction_error_degrees": {
+        "n": 46,
+        "mean": 9.728535791071318,
+        "median": 9.685749639446023,
+        "p95": 22.764823517846985
+      },
+      "seed_to_reference_centreline_mm": {
+        "n": 46,
+        "mean": 0.38013864294012756,
+        "median": 0.3351512801149604,
+        "p95": 0.8448052377072921
+      }
+    }
+  },
+  "runtime": {
+    "cases": 25,
+    "mean_per_case_s": 5.3155600000000005,
+    "max_per_case_s": 23.212,
+    "max_sampled_process_tree_rss_mib": 1480.72265625,
+    "platform": "Linux",
+    "cpu_cores": 4
+  },
+  "receipts_sha256": {
+    "labels/finalization/accuracy-recheck/v2-references/report.json": "2a06798e5c97bc612c825e18635ad03d6d0987d8faf5ce99d65809aedb65aadf",
+    "labels/finalization/accuracy-recheck/v2-topology/report.json": "27f8ac1734126ff8a09102429e21b76272d1c2e1a44af059f22634bbfc9233d9",
+    "labels/finalization/batch_report.json": "345e3021776ce410dbbe90630b0cc065c1a98a1383c77b791e10656b5c8b7eac",
+    "labels/finalization/final-batch-resource.json": "26dc17ae3f3446cfda5ee53d61c4902517f762426115c9f35cec84d20add9579"
+  },
+  "recording_sha256": "31ca9ab0320555d26c0671b6d0d1748d5ac65eec3f820c0aba2f3765736e3a48",
+  "recorded_frame_seconds": {
+    "ct-evidence": 68,
+    "wall-map": 90,
+    "interior-tour": 121
+  },
+  "image_sha256": {
+    "branchseed-cover.png": "28d956b101707e2049f2bf12dc6ff44a6a925d1f0ebdbf662115c457f5df44b3",
+    "ct-evidence.png": "3ca681b37bbfcb39adb0edd84d330c7966debce5e87c2d187152d8adac2b118a",
+    "evidence-scorecard.png": "20063aff6ac56f509bc904d3dd8028360ea228dca8cd97ff5f6f66a9b0899ae9",
+    "explorer-overview.png": "cf0bc42011113482b25cf78d0447dbaf776f9b93ce08d0e26fdfc99be286bd77",
+    "interior-tour.png": "5afd595f0271358d0ec6379f1a6f835cbb1a2e712735cb500c65f264bcbb409d",
+    "pipeline.png": "57919474b5aab26876030f5398f8bbfb3b8acef1d24b4f5636d7c77094632f23",
+    "runtime.png": "ce699260e29f1f23d70c864656d23ace5a063f1fe60032919b1a5018811f66ae",
+    "wall-map.png": "12ddabbf2154b2aaf6932b623d4f834e1ef9e6ca697647463d81f38322903974"
+  },
+  "scope": "Recorded UI is historical; charts use frozen strict receipts. Not clinical or hidden-test accuracy."
+}

@@ -7,6 +7,11 @@ These are already the defaults in `run.py`, `batch.py` and `explorer.py`.
 Use no candidate model, review mode, spacing override or experimental flag.
 The [final evaluation](FINAL_EVALUATION_RESULTS.md) documents the decision.
 
+For the public entry, use the [ready-to-paste Devpost submission](DEVPOST_SUBMISSION.md).
+For rehearsal, use the [complete presenter briefing and judge Q&A](PRESENTER_BRIEFING.md).
+The README's [media pack](docs/media/README.md) contains cover art, authentic
+screenshots and graphics with explicitly scoped accuracy/runtime evidence.
+
 The final download bundles are on the repository's
 [GitHub Releases page](https://github.com/Coder-Meet/battleoftheschool/releases).
 Use the **Final hackathon submission** release for the submission ZIP and
