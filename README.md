@@ -14,10 +14,16 @@ Research: see the [ML implementation plan](RESEARCH_IMPLEMENTATION.md) and the
 [three additional paper experiments and measured limitations](ADDITIONAL_PAPERS.md).
 
 The [latest judge clarifications](SUBMISSION_AUDIT.md#latest-judge-clarifications)
-specify 2 mm minimum **origin size** (diameter versus radius still unresolved),
+specify 2 mm minimum **origin diameter** (confirmed directly with the judge),
 one opening for a common trunk, and two openings for a returning vessel.
 Discovery/count accuracy remains the priority within the four-core, 8 GB,
 offline Windows limits. Do not equate the seed-radius CLI setting with origin size.
+`--minimum-origin-diameter-mm` defaults to 2; zero reproduces the earlier
+eligibility policy. The estimate uses a cross-section 2 mm along the proximal
+path, local half-maximum contrast and one native voxel of diameter allowance.
+Unresolved and borderline estimates remain visible in diagnostics instead of
+being rejected as confidently undersized. This is an approximate origin
+measurement, awaiting calibration against the organizer's references.
 
 Presenters: use the [five-minute presentation guide](presentation/README.md)
 and [live demo cues](presentation/LIVE_DEMO_CUES.md). The authoring source builds

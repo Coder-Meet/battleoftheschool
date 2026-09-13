@@ -571,7 +571,7 @@ Training can use separate hardware; no GPU/network is allowed at inference.
    crop, including accessory renal, lumbar, inferior mesenteric and other unnamed
    branches? Can they provide an eligibility/unknown-region mask and reasons for
    excluded structures?
-2. Is the confirmed 2 mm minimum origin size a diameter or radius, and how is
+2. The minimum origin size is confirmed as 2 mm diameter. How is
    it measured? The 5 mm visible-length rule is confirmed. How are partial-volume
    gaps or branches abutting a crop boundary handled?
 3. Does the parent mask represent lumen, wall, or thrombus-inclusive outer aorta?

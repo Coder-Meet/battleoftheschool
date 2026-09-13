@@ -42,6 +42,10 @@ def parse_args() -> argparse.Namespace:
         "--minimum-radius-mm", type=float, default=0.7,
         help="Minimum tracing/seed lumen radius; not the organizer's minimum origin size.",
     )
+    parser.add_argument(
+        "--minimum-origin-diameter-mm", type=float, default=2.0,
+        help="Minimum proximal lumen diameter with one native voxel of uncertainty (0 disables).",
+    )
     parser.add_argument("--spacing-mm", type=float, default=1.0, help="Isotropic working spacing; finer grids cost more CPU.")
     parser.add_argument("--threads", type=int, default=4, help="SimpleITK CPU threads (default: 4).")
     parser.add_argument(
@@ -90,6 +94,7 @@ def main() -> int:
         )
         result = detect(image, aorta_mask, DetectorConfig(
             minimum_radius_mm=args.minimum_radius_mm, spacing_mm=args.spacing_mm,
+            minimum_origin_diameter_mm=args.minimum_origin_diameter_mm,
             parallel_clearance_mm=args.parallel_clearance_mm,
         ))
         model_diagnostics = None

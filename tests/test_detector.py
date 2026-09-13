@@ -9,6 +9,7 @@ import pytest
 import SimpleITK as sitk
 from scipy import ndimage as ndi
 
+import detector
 from detector import (
     DetectorConfig, branch_junctions, detect, physical_points, stop_at_junction, truncate_path, validate_geometry,
 )
@@ -129,6 +130,24 @@ def test_cli_creates_output_parent_and_correct_double_extension_id(tmp_path):
 def test_settings_reject_nonfinite_values():
     with pytest.raises(ValueError):
         DetectorConfig(minimum_radius_mm=float("nan"))
+    with pytest.raises(ValueError):
+        DetectorConfig(minimum_origin_diameter_mm=-1)
+
+
+def test_origin_diameter_is_separate_from_seed_radius_eligibility(monkeypatch):
+    image, mask = phantom(branches=(20,))
+    disabled = DetectorConfig(minimum_radius_mm=0.3, minimum_origin_diameter_mm=0)
+    enforced = DetectorConfig(minimum_radius_mm=0.3, minimum_origin_diameter_mm=2)
+    monkeypatch.setattr(detector, "cross_section_radius", lambda *args: 0.4)
+    assert len(detect(image, mask, disabled).branches) == 1
+    result = detect(image, mask, enforced)
+    assert result.branches == []
+    assert result.rejections["origin_below_minimum_diameter"] == 1
+
+    monkeypatch.setattr(detector, "cross_section_radius", lambda *args: 1.1)
+    branch = detect(image, mask, enforced).branches[0]
+    assert branch.features["origin_diameter_mm"] >= 2
+    assert branch.features["origin_diameter_upper_mm"] >= branch.features["origin_diameter_mm"]
 
 
 def test_anisotropic_detection_keeps_five_mm_physical_seed():

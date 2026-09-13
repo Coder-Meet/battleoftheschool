@@ -19,9 +19,19 @@ records the latest results and the incomplete final browser checks.
 The team supplied an updated eligibility sentence and the following verbal
 clarifications. The updated text says a contrast-filled lumen must extend at
 least **5 mm beyond the aortic wall**, with a minimum **origin size of 2 mm**.
-It does **not** specify whether 2 mm is a diameter or radius. The detector's
+The judge subsequently confirmed this means **diameter**, equivalent to a
+1 mm radius at the origin. The detector's
 `--minimum-radius-mm` is a tracing/seed-radius setting, so setting it to 2 is
 not an implementation of this origin-size rule.
+
+`--minimum-origin-diameter-mm` is now separate and defaults to 2. Its approximate
+measurement is the local half-maximum CT cross-section 2 mm along the proximal
+path, rather than the radius at the 5 mm seed. To avoid turning partial-volume
+blur into confident rejections, filtering adds one native voxel to the measured
+diameter before comparing with the minimum. This is a resolution allowance,
+not a calibrated confidence interval. Unmeasurable and borderline diameters
+are retained with warnings. The review pool disables size filtering to preserve
+uncertain candidates. Zero disables this policy for archived comparisons.
 
 | Clarification | Implementation and evaluation consequence |
 |---|---|
@@ -72,7 +82,7 @@ reason to omit the other supplied cases.
 | Hidden cases without manual edits | Required CLI is generic; hidden-case accuracy cannot be guaranteed |
 | 5 mm daughter path, up to 10 mm or first downstream split | Implemented for accepted traces; strict candidate search can still miss wall-parallel branches, with the opt-in alternative deliberately unpromoted |
 | Caps, common trunks, adjacent ostia and daughter-of-daughter | Regression coverage exists; exact real-case eligibility needs expert adjudication |
-| Minimum eligible origin size | 2 mm confirmed in updated text; diameter versus radius and measurement definition still need confirmation |
+| Minimum eligible origin size | 2 mm diameter confirmed; separate approximate proximal measurement and conservative resolution allowance implemented |
 | Runtime | Initial target is average ≤60 s/case; final limit and native Windows measurement outstanding |
 | Ground truth | Five new hard synthetic development cases have 12 analytic daughters; five real-case packets remain unreviewed |
 
@@ -121,7 +131,7 @@ Use the independent five-case review packets for expert adjudication.
 | Five-minute demo | Eight slides, four 75-second speaking slots; 60-second actual Explorer film inside Speaker 3's slot |
 | Team handoff | [TEAMMATE_GUIDE.md](TEAMMATE_GUIDE.md), README, review workflow and presentation script |
 
-The origin-size threshold is now 2 mm, with diameter versus radius unresolved;
+The origin-size threshold is now confirmed as 2 mm diameter;
 the final runtime limit is still pending. The local 3 mm matching threshold is a disclosed proxy, not an
 official tolerance. Terminal iliac division is an optional extension and is
 not claimed as a separately validated feature.
@@ -171,7 +181,7 @@ on Devpost or with organizers.
    **Sunday, September 13, 11:00 AM**, as stated in the venue schedule. Check
    organizer updates because the supplied guide is marked WIP. No submission
    has been made on the team's behalf.
-3. Confirm whether the 2 mm origin size is a diameter or radius, the official
+3. Confirm the reference origin-diameter measurement method, official
    overlap/vein scoring allowances, final time limit and upload fields.
    The 60-second average target is provisional.
 4. Copy dependencies, built assets, scans, predictions and extracted

@@ -26,6 +26,7 @@ class DetectorConfig:
     shell_outer_mm: float = 3.5
     cap_margin_mm: float = 4.0
     minimum_radius_mm: float = 0.7
+    minimum_origin_diameter_mm: float = 2.0
     minimum_path_mm: float = 5.0
     trace_length_mm: float = 10.0
     vesselness_floor: float = 0.06
@@ -47,11 +48,15 @@ class DetectorConfig:
         values = np.asarray(list(numeric.values()), dtype=float)
         if not np.isfinite(values).all():
             raise ValueError("All detector settings must be finite.")
-        may_be_zero = {"connector_gap_fraction", "wall_hug_penalty", "native_contrast_scale", "parallel_clearance_mm"}
+        may_be_zero = {
+            "connector_gap_fraction", "minimum_origin_diameter_mm", "wall_hug_penalty",
+            "native_contrast_scale", "parallel_clearance_mm",
+        }
         positive = [v for k, v in numeric.items() if k not in may_be_zero]
         if (
             np.any(np.asarray(positive, dtype=float) <= 0)
-            or self.wall_hug_penalty < 0 or self.native_contrast_scale < 0 or self.parallel_clearance_mm < 0
+            or self.minimum_origin_diameter_mm < 0 or self.wall_hug_penalty < 0
+            or self.native_contrast_scale < 0 or self.parallel_clearance_mm < 0
         ):
             raise ValueError("All detector settings must be finite and positive.")
         if not 0 <= self.connector_gap_fraction < 1:
@@ -70,7 +75,7 @@ class DetectorConfig:
             "shell_outer_mm": 6.0, "vesselness_floor": 0.03, "shell_vesselness_floor": 0.005,
             "connector_gap_fraction": 0.35, "root_depth_mm": 2.5, "blood_lower_scale": 2.0,
             "roots_per_contact": 6, "wall_hug_penalty": 0.8, "broad_contact_mm3": 1e6,
-            "profile": "review",
+            "minimum_origin_diameter_mm": 0.0, "profile": "review",
         }
         settings.update(overrides)
         return cls(**settings)  # type: ignore[arg-type]
@@ -537,6 +542,21 @@ def _trace(
         return None, "small_radius"
     if seed_radius > 8:
         return None, "wide_nonarterial_region"
+    proximal = truncate_path(path_mm, min(2.0, length))[-1]
+    proximal_index = np.asarray(grid.TransformPhysicalPointToContinuousIndex(proximal.tolist()))[::-1]
+    proximal_hu = sample_at(ctx.intensity, proximal_index)
+    origin_level = ctx.background_median + 0.5 * (proximal_hu - ctx.background_median)
+    origin_radius = cross_section_radius(
+        ctx.intensity, proximal_index, local_direction, spacing, origin_level,
+    ) if proximal_hu > ctx.background_median else None
+    origin_diameter = 2 * origin_radius if origin_radius is not None else None
+    origin_diameter_upper = origin_diameter + ctx.native_spacing_mm if origin_diameter is not None else None
+    if (
+        config.minimum_origin_diameter_mm > 0
+        and origin_diameter_upper is not None
+        and origin_diameter_upper < config.minimum_origin_diameter_mm
+    ):
+        return None, "origin_below_minimum_diameter"
     sampled_path = np.asarray([
         grid.TransformPhysicalPointToContinuousIndex(p.tolist()) for p in path_mm[1:]
     ])[:, ::-1]
@@ -557,6 +577,9 @@ def _trace(
         "connector_gap": round(gap, 4),
         "candidate_volume_mm3": round(volume_mm3, 2),
     }
+    if origin_diameter is not None and origin_diameter_upper is not None:
+        features["origin_diameter_mm"] = round(origin_diameter, 3)
+        features["origin_diameter_upper_mm"] = round(origin_diameter_upper, 3)
     score = float(np.clip(
         (0.4 * min(mean_vesselness / 0.5, 1) + 0.35 * min(displacement / 5, 1)
          + 0.25 * min(length / 10, 1)) * (1 - gap), 0, 1
@@ -564,6 +587,10 @@ def _trace(
     warnings = ["Trace stops at an estimated downstream bifurcation."] if length < before_junction - 0.01 else []
     if gap > 0:
         warnings.append("Wall connector crosses unsupported voxels; verify the ostium on CT.")
+    if origin_diameter is None:
+        warnings.append("Origin diameter is unresolved on CT; size eligibility is uncertain.")
+    elif origin_diameter < config.minimum_origin_diameter_mm:
+        warnings.append("Origin diameter is near the minimum within native-voxel uncertainty.")
     return Branch(
         instance_id="",
         ostium_xyz_mm=point_tuple(ost),
