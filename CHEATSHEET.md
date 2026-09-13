@@ -145,7 +145,7 @@ direction 10.6°.
 | Trace length | 10 mm (or first bifurcation) |
 | Minimum radius | Implementation default 0.7 mm; organizer minimum still pending |
 | Working grid | Implementation default 1.0 mm isotropic |
-| Dev cases | 25 CT + mask pairs, no branch labels |
+| Dev cases | 25 CT + mask pairs; 19 judge-approved, AI-assisted/non-exhaustive targets on subjects 019–023; no complete expert labels |
 
 ---
 
@@ -156,7 +156,8 @@ Have the Explorer already running and a terminal open before you start.
 **0:00 — Show the problem first.** Open `viz/subject005.png`. Point at the cyan
 outline, then the branches leaving it.
 > "This cyan outline is everything we're given. Every vessel coming off it is what
-> we have to find, and none of them are labelled."
+> we have to find. The 25-case set has no complete expert branch annotations; five
+> reused development cases have 19 non-exhaustive AI-assisted targets."
 
 **0:45 — Run the required command.**
 ```bash
@@ -182,35 +183,42 @@ Orbit the aorta, click a branch, show the path and arrow — then jump to the
 > land on the actual CT voxels it came from."
 
 **3:15 — The validation story.** Your strongest ground. Show the bake-off table.
-> "We can't hand-label real anatomy, so we generate CTs from geometry we define —
-> the right answer is exact. We wrote down the candidate fixes and the metric
-> *before* looking at results. The winner took F1 from 0.84 to 0.93, and we kept
-> every failure case in the report rather than tuning them away."
+> "We generate CTs from vessel geometry we define, so the synthetic answer is
+> exact, and separately report local one-to-one matching against 19 reused-
+> development targets. We fixed the synthetic candidate variants and metric
+> before looking at results; every failure remains in the report."
 
 **4:15 — Close on a failure, deliberately.** Name a weak spot, say what's next.
-> "There are no real branch annotations in this dataset, so our real-scan recall is
-> genuinely unknown. Everything we've measured is on synthetic geometry, and we've
-> said so in the report."
+> "Five reused development cases have 19 judge-approved but AI-assisted and
+> non-exhaustive targets, not complete expert ground truth. Their metrics are
+> local only, so independent real-scan recall is genuinely unknown."
 
 ---
 
 ## Questions you will get
 
-**How do you know it works if there are no labels?**
-Your strongest answer. We generate CT volumes from vessel geometry we define
-ourselves, so ground truth is analytic and exact — 26 adversarial cases across 13
-failure families, plus negative controls that must return empty. Then a
-pre-registered bake-off: metric and variants fixed before seeing results.
+**How do you know it works without complete expert labels?**
+We generate CT volumes from vessel geometry we define, so synthetic ground truth
+is analytic and exact—26 adversarial cases across 13 failure families, plus
+negative controls that must return empty. We separately report local matching on
+the 19 reused-development targets, while explicitly withholding independent
+and clinical accuracy claims.
 
 **Why not just train a neural network?**
-Twenty-five cases, zero branch labels, four CPU cores, no GPU. Nothing to train on
-and nothing to train with. We ship an optional classifier, but it only re-ranks
-candidates a human reviewed — and by design it can only remove them, never invent.
+Twenty-five cases, only 19 non-exhaustive AI-assisted targets on five reused
+development cases, four CPU cores, and no GPU are not enough independent expert
+evidence to justify a deployable neural model. The optional research classifier
+can only filter reviewed candidates, never invent new ones, and remains
+non-deployable.
 
 **What's your precision and recall on real patients?**
-**Unknown, and we say so.** No reference annotations exist for the 25 real cases.
-Everything reported is synthetic. Don't quote a synthetic number as clinical —
-judges catch it, and the honesty scores better anyway.
+Local reused-development metrics exist, but independent real-patient accuracy is
+**unknown**. We have 19 judge-approved, AI-assisted/non-exhaustive targets across
+subjects 019–023 and report local one-to-one matching against them. They are not
+complete expert/clinical truth or an independent hidden test, and no official
+evaluator or weighted challenge score or native organizer validation is available.
+Name this exact set; never present its local metrics as clinical or hidden-test
+performance.
 
 **How do you avoid counting the same vessel twice?**
 Candidates whose ostia and seeds both land within a few mm are merged before

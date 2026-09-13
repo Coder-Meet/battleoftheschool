@@ -209,13 +209,15 @@ Keep the `labeller` provenance, hold out patients, and do not report evaluation
 against these decisions as real branch-detection accuracy. The default
 submission CLI does not load these reviews or an optional candidate model.
 
-There are no branch annotations for the 25 scans, so labels come from judging the
-detector's own proposals against the CT. This is done by an AI reviewer reading
-rendered evidence, not by a web page. `autolabel.py render` runs the loose
-**review profile** of the detector merged with the strict result, saves each
-case's candidate pool with its thirteen features, and writes one PNG per
-candidate showing whole-aorta locators, ±2 mm slab views through the origin,
-consecutive axial slices and the traced path:
+The 25 scans do not have complete expert branch annotations. The available
+proposal labels are AI-review verdicts, and subjects 019–023 additionally have
+19 judge-approved, AI-assisted/non-exhaustive reference targets used only for
+reused-development evaluation. Neither source is independent clinical truth.
+`autolabel.py render` has an AI reviewer read rendered evidence rather than a
+web page. It runs the loose **review profile** of the detector merged with the
+strict result, saves each case's candidate pool with its thirteen features, and
+writes one PNG per candidate showing whole-aorta locators, ±2 mm slab views
+through the origin, consecutive axial slices and the traced path:
 
 ```bash
 python autolabel.py render --cases subject001      # or --all; output under outputs/autolabel/<case>/
@@ -403,8 +405,8 @@ Batch processing emits per-case challenge JSON, a diagnostics subdirectory, and
 case failed. Visual checks show the supplied aorta mask, predicted ostia, and
 direction arrows over CT projections.
 
-When **actual daughter reference annotations** are available in the same JSON
-schema, local evaluation is:
+For daughter reference annotations in the same JSON schema—including the current
+reused-development set—local evaluation is:
 
 ```bash
 python evaluate.py --prediction predictions/subject001.json \
@@ -417,10 +419,10 @@ seed, radius, and direction errors. Undefined metrics are JSON `null`. This is
 a transparent local metric, not a claim to reproduce the organizer's scoring.
 Do not evaluate against the detector's own outputs as if they were ground truth.
 
-When organizer reference files arrive, freeze the current predictions first
-(`python batch.py --output-dir predictions/frozen-<commit>`; committed sets for
-the current revision live in [`frozen/`](frozen/README.md)), then score the
-whole set in one command regardless of their exact field names:
+If a complete organizer reference set arrives, freeze the current predictions
+first (`python batch.py --output-dir predictions/frozen-<commit>`; committed sets
+for the current revision live in [`frozen/`](frozen/README.md)), then score the
+whole set in one command regardless of its exact field names:
 
 ```bash
 python score_references.py --references organizer-refs/ \
@@ -428,7 +430,8 @@ python score_references.py --references organizer-refs/ \
   --output outputs/reference-score.json
 ```
 
-While waiting for labels, [prepare five difficult cases for expert review](ANNOTATION_GUIDE.md).
+To replace provisional references with independent expert evidence,
+[prepare five difficult cases for expert review](ANNOTATION_GUIDE.md).
 `prepare_annotations.py` builds blinded native-slice surveys, proposed-opening
 CT sheets and editable review worksheets from frozen predictions. It leaves all
 labels and reference counts unconfirmed; the scorer rejects these packets as
@@ -462,10 +465,15 @@ gzip/LFS handling, reference matching, and the HTTP API.
 
 ## Current scope and limitations
 
-This is an executable **classical research baseline**, not a trained ML model.
-There are 25 CT/aorta pairs and no daughter labels in this repository. Precision
-and recall remain unmeasured; the evidence score is not a calibrated probability.
-Preserve a held-out patient split once annotations exist before fitting a ranker.
+The deployable recommendation is an executable **classical research baseline**,
+not a fitted ML model. There are 25 CT/aorta pairs and 19 judge-approved,
+AI-assisted/non-exhaustive daughter reference targets across subjects 019–023.
+Those reused development cases support local TP/FP/FN, precision, recall, F1,
+and count-error metrics, but they are neither complete expert/clinical truth nor
+an independent test set. Independent hidden-test accuracy, an official evaluator
+or weighted challenge score, and native organizer validation remain unavailable.
+The evidence score is not a calibrated probability. Keep future fitting and
+promotion patient-held-out and require independent expert annotations.
 
 The detector resamples a tight ROI to 1 mm, estimates blood intensity from the
 parent, enhances tubular structures at multiple scales, finds wall-contact
@@ -510,12 +518,15 @@ Sunday 11:00 AM. Have the repo pushed and a working demo before then.
 Current-source replay, exact checks, rejected CNN/blend results and remaining
 gates: [research integration results](labels/research/current-source-v1/RESULTS.md).
 
-`run.py` and its legacy `--candidate-model` remain unchanged. No research
+`run.py` now restores direct fixed `deterministic-strict` detection as the
+default. The post-reference experimental `--pipeline` and
+`--candidate-threshold` options are not part of the deployed CLI; the legacy
+`--candidate-model` remains available only when supplied explicitly. No research
 model is enabled by default. `research_run.py` scores a variable number of
 classical proposals using a source-compatible tree, optional CPU ONNX model,
 or frozen probability blend. Synthetic performance and pseudo-label agreement
-are not clinical accuracy. Complete organizer references and measurements on
-the organizer's Windows hardware are still promotion gates.
+are not clinical accuracy. A complete organizer reference set and measurements
+on the organizer's Windows hardware are still promotion gates.
 
 Install only the extras you need, alongside `requirements.txt`:
 
