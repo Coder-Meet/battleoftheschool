@@ -14,7 +14,65 @@
     "nifti_io.py": "d8cd2795046affe798a2c2ed0822dc615f73930b94381c1ef5af0de36127cb02",
     "research_run.py": "b02739a64608d51c39909a6dcaf3d6772f15b2bd7606ced9d7f82f8654727ca1"
   },
-  "driver_sha256": "3e542aedba80539321dc15e65ef86c49520bae5afc04b2a47c66b1a194951d2c",
+  "driver_sha256": "0b09877d8548d4751769b626a0e7185ae5cd7e15cd9cfa985ae21e8dffdc1f5f",
+  "input_geometry": {
+    "image": {
+      "size": [
+        244,
+        244,
+        179
+      ],
+      "spacing": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "origin": [
+        190.642578125,
+        38.142578125,
+        10.0
+      ],
+      "direction": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "mask": {
+      "size": [
+        244,
+        244,
+        179
+      ],
+      "spacing": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "origin": [
+        190.642578125,
+        38.142578125,
+        10.0
+      ],
+      "direction": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    }
+  },
   "detector_config": {
     "spacing_mm": 1.0,
     "margin_mm": 20.0,
@@ -95,7 +153,7 @@
     "tabular-original-logistic": {
       "probabilities": [],
       "threshold": 0.37631433544133275,
-      "scoring_s": 0.00022234300001855445,
+      "scoring_s": 0.00021243499998035986,
       "model_sha256": "a45747a0382ae41d0a37f2104f2348190905c847a1b89347f9c9703448ddccc6",
       "contract": {
         "feature_names": [
@@ -119,7 +177,7 @@
     "tabular-synthetic-augmented-logistic": {
       "probabilities": [],
       "threshold": 0.5,
-      "scoring_s": 0.00011385799996332935,
+      "scoring_s": 9.315400001241869e-05,
       "model_sha256": "9d7026550b834b5f427d4b6404cd6ff02b182b9db7ffd207f0f24b802a83e2f1",
       "contract": {
         "feature_names": [
@@ -143,7 +201,7 @@
     "tabular-excluded-five-logistic": {
       "probabilities": [],
       "threshold": 0.5,
-      "scoring_s": 8.526900001015747e-05,
+      "scoring_s": 8.003499999631458e-05,
       "model_sha256": "1d1bfaf6517df214fecaaae9ed2eab7b20c07f1b6af6097dc1cb605e4c64924c",
       "contract": {
         "feature_names": [
@@ -167,7 +225,7 @@
     "tabular-current-source-v1-gradient_boosting-base": {
       "probabilities": [],
       "threshold": 0.5630076829578097,
-      "scoring_s": 0.0030049869999970724,
+      "scoring_s": 0.003080221999994137,
       "model_sha256": "7e37a395f6ee376c76e68be177b5992259945758fc4c382040db06921fe2380f",
       "contract": {
         "feature_names": [
@@ -256,7 +314,7 @@
     "tabular-current-source-v1-gradient_boosting-extended": {
       "probabilities": [],
       "threshold": 0.3878033228645144,
-      "scoring_s": 0.03848120100002461,
+      "scoring_s": 0.04150909700001648,
       "model_sha256": "a591c6ea936c6b12b41419efc40313cfabc333199cadd455161b1a047fa814cc",
       "contract": {
         "feature_names": [
@@ -345,7 +403,7 @@
     "tabular-current-source-v1-logistic": {
       "probabilities": [],
       "threshold": 0.08833933000710323,
-      "scoring_s": 0.00017250100000865132,
+      "scoring_s": 0.00023491499996453058,
       "model_sha256": "e9f864956aa65c3f05c038b13b0c8ca9e7289e4a44f6f0eb7837ab85814c730e",
       "contract": {
         "feature_names": [
@@ -369,7 +427,7 @@
     "tabular-current-source-v1-random_forest-base": {
       "probabilities": [],
       "threshold": 0.619174558982323,
-      "scoring_s": 0.005369512000015675,
+      "scoring_s": 0.005473316999996314,
       "model_sha256": "f66277b2d3243e1a52bb959f3bbaf1ed91e7bc638def5c6177dad04d14e3966b",
       "contract": {
         "feature_names": [
@@ -458,7 +516,7 @@
     "tabular-current-source-v1-random_forest-extended": {
       "probabilities": [],
       "threshold": 0.6209693278491709,
-      "scoring_s": 0.0408656649999557,
+      "scoring_s": 0.042040224999993825,
       "model_sha256": "cee9e454f5ac44dacddb4baff9cd84ec4967b6eec7da57b801fbda73c2a0b970",
       "contract": {
         "feature_names": [
@@ -547,7 +605,7 @@
     "tabular-cohort-v1-logistic": {
       "probabilities": [],
       "threshold": 0.08833933000710323,
-      "scoring_s": 0.00017021500002556422,
+      "scoring_s": 0.0001674979999961579,
       "model_sha256": "e9f864956aa65c3f05c038b13b0c8ca9e7289e4a44f6f0eb7837ab85814c730e",
       "contract": {
         "feature_names": [
@@ -570,8 +628,8 @@
     }
   },
   "failures": [],
-  "detection_and_input_load_s": 1.3423810019999678,
-  "total_case_job_s": 1.431556477000015,
-  "peak_rss_mb": 316.57421875,
+  "detection_and_input_load_s": 1.3475704740000083,
+  "total_case_job_s": 1.44120114399999,
+  "peak_rss_mb": 326.0546875,
   "records_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
 }

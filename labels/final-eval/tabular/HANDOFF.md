@@ -1,21 +1,18 @@
-# Tabular evaluation checkpoint — INCOMPLETE
+# Tabular evaluation — COMPLETE bounded family comparison
 
 ## Status
 
-The initial complete run produced **106 variants, no scoring failures, and four
+The final complete run produced **106 variants, no scoring failures, and four
 explicit historical-tree exclusions**. Nine compatible models were scored on
 strict and review-union proposals at each frozen threshold plus the deduplicated
 0.15/0.3/0.5/0.7/0.85 grid; two unfiltered baselines are included.
 
-A second complete run is currently regenerating results after strengthening
-cache validation, adding input geometry, and adding paired case-bootstrap
-intervals. At checkpoint time it had reached subject021/review-union.
-**Candidate caches and aggregate reports may therefore belong to different
-driver revisions in this checkpoint. Do not combine them or promote its scores.
-Run the complete command below before relying on the report.**
-
-All authored source, tests, the fresh model, available predictions and caches are
-committed here. No useful authored code exists only on the VM.
+A second complete run finished after strengthening cache validation, adding input
+geometry, and adding paired case-bootstrap intervals. All final caches and
+aggregate reports share the driver hash recorded below. All 530 predictions,
+source, tests and the fresh model are committed. No authored code or result needed
+for replay exists only on the VM. The earlier partial checkpoint is
+`d0a99d302093c7dbf2885012d73c2fe2a7ba3eea`; use its successor completion commit.
 
 ## Commands
 
@@ -44,13 +41,17 @@ existing sklearn training/export tests.
 ## Completed and pending
 
 - Completed: saved-model/source audit; fresh regularized logistic after excluding
-  all five released identities and aliases; first 106-variant run.
-- Completed: Ruff and mypy on both authored files after the latest edits.
-- Earlier focused/relevant pytest run: 81 passed, 26 skipped (optional sklearn
-  training dependency absent). A test annotation error was fixed.
-- Pending: finish second run; run new cache corruption, replay, failure-contract,
-  and leave-one-case-out tests; inspect compact results; update this handoff.
-- Pending: final commit, `git pull --rebase`, and push directly to MAIN.
+  all five released identities and aliases; both complete 106-variant runs.
+- Completed: Ruff and mypy on both authored files.
+- Focused/relevant pytest: 89 passed, 26 skipped (optional sklearn training
+  dependency absent). Includes complete five-case prediction/score replay,
+  exact saved probability reproduction, cache corruption rejection, failed-model
+  withholding, empty proposals and held-out ranking checks.
+- All requested compatible tabular model/profile/threshold variants are complete.
+  The four historical tree exclusions are explicit in `model-audit.json`, with
+  evaluated source-compatible regenerated replacements.
+- Optional follow-up: install `requirements-trees.txt` and exercise the existing
+  training/export tests. No new estimator family or training run is needed here.
 - No branches, PRs, reference-driven candidate generation, or production detector
   changes are authorized.
 
@@ -81,8 +82,8 @@ logistics remain retrospective and ineligible for clean selection.
 ## Artifacts and limitations
 
 - `report.json`: shared contract, all variants, scores, runtime and exclusions.
-- `selection.json`: tabular-only leave-one-case-out choices and, after rerun,
-  paired bootstrap intervals. Global family selection belongs to the parent.
+- `selection.json`: tabular-only leave-one-case-out choices and paired bootstrap
+  intervals. Global family selection belongs to the parent.
 - `candidates/`: replayable ordered features, extended features, probabilities,
   fingerprints, input/source/model hashes and resource measurements.
 - `predictions/`: all five challenge-schema outputs per valid variant.
@@ -94,10 +95,39 @@ establish hidden-set accuracy. Linux CPU timing does not validate Windows timing
 Do not promote a model from these results without the parent's synthetic topology
 regressions and overall resource review.
 
-Local-only state: `/home/ubuntu/repos/tabular-eval/.venv313`, fetched LFS objects
-and the currently running shell job. Dependencies and images are reproducible
+Local-only state: `/home/ubuntu/repos/tabular-eval/.venv313` and fetched LFS objects.
+Dependencies and images are reproducible
 with the commands above. The initial snapshot referenced an unrelated
 StevenTB1 checkout; the work is in a fresh Coder-Meet clone.
 
 Commit only `final_eval_tabular.py`, `tests/test_final_eval_tabular.py` and
 `labels/final-eval/tabular/`. Other agents own all other files.
+The repo ignores all directories named `predictions`; explicitly stage only this
+family's generated prediction directory with
+`git add -f labels/final-eval/tabular/predictions` when refreshing artifacts.
+
+## Results for the parent
+
+At 3 mm, strict proposals achieved TP/FP/FN = 8/3/11 (F1 0.5333); review-union
+achieved 10/14/9 (F1 0.4651). The development winner was current-source extended
+random forest on review-union at threshold 0.85: 9/1/10, F1 0.6207. It retained
+9 of the 10 targets available in those proposals; classifiers cannot recover the
+other nine targets missed by that proposal pool.
+
+Across 84 eligible variants, tabular-only leave-one-case-out selection achieved
+8/2/11, F1 0.5517, count MAE 1.8. F1 at 2/5 mm was 0.4138/0.5517. Three folds
+selected the development winner, one selected base gradient boosting with its
+frozen threshold, and one selected synthetic logistic on strict proposals at 0.3.
+This is not a stable universal model selection result. The paired 95% case
+bootstrap interval for held-out F1 is [0, 0.8485]; relative F1 change versus strict
+is [0, 0.0476], and versus review-union is [-0.2, 0.2441].
+
+Fresh reference-excluded logistic retained 208 pseudo-reviewed candidates and
+froze validation threshold 0.5. Its highest all-five development F1 was 0.5517
+at the predeclared 0.15 threshold on strict proposals; do not reinterpret that
+reference-selected threshold as the validation-frozen threshold.
+
+Maximum measured per-case variant time was 20.6631 seconds and conservative
+whole-job peak RSS was 631.4922 MiB, with four configured CPU threads. These
+measurements passed the stated memory budget on Linux; Windows remains untested.
+No deployment promotion or claim of independent challenge accuracy is made.

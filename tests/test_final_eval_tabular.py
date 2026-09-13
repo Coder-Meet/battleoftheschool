@@ -147,6 +147,7 @@ def test_conditional_recall_records_exact_lost_targets_and_keeps_zero_cases():
 
 def test_all_committed_variants_replay_from_ordered_scores_and_retain_five_cases():
     report = tabular.read_json(tabular.OUTPUT / "report.json")
+    models = {model["name"]: model for model in tabular.read_json(tabular.OUTPUT / "model-audit.json")["models"]}
     caches = {
         (profile, case): tabular.read_json(tabular.OUTPUT / "candidates" / profile / f"{case}.json")
         for profile in tabular.PROFILES for case in CASES
@@ -154,6 +155,19 @@ def test_all_committed_variants_replay_from_ordered_scores_and_retain_five_cases
     for (profile, case), cache in caches.items():
         tabular.validate_cache(cache, case, profile, report["input_sha256"])
         assert cache["input_geometry"]["image"] == cache["input_geometry"]["mask"]
+        for name, saved in cache["model_scores"].items():
+            artifact = models[name]
+            path = ROOT / artifact["path"]
+            assert tabular.digest(path) == saved["model_sha256"]
+            vectors = [
+                record["features"] + (
+                    [record["extra_features"][feature] for feature in tabular.EXTRA_FEATURE_NAMES]
+                    if len(artifact["feature_names"]) > len(FEATURE_NAMES) else []
+                ) for record in cache["records"]
+            ]
+            matrix = np.asarray(vectors, dtype=float).reshape(len(vectors), len(artifact["feature_names"]))
+            model = TreeModel.load(path) if artifact["kind"] == "tree" else CandidateModel.load(path)
+            np.testing.assert_allclose(model.scores(matrix), saved["probabilities"], rtol=0, atol=0)
     names = [variant["name"] for variant in report["variants"]]
     assert len(names) == len(set(names))
     for variant in report["variants"]:

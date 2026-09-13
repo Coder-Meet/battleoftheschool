@@ -706,5 +706,814 @@
       }
     }
   },
+  "all_five_development_winner": {
+    "name": "tabular-current-source-v1-random_forest-extended-review-union-t0.84999999999999998",
+    "scores": {
+      "2": {
+        "summary": {
+          "cases": 5,
+          "true_positives": 7,
+          "false_positives": 3,
+          "false_negatives": 12,
+          "precision": 0.7,
+          "recall": 0.3684210526315789,
+          "f1": 0.4827586206896552,
+          "count_mae": 1.8,
+          "exact_count_cases": 2,
+          "errors": {
+            "ostium_error_mm": {
+              "n": 7,
+              "mean": 1.076212270241584,
+              "median": 1.0526629198603388,
+              "p95": 1.5545446979953461
+            },
+            "seed_error_mm": {
+              "n": 7,
+              "mean": 0.9048742959462973,
+              "median": 0.8462679817062826,
+              "p95": 1.2851475602072675
+            },
+            "radius_error_mm": {
+              "n": 1,
+              "mean": 0.2709999999999999,
+              "median": 0.2709999999999999,
+              "p95": 0.2709999999999999
+            },
+            "direction_error_degrees": {
+              "n": 7,
+              "mean": 14.09887221741687,
+              "median": 13.015861659724159,
+              "p95": 21.371714932216957
+            },
+            "seed_to_reference_centreline_mm": {
+              "n": 7,
+              "mean": 0.8110524650276585,
+              "median": 0.7440854582069598,
+              "p95": 1.282451661013665
+            }
+          }
+        },
+        "cases": [
+          {
+            "case_id": "subject019",
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 3,
+            "daughter_counts": {
+              "predicted": 0,
+              "reference": 3,
+              "signed_error": -3,
+              "absolute_error": 3
+            },
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "unmatched_prediction_ids": [],
+            "unmatched_reference_ids": [
+              "branch_001",
+              "branch_002",
+              "branch_003"
+            ]
+          },
+          {
+            "case_id": "subject020",
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 4,
+            "daughter_counts": {
+              "predicted": 0,
+              "reference": 4,
+              "signed_error": -4,
+              "absolute_error": 4
+            },
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "unmatched_prediction_ids": [],
+            "unmatched_reference_ids": [
+              "branch_001",
+              "branch_002",
+              "branch_003",
+              "branch_004"
+            ]
+          },
+          {
+            "case_id": "subject021",
+            "true_positives": 1,
+            "false_positives": 2,
+            "false_negatives": 2,
+            "daughter_counts": {
+              "predicted": 3,
+              "reference": 3,
+              "signed_error": 0,
+              "absolute_error": 0
+            },
+            "precision": 0.3333333333333333,
+            "recall": 0.3333333333333333,
+            "f1": 0.3333333333333333,
+            "matches": [
+              {
+                "prediction_id": "branch_004",
+                "reference_id": "branch_002",
+                "ostium_error_mm": 1.5384539223393714,
+                "seed_error_mm": 0.949675749337103,
+                "radius_error_mm": null,
+                "direction_error_degrees": 13.015861659724159,
+                "seed_to_reference_centreline_mm": 0.9493508694681312
+              }
+            ],
+            "unmatched_prediction_ids": [
+              "branch_003",
+              "branch_005"
+            ],
+            "unmatched_reference_ids": [
+              "branch_001",
+              "branch_003"
+            ]
+          },
+          {
+            "case_id": "subject022",
+            "true_positives": 5,
+            "false_positives": 1,
+            "false_negatives": 1,
+            "daughter_counts": {
+              "predicted": 6,
+              "reference": 6,
+              "signed_error": 0,
+              "absolute_error": 0
+            },
+            "precision": 0.8333333333333334,
+            "recall": 0.8333333333333334,
+            "f1": 0.8333333333333334,
+            "matches": [
+              {
+                "prediction_id": "branch_003",
+                "reference_id": "branch_006",
+                "ostium_error_mm": 1.0526629198603388,
+                "seed_error_mm": 1.0693650981447846,
+                "radius_error_mm": null,
+                "direction_error_degrees": 22.22724940952999,
+                "seed_to_reference_centreline_mm": 1.0626963126810098
+              },
+              {
+                "prediction_id": "branch_008",
+                "reference_id": "branch_002",
+                "ostium_error_mm": 0.5681255182653779,
+                "seed_error_mm": 0.7144223811661912,
+                "radius_error_mm": 0.2709999999999999,
+                "direction_error_degrees": 11.317330141961373,
+                "seed_to_reference_centreline_mm": 0.7015598884551578
+              },
+              {
+                "prediction_id": "branch_010",
+                "reference_id": "branch_003",
+                "ostium_error_mm": 1.5614407447050496,
+                "seed_error_mm": 0.6325181410080337,
+                "radius_error_mm": null,
+                "direction_error_degrees": 15.232475802960323,
+                "seed_to_reference_centreline_mm": 0.3522486470763273
+              },
+              {
+                "prediction_id": "branch_011",
+                "reference_id": "branch_004",
+                "ostium_error_mm": 1.3098453977032154,
+                "seed_error_mm": 0.8462679817062826,
+                "radius_error_mm": null,
+                "direction_error_degrees": 11.388493043520983,
+                "seed_to_reference_centreline_mm": 0.490793554721221
+              },
+              {
+                "prediction_id": "branch_014",
+                "reference_id": "branch_005",
+                "ostium_error_mm": 0.8544825485842499,
+                "seed_error_mm": 0.7442449620276397,
+                "radius_error_mm": null,
+                "direction_error_degrees": 6.135227645734713,
+                "seed_to_reference_centreline_mm": 0.7440854582069598
+              }
+            ],
+            "unmatched_prediction_ids": [
+              "branch_013"
+            ],
+            "unmatched_reference_ids": [
+              "branch_001"
+            ]
+          },
+          {
+            "case_id": "subject023",
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 2,
+            "daughter_counts": {
+              "predicted": 1,
+              "reference": 3,
+              "signed_error": -2,
+              "absolute_error": 2
+            },
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "f1": 0.5,
+            "matches": [
+              {
+                "prediction_id": "branch_001",
+                "reference_id": "branch_002",
+                "ostium_error_mm": 0.6484748402334851,
+                "seed_error_mm": 1.377625758234046,
+                "radius_error_mm": null,
+                "direction_error_degrees": 19.37546781848656,
+                "seed_to_reference_centreline_mm": 1.376632524584803
+              }
+            ],
+            "unmatched_prediction_ids": [],
+            "unmatched_reference_ids": [
+              "branch_001",
+              "branch_003"
+            ]
+          }
+        ]
+      },
+      "3": {
+        "summary": {
+          "cases": 5,
+          "true_positives": 9,
+          "false_positives": 1,
+          "false_negatives": 10,
+          "precision": 0.9,
+          "recall": 0.47368421052631576,
+          "f1": 0.6206896551724138,
+          "count_mae": 1.8,
+          "exact_count_cases": 2,
+          "errors": {
+            "ostium_error_mm": {
+              "n": 9,
+              "mean": 1.4416616260453,
+              "median": 1.3098453977032154,
+              "p95": 2.776086151978844
+            },
+            "seed_error_mm": {
+              "n": 9,
+              "mean": 1.194754710168021,
+              "median": 0.949675749337103,
+              "p95": 2.279237873836675
+            },
+            "radius_error_mm": {
+              "n": 1,
+              "mean": 0.2709999999999999,
+              "median": 0.2709999999999999,
+              "p95": 0.2709999999999999
+            },
+            "direction_error_degrees": {
+              "n": 9,
+              "mean": 13.92977033027311,
+              "median": 13.015861659724159,
+              "p95": 21.086536773112616
+            },
+            "seed_to_reference_centreline_mm": {
+              "n": 9,
+              "mean": 1.0476157354410072,
+              "median": 0.9493508694681312,
+              "p95": 1.9011571710067772
+            }
+          }
+        },
+        "cases": [
+          {
+            "case_id": "subject019",
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 3,
+            "daughter_counts": {
+              "predicted": 0,
+              "reference": 3,
+              "signed_error": -3,
+              "absolute_error": 3
+            },
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "unmatched_prediction_ids": [],
+            "unmatched_reference_ids": [
+              "branch_001",
+              "branch_002",
+              "branch_003"
+            ]
+          },
+          {
+            "case_id": "subject020",
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 4,
+            "daughter_counts": {
+              "predicted": 0,
+              "reference": 4,
+              "signed_error": -4,
+              "absolute_error": 4
+            },
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "unmatched_prediction_ids": [],
+            "unmatched_reference_ids": [
+              "branch_001",
+              "branch_002",
+              "branch_003",
+              "branch_004"
+            ]
+          },
+          {
+            "case_id": "subject021",
+            "true_positives": 3,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "daughter_counts": {
+              "predicted": 3,
+              "reference": 3,
+              "signed_error": 0,
+              "absolute_error": 0
+            },
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "prediction_id": "branch_003",
+                "reference_id": "branch_001",
+                "ostium_error_mm": 2.4439754682556116,
+                "seed_error_mm": 1.8598275904809396,
+                "radius_error_mm": null,
+                "direction_error_degrees": 7.516948192251578,
+                "seed_to_reference_centreline_mm": 1.7477372362924801
+              },
+              {
+                "prediction_id": "branch_004",
+                "reference_id": "branch_002",
+                "ostium_error_mm": 1.5384539223393714,
+                "seed_error_mm": 0.949675749337103,
+                "radius_error_mm": null,
+                "direction_error_degrees": 13.015861659724159,
+                "seed_to_reference_centreline_mm": 0.9493508694681312
+              },
+              {
+                "prediction_id": "branch_005",
+                "reference_id": "branch_003",
+                "ostium_error_mm": 2.9974932744609992,
+                "seed_error_mm": 2.558844729407166,
+                "radius_error_mm": null,
+                "direction_error_degrees": 19.15887925828833,
+                "seed_to_reference_centreline_mm": 2.003437127482975
+              }
+            ],
+            "unmatched_prediction_ids": [],
+            "unmatched_reference_ids": []
+          },
+          {
+            "case_id": "subject022",
+            "true_positives": 5,
+            "false_positives": 1,
+            "false_negatives": 1,
+            "daughter_counts": {
+              "predicted": 6,
+              "reference": 6,
+              "signed_error": 0,
+              "absolute_error": 0
+            },
+            "precision": 0.8333333333333334,
+            "recall": 0.8333333333333334,
+            "f1": 0.8333333333333334,
+            "matches": [
+              {
+                "prediction_id": "branch_003",
+                "reference_id": "branch_006",
+                "ostium_error_mm": 1.0526629198603388,
+                "seed_error_mm": 1.0693650981447846,
+                "radius_error_mm": null,
+                "direction_error_degrees": 22.22724940952999,
+                "seed_to_reference_centreline_mm": 1.0626963126810098
+              },
+              {
+                "prediction_id": "branch_008",
+                "reference_id": "branch_002",
+                "ostium_error_mm": 0.5681255182653779,
+                "seed_error_mm": 0.7144223811661912,
+                "radius_error_mm": 0.2709999999999999,
+                "direction_error_degrees": 11.317330141961373,
+                "seed_to_reference_centreline_mm": 0.7015598884551578
+              },
+              {
+                "prediction_id": "branch_010",
+                "reference_id": "branch_003",
+                "ostium_error_mm": 1.5614407447050496,
+                "seed_error_mm": 0.6325181410080337,
+                "radius_error_mm": null,
+                "direction_error_degrees": 15.232475802960323,
+                "seed_to_reference_centreline_mm": 0.3522486470763273
+              },
+              {
+                "prediction_id": "branch_011",
+                "reference_id": "branch_004",
+                "ostium_error_mm": 1.3098453977032154,
+                "seed_error_mm": 0.8462679817062826,
+                "radius_error_mm": null,
+                "direction_error_degrees": 11.388493043520983,
+                "seed_to_reference_centreline_mm": 0.490793554721221
+              },
+              {
+                "prediction_id": "branch_014",
+                "reference_id": "branch_005",
+                "ostium_error_mm": 0.8544825485842499,
+                "seed_error_mm": 0.7442449620276397,
+                "radius_error_mm": null,
+                "direction_error_degrees": 6.135227645734713,
+                "seed_to_reference_centreline_mm": 0.7440854582069598
+              }
+            ],
+            "unmatched_prediction_ids": [
+              "branch_013"
+            ],
+            "unmatched_reference_ids": [
+              "branch_001"
+            ]
+          },
+          {
+            "case_id": "subject023",
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 2,
+            "daughter_counts": {
+              "predicted": 1,
+              "reference": 3,
+              "signed_error": -2,
+              "absolute_error": 2
+            },
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "f1": 0.5,
+            "matches": [
+              {
+                "prediction_id": "branch_001",
+                "reference_id": "branch_002",
+                "ostium_error_mm": 0.6484748402334851,
+                "seed_error_mm": 1.377625758234046,
+                "radius_error_mm": null,
+                "direction_error_degrees": 19.37546781848656,
+                "seed_to_reference_centreline_mm": 1.376632524584803
+              }
+            ],
+            "unmatched_prediction_ids": [],
+            "unmatched_reference_ids": [
+              "branch_001",
+              "branch_003"
+            ]
+          }
+        ]
+      },
+      "5": {
+        "summary": {
+          "cases": 5,
+          "true_positives": 9,
+          "false_positives": 1,
+          "false_negatives": 10,
+          "precision": 0.9,
+          "recall": 0.47368421052631576,
+          "f1": 0.6206896551724138,
+          "count_mae": 1.8,
+          "exact_count_cases": 2,
+          "errors": {
+            "ostium_error_mm": {
+              "n": 9,
+              "mean": 1.4416616260453,
+              "median": 1.3098453977032154,
+              "p95": 2.776086151978844
+            },
+            "seed_error_mm": {
+              "n": 9,
+              "mean": 1.194754710168021,
+              "median": 0.949675749337103,
+              "p95": 2.279237873836675
+            },
+            "radius_error_mm": {
+              "n": 1,
+              "mean": 0.2709999999999999,
+              "median": 0.2709999999999999,
+              "p95": 0.2709999999999999
+            },
+            "direction_error_degrees": {
+              "n": 9,
+              "mean": 13.92977033027311,
+              "median": 13.015861659724159,
+              "p95": 21.086536773112616
+            },
+            "seed_to_reference_centreline_mm": {
+              "n": 9,
+              "mean": 1.0476157354410072,
+              "median": 0.9493508694681312,
+              "p95": 1.9011571710067772
+            }
+          }
+        },
+        "cases": [
+          {
+            "case_id": "subject019",
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 3,
+            "daughter_counts": {
+              "predicted": 0,
+              "reference": 3,
+              "signed_error": -3,
+              "absolute_error": 3
+            },
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "unmatched_prediction_ids": [],
+            "unmatched_reference_ids": [
+              "branch_001",
+              "branch_002",
+              "branch_003"
+            ]
+          },
+          {
+            "case_id": "subject020",
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 4,
+            "daughter_counts": {
+              "predicted": 0,
+              "reference": 4,
+              "signed_error": -4,
+              "absolute_error": 4
+            },
+            "precision": null,
+            "recall": 0.0,
+            "f1": 0.0,
+            "matches": [],
+            "unmatched_prediction_ids": [],
+            "unmatched_reference_ids": [
+              "branch_001",
+              "branch_002",
+              "branch_003",
+              "branch_004"
+            ]
+          },
+          {
+            "case_id": "subject021",
+            "true_positives": 3,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "daughter_counts": {
+              "predicted": 3,
+              "reference": 3,
+              "signed_error": 0,
+              "absolute_error": 0
+            },
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "matches": [
+              {
+                "prediction_id": "branch_003",
+                "reference_id": "branch_001",
+                "ostium_error_mm": 2.4439754682556116,
+                "seed_error_mm": 1.8598275904809396,
+                "radius_error_mm": null,
+                "direction_error_degrees": 7.516948192251578,
+                "seed_to_reference_centreline_mm": 1.7477372362924801
+              },
+              {
+                "prediction_id": "branch_004",
+                "reference_id": "branch_002",
+                "ostium_error_mm": 1.5384539223393714,
+                "seed_error_mm": 0.949675749337103,
+                "radius_error_mm": null,
+                "direction_error_degrees": 13.015861659724159,
+                "seed_to_reference_centreline_mm": 0.9493508694681312
+              },
+              {
+                "prediction_id": "branch_005",
+                "reference_id": "branch_003",
+                "ostium_error_mm": 2.9974932744609992,
+                "seed_error_mm": 2.558844729407166,
+                "radius_error_mm": null,
+                "direction_error_degrees": 19.15887925828833,
+                "seed_to_reference_centreline_mm": 2.003437127482975
+              }
+            ],
+            "unmatched_prediction_ids": [],
+            "unmatched_reference_ids": []
+          },
+          {
+            "case_id": "subject022",
+            "true_positives": 5,
+            "false_positives": 1,
+            "false_negatives": 1,
+            "daughter_counts": {
+              "predicted": 6,
+              "reference": 6,
+              "signed_error": 0,
+              "absolute_error": 0
+            },
+            "precision": 0.8333333333333334,
+            "recall": 0.8333333333333334,
+            "f1": 0.8333333333333334,
+            "matches": [
+              {
+                "prediction_id": "branch_003",
+                "reference_id": "branch_006",
+                "ostium_error_mm": 1.0526629198603388,
+                "seed_error_mm": 1.0693650981447846,
+                "radius_error_mm": null,
+                "direction_error_degrees": 22.22724940952999,
+                "seed_to_reference_centreline_mm": 1.0626963126810098
+              },
+              {
+                "prediction_id": "branch_008",
+                "reference_id": "branch_002",
+                "ostium_error_mm": 0.5681255182653779,
+                "seed_error_mm": 0.7144223811661912,
+                "radius_error_mm": 0.2709999999999999,
+                "direction_error_degrees": 11.317330141961373,
+                "seed_to_reference_centreline_mm": 0.7015598884551578
+              },
+              {
+                "prediction_id": "branch_010",
+                "reference_id": "branch_003",
+                "ostium_error_mm": 1.5614407447050496,
+                "seed_error_mm": 0.6325181410080337,
+                "radius_error_mm": null,
+                "direction_error_degrees": 15.232475802960323,
+                "seed_to_reference_centreline_mm": 0.3522486470763273
+              },
+              {
+                "prediction_id": "branch_011",
+                "reference_id": "branch_004",
+                "ostium_error_mm": 1.3098453977032154,
+                "seed_error_mm": 0.8462679817062826,
+                "radius_error_mm": null,
+                "direction_error_degrees": 11.388493043520983,
+                "seed_to_reference_centreline_mm": 0.490793554721221
+              },
+              {
+                "prediction_id": "branch_014",
+                "reference_id": "branch_005",
+                "ostium_error_mm": 0.8544825485842499,
+                "seed_error_mm": 0.7442449620276397,
+                "radius_error_mm": null,
+                "direction_error_degrees": 6.135227645734713,
+                "seed_to_reference_centreline_mm": 0.7440854582069598
+              }
+            ],
+            "unmatched_prediction_ids": [
+              "branch_013"
+            ],
+            "unmatched_reference_ids": [
+              "branch_001"
+            ]
+          },
+          {
+            "case_id": "subject023",
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 2,
+            "daughter_counts": {
+              "predicted": 1,
+              "reference": 3,
+              "signed_error": -2,
+              "absolute_error": 2
+            },
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "f1": 0.5,
+            "matches": [
+              {
+                "prediction_id": "branch_001",
+                "reference_id": "branch_002",
+                "ostium_error_mm": 0.6484748402334851,
+                "seed_error_mm": 1.377625758234046,
+                "radius_error_mm": null,
+                "direction_error_degrees": 19.37546781848656,
+                "seed_to_reference_centreline_mm": 1.376632524584803
+              }
+            ],
+            "unmatched_prediction_ids": [],
+            "unmatched_reference_ids": [
+              "branch_001",
+              "branch_003"
+            ]
+          }
+        ]
+      }
+    },
+    "interpretation": "Descriptive reused-development maximum; not an independent held-out score."
+  },
+  "uncertainty": {
+    "unit": "whole case",
+    "seed": 20260913,
+    "replicates": 10000,
+    "method": "Paired percentile 95% intervals; fixed held-out decisions, no reselection. Five dependent development folds; intervals do not remove selection bias.",
+    "tolerances": {
+      "2": {
+        "held_out_f1_95_percentile": [
+          0.0,
+          0.7111111111111111
+        ],
+        "held_out_count_mae_95_percentile": [
+          0.6,
+          3.0
+        ],
+        "paired_comparisons": {
+          "tabular-unfiltered-strict": {
+            "f1_delta_95_percentile": [
+              0.0,
+              0.04444444444444451
+            ],
+            "count_mae_delta_95_percentile": [
+              -0.6000000000000001,
+              0.0
+            ]
+          },
+          "tabular-unfiltered-review-union": {
+            "f1_delta_95_percentile": [
+              -0.23529411764705882,
+              0.20181818181818179
+            ],
+            "count_mae_delta_95_percentile": [
+              -6.2,
+              0.7999999999999998
+            ]
+          }
+        }
+      },
+      "3": {
+        "held_out_f1_95_percentile": [
+          0.0,
+          0.8484848484848485
+        ],
+        "held_out_count_mae_95_percentile": [
+          0.6,
+          3.0
+        ],
+        "paired_comparisons": {
+          "tabular-unfiltered-strict": {
+            "f1_delta_95_percentile": [
+              0.0,
+              0.04761904761904767
+            ],
+            "count_mae_delta_95_percentile": [
+              -0.6000000000000001,
+              0.0
+            ]
+          },
+          "tabular-unfiltered-review-union": {
+            "f1_delta_95_percentile": [
+              -0.2,
+              0.24407868325973514
+            ],
+            "count_mae_delta_95_percentile": [
+              -6.2,
+              0.7999999999999998
+            ]
+          }
+        }
+      },
+      "5": {
+        "held_out_f1_95_percentile": [
+          0.0,
+          0.8484848484848485
+        ],
+        "held_out_count_mae_95_percentile": [
+          0.6,
+          3.0
+        ],
+        "paired_comparisons": {
+          "tabular-unfiltered-strict": {
+            "f1_delta_95_percentile": [
+              0.0,
+              0.04761904761904767
+            ],
+            "count_mae_delta_95_percentile": [
+              -0.6000000000000001,
+              0.0
+            ]
+          },
+          "tabular-unfiltered-review-union": {
+            "f1_delta_95_percentile": [
+              -0.2,
+              0.24407868325973514
+            ],
+            "count_mae_delta_95_percentile": [
+              -6.2,
+              0.7999999999999998
+            ]
+          }
+        }
+      }
+    }
+  },
   "tie_break": "Pooled 3 mm F1, lower count MAE, lower measured four-case time, lexical name."
 }

@@ -14,7 +14,65 @@
     "nifti_io.py": "d8cd2795046affe798a2c2ed0822dc615f73930b94381c1ef5af0de36127cb02",
     "research_run.py": "b02739a64608d51c39909a6dcaf3d6772f15b2bd7606ced9d7f82f8654727ca1"
   },
-  "driver_sha256": "3e542aedba80539321dc15e65ef86c49520bae5afc04b2a47c66b1a194951d2c",
+  "driver_sha256": "0b09877d8548d4751769b626a0e7185ae5cd7e15cd9cfa985ae21e8dffdc1f5f",
+  "input_geometry": {
+    "image": {
+      "size": [
+        244,
+        244,
+        179
+      ],
+      "spacing": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "origin": [
+        190.642578125,
+        38.142578125,
+        10.0
+      ],
+      "direction": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    },
+    "mask": {
+      "size": [
+        244,
+        244,
+        179
+      ],
+      "spacing": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "origin": [
+        190.642578125,
+        38.142578125,
+        10.0
+      ],
+      "direction": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    }
+  },
   "detector_config": {
     "spacing_mm": 1.0,
     "margin_mm": 20.0,
@@ -209,7 +267,7 @@
         0.02150737797004781
       ],
       "threshold": 0.37631433544133275,
-      "scoring_s": 0.00016277899999295187,
+      "scoring_s": 0.00017240699997955744,
       "model_sha256": "a45747a0382ae41d0a37f2104f2348190905c847a1b89347f9c9703448ddccc6",
       "contract": {
         "feature_names": [
@@ -235,7 +293,7 @@
         0.030065148026187
       ],
       "threshold": 0.5,
-      "scoring_s": 0.00010718499999029518,
+      "scoring_s": 9.575199999289907e-05,
       "model_sha256": "9d7026550b834b5f427d4b6404cd6ff02b182b9db7ffd207f0f24b802a83e2f1",
       "contract": {
         "feature_names": [
@@ -261,7 +319,7 @@
         0.012604998148129432
       ],
       "threshold": 0.5,
-      "scoring_s": 8.901699999341872e-05,
+      "scoring_s": 8.404199996903117e-05,
       "model_sha256": "1d1bfaf6517df214fecaaae9ed2eab7b20c07f1b6af6097dc1cb605e4c64924c",
       "contract": {
         "feature_names": [
@@ -287,7 +345,7 @@
         0.786665168311217
       ],
       "threshold": 0.5630076829578097,
-      "scoring_s": 0.0037537839999686184,
+      "scoring_s": 0.0055549510000219016,
       "model_sha256": "7e37a395f6ee376c76e68be177b5992259945758fc4c382040db06921fe2380f",
       "contract": {
         "feature_names": [
@@ -378,7 +436,7 @@
         0.8088594363173741
       ],
       "threshold": 0.3878033228645144,
-      "scoring_s": 0.6082784060000108,
+      "scoring_s": 0.5698132680000185,
       "model_sha256": "a591c6ea936c6b12b41419efc40313cfabc333199cadd455161b1a047fa814cc",
       "contract": {
         "feature_names": [
@@ -469,7 +527,7 @@
         0.05665065208793008
       ],
       "threshold": 0.08833933000710323,
-      "scoring_s": 0.00022316799999089199,
+      "scoring_s": 0.00021000600003162617,
       "model_sha256": "e9f864956aa65c3f05c038b13b0c8ca9e7289e4a44f6f0eb7837ab85814c730e",
       "contract": {
         "feature_names": [
@@ -495,7 +553,7 @@
         0.9210415384357195
       ],
       "threshold": 0.619174558982323,
-      "scoring_s": 0.007108572999982243,
+      "scoring_s": 0.0062027189999867005,
       "model_sha256": "f66277b2d3243e1a52bb959f3bbaf1ed91e7bc638def5c6177dad04d14e3966b",
       "contract": {
         "feature_names": [
@@ -586,7 +644,7 @@
         0.8904320352791735
       ],
       "threshold": 0.6209693278491709,
-      "scoring_s": 0.6182947849999891,
+      "scoring_s": 0.5875308399999994,
       "model_sha256": "cee9e454f5ac44dacddb4baff9cd84ec4967b6eec7da57b801fbda73c2a0b970",
       "contract": {
         "feature_names": [
@@ -677,7 +735,7 @@
         0.05665065208793008
       ],
       "threshold": 0.08833933000710323,
-      "scoring_s": 0.0002111119999881339,
+      "scoring_s": 0.00022361700001738427,
       "model_sha256": "e9f864956aa65c3f05c038b13b0c8ca9e7289e4a44f6f0eb7837ab85814c730e",
       "contract": {
         "feature_names": [
@@ -700,8 +758,8 @@
     }
   },
   "failures": [],
-  "detection_and_input_load_s": 2.526368630000036,
-  "total_case_job_s": 3.7657505340000057,
-  "peak_rss_mb": 316.5859375,
+  "detection_and_input_load_s": 2.6060113959999853,
+  "total_case_job_s": 3.777063809000026,
+  "peak_rss_mb": 326.16015625,
   "records_sha256": "f67e316e5e388e834c8ad6c544b7a1de25eb6e2f3bbadd25a494bde65772fd06"
 }
