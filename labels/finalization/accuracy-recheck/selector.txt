@@ -1,0 +1,15 @@
+{
+  "validated_variants": 280,
+  "eligible_variants": 180,
+  "held_out_3mm": {
+    "true_positives": 8,
+    "false_positives": 9,
+    "false_negatives": 11,
+    "precision": 0.47058823529411764,
+    "recall": 0.42105263157894735,
+    "f1": 0.4444444444444444,
+    "count_mae": 3.2
+  },
+  "development_winner": "tabular:tabular-current-source-v1-random_forest-extended-review-union-t0.84999999999999998",
+  "deployment": "deterministic:deterministic-strict"
+}

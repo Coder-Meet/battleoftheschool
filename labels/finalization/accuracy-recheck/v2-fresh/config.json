@@ -1,0 +1,221 @@
+{
+  "status": "POST-REFERENCE DEVELOPMENT; no independent clinical accuracy estimate",
+  "cohort": "fresh",
+  "cases": [
+    [
+      "stress",
+      "tortuous_low_contrast",
+      28411
+    ],
+    [
+      "stress",
+      "thick_slice_anisotropic",
+      28411
+    ],
+    [
+      "stress",
+      "touching_vein_and_calcification",
+      28411
+    ],
+    [
+      "stress",
+      "aneurysm_with_mural_thrombus",
+      28411
+    ],
+    [
+      "stress",
+      "common_trunk_early_split",
+      28411
+    ],
+    [
+      "stress",
+      "daughter_of_daughter",
+      28411
+    ],
+    [
+      "stress",
+      "nearby_pair_with_short_stub",
+      28411
+    ],
+    [
+      "stress",
+      "cropped_short_segment",
+      28411
+    ],
+    [
+      "stress",
+      "imperfect_parent_mask",
+      28411
+    ],
+    [
+      "stress",
+      "dense_branch_field",
+      28411
+    ],
+    [
+      "stress",
+      "negative_controls_only",
+      28411
+    ],
+    [
+      "stress",
+      "high_noise_small_branches",
+      28411
+    ],
+    [
+      "stress",
+      "curved_daughters",
+      28411
+    ],
+    [
+      "stress",
+      "wall_parallel_descending",
+      28411
+    ],
+    [
+      "stress",
+      "tortuous_low_contrast",
+      91513
+    ],
+    [
+      "stress",
+      "thick_slice_anisotropic",
+      91513
+    ],
+    [
+      "stress",
+      "touching_vein_and_calcification",
+      91513
+    ],
+    [
+      "stress",
+      "aneurysm_with_mural_thrombus",
+      91513
+    ],
+    [
+      "stress",
+      "common_trunk_early_split",
+      91513
+    ],
+    [
+      "stress",
+      "daughter_of_daughter",
+      91513
+    ],
+    [
+      "stress",
+      "nearby_pair_with_short_stub",
+      91513
+    ],
+    [
+      "stress",
+      "cropped_short_segment",
+      91513
+    ],
+    [
+      "stress",
+      "imperfect_parent_mask",
+      91513
+    ],
+    [
+      "stress",
+      "dense_branch_field",
+      91513
+    ],
+    [
+      "stress",
+      "negative_controls_only",
+      91513
+    ],
+    [
+      "stress",
+      "high_noise_small_branches",
+      91513
+    ],
+    [
+      "stress",
+      "curved_daughters",
+      91513
+    ],
+    [
+      "stress",
+      "wall_parallel_descending",
+      91513
+    ]
+  ],
+  "require_original_root": true,
+  "variants": {
+    "strict": {
+      "detector_config": {
+        "spacing_mm": 1.0,
+        "margin_mm": 20.0,
+        "shell_inner_mm": 1.5,
+        "shell_outer_mm": 3.5,
+        "cap_margin_mm": 4.0,
+        "minimum_radius_mm": 0.7,
+        "minimum_origin_diameter_mm": 2.0,
+        "minimum_path_mm": 5.0,
+        "trace_length_mm": 10.0,
+        "vesselness_floor": 0.06,
+        "maximum_candidates": 160,
+        "shell_vesselness_floor": 0.06,
+        "connector_gap_fraction": 0.0,
+        "root_depth_mm": 3.5,
+        "blood_lower_scale": 1.0,
+        "support_contrast_fraction": 0.5,
+        "native_contrast_scale": 1.2,
+        "roots_per_contact": 1,
+        "wall_hug_penalty": 0.0,
+        "broad_contact_mm3": 1200.0,
+        "parallel_clearance_mm": 0.0,
+        "profile": "strict"
+      },
+      "recovery": false
+    },
+    "guarded": {
+      "detector_config": {
+        "spacing_mm": 1.0,
+        "margin_mm": 20.0,
+        "shell_inner_mm": 1.5,
+        "shell_outer_mm": 3.5,
+        "cap_margin_mm": 4.0,
+        "minimum_radius_mm": 0.7,
+        "minimum_origin_diameter_mm": 2.0,
+        "minimum_path_mm": 5.0,
+        "trace_length_mm": 10.0,
+        "vesselness_floor": 0.06,
+        "maximum_candidates": 160,
+        "shell_vesselness_floor": 0.06,
+        "connector_gap_fraction": 0.0,
+        "root_depth_mm": 3.5,
+        "blood_lower_scale": 1.0,
+        "support_contrast_fraction": 0.5,
+        "native_contrast_scale": 1.2,
+        "roots_per_contact": 1,
+        "wall_hug_penalty": 0.0,
+        "broad_contact_mm3": 1200.0,
+        "parallel_clearance_mm": 0.0,
+        "profile": "strict"
+      },
+      "recovery": true
+    }
+  },
+  "source_sha256": {
+    "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+    "origin_recovery.py": "1bddeefff79c881cef0e0678404d6746467ae3649f3db3ea5c35ad7f439ff1c2",
+    "accuracy_recheck.py": "302af49ebb5b83509ff792a9a4399d50998121cfc773622afdfef49c2e515818",
+    "stress.py": "1d641e985119538f2a2286718570e026192198e6d646f8f7aec9712c56ed0122",
+    "synthetic.py": "923e9d4aefdcf57150aa288d526e03eedd3b4c350e36c3eda2f7204bbe44bc41",
+    "final_evaluation.py": "be2488c1123e0f3ae7cbff7a319ac360fab60c9502ebe5ce490bd7c918d7c990",
+    "evaluate.py": "b5a2c04aa93020ea7034d59844fb7d3a56166985ee2633f0194b5f02ee332092",
+    "nifti_io.py": "d8cd2795046affe798a2c2ed0822dc615f73930b94381c1ef5af0de36127cb02"
+  },
+  "topology_cohort_sha256": "db719d635fd57f724cc4ede61edcdc1851d1688073c7c2af96f1da338bb96a94",
+  "gate": [
+    "No threshold or model fitting on the five references.",
+    "Improve reference F1 without losing baseline matches or worsening count MAE.",
+    "No lost synthetic baseline matches, extra synthetic false positives, or negative-control detections.",
+    "New procedural seeds use known generators and are not independent real-patient validation.",
+    "Actual organizer hardware remains unverified."
+  ]
+}

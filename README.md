@@ -15,6 +15,10 @@ already used by `run.py` and the default Explorer. Do not enable a research
 model or `--review-mode` for the submission. The [final evaluation](FINAL_EVALUATION_RESULTS.md)
 separates the fixed deployment from retrospective model comparisons.
 
+The later [accuracy recheck](ACCURACY_RECHECK.md) adds optional guarded origin
+recovery. It raises local F1 to 0.5806 and precision to 0.7500, but worsens
+daughter-count MAE, so it is not enabled in the submitted default.
+
 ## Working agreement
 
 New teammates: start with the [setup, backend API and training handoff guide](TEAMMATE_GUIDE.md).

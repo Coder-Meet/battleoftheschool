@@ -6,6 +6,12 @@ Keep **deterministic strict, 1 mm working spacing,
 `native_contrast_scale=1.2`**. Use the default CLI without model or research
 flags. No new fitted weights were promoted.
 
+The subsequent [accuracy recheck](ACCURACY_RECHECK.md) found a guarded
+wall-connection recovery method with local F1 0.5806 and precision 0.7500.
+It preserves baseline matches across 80 synthetic controls but increases
+reference count MAE from 2.0 to 2.2. It is available only through the experimental
+`--recover-connected-origins` CLI flag; the release and Explorer remain strict.
+
 The [selection report](FINAL_EVALUATION_RESULTS.md) remains authoritative.
 New production outputs for all five reference cases are exactly equal to the
 frozen selected outputs. Final replay verifies 280 variants, 180 eligible.

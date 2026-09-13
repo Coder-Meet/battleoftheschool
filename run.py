@@ -22,6 +22,7 @@ import SimpleITK as sitk
 from detector import DetectorConfig, detect
 from learning import CandidateModel, filter_detection
 from nifti_io import read_nifti
+from origin_recovery import detect_connected
 
 
 def parse_args() -> argparse.Namespace:
@@ -48,6 +49,10 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--spacing-mm", type=float, default=1.0, help="Isotropic working spacing; finer grids cost more CPU.")
     parser.add_argument("--threads", type=int, default=4, help="SimpleITK CPU threads (default: 4).")
+    parser.add_argument(
+        "--recover-connected-origins", action="store_true",
+        help="Experimental: recover curved wall connections while retaining the original vessel root.",
+    )
     parser.add_argument(
         "--parallel-clearance-mm", type=float, default=0.0,
         help="Experimental: also accept daughters that run alongside the aorta wall, clearing it by at least"
@@ -92,11 +97,15 @@ def main() -> int:
             image_path.parent.name if image_path.parent.name.startswith("subject")
             else image_path.name.removesuffix(".gz").removesuffix(".nii")
         )
-        result = detect(image, aorta_mask, DetectorConfig(
+        config = DetectorConfig(
             minimum_radius_mm=args.minimum_radius_mm, spacing_mm=args.spacing_mm,
             minimum_origin_diameter_mm=args.minimum_origin_diameter_mm,
             parallel_clearance_mm=args.parallel_clearance_mm,
-        ))
+        )
+        result = (
+            detect_connected(image, aorta_mask, config, require_root=True)
+            if args.recover_connected_origins else detect(image, aorta_mask, config)
+        )
         model_diagnostics = None
         if args.candidate_model:
             model_diagnostics = filter_detection(result, CandidateModel.load(args.candidate_model))

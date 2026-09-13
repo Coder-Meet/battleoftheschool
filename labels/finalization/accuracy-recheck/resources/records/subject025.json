@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "platform": "Linux",
+  "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+  "python": "3.13.3",
+  "cpu_cores": 4,
+  "cpu_affinity": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "cpu_limit_method": "os_affinity_and_thread_environment",
+  "gpu": null,
+  "network": false,
+  "network_evidence": "socket creation denied",
+  "target_Windows_verified": false,
+  "command": [
+    "/home/ubuntu/repos/battleoftheschool/.venv313/bin/python",
+    "run.py",
+    "--image",
+    "/home/ubuntu/repos/battleoftheschool/data/subject025/orig25.nii",
+    "--aorta-mask",
+    "/home/ubuntu/repos/battleoftheschool/data/subject025/mask25.nii",
+    "--output",
+    "outputs/accuracy-recheck-resources/predictions/subject025.json",
+    "--threads",
+    "4",
+    "--recover-connected-origins"
+  ],
+  "exit_code": 0,
+  "thread_environment": {
+    "OPENBLAS_NUM_THREADS": "4",
+    "OMP_NUM_THREADS": "4",
+    "MKL_NUM_THREADS": "4",
+    "NUMEXPR_NUM_THREADS": "4",
+    "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+    "VECLIB_MAXIMUM_THREADS": "4"
+  },
+  "cases": {
+    "subject025": {
+      "runtime_s": 23.6862148109999,
+      "peak_rss_mb": 1507.217408,
+      "peak_rss_mib": 1437.39453125,
+      "samples": 538,
+      "max_processes": 2
+    }
+  },
+  "measurement": {
+    "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+    "interval_s": 0.01,
+    "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper. OS process affinity and cooperative library thread ceilings were applied."
+  },
+  "case_id": "subject025",
+  "predicted_count": 16,
+  "baseline_count": 16,
+  "prediction_unchanged": true
+}

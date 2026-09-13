@@ -1,0 +1,123 @@
+{
+  "prediction": {
+    "case_id": "stress_10_negative_controls_only_27182",
+    "parent": {
+      "instance_id": "aorta"
+    },
+    "daughters": []
+  },
+  "reference": {
+    "case_id": "stress_10_negative_controls_only_27182",
+    "parent": {
+      "instance_id": "aorta"
+    },
+    "daughters": []
+  },
+  "diagnostics": {
+    "branches": [],
+    "timings": {
+      "prepare_s": 0.04544577199999367,
+      "enhance_s": 1.6069998069999656,
+      "trace_s": 2.5100000584643567e-06,
+      "total_s": 1.6524482339998485
+    },
+    "blood_model": {
+      "median_hu": 254.0363311767578,
+      "mad_hu": 4.682487487792969,
+      "lower_hu": 138.32301139831543,
+      "upper_hu": 374.0363311767578,
+      "background_median_hu": 22.609691619873047,
+      "background_mad_hu": 4.671091556549072,
+      "support_fraction": 0.5,
+      "contrast_to_background_mad": 49.5444451805734
+    },
+    "candidates": 0,
+    "rejections": {
+      "connected_wall_roots": 0
+    },
+    "warnings": [
+      "Experimental recovery; not the default submission algorithm."
+    ],
+    "config": {
+      "spacing_mm": 1.0,
+      "margin_mm": 20.0,
+      "shell_inner_mm": 1.5,
+      "shell_outer_mm": 3.5,
+      "cap_margin_mm": 4.0,
+      "minimum_radius_mm": 0.7,
+      "minimum_origin_diameter_mm": 2.0,
+      "minimum_path_mm": 5.0,
+      "trace_length_mm": 10.0,
+      "vesselness_floor": 0.06,
+      "maximum_candidates": 160,
+      "shell_vesselness_floor": 0.06,
+      "connector_gap_fraction": 0.0,
+      "root_depth_mm": 3.5,
+      "blood_lower_scale": 1.0,
+      "support_contrast_fraction": 0.5,
+      "native_contrast_scale": 1.2,
+      "roots_per_contact": 1,
+      "wall_hug_penalty": 0.0,
+      "broad_contact_mm3": 1200.0,
+      "parallel_clearance_mm": 0.0,
+      "profile": "experimental-connected-origin"
+    }
+  },
+  "runtime_s": 1.656751045999954,
+  "scores": {
+    "2": {
+      "case_id": "stress_10_negative_controls_only_27182",
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 0,
+        "reference": 0,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "matches": [],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    },
+    "3": {
+      "case_id": "stress_10_negative_controls_only_27182",
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 0,
+        "reference": 0,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "matches": [],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    },
+    "5": {
+      "case_id": "stress_10_negative_controls_only_27182",
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 0,
+        "reference": 0,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "matches": [],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    }
+  }
+}
