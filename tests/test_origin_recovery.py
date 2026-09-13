@@ -1,8 +1,9 @@
 import numpy as np
+import SimpleITK as sitk
 from scipy import ndimage as ndi
 
-from detector import wall_origin
-from origin_recovery import connected_wall_root
+from detector import Branch, wall_origin
+from origin_recovery import connected_wall_root, follows_root
 
 
 def bent_connector():
@@ -44,3 +45,15 @@ def test_connector_length_is_bounded_in_physical_units():
     np.testing.assert_array_equal(
         connected_wall_root(root, parent, support, excluded, 0.5), [12, 7, 4],
     )
+
+
+def test_recovered_path_must_follow_original_root_in_physical_space():
+    grid = sitk.Image(25, 25, 25, sitk.sitkFloat32)
+    grid.SetSpacing((0.5, 0.5, 0.5))
+    grid.SetOrigin((20.0, -40.0, 80.0))
+    grid.SetDirection((0.0, -1.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0))
+    start = grid.TransformContinuousIndexToPhysicalPoint((2.0, 10.0, 12.0))
+    end = grid.TransformContinuousIndexToPhysicalPoint((20.0, 10.0, 12.0))
+    branch = Branch("test", start, end, 1.0, (0.0, 1.0, 0.0), [start, end], 1.0, 1.0)
+    assert follows_root(branch, np.array([12, 12, 8]), grid, 1.01)
+    assert not follows_root(branch, np.array([12, 13, 8]), grid, 1.01)

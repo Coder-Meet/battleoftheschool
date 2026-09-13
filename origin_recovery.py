@@ -10,9 +10,23 @@ from scipy import ndimage as ndi
 from skimage.graph import MCP_Geometric
 
 from detector import (
-    Candidate, Detection, DetectorConfig, NormalizedScan, VesselEvidence,
+    Branch, Candidate, Detection, DetectorConfig, NormalizedScan, VesselEvidence,
     _trace, detect, enhance, normalize, propose, resolve, validate_geometry,
 )
+
+
+def follows_root(
+    branch: Branch, root: npt.NDArray[np.int64], grid: sitk.Image, root_radius_mm: float,
+) -> bool:
+    point = np.asarray(grid.TransformContinuousIndexToPhysicalPoint(root[::-1].astype(float).tolist()))
+    path = np.asarray(branch.path_xyz_mm)
+    segments = np.diff(path, axis=0)
+    fraction = np.clip(
+        np.sum((point - path[:-1]) * segments, axis=1)
+        / np.maximum(np.sum(segments**2, axis=1), 1e-8), 0, 1,
+    )
+    distance = np.linalg.norm(path[:-1] + fraction[:, None] * segments - point, axis=1)
+    return bool(distance.min() <= root_radius_mm)
 
 
 def connected_wall_root(
@@ -41,7 +55,7 @@ def connected_wall_root(
 
 def recovery_candidates(
     scan: NormalizedScan, evidence: VesselEvidence, candidates: list[Candidate],
-    config: DetectorConfig,
+    config: DetectorConfig, require_root: bool = False,
 ) -> list[Candidate]:
     additions: list[Candidate] = []
     for quality, root, volume in candidates[:config.maximum_candidates]:
@@ -56,6 +70,15 @@ def recovery_candidates(
         relocated = connected_wall_root(
             root, scan.parent, evidence.support, evidence.excluded, config.spacing_mm,
         )
+        if relocated is not None and require_root:
+            branch, _ = _trace(
+                relocated, scan.outside, scan.parent, evidence.support, evidence.radius, evidence.tubular,
+                evidence.junctions, evidence.signed_distance, evidence.context, volume, scan.grid, config,
+            )
+            if branch is None or not follows_root(
+                branch, root, scan.grid, float(evidence.radius[tuple(root)]),
+            ):
+                continue
         if relocated is not None and not any(
             np.array_equal(relocated, other) for _, other, _ in candidates + additions
         ):
@@ -64,9 +87,11 @@ def recovery_candidates(
 
 
 def detect_connected(
-    image: sitk.Image, mask: sitk.Image, config: DetectorConfig | None = None,
+    image: sitk.Image, mask: sitk.Image, config: DetectorConfig | None = None, *,
+    require_root: bool = False,
 ) -> Detection:
-    config = replace(config or DetectorConfig(), profile="experimental-connected-origin")
+    profile = "experimental-guarded-origin" if require_root else "experimental-connected-origin"
+    config = replace(config or DetectorConfig(), profile=profile)
     validate_geometry(image, mask)
     if not np.any(sitk.GetArrayViewFromImage(mask) > 0):
         return detect(image, mask, config)
@@ -76,7 +101,7 @@ def detect_connected(
     evidence = enhance(scan, config)
     candidates, warnings = propose(scan, evidence, config)
     candidates = candidates[:config.maximum_candidates]
-    additions = recovery_candidates(scan, evidence, candidates, config)
+    additions = recovery_candidates(scan, evidence, candidates, config, require_root)
     additions = additions[:max(0, config.maximum_candidates - len(candidates))]
     enhanced = perf_counter()
     branches, rejections = resolve(scan, evidence, candidates + additions, config)

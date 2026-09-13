@@ -26,13 +26,17 @@ VARIANTS = (
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--cohort", choices=("references", "topology", "fresh"), required=True)
+    parser.add_argument("--cohort", choices=("references", "topology", "fresh", "confirmation"), required=True)
+    parser.add_argument("--guarded-only", action="store_true")
     args = parser.parse_args()
     if args.output.exists():
         parser.error("Use a new output directory; previous evidence is immutable.")
     frozen_path = ROOT / "labels/final-eval/topology/experiment_config.json"
     cohort = read_json(frozen_path)["synthetic"]
     seeds = cohort["stress_seeds"] if args.cohort == "topology" else [28411, 91513]
+    if args.cohort == "confirmation":
+        seeds = [28412, 91514]
+    variants = (("strict", 1.0, False), ("guarded", 1.0, True)) if args.guarded_only else VARIANTS
     families = cohort["stress_families"] if args.cohort == "topology" else list(FAMILIES)
     specs = (
         [("real", case, 0) for case in CASES] if args.cohort == "references" else
@@ -43,9 +47,10 @@ def main() -> None:
     metadata = {
         "status": "POST-REFERENCE DEVELOPMENT; no independent clinical accuracy estimate",
         "cohort": args.cohort, "cases": specs,
+        "require_original_root": args.guarded_only,
         "variants": {
             name: {"detector_config": asdict(DetectorConfig(spacing_mm=spacing)), "recovery": recovery}
-            for name, spacing, recovery in VARIANTS
+            for name, spacing, recovery in variants
         },
         "source_sha256": {name: digest(ROOT / name) for name in (
             "detector.py", "origin_recovery.py", "accuracy_recheck.py", "stress.py",
@@ -62,7 +67,7 @@ def main() -> None:
     }
     write_json(args.output / "config.json", metadata)
     sitk.ProcessObject.SetGlobalDefaultNumberOfThreads(4)
-    rows: dict[str, list[dict]] = {name: [] for name, _, _ in VARIANTS}
+    rows: dict[str, list[dict]] = {name: [] for name, _, _ in variants}
     for kind, family, seed in specs:
         if kind == "real":
             image_path, mask_path = case_paths(str(family))
@@ -73,10 +78,13 @@ def main() -> None:
             image, mask, reference = case.image, case.parent, case.reference
             for daughter, geometry in zip(reference["daughters"], case.provenance["geometry"]):
                 daughter["centerline_xyz_mm"] = geometry["proximal_centerline_xyz_mm"]
-        for name, spacing, recovery in VARIANTS:
+        for name, spacing, recovery in variants:
             start = perf_counter()
             config = DetectorConfig(spacing_mm=spacing)
-            detection = detect_connected(image, mask, config) if recovery else detect(image, mask, config)
+            detection = (
+                detect_connected(image, mask, config, require_root=args.guarded_only)
+                if recovery else detect(image, mask, config)
+            )
             prediction = detection.prediction(reference["case_id"])
             record: dict = {
                 "prediction": prediction, "reference": reference, "diagnostics": detection.diagnostics(),
