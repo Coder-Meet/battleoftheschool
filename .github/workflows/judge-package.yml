@@ -23,9 +23,11 @@ jobs:
         with:
           python-version: '3.13.3'
       - name: Prepare only the inference wheels
-        run: python -m pip download --only-binary=:all: -r application/requirements.txt --dest wheelhouse
+        run: |
+          python -m pip download --only-binary=:all: -r application/requirements.txt --dest wheelhouse
       - name: Install without a package index
-        run: python -m pip install --no-index --only-binary=:all: --find-links wheelhouse -r application/requirements.txt
+        run: |
+          python -m pip install --no-index --only-binary=:all: --find-links wheelhouse -r application/requirements.txt
       - name: Verify minimal dependency closure
         run: |
           python -m pip check
