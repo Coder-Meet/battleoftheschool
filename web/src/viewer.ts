@@ -30,7 +30,7 @@ export class AortaViewer {
   private parent?: THREE.Mesh<THREE.BufferGeometry, THREE.Material>;
   private tissueMaterial?: THREE.MeshPhysicalMaterial;
   private diameterMaterial?: THREE.MeshBasicMaterial;
-  private diameterColoringEnabled = true;
+  private diameterColoringEnabled = false;
   private curveLine?: THREE.Line;
   private center = new THREE.Vector3();
   private extent = 160;
@@ -65,7 +65,13 @@ export class AortaViewer {
     private onSelect: (id: string) => void,
     private orientation: HTMLCanvasElement,
   ) {
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      // Required for captureImage(): without it the drawing buffer can be
+      // cleared before toDataURL() reads it back.
+      preserveDrawingBuffer: true,
+    });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setClearColor(0x0c1118, 0);
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -525,6 +531,21 @@ export class AortaViewer {
     this.diameterColoringEnabled = enabled;
     if (!this.parent || !this.tissueMaterial || !this.diameterMaterial) return;
     this.parent.material = enabled ? this.diameterMaterial : this.tissueMaterial;
+  }
+
+  /**
+   * PNG data URL of the current 3D view — the aorta surface, ostium
+   * markers and daughter-direction arrows all render into this same scene
+   * already, so a plain canvas capture satisfies the challenge's "simple
+   * visual check" requirement without any extra compositing.
+   */
+  captureImage(): string {
+    const CLEAR_COLOR = 0x0c1118;
+    this.renderer.setClearColor(CLEAR_COLOR, 1);
+    this.renderer.render(this.scene, this.camera);
+    const dataUrl = this.renderer.domElement.toDataURL("image/png");
+    this.renderer.setClearColor(CLEAR_COLOR, 0);
+    return dataUrl;
   }
   toggleOrbit() {
     this.orbit = !this.orbit;

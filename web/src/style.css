@@ -1349,6 +1349,17 @@ main {
   width: 100%;
   color: #91bbaa;
 }
+.qc-summary {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #eebc6d;
+  font-weight: 500;
+}
+.qc-summary svg {
+  width: 12px;
+  height: 12px;
+}
 .review-actions {
   margin-top: 16px;
   display: grid;
@@ -1473,6 +1484,34 @@ main {
   font-size: 6px;
   color: #718a90;
   margin-top: 2px;
+}
+.branch-qc-flag {
+  display: grid;
+  place-items: center;
+  color: #eebc6d;
+  flex-shrink: 0;
+}
+.branch-qc-flag svg {
+  width: 13px;
+  height: 13px;
+}
+.branch-qc {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  color: #eebc6d;
+  font-size: 11px;
+  line-height: 1.6;
+  background: color-mix(in srgb, #eebc6d 10%, transparent);
+  border: 1px solid color-mix(in srgb, #eebc6d 30%, transparent);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+.branch-qc svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 .empty-branches {
   font-size: 11px;
