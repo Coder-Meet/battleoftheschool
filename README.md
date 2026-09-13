@@ -2,7 +2,7 @@
 
 Detect direct daughter arteries from a CT volume and a supplied parent-aorta mask, and export each opening as a separate branch instance in physical LPS coordinates.
 
-**Current default:** strict + review proposals at native contrast scale **0.9**, bundled logistic filtering at **0.15**, then strict-first merging within **3 mm**. CLI, batch and normal Explorer use this restored workflow. Fresh five-reference replay gives **F1 0.75676 (14 TP / 4 FP / 5 FN)**. Use `--pipeline strict` for the previous 1.2 baseline.
+**Current default:** strict + review proposals at native contrast scale **0.9**, bundled logistic filtering at **0.15**, then strict-first merging within **3 mm**. CLI, batch and the Explorer use this workflow. Five-reference replay gives **F1 0.75676 (14 TP / 4 FP / 5 FN)**. Use `--pipeline strict` for the previous 1.2 baseline (8 / 3 / 11, F1 0.5333).
 
 **Judges: [download the standalone fusion application](application/README.md).**
 The Windows offline ZIP includes only inference code, its small bundled model
@@ -15,15 +15,33 @@ or repository clone is needed. [Exact installation and run commands](application
 
 The showcase, [gallery and chart assets](docs/media/README.md), presenter material and earlier final-release kits describe strict. Recorded counts, scores and runtime figures are historical. Use the separately named **judge-fusion** package for the selected fusion submission; current settings and validation are below.
 
-
 | Start here | Purpose |
 |---|---|
-| [Current workflow](PRODUCTION_WORKFLOW.md) | What runs, settings, outputs and experimental options |
+| [Current workflow](PRODUCTION_WORKFLOW.md) | What runs, settings, outputs and explicit alternatives |
 | [Demo guide](DEMO_GUIDE.md) | Setup, Windows offline execution, live demo and release bundles |
-| [Previous strict handoff](FINAL_HANDOFF.md) | Frozen release decision and historical verification |
-| [Evaluation results](FINAL_EVALUATION_RESULTS.md) | Frozen selection, reference scores and topology gates |
-| [Current plan](CURRENT_E2E_REVIEW.md) | Status of the detector/filter follow-up work |
-| [Workspace index](WORKSPACE_INDEX.md) | Current data, frozen evidence and historical material |
+| [Judge application](application/README.md) | Standalone inference package and its builder |
+| [Presentation](presentation/README.md) | Deck, showcase, speaker notes and the evidence the slides cite |
+
+## Repository layout
+
+```
+run.py, batch.py, pipeline.py          CLI entry points and the score-before-merge workflow
+detector.py, origin_recovery.py        Deterministic detector stages and the opt-in wall-connection recovery
+learning.py                            13-feature candidate model used by the bundled filter
+nifti_io.py                            NIfTI reading, including gzip streams saved with a .nii extension
+explorer.py, web/                      Local Explorer server and its Vite frontend
+evaluate.py, score_references.py       One-to-one ostium scoring against the reference set
+synthetic.py, stress.py, benchmark.py  Synthetic regression cohorts and labelled-bundle scoring
+models/production-v1/                  Bundled logistic weights, hash-checked at load time
+application/                           Judge package builder, pinned inference requirements, run guide
+presentation/                          Deck builders, showcase, cues and the evidence receipts the slides cite
+data/                                  25 original CT/parent-mask pairs, tracked with Git LFS
+eval/, labels/organizer-v1/            Released five-case annotation package and the 19 normalized references
+docs/media/, docs/fusion-restored-validation.json   README graphics and the current validation receipt
+tests/                                 Regression suite for the modules above
+```
+
+The research stack, the strict-release evaluation replay and their frozen evidence were removed from the working tree on 2026-09-13. They remain in git history before that cleanup commit.
 
 ## Setup
 
@@ -41,9 +59,9 @@ Activate the environment for your platform, then install runtime dependencies:
 python -m pip install --only-binary=:all: -r requirements.txt
 ```
 
-For development checks, also install `requirements-dev.txt` and `requirements-resources.txt`. The optional tree/CNN training packages are not required for release inference. See [DEMO_GUIDE.md](DEMO_GUIDE.md) for exact Windows PowerShell commands and offline wheel installation.
+For development checks, also install `requirements-dev.txt`. See [DEMO_GUIDE.md](DEMO_GUIDE.md) for exact Windows PowerShell commands and offline wheel installation.
 
-## Run the release workflow
+## Run the pipeline
 
 ```bash
 python run.py --image data/subject019/orig19.nii \
@@ -54,13 +72,15 @@ python run.py --image data/subject019/orig19.nii \
 python batch.py --data-root data --output-dir predictions/release-check
 ```
 
-Use the required CLI with no model or experimental flags for submission. The default minimum origin diameter is 2 mm, distinct from the 0.7 mm minimum seed-radius setting. The detector retains its existing native-voxel uncertainty policy for borderline or unresolved origin measurements.
+Use the required CLI with no extra flags for submission. The default minimum origin diameter is 2 mm, distinct from the 0.7 mm minimum seed-radius setting. The detector retains its native-voxel uncertainty policy for borderline or unresolved origin measurements.
 
-The output JSON contains the parent and daughter instances with ostium, seed, radius and direction. The seed is placed 5 mm along the estimated proximal path; tracing extends to 10 mm or an estimated downstream bifurcation. Diagnostics contain paths, proposal counts, rejection reasons, intensity measurements and timing.
+The output JSON contains the parent and daughter instances with ostium, seed, radius and direction. The seed is placed 5 mm along the estimated proximal path; tracing extends to 10 mm or an estimated downstream bifurcation. Diagnostics contain paths, proposal counts, rejection reasons, filter decisions, intensity measurements and timing.
 
 Inference runs locally without internet or model downloads. SimpleITK uses four threads by default; set `OPENBLAS_NUM_THREADS`, `OMP_NUM_THREADS`, `MKL_NUM_THREADS` and `ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS` to 4 before starting Python to cap the other library thread pools.
 
-## Explorer and labeling
+Explicit alternatives: `--pipeline strict` runs the unfiltered strict detector, and `--pipeline strict --recover-connected-origins` adds guarded wall-connection recovery (local F1 0.5806, count MAE 2.2). Recovery combined with fusion is rejected because that combination has not been validated.
+
+## Explorer demo
 
 Build the frontend once while connected, then run the local server:
 
@@ -70,35 +90,26 @@ npm --prefix web run build
 python explorer.py --data-root data --port 8000
 ```
 
-Open **http://127.0.0.1:8000** on the same machine. Normal Explorer uses the filtered fusion predictions. For annotation, launch `python explorer.py --review-mode` to expose the loose review pool. This mode is not the submission configuration.
-
-```bash
-python autolabel.py render --cases subject019
-python autolabel.py status
-```
-
-Historical AI candidate reviews are pseudo-labels. Reviews attach to exact candidate fingerprints, not branch numbers; changed geometry/features require another review. See [ANNOTATION_GUIDE.md](ANNOTATION_GUIDE.md) for annotation preparation and provenance.
+Open **http://127.0.0.1:8000** on the same machine. The normal Explorer shows the filtered fusion predictions. `python explorer.py --review-mode` exposes the loose review pool for annotation; that mode is not the submission configuration.
 
 ## Data and evaluation
 
 - `data/`: 25 original CT/parent-mask pairs, tracked with Git LFS.
 - `eval/data/` and `eval/docs/`: the released five-case annotation package, preserved byte-for-byte.
 - `labels/organizer-v1/references/`: 19 normalized judge-approved targets across subjects019–023.
-- `labels/final-eval/`: frozen predictions, model comparisons, selection and provenance.
-- `labels/finalization/`: final release checks, spacing experiments and guarded-recovery evidence.
 
-The reference package is AI-assisted and non-exhaustive. Local one-to-one ostium matching at 3 mm gives the restored default **14 TP / 4 FP / 5 FN**, F1 **0.75676**, count MAE **1.8**. These are reused development references, not independent clinical accuracy or an official weighted challenge score. Unknown reference radii remain unknown. The fresh 24-case synthetic comparison gives fusion 47/11/2 (F1 0.8785), including four negative-control FPs; the old strict result of 46/0/3 is a separate baseline.
+The reference package is AI-assisted and non-exhaustive. Local one-to-one ostium matching at 3 mm gives the default **14 TP / 4 FP / 5 FN**, F1 **0.75676**, count MAE **1.8**. These are reused development references, not independent clinical accuracy or an official weighted challenge score. Unknown reference radii remain unknown. The 24-case synthetic comparison gives fusion 47 / 11 / 2 (F1 0.8785), including four negative-control FPs; strict scores 46 / 0 / 3 on the same cohort.
 
 ```bash
-python evaluate.py --prediction predictions/subject019.json \
-  --reference labels/organizer-v1/references/subject019.json --tolerance-mm 3
-
-python final_eval_select.py verify
+python batch.py --cases subject019 subject020 subject021 subject022 subject023 \
+  --output-dir outputs/test-labelled
+python score_references.py --references labels/organizer-v1/references \
+  --predictions outputs/test-labelled --data-root data --output outputs/test-labelled/metrics.json
 ```
 
-The selector replays frozen evidence for the previous strict release; it does not validate or select the restored fusion default. Read [FINAL_EVALUATION_RESULTS.md](FINAL_EVALUATION_RESULTS.md) before interpreting its held-out composite or development winner. Current settings and five-case test commands are in [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md).
+`score_references.py` normalizes the organizer references, masks their unknown radii and reports 2/3/5 mm scores. `evaluate.py` is the underlying pairwise matcher; it requires finite radii on both sides, so use it with your own complete references rather than the organizer files directly.
 
-Guarded wall-connection recovery is available through `--pipeline strict --recover-connected-origins`. It raises local F1 to 0.5806 but worsens count MAE to 2.2, so it remains opt-in. Its 80-case synthetic checks and limits are documented in [ACCURACY_RECHECK.md](ACCURACY_RECHECK.md).
+Current validation is recorded in [the restored workflow receipt](docs/fusion-restored-validation.json).
 
 ## Verification and collaboration
 
@@ -112,8 +123,6 @@ npm --prefix web test
 npm --prefix web run build
 ```
 
-Current validation is in [the restored workflow receipt](docs/fusion-restored-validation.json). [FINAL_HANDOFF.md](FINAL_HANDOFF.md) records the previous strict release. Native organizer-Windows/four-core/8-GB acceptance testing and organizer/Devpost submission remain team actions; a successful local run or GitHub release does not complete them.
+Native organizer-Windows/four-core/8-GB acceptance testing and organizer/Devpost submission remain team actions; a successful local run or GitHub release does not complete them.
 
-The team works directly on `main`: pull before editing, commit small changes and push without force-pushing. Use fresh output directories. Keep original scans, labels, frozen model artifacts and hash manifests intact.
-
-Older research plans and handoffs are indexed under [docs/archive](docs/archive/README.md). Earlier local runs are preserved in `outputs/archive/pre-release-2a498a4/`; their source-specific candidate caches are not current production data.
+The team works directly on `main`: pull before editing, commit small changes and push without force-pushing. Use fresh output directories. Keep original scans, references and the bundled model intact.

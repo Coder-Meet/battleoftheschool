@@ -154,8 +154,7 @@ origin. Confusing those two measurements changes eligibility incorrectly.
 ## 5. The production algorithm, step by step
 
 Implementation: [detector.py](detector.py), especially `normalize`, `enhance`,
-`propose`, `_trace` and `resolve`. The longer research history is in
-[Steven's review](STEVEN_ALGORITHM_REVIEW.md).
+`propose`, `_trace` and `resolve`.
 
 ### 5.1 Validate and normalize
 
@@ -332,7 +331,7 @@ not a larger classifier.
 ## 8. The three additional papers
 
 These are adaptations of ideas, not exact reproductions of the authors'
-pipelines. See [ADDITIONAL_PAPERS.md](ADDITIONAL_PAPERS.md) for scope and results.
+pipelines. Their scope and results are summarized below; the full write-up is in git history.
 
 | Source | Idea adapted here | Result / limitation |
 |---|---|---|
@@ -704,14 +703,11 @@ record it honestly; a Linux receipt is not a substitute.
 | What exactly should we submit? | [DEVPOST_SUBMISSION.md](DEVPOST_SUBMISSION.md) |
 | How do we run it? | [DEMO_GUIDE.md](DEMO_GUIDE.md) |
 | Where are the downloadable artifacts? | [Final release](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-final-2026-09-13) |
-| How was the release choice made? | [FINAL_EVALUATION_RESULTS.md](FINAL_EVALUATION_RESULTS.md) |
-| What happened in the last improvement attempt? | [ACCURACY_RECHECK.md](ACCURACY_RECHECK.md) |
-| What changed in all algorithms? | [STEVEN_ALGORITHM_REVIEW.md](STEVEN_ALGORITHM_REVIEW.md) |
-| What did the papers contribute? | [ADDITIONAL_PAPERS.md](ADDITIONAL_PAPERS.md), [RESEARCH_IMPLEMENTATION.md](RESEARCH_IMPLEMENTATION.md) |
-| What is and is not compliant? | [SUBMISSION_AUDIT.md](SUBMISSION_AUDIT.md) |
+| How was the current default chosen? | [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md) |
+| Where is the earlier research and strict-release history? | Git history before the 2026-09-13 cleanup commit |
 | What are the exact score and image inputs? | [docs/media/metrics.json](docs/media/metrics.json) |
-| Where are replay receipts and model lineage? | [labels/final-eval/selection](labels/final-eval/selection) |
-| What did the final batch measure? | [batch report](labels/finalization/batch_report.json), [resource receipt](labels/finalization/final-batch-resource.json) |
+| Where is the current validation receipt? | [docs/fusion-restored-validation.json](docs/fusion-restored-validation.json) |
+| What did the strict final batch measure? | [batch report](presentation/evidence/batch_report.json), [resource receipt](presentation/evidence/final-batch-resource.json) |
 
 If an older document, slide or recording conflicts with the accepted strict
 configuration or these current receipts, explain the version difference and

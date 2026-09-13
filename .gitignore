@@ -22,11 +22,3 @@ venv/
 predictions/
 outputs/
 *.log
-
-# Durable final-evaluation prediction evidence (narrow exceptions to predictions/)
-!labels/final-eval/deterministic/predictions/
-!labels/final-eval/deterministic/predictions/**/
-!labels/final-eval/deterministic/predictions/**/*.json
-!labels/final-eval/selection/predictions/
-!labels/final-eval/selection/predictions/**/
-!labels/final-eval/selection/predictions/**/*.json

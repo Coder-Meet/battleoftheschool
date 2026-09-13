@@ -14,10 +14,10 @@ BG, PANEL, INK, MUTED, MINT, AMBER = (
     "#0D1B22", "#172B33", "#F4F0E7", "#B3C5C8", "#80E3C5", "#F3CA83",
 )
 RECEIPTS = {
-    "references": "labels/finalization/accuracy-recheck/v2-references/report.json",
-    "topology": "labels/finalization/accuracy-recheck/v2-topology/report.json",
-    "batch": "labels/finalization/batch_report.json",
-    "resources": "labels/finalization/final-batch-resource.json",
+    "references": "presentation/evidence/v2-references-report.json",
+    "topology": "presentation/evidence/v2-topology-report.json",
+    "batch": "presentation/evidence/batch_report.json",
+    "resources": "presentation/evidence/final-batch-resource.json",
 }
 
 

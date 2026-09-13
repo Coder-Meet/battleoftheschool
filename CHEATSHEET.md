@@ -1,6 +1,6 @@
 # Current presenter cheatsheet
 
-Use [DEMO_GUIDE.md](DEMO_GUIDE.md) for exact setup and [presentation/LIVE_DEMO_CUES.md](presentation/LIVE_DEMO_CUES.md) for the talk. Earlier glossary and stress-experiment notes are in [the archive](docs/archive/CHEATSHEET.md).
+Use [DEMO_GUIDE.md](DEMO_GUIDE.md) for exact setup and [presentation/LIVE_DEMO_CUES.md](presentation/LIVE_DEMO_CUES.md) for the talk.
 
 **Pitch:** Given a CT and a parent-aorta mask, Branchseed looks for supported vessel openings at the wall, traces proximal paths, and returns separate daughter instances with physical landmarks. The Explorer links those predictions to the CT for inspection.
 
@@ -23,4 +23,4 @@ python explorer.py --data-root data --port 8000
 python run.py --image image.nii.gz --aorta-mask mask.nii.gz --output prediction.json
 ```
 
-Use no review/model/experimental flag for the current fusion demo. The existing presentation still describes strict and needs refreshing. Do not call heuristic scores probabilities, proxy scores official challenge accuracy, unknown radii zero, or unmatched predictions clinically proven false positives. See [FINAL_HANDOFF.md](FINAL_HANDOFF.md) for the complete current evidence and outstanding submission actions.
+Use no review/model/experimental flag for the current fusion demo. The existing presentation still describes strict and needs refreshing. Do not call heuristic scores probabilities, proxy scores official challenge accuracy, unknown radii zero, or unmatched predictions clinically proven false positives. See [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md) for the current evidence and [DEMO_GUIDE.md](DEMO_GUIDE.md) for outstanding submission actions.

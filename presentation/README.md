@@ -151,9 +151,10 @@ The deck reflects the accepted **deterministic strict** configuration:
 - The three CT visuals use released strict outputs for subjects001–003.
   Their overlays are visual checks, not complete annotations.
 
-Sources: [final evaluation](../FINAL_EVALUATION_RESULTS.md),
-[accuracy recheck](../ACCURACY_RECHECK.md) and
-[strict resource receipt](../labels/finalization/final-batch-resource.json).
+Sources: the strict [reference receipt](evidence/v2-references-report.json),
+[topology receipt](evidence/v2-topology-report.json), [batch report](evidence/batch_report.json)
+and [resource receipt](evidence/final-batch-resource.json); the current fusion
+validation is in [docs/fusion-restored-validation.json](../docs/fusion-restored-validation.json).
 The old [robustness supplement](ROBUSTNESS_UPDATE.md) and original film are
 historical; use the current deck's notes rather than old replacement scripts.
 

@@ -258,8 +258,7 @@ still required.
 
 ## Reproduce engineering checks
 
-Install `requirements-dev.txt` and `requirements-resources.txt` in the prepared
-Python environment. Optional tree/CNN experiments have separate requirements.
+Install `requirements-dev.txt` in the prepared Python environment.
 
 ```bash
 python -m ruff check .
@@ -269,9 +268,6 @@ npm --prefix web test
 npm --prefix web run lint
 npm --prefix web run typecheck
 npm --prefix web run build
-python final_eval_select.py verify
 ```
 
-Keep four-thread environment variables set for replay. Full replay needs the
-repository's tracked evaluation evidence; the compact submission ZIP is
-intended for inference/demo and links back to that audit in Git.
+Keep the four-thread environment variables set when timing runs.

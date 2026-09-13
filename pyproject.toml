@@ -12,12 +12,7 @@ check_untyped_defs = true
 files = [
     "detector.py", "run.py", "nifti_io.py", "explorer.py", "batch.py", "evaluate.py",
     "learning.py", "synthetic.py", "benchmark.py", "stress.py", "score_references.py",
-    "prepare_annotations.py", "autolabel.py", "synthetic_reviews.py", "labels_to_references.py",
-    "compare_e2e.py", "paper_methods.py", "candidate_patches.py", "tabular_learning.py",
-    "train_trees.py", "patch_learning.py", "patch_inference.py", "research_corpus.py",
-    "research_validation.py", "research_run.py", "research_resources.py", "research_reproduce.py",
-    "review_analytics.py", "pipeline.py",
-    "final_evaluation.py", "application/build.py",
+    "pipeline.py", "origin_recovery.py", "application/build.py",
 ]
 
 [tool.pytest.ini_options]

@@ -3,7 +3,7 @@
 The existing deck and film preserve the earlier development evidence at
 `29c843e`. The production detector was subsequently selected at `fd8f67f`
 using development seed 4001 before inspecting the frozen evaluation sets.
-See [the complete protocol](../ROBUSTNESS_PROTOCOL.md) for all variants,
+See the complete protocol (removed in the 2026-09-13 cleanup; see git history) for all variants,
 source hashes, tolerance sensitivity and retained failures.
 
 ## Speaker 4: replacement for the 30-second slide 7 narration
@@ -49,4 +49,4 @@ This is a different 26-case draw from the earlier frozen set, not a replacement
 of its score. Stronger threshold relaxation produced false positives and was
 rejected. Before presenting, finish the coarse-scan 3D/selection/export smoke
 on the demo laptop: the final cloud-browser run stalled after rendering the
-Subject018 CT panels. See [the submission audit](../SUBMISSION_AUDIT.md).
+Subject018 CT panels. See the submission audit (removed in the 2026-09-13 cleanup; see git history).

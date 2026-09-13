@@ -24,7 +24,7 @@ Scoring before merging prevents a low-scoring review representation from displac
 | Seed distance / maximum trace | 5 mm / 10 mm or estimated bifurcation |
 | Runtime | Local model, CPU, base pinned dependencies; no model download |
 
-The raw `detector.detect()` and `DetectorConfig()` retain the 1.2 strict baseline for research reproducibility. The production pipeline applies 0.9 to both fusion passes explicitly. Review mode and `autolabel.py` remain unfiltered annotation workflows and are not final predictions.
+The raw `detector.detect()` and `DetectorConfig()` retain the 1.2 strict baseline for research reproducibility. The production pipeline applies 0.9 to both fusion passes explicitly. Review mode remains an unfiltered annotation workflow and is not a final prediction.
 
 ## Commands
 
@@ -66,8 +66,8 @@ Missing or changed bundled weights fail explicitly. A threshold without a model 
 
 Fresh five-case predictions and full diagnostics are in `outputs/fusion-restored-20260913/`; the compact checked-in receipt is [fusion-restored-validation.json](docs/fusion-restored-validation.json). At 2 mm matching, fusion scores 8/10/11 (F1 0.4324); at 5 mm it matches the 3 mm score. No coordinates were adjusted to labels.
 
-The old strict release evidence in `labels/final-eval/` and `labels/finalization/` remains frozen. Its selection gates, 24-case synthetic F1 0.9684, packaged downloads and presentation describe the earlier strict configuration; they do not establish fusion performance. The fresh 24-case synthetic comparison gives fusion **47 TP / 11 FP / 2 FN, F1 0.8785**, versus strict **46/0/3, F1 0.9684**. Fusion adds seven FPs in `touching_vein_and_calcification` and four in `negative_controls_only`, both seed 31415. Thus the old zero-negative-control claim does not apply to fusion. This known FP regression is retained with the requested development operating point and is the next filter-hardening target. Full results are recorded separately in the receipt. Native organizer-Windows/four-core/8-GB acceptance remains open.
+The earlier strict release evidence and its replay scripts were removed from the working tree in the 2026-09-13 cleanup and remain in git history before that commit; the four receipts the slides cite are kept under `presentation/evidence/`. Its selection gates, 24-case synthetic F1 0.9684, packaged downloads and presentation describe the earlier strict configuration; they do not establish fusion performance. The fresh 24-case synthetic comparison gives fusion **47 TP / 11 FP / 2 FN, F1 0.8785**, versus strict **46/0/3, F1 0.9684**. Fusion adds seven FPs in `touching_vein_and_calcification` and four in `negative_controls_only`, both seed 31415. Thus the old zero-negative-control claim does not apply to fusion. This known FP regression is retained with the requested development operating point and is the next filter-hardening target. Full results are recorded separately in the receipt. Native organizer-Windows/four-core/8-GB acceptance remains open.
 
-See [CURRENT_E2E_REVIEW.md](CURRENT_E2E_REVIEW.md) for completed priorities and next work. The [archived workflow](docs/archive/fusion-PRODUCTION_WORKFLOW.md) documents the original trial and its later revert.
+The original fusion trial, its revert and the strict-release plans are documented in git history before the 2026-09-13 cleanup commit.
 
 Validation: 460 Python tests passed (38 skipped); Ruff, mypy, frontend lint/typecheck, all 36 frontend tests and the production build passed. CLI predictions from outside the repository match batch outputs on all five references.

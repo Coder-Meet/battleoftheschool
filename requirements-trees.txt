@@ -1,6 +1,0 @@
--r requirements.txt
-# Training only. NumPy JSON inference does not import these packages.
-# scikit-learn 1.7.2 published 2025-09-09; includes CPython 3.13 Windows x64 wheels.
-scikit-learn==1.7.2
-joblib==1.5.2
-threadpoolctl==3.6.0
