@@ -1,0 +1,108 @@
+{
+  "case_id": "subject012",
+  "parent": {
+    "instance_id": "aorta"
+  },
+  "daughters": [
+    {
+      "instance_id": "branch_001",
+      "parent_instance_id": "aorta",
+      "ostium_xyz_mm": [
+        18.447341370185914,
+        23.15724135936224,
+        1438.307708858007
+      ],
+      "seed_xyz_mm": [
+        22.50738120906517,
+        24.9899924993515,
+        1436.8499755859375
+      ],
+      "radius_mm": 3.028,
+      "direction_xyz": [
+        0.8662358566434406,
+        0.39102935359399954,
+        -0.3110168569275035
+      ],
+      "source_candidate": "branch_002"
+    },
+    {
+      "instance_id": "branch_002",
+      "parent_instance_id": "aorta",
+      "ostium_xyz_mm": [
+        -1.929973014553795,
+        22.487561607014577,
+        1440.6759069002223
+      ],
+      "seed_xyz_mm": [
+        -5.921523658932354,
+        21.553476603328082,
+        1438.4134596899141
+      ],
+      "radius_mm": 2.785,
+      "direction_xyz": [
+        -0.852481822864984,
+        -0.19949402064457125,
+        -0.4831944509323938
+      ],
+      "source_candidate": "branch_003"
+    },
+    {
+      "instance_id": "branch_003",
+      "parent_instance_id": "aorta",
+      "ostium_xyz_mm": [
+        6.5149922370910645,
+        16.4899924993515,
+        1452.5588517980232
+      ],
+      "seed_xyz_mm": [
+        6.5149922370910645,
+        12.334703363944358,
+        1450.1946864505303
+      ],
+      "radius_mm": 3.071,
+      "direction_xyz": [
+        0.0,
+        -0.869168406862817,
+        -0.49451620854280665
+      ],
+      "source_candidate": "branch_004"
+    },
+    {
+      "instance_id": "branch_004",
+      "parent_instance_id": "aorta",
+      "ostium_xyz_mm": [
+        7.13434648402146,
+        21.4899924993515,
+        1469.8499755859375
+      ],
+      "seed_xyz_mm": [
+        8.514992237091064,
+        16.951749660247728,
+        1469.8499755859375
+      ],
+      "radius_mm": 3.542,
+      "direction_xyz": [
+        0.2910538405577796,
+        -0.9567066749514015,
+        0.0
+      ],
+      "source_candidate": "branch_005"
+    }
+  ],
+  "provenance": {
+    "kind": "pseudo_reference_from_candidate_labels",
+    "labellers": [
+      "claude"
+    ],
+    "confirmed": 4,
+    "rejected": 1,
+    "pool_size": 5,
+    "stale_labels": [],
+    "pool_profile": "review",
+    "generated_at": "2026-09-12T22:51:31.656478+00:00",
+    "limitations": [
+      "Daughters are detector candidates a reviewer confirmed; branches the detector never proposed are absent.",
+      "Geometry is the detector's own measurement, so ostium/radius/direction errors against it are lower bounds."
+    ]
+  }
+}

@@ -36,28 +36,25 @@ pptx.theme = {
   bodyFontFace: "Branchseed Text",
   lang: "en-CA",
 };
-slides.forEach((model, index) => {
+slides.forEach((model) => {
   const slide = pptx.addSlide();
   slide.background = { color: model.background };
   model.elements.forEach((e) => {
     const box = { x: e.x / 144, y: e.y / 144, w: e.w / 144, h: e.h / 144 };
     switch (e.kind) {
       case "text":
-        slide.addText(
-          e.text.replace("Press V to play.", "Click the film to play."),
-          {
-            ...box,
-            fontFace:
-              e.font === "display" ? "Branchseed Display" : "Branchseed Text",
-            fontSize: e.size / 2,
-            color: e.color,
-            margin: 0,
-            breakLine: false,
-            valign: "top",
-            paraSpaceAfterPt: 0,
-            lineSpacingMultiple: 1.05,
-          },
-        );
+        slide.addText(e.text, {
+          ...box,
+          fontFace:
+            e.font === "display" ? "Branchseed Display" : "Branchseed Text",
+          fontSize: e.size / 2,
+          color: e.color,
+          margin: 0,
+          breakLine: false,
+          valign: "top",
+          paraSpaceAfterPt: 0,
+          lineSpacingMultiple: 1.05,
+        });
         break;
       case "image":
         slide.addImage({
@@ -94,24 +91,6 @@ slides.forEach((model, index) => {
         throw new Error(`Unknown element ${e.kind}`);
     }
   });
-  if (index === 4 && fs.existsSync(path.join(root, "branchseed-film.mp4"))) {
-    slide.addMedia({
-      type: "video",
-      path: path.join(root, "branchseed-film.mp4"),
-      x: (1920 - (596 * 16) / 9) / 288,
-      y: 357 / 144,
-      w: (596 * 16) / 9 / 144,
-      h: 596 / 144,
-    });
-    const cover = slide._relsMedia.at(-1);
-    if (!cover || cover.type !== "image/png") {
-      throw new Error("Expected a PNG video cover relationship");
-    }
-    const poster = path.join(root, "assets/explorer-poster.png");
-    containPng(poster, { x: 0, y: 0, w: 16, h: 9 });
-    cover.path = poster;
-    cover.data = "";
-  }
   slide.addNotes(
     `Speaker ${model.speaker} — ${model.seconds} seconds.\n\n${model.notes}`,
   );

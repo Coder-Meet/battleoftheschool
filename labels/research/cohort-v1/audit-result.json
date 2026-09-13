@@ -1,0 +1,76 @@
+{
+  "status": "passed",
+  "sidecars_verified": 436,
+  "cases_verified": 210,
+  "partition_checks": {
+    "train": {
+      "cases": 140,
+      "patch_shape": [
+        307,
+        12,
+        32,
+        32
+      ],
+      "labels": {
+        "confirmed": 297,
+        "rejected": 10
+      },
+      "groups": [
+        "synthetic:1307838637",
+        "synthetic:148187880",
+        "synthetic:151593411",
+        "synthetic:1652308690",
+        "synthetic:1693787424",
+        "synthetic:1971013293",
+        "synthetic:2564826260",
+        "synthetic:3138883885",
+        "synthetic:3312207072",
+        "synthetic:3950091766"
+      ]
+    },
+    "validation": {
+      "cases": 42,
+      "patch_shape": [
+        95,
+        12,
+        32,
+        32
+      ],
+      "labels": {
+        "confirmed": 93,
+        "rejected": 2
+      },
+      "groups": [
+        "synthetic:2357170090",
+        "synthetic:3206973561",
+        "synthetic:682800453"
+      ]
+    },
+    "test": {
+      "cases": 28,
+      "patch_shape": [
+        66,
+        12,
+        32,
+        32
+      ],
+      "labels": {
+        "confirmed": 63,
+        "rejected": 3
+      },
+      "groups": [
+        "synthetic:2966957149",
+        "synthetic:4221511865"
+      ]
+    }
+  },
+  "model_and_input_freeze_verified": true,
+  "all_case_to_partition_patch_values_identical": true,
+  "test_not_refitted_or_reselected": true,
+  "training_dependencies": {
+    "scikit-learn": "1.7.2",
+    "joblib": "1.5.2",
+    "threadpoolctl": "3.6.0"
+  },
+  "scope": "Artifact/integrity verification only; does not rerun sealed test inference or scoring."
+}

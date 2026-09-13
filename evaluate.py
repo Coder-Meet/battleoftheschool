@@ -69,6 +69,10 @@ def evaluate_case(prediction: dict, reference: dict, tolerance_mm: float = 5) ->
     return {
         "case_id": prediction["case_id"],
         "true_positives": tp, "false_positives": fp, "false_negatives": fn,
+        "daughter_counts": {
+            "predicted": len(predicted), "reference": len(expected),
+            "signed_error": fp - fn, "absolute_error": abs(fp - fn),
+        },
         "precision": tp / (tp + fp) if tp + fp else None,
         "recall": tp / (tp + fn) if tp + fn else None,
         "f1": 2 * tp / (2 * tp + fp + fn) if tp + fp + fn else None,
@@ -97,6 +101,15 @@ def summarize_cases(results: list[dict]) -> dict:
         }
     return {
         "cases": len(results), "true_positives": tp, "false_positives": fp, "false_negatives": fn,
+        "daughter_counts": {
+            "predicted": tp + fp, "reference": tp + fn,
+            "mean_absolute_error": float(np.mean([
+                abs(r["false_positives"] - r["false_negatives"]) for r in results
+            ])) if results else None,
+            "exact_count_cases": sum(r["false_positives"] == r["false_negatives"] for r in results),
+            "overcount_cases": sum(r["false_positives"] > r["false_negatives"] for r in results),
+            "undercount_cases": sum(r["false_positives"] < r["false_negatives"] for r in results),
+        },
         "precision": tp / (tp + fp) if tp + fp else None,
         "recall": tp / (tp + fn) if tp + fn else None,
         "f1": 2 * tp / (2 * tp + fp + fn) if tp + fp + fn else None,

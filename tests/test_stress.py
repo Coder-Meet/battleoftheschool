@@ -14,7 +14,7 @@ from stress import generate_case, write_case
 
 
 @pytest.mark.parametrize("family", [
-    "curved_daughters", "cropped_short_segment", "common_trunk_early_split",
+    "curved_daughters", "cropped_short_segment", "common_trunk_early_split", "wall_parallel_descending",
 ])
 def test_independent_references_remain_on_the_analytic_lumen(family):
     case = generate_case(family, 4001)
@@ -34,6 +34,27 @@ def test_independent_references_remain_on_the_analytic_lumen(family):
         coverage = np.ptp(occupied[:, 0]) * case.parent.GetSpacing()[2]
         assert coverage <= 29
         assert len(case.reference["daughters"]) == 1
+
+
+def test_wall_parallel_daughter_hugs_the_parent_and_is_only_found_with_the_fallback():
+    from detector import DetectorConfig, detect
+
+    case = generate_case("wall_parallel_descending", 4001)
+    hugging, ordinary = case.reference["daughters"]
+    line = np.asarray(case.provenance["geometry"][0]["proximal_centerline_xyz_mm"])
+    distance = sitk.SignedMaurerDistanceMap(case.parent, insideIsPositive=False, squaredDistance=False, useImageSpacing=True)
+    clearance = [distance.EvaluateAtPhysicalPoint(point.tolist()) for point in line]
+    assert max(clearance) < 5, "the hugging daughter must stay within 5 mm of the parent over its proximal path"
+
+    def ostia(config):
+        return [np.asarray(branch.ostium_xyz_mm) for branch in detect(case.image, case.parent, config).branches]
+
+    baseline = ostia(DetectorConfig(native_contrast_scale=1.2))
+    assert any(np.linalg.norm(o - ordinary["ostium_xyz_mm"]) < 3 for o in baseline)
+    assert not any(np.linalg.norm(o - hugging["ostium_xyz_mm"]) < 3 for o in baseline)
+    fallback = ostia(DetectorConfig(native_contrast_scale=1.2, parallel_clearance_mm=2.5))
+    assert len(fallback) == 2
+    assert any(np.linalg.norm(o - hugging["ostium_xyz_mm"]) < 2 for o in fallback)
 
 
 def test_generator_does_not_depend_on_python_hash_randomization():

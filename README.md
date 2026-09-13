@@ -10,9 +10,24 @@ Full problem statement: see the [Branchseed challenge doc](https://docs.google.c
 
 New teammates: start with the [setup, backend API and training handoff guide](TEAMMATE_GUIDE.md).
 
+Research: see the [ML implementation plan](RESEARCH_IMPLEMENTATION.md) and the
+[three additional paper experiments and measured limitations](ADDITIONAL_PAPERS.md).
+
+The [latest judge clarifications](SUBMISSION_AUDIT.md#latest-judge-clarifications)
+specify 2 mm minimum **origin diameter** (confirmed directly with the judge),
+one opening for a common trunk, and two openings for a returning vessel.
+Discovery/count accuracy remains the priority within the four-core, 8 GB,
+offline Windows limits. Do not equate the seed-radius CLI setting with origin size.
+`--minimum-origin-diameter-mm` defaults to 2; zero reproduces the earlier
+eligibility policy. The estimate uses a cross-section 2 mm along the proximal
+path, local half-maximum contrast and one native voxel of diameter allowance.
+Unresolved and borderline estimates remain visible in diagnostics instead of
+being rejected as confidently undersized. This is an approximate origin
+measurement, awaiting calibration against the organizer's references.
+
 Presenters: use the [five-minute presentation guide](presentation/README.md)
-and [film narration cues](presentation/FILM_CUES.md). The authoring source builds
-an offline HTML deck, editable PowerPoint, PDF and a 60-second Explorer film.
+and [live demo cues](presentation/LIVE_DEMO_CUES.md). The authoring source builds
+an offline HTML deck, editable PowerPoint and PDF; the Explorer segment runs live.
 
 **We are committing directly to `main`. There are no feature branches.**
 Pull before you start working, commit small and often, push as soon as
@@ -56,6 +71,55 @@ The `.nii` files are large (the whole `data/` folder is ~2 GB). They are
 tracked with **Git LFS**, not raw git. See setup below.
 
 ## Setup
+
+### Windows submission quick start
+
+The organizer confirmed **Windows, four CPU cores, 8 GB RAM, no GPU and no
+internet during evaluation**. Install 64-bit Python **3.13.3** before setup
+(confirm the organizer's CPU architecture; the prepared wheel bundle targets
+Windows x64). In a terminal where `python --version` reports that interpreter,
+the single online dependency-setup command is:
+
+```powershell
+python -m pip install --only-binary=:all: -r requirements.txt
+```
+
+The required run command works without a shell-specific interpreter path:
+
+```powershell
+python run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz --output prediction.json
+```
+
+To prepare a fresh Windows machine for installation without internet, run
+`python -m pip download --only-binary=:all: -r requirements.txt --dest wheelhouse`
+on a matching Windows/Python machine while online, then copy the wheels and
+source. Install offline with:
+
+```powershell
+python -m pip install --no-index --find-links wheelhouse -r requirements.txt
+```
+
+Do not copy a Linux virtual environment onto Windows. SimpleITK defaults to
+four threads in the CLI. In PowerShell, cap numerical-library thread pools
+before execution with `$env:OPENBLAS_NUM_THREADS="4"` and
+`$env:OMP_NUM_THREADS="4"`. The Windows CI job checks native installation and
+Python tests; the Linux network-denied test separately checks offline execution.
+Neither replaces a timed run on the organizer's actual 8 GB machine.
+
+### Linux/macOS development setup
+
+Submission quick start (Git checkout, `uv` and package access already available):
+
+```bash
+uv venv --python 3.13.3 .venv313 && uv pip install --python .venv313/bin/python -r requirements.txt
+```
+
+Then run `.venv313/bin/python run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz --output prediction.json`.
+Prepare this environment before the offline evaluation. Node and the supplied
+development scans are only needed for the Explorer/demo, not new-case inference.
+The [robustness protocol](ROBUSTNESS_PROTOCOL.md) records the frozen detector selection.
+The [submission audit](SUBMISSION_AUDIT.md) maps the deliverables to both challenge
+guides and lists the remaining team actions.
 
 1. Install Git LFS (one-time, per machine):
    ```bash
@@ -122,33 +186,46 @@ The sandbox test verifies sockets are actually blocked, and the trace applies to
 child CLI processes too. API/server tests are excluded because they deliberately
 need localhost networking. Bundled frontend assets are served by the local server.
 
-### Review workflow: build labels, then train the candidate filter
+### Labelling workflow: AI verdicts on detector candidates, then train the filter
 
-There are no branch annotations for the 25 scans, so labels come from
-engineers judging the detector's own proposals. `review.py` runs a deliberately
-loose **review profile** of the detector (wider wall shell, no tubularity gate at
-the wall, tolerant wall connection), records every proposal it makes under
-`outputs/review/`, and opens the Explorer on those cases:
+**AI verdicts are provisional pseudo-labels, not expert ground truth.** A
+`confirmed` status describes that reviewer's decision, not clinical validation.
+Keep the `labeller` provenance, hold out patients, and do not report evaluation
+against these decisions as real branch-detection accuracy. The default
+submission CLI does not load these reviews or an optional candidate model.
+
+There are no branch annotations for the 25 scans, so labels come from judging the
+detector's own proposals against the CT. This is done by an AI reviewer reading
+rendered evidence, not by a web page. `autolabel.py render` runs the loose
+**review profile** of the detector merged with the strict result, saves each
+case's candidate pool with its thirteen features, and writes one PNG per
+candidate showing whole-aorta locators, ±2 mm slab views through the origin,
+consecutive axial slices and the traced path:
 
 ```bash
-python review.py --cases subject001 subject002 subject003   # or --all
+python autolabel.py render --cases subject001      # or --all; output under outputs/autolabel/<case>/
 ```
 
-In the Explorer, select each candidate, look at the CT panels, press **Confirm**
-if a bright tube leaves the aorta outline along the arrow for at least 5 mm,
-**Reject** otherwise, then **Export training reviews**. Check progress with:
+The reviewer answers one question per PNG: does a bright tube leave the aorta
+outline at the yellow dot, along the red path, for at least 5 mm? Verdicts go in
+a small JSON file, `{"subject001": {"branch_001": "confirmed", "branch_002": "rejected"}}`,
+and are recorded in the training schema with the candidate's features and a
+fingerprint, so a candidate that later changes loses its stale label:
 
 ```bash
-python review.py --status branchseed-reviews.json
+python autolabel.py apply --verdicts verdicts.json --labeller claude
+python autolabel.py status
+git add labels/reviews.json && git commit -m "Label subject001" && git pull --rebase && git push
 ```
 
-Then hold out five patients and train:
+Candidates the reviewer cannot decide are left out rather than guessed. Then
+hold out five patients and train:
 
 ```bash
-python learning.py split --reviews branchseed-reviews.json --output outputs/split.json \
+python learning.py split --reviews labels/reviews.json --output labels/split.json \
   --test subject005 subject013 subject018 subject021 subject025
-python learning.py train --reviews branchseed-reviews.json --split outputs/split.json \
-  --model outputs/candidate-model.json --report outputs/model-report.json
+python learning.py train --reviews labels/reviews.json --split labels/split.json \
+  --model labels/candidate-model.json --report labels/model-report.json
 ```
 
 The review profile never runs in `run.py`; the submission uses the strict
@@ -158,6 +235,29 @@ candidate carries thirteen features: six geometric ones and seven context ones
 axis, position along the aorta, native spacing, wall-connector gap, contact
 volume). External datasets that could supply independent truth are listed in
 [EXTERNAL_DATA_SOURCES.md](EXTERNAL_DATA_SOURCES.md).
+
+### Scoring the pipeline end to end against the labels
+
+Confirmed labels can be turned into reference JSONs and every case run through
+the detector with and without the filter, so the two outputs are scored the
+same way the organiser will score them:
+
+```bash
+python labels_to_references.py --cases $(ls data | grep subject) --output-dir labels/pseudo_references
+python compare_e2e.py --candidate-model labels/candidate-model.json \
+  --references labels/pseudo_references --split labels/split.json --output-dir outputs/e2e
+```
+
+`compare_e2e.py` writes `outputs/e2e/plain/<case>.json` and
+`outputs/e2e/filtered/<case>.json`, then pools precision, recall and F1 per split
+partition. `--profile strict|review|pool` picks the proposal rules: `strict` is
+the submission default, `review` the loose labelling rules, `pool` their union. Only the **test** partition is a held-out estimate; train and
+validation labels fitted the weights. These references carry the reviewer's
+judgement, not organiser truth: a branch the detector never proposed cannot be
+in them, and their geometry is the detector's own, so ostium and radius errors
+against them are lower bounds. When the organiser's references arrive, point
+`--references` at them instead and nothing else changes. Two prediction files
+can also be compared directly with `evaluate.py --prediction a.json --reference b.json`.
 
 ### Human review and optional ML
 
@@ -169,7 +269,7 @@ measurements invalidate its prior review in the UI.
 
 No real daughter annotations or trained weights are included. `learning.py`
 trains an L2-regularized logistic candidate classifier using CPU NumPy/SciPy
-once an expert has reviewed candidates. It consumes six physical/evidence features,
+once an expert has reviewed candidates. It consumes thirteen physical/evidence/context features,
 not CT images. It cannot discover vessels missed by the classical proposal stage.
 
 Review at least six independent cases, including both true and false candidates
@@ -300,6 +400,32 @@ seed, radius, and direction errors. Undefined metrics are JSON `null`. This is
 a transparent local metric, not a claim to reproduce the organizer's scoring.
 Do not evaluate against the detector's own outputs as if they were ground truth.
 
+When organizer reference files arrive, freeze the current predictions first
+(`python batch.py --output-dir predictions/frozen-<commit>`; committed sets for
+the current revision live in [`frozen/`](frozen/README.md)), then score the
+whole set in one command regardless of their exact field names:
+
+```bash
+python score_references.py --references organizer-refs/ \
+  --predictions predictions/frozen-<commit> --data-root data \
+  --output outputs/reference-score.json
+```
+
+While waiting for labels, [prepare five difficult cases for expert review](ANNOTATION_GUIDE.md).
+`prepare_annotations.py` builds blinded native-slice surveys, proposed-opening
+CT sheets and editable review worksheets from frozen predictions. It leaves all
+labels and reference counts unconfirmed; the scorer rejects these packets as
+ground truth. The guide also provides a reproducible five-case **hard synthetic**
+bundle with analytic labels for development.
+
+It accepts one JSON per case, a list of cases, or a directory; maps common
+aliases (`ostium`/`origin`, `branches`/`daughters`, `diameter_mm`, case ids
+like `18` or `orig18`); converts voxel indices to millimetres with the case
+image when `coordinate_space` says so; derives a missing seed or direction;
+reports TP/FP/FN at 2, 3 and 5 mm; and warns when an LPS/RAS mirror would match
+far better. Every normalization it applied is listed in the report JSON, so
+check that list before quoting any number.
+
 ## Verification
 
 ```bash
@@ -330,6 +456,13 @@ components, and traces supported outward paths. It suppresses parent end caps,
 deduplicates shared origins, and truncates paths at estimated skeleton junctions
 or 10 mm. The seed lies 5 mm along the estimated proximal path. All output
 coordinates are transformed through the input geometry.
+
+Intensity support uses a fraction of measured parent/background contrast,
+adjusted for the largest **native** voxel spacing and minimum supported radius.
+The conservative scale was selected before new frozen procedural evaluation;
+see [the robustness protocol](ROBUSTNESS_PROTOCOL.md) for the comparison and
+remaining failures. Background-overlap diagnostics measure tissue heterogeneity,
+not scanner noise or a clinically validated CNR.
 
 Topology and bifurcation locations are estimates from image evidence. Small or
 short vessels, touching openings, calcification, veins, and low-contrast scans

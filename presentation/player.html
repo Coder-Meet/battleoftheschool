@@ -67,7 +67,6 @@
         z-index: 1;
       }
       img,
-      video,
       canvas,
       svg {
         max-width: 100%;
@@ -193,39 +192,6 @@
         padding: 0 8px;
         color: #7be7c2;
       }
-      #film-layer {
-        position: absolute;
-        inset: 0;
-        background: #080e12;
-        z-index: 20;
-        display: none;
-      }
-      #film-layer.open {
-        display: block;
-      }
-      #film {
-        width: 1920px;
-        height: 1080px;
-        object-fit: contain;
-      }
-      #film-close {
-        position: absolute;
-        right: 35px;
-        top: 25px;
-        font-size: 24px;
-        background: #101c23;
-      }
-      #play-film {
-        position: absolute;
-        left: 780px;
-        top: 600px;
-        z-index: 3;
-        font-size: 30px;
-        background: #101c23ed;
-        color: #7be7c2;
-        padding: 25px 40px;
-        border: 1px solid #7be7c2;
-      }
       dialog {
         width: min(820px, 85vw);
         border: 1px solid #566b65;
@@ -305,8 +271,7 @@
       <h2 id="notes-title" tabindex="-1" autofocus></h2>
       <p id="notes-copy"></p>
       <p class="hint">
-        ← / → slides · A timed rehearsal · V film on slide 5 · F fullscreen ·
-        Esc close
+        ← / → slides · A timed rehearsal · F fullscreen · Esc close
       </p>
       <button id="close-notes">Close notes</button>
     </dialog>
@@ -383,29 +348,15 @@
           }
           section.append(element);
         }
-        if (i === 4) {
-          const play = document.createElement("button");
-          play.id = "play-film";
-          play.textContent = "Play 60-second film";
-          play.addEventListener("click", playFilm);
-          section.append(play);
-        }
         stage.append(section);
         nodes.push(section);
       }
-      const layer = document.createElement("div");
-      layer.id = "film-layer";
-      layer.innerHTML =
-        '<video id="film" src="branchseed-film.mp4" controls playsinline preload="metadata"></video><button id="film-close" aria-label="Close film">Close film ×</button>';
-      stage.append(layer);
-      const film = document.getElementById("film");
       const dialog = document.getElementById("notes-dialog");
       const controls = document.querySelector(".deck-controls");
       let current = 0,
         automatic = false,
         began = performance.now(),
         idleTimer = 0,
-        filmStarted = false,
         elapsedBeforePause = 0;
       const clock = (value) =>
         `${Math.floor(value / 60)}:${String(Math.floor(value % 60)).padStart(2, "0")}`;
@@ -425,7 +376,6 @@
           `${current + 1}/8 · S${deck[current].speaker} · ${clock(prior + elapsed)} / 5:00`;
       }
       function show(index) {
-        closeFilm();
         current = Math.max(0, Math.min(deck.length - 1, index));
         nodes.forEach((node, i) => {
           node.classList.toggle("active", i === current);
@@ -434,7 +384,6 @@
         });
         began = performance.now();
         elapsedBeforePause = 0;
-        filmStarted = false;
         history.replaceState(null, "", "#slide-" + (current + 1));
         document.getElementById("previous").disabled = current === 0;
         document.getElementById("next").disabled = current === deck.length - 1;
@@ -443,38 +392,15 @@
         document.getElementById("notes-copy").textContent = deck[current].notes;
         status();
       }
-      async function playFilm() {
-        if (current !== 4) return;
-        filmStarted = true;
-        layer.classList.add("open");
-        film.controls = !automatic;
-        film.currentTime = 0;
-        try {
-          await film.play();
-        } catch {
-          film.controls = true;
-        }
-      }
-      function closeFilm() {
-        film.pause();
-        layer.classList.remove("open");
-      }
       function toggleAuto() {
         if (automatic) {
           elapsedBeforePause = elapsedNow();
           automatic = false;
-          if (layer.classList.contains("open")) film.pause();
         } else {
           if (current === 7 && elapsedBeforePause >= deck[current].seconds)
             show(0);
           began = performance.now();
           automatic = true;
-          if (layer.classList.contains("open")) {
-            film.controls = false;
-            film.play().catch(() => {
-              film.controls = true;
-            });
-          }
         }
         document.getElementById("auto").textContent = automatic
           ? "Pause"
@@ -490,21 +416,15 @@
       document.getElementById("auto").onclick = toggleAuto;
       document.getElementById("notes").onclick = () => dialog.showModal();
       document.getElementById("close-notes").onclick = () => dialog.close();
-      document.getElementById("film-close").onclick = closeFilm;
       document.getElementById("fullscreen").onclick = async () => {
         if (document.fullscreenElement) await document.exitFullscreen();
         else await document.documentElement.requestFullscreen();
       };
-      film.addEventListener("ended", closeFilm);
       window.addEventListener("resize", resize);
       window.addEventListener("pointermove", activity);
       window.addEventListener("keydown", (event) => {
         activity();
         if (dialog.open) return;
-        if (event.key === "Escape") {
-          closeFilm();
-          return;
-        }
         const key = event.key.toLowerCase();
         if (key === "a") {
           event.preventDefault();
@@ -516,7 +436,6 @@
           document.getElementById("fullscreen").click();
           return;
         }
-        if (layer.classList.contains("open")) return;
         if (["arrowright", "pagedown", " "].includes(key)) {
           event.preventDefault();
           show(current + 1);
@@ -528,12 +447,10 @@
         if (key === "home") show(0);
         if (key === "end") show(7);
         if (key === "n") dialog.showModal();
-        if (key === "v") playFilm();
       });
       setInterval(() => {
         if (!automatic) return;
         const elapsed = elapsedNow();
-        if (current === 4 && elapsed >= 6 && !filmStarted) playFilm();
         if (elapsed >= deck[current].seconds) {
           if (current === 7) {
             elapsedBeforePause = deck[current].seconds;

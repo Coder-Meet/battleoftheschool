@@ -15,7 +15,6 @@ import argparse
 import glob
 import json
 import os
-import subprocess
 
 import numpy as np
 import SimpleITK as sitk
@@ -56,24 +55,6 @@ def find_one(pattern):
     if len(hits) != 1:
         raise SystemExit(f"expected exactly one file for {pattern}, found {hits}")
     return hits[0]
-
-
-def is_lfs_pointer(path):
-    with open(path, "rb") as f:
-        return f.read(40).startswith(b"version https://git-lfs")
-
-
-def ensure_lfs_pulled(paths):
-    pointers = [p for p in paths if is_lfs_pointer(p)]
-    if not pointers:
-        return
-    repo = os.path.dirname(os.path.abspath(__file__))
-    rel = [os.path.relpath(p, repo) for p in pointers]
-    print(f"[lfs] pulling {len(rel)} file(s): {rel}")
-    subprocess.run(["git", "lfs", "pull", "--include=" + ",".join(rel)], cwd=repo, check=True)
-    still = [p for p in pointers if is_lfs_pointer(p)]
-    if still:
-        raise SystemExit(f"still LFS pointers after pull (is git-lfs installed?): {still}")
 
 
 def describe(name, img, arr):
@@ -139,7 +120,6 @@ def draw_points(ax, pts, axes_idx, offset, spacing):
 
 def main():
     args = parse_args()
-    ensure_lfs_pulled([args.image, args.aorta_mask])
     image = read_nifti(args.image)
     mask = read_nifti(args.aorta_mask)
 
@@ -172,14 +152,14 @@ def main():
 
     fig, axes = plt.subplots(2, 3, figsize=(15, 10))
     w = window(ctc, *CT_WINDOW)
-    draw_slice(axes[0, 0], w[cz], mkc[cz], ext_xy, f"axial z={cz + z0}")
-    draw_slice(axes[0, 1], w[:, cy, :], mkc[:, cy, :], ext_xz, f"coronal y={cy + y0}")
-    draw_slice(axes[0, 2], w[:, :, cx], mkc[:, :, cx], ext_yz, f"sagittal x={cx + x0}")
+    draw_slice(axes[0, 0], w[cz], mkc[cz], ext_xy, f"acquisition i/j slice, k={cz + z0}")
+    draw_slice(axes[0, 1], w[:, cy, :], mkc[:, cy, :], ext_xz, f"acquisition i/k slice, j={cy + y0}")
+    draw_slice(axes[0, 2], w[:, :, cx], mkc[:, :, cx], ext_yz, f"acquisition j/k slice, i={cx + x0}")
 
     m = window(ctc, *MIP_WINDOW)
-    draw_slice(axes[1, 1], m.max(axis=1), mkc.max(axis=1), ext_xz, "coronal MIP (contrast window)")
-    draw_slice(axes[1, 2], m.max(axis=2), mkc.max(axis=2), ext_yz, "sagittal MIP (contrast window)")
-    draw_slice(axes[1, 0], m.max(axis=0), mkc.max(axis=0), ext_xy, "axial MIP (contrast window)")
+    draw_slice(axes[1, 1], m.max(axis=1), mkc.max(axis=1), ext_xz, "i/k MIP along j (contrast window)")
+    draw_slice(axes[1, 2], m.max(axis=2), mkc.max(axis=2), ext_yz, "j/k MIP along i (contrast window)")
+    draw_slice(axes[1, 0], m.max(axis=0), mkc.max(axis=0), ext_xy, "i/j MIP along k (contrast window)")
 
     if pts:
         draw_points(axes[1, 0], pts, (0, 1), offset_xyz, spacing_xyz)

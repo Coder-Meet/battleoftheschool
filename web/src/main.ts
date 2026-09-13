@@ -746,6 +746,9 @@ $<HTMLSelectElement>("#ct-window").onchange = (event) =>
   slices.setWindow((event.target as HTMLSelectElement).value);
 window.addEventListener("keydown", (event) => {
   if (
+    event.ctrlKey ||
+    event.metaKey ||
+    event.altKey ||
     event.target instanceof HTMLInputElement ||
     event.target instanceof HTMLSelectElement
   )

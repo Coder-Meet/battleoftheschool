@@ -95,3 +95,25 @@ def test_parent_id_and_tolerance_boundary_follow_contract():
         evaluate_case(invalid, prediction([]))
     assert evaluate_case(prediction([3]), prediction([0]), 3)["true_positives"] == 1
     assert evaluate_case(prediction([3.000001]), prediction([0]), 3)["true_positives"] == 0
+
+
+def test_correct_count_does_not_hide_wrong_openings():
+    result = evaluate_case(prediction([0, 90]), prediction([0, 30]), 3)
+    assert result["daughter_counts"] == {
+        "predicted": 2, "reference": 2, "signed_error": 0, "absolute_error": 0,
+    }
+    assert result["false_positives"] == result["false_negatives"] == 1
+    assert result["f1"] == 0.5
+
+
+def test_per_case_count_errors_do_not_cancel_between_scans():
+    results = [
+        evaluate_case(prediction([0, 30, 60]), prediction([0]), 3),
+        evaluate_case(prediction([0]), prediction([0, 30, 60]), 3),
+        evaluate_case(prediction([]), prediction([]), 3),
+    ]
+    summary = summarize_cases(results)["daughter_counts"]
+    assert summary["predicted"] == summary["reference"] == 4
+    assert summary["mean_absolute_error"] == pytest.approx(4 / 3)
+    assert summary["exact_count_cases"] == summary["overcount_cases"] == summary["undercount_cases"] == 1
+    assert summarize_cases([])["daughter_counts"]["mean_absolute_error"] is None

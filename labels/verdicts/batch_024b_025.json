@@ -1,0 +1,14 @@
+{
+  "subject024": {
+    "branch_015": "rejected", "branch_016": "rejected", "branch_017": "rejected", "branch_018": "rejected",
+    "branch_019": "rejected", "branch_020": "rejected", "branch_021": "rejected", "branch_022": "rejected",
+    "branch_023": "rejected", "branch_024": "rejected", "branch_025": "rejected", "branch_026": "rejected",
+    "branch_027": "rejected", "branch_028": "rejected"
+  },
+  "subject025": {
+    "branch_003": "confirmed", "branch_004": "confirmed", "branch_006": "confirmed", "branch_009": "confirmed",
+    "branch_034": "confirmed", "branch_035": "confirmed",
+    "branch_001": "rejected", "branch_013": "rejected", "branch_014": "rejected", "branch_015": "rejected",
+    "branch_016": "rejected"
+  }
+}

@@ -4,7 +4,6 @@
 import argparse
 import json
 import shutil
-import subprocess
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
@@ -254,11 +253,10 @@ def create_deck():
 
     s = base("From detection to inspection.", 5, 3, 75)
     s.text(90, 164, 1750, "From detection to inspection.", 78, PAPER, "display")
-    s.text(94, 276, 1650, "A 60-second film of the real local Explorer. Press V to play.", 29, MUTED)
+    s.text(94, 276, 1650, "Live, 75 seconds, in the real local Explorer.", 29, MUTED)
     s.image(368, 357, 1184, 596, "assets/explorer-poster.png")
-    s.notes = """[0:00–0:06] Now follow a real local result through the Explorer. Start the sixty-second film.
-[During film, speak naturally; the film has no narration.] The 3D view gives us spatial context. Selecting a branch links its origin, direction and radius. We can return to CT rather than trust a mesh alone. The wall map gives a second way to inspect where openings lie. The interior tour adds another view of the supplied aorta. These are predicted candidates, not anatomical labels or confirmed truth. The result remains exportable as the challenge JSON.
-[After film, by 1:15] The interface makes a result inspectable; expert annotation is still needed to establish accuracy. Speaker four will separate our evidence from what we have not yet proved."""
+    s.text(1118, 924, 650, "Switch to the Explorer window now", 21, MUTED)
+    s.notes = """[0:00] Switch from this slide to the live Explorer, already running with a case preloaded. [0:10] Orbit the reconstructed parent aorta in 3D. [0:25] Click a candidate branch: its origin, direction and radius appear. [0:40] Jump to the linked CT slices — a convincing mesh alone is not evidence. [0:55] Show the aortic wall map, a second view of where candidates sit. [1:05] Take the interior tour for spatial context, then return to this slide. These are predicted candidates, not confirmed anatomical labels. Speaker four will separate our evidence from what we have not yet proved."""
     slides.append(s)
 
     s = base("Three scans. Traceable evidence.", 6, 4, 25)
@@ -337,84 +335,17 @@ def write_html(slides: list[Slide], output: Path):
     (output / "index.html").write_text(template.replace("__DECK_DATA__", serialized))
 
 
-def reel_plates(output: Path):
-    specs = [
-        ("Find the branch.\nKeep the evidence.", "AORTA EXPLORER", "Real scans. Physical geometry. Local compute."),
-        ("CT + parent mask.\nInspectable branch instances.", "THE METHOD", "Anchor / discover / trace / measure"),
-        ("See the origin in 3D.", "ACTUAL EXPLORER CAPTURE", "Subject001 · parent surface and predicted branches"),
-        ("Go back to the CT.", "ACTUAL EXPLORER CAPTURE", "Predictions stay connected to the image evidence."),
-        ("Map the aortic wall.", "ACTUAL EXPLORER CAPTURE", "A second view of where candidate origins lie."),
-        ("Explore from the inside.", "ACTUAL EXPLORER CAPTURE", "A local tour through the supplied parent aorta."),
-        ("25 real scans processed.", "EXECUTION EVIDENCE", "1.0–20.4 s/case on our development machine · not an accuracy score"),
-        ("No GPU.\nNo cloud inference.", "BRANCHSEED", "Prepared dependencies required. Expert validation comes next."),
-    ]
-    for index, (title, tag, detail) in enumerate(specs):
-        s = Slide(title, 0, 0, INK, [])
-        s.text(90, 64, 1750, tag, 25, MINT)
-        if 2 <= index <= 5:
-            s.text(90, 114, 1750, title, 55, PAPER, "display")
-            s.rect(237, 187, 1446, 816, LINE)
-            s.text(240, 1027, 1500, detail, 23, MUTED)
-        else:
-            s.text(94, 290, 1600, title, 112, PAPER, "display")
-            s.text(99, 815, 1740, detail, 29, MUTED)
-            s.line(99, 961, 1820, 961, MINT, 4)
-            if index in (0, 7):
-                s.image(1390, 205, 410, 680, "assets/vessel.png")
-        render(s, output).save(output / f"assets/reel-{index}.png")
-
-
-def movie(output: Path, shots: list[str]):
-    if len(shots) != 4:
-        raise ValueError("Supply four video paths with start seconds: PATH@SECONDS")
-    work = output / "render-work"
-    work.mkdir(exist_ok=True)
-    durations = [6, 6, 8, 8, 8, 8, 8, 8]
-    for index, seconds in enumerate(durations):
-        command = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-threads", "4",
-                   "-loop", "1", "-framerate", "30", "-i", str(output / f"assets/reel-{index}.png")]
-        if 2 <= index <= 5:
-            filename, start = shots[index - 2].rsplit("@", 1)
-            probe = subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration",
-                                             "-of", "default=noprint_wrappers=1:nokey=1", filename], text=True)
-            if float(start) < 0 or float(start) + seconds > float(probe):
-                raise ValueError(f"Shot extends beyond source: {shots[index - 2]}")
-            command += ["-ss", start, "-i", filename, "-filter_complex_threads", "1",
-                        "-filter_complex", "[1:v]scale=1440:810:force_original_aspect_ratio=decrease,"
-                        "pad=1440:810:(ow-iw)/2:(oh-ih)/2:color=0x101C23,setsar=1[clip];"
-                        "[0:v][clip]overlay=240:190,fade=t=in:st=0:d=0.25,"
-                        f"fade=t=out:st={seconds - 0.25}:d=0.25[v]", "-map", "[v]"]
-        else:
-            frames = seconds * 30
-            command += ["-vf", f"zoompan=z='1+0.02*on/{frames}':"
-                        "x='iw/2-iw/zoom/2':y='ih/2-ih/zoom/2':d=1:s=1920x1080:fps=30,"
-                        f"fade=t=in:st=0:d=0.25,fade=t=out:st={seconds - 0.25}:d=0.25"]
-        command += ["-an", "-t", str(seconds), "-r", "30", "-c:v", "libx264", "-preset", "fast",
-                    "-crf", "19", "-pix_fmt", "yuv420p", "-threads", "4", str(work / f"clip-{index}.mp4")]
-        subprocess.run(command, check=True)
-        print(f"Rendered reel scene {index + 1}/8", flush=True)
-    (work / "concat.txt").write_text("".join(f"file 'clip-{i}.mp4'\n" for i in range(8)))
-    subprocess.run(["ffmpeg", "-hide_banner", "-loglevel", "error", "-y", "-f", "concat",
-                    "-safe", "0", "-i", str(work / "concat.txt"), "-c", "copy",
-                    "-movflags", "+faststart", str(output / "branchseed-film.mp4")], check=True)
-    (output / "evidence/footage-provenance.json").write_text(json.dumps({
-        "shots": shots, "durations_s": durations, "notes": "Actual Explorer capture; cuts only, no speed changes.",
-        "audio": "Silent by design for four-speaker live narration; no stock footage or synthetic patient imagery."
-    }, indent=2))
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, default=ROOT / "outputs/presentation-kit")
     parser.add_argument("--predictions", type=Path, default=ROOT / "outputs/accuracy-real-smoke")
     parser.add_argument("--poster", type=Path)
-    parser.add_argument("--shot", action="append", default=[])
     parser.add_argument("--skip-evidence", action="store_true")
     args = parser.parse_args()
     for directory in ("assets", "slides", "evidence"):
         (args.output / directory).mkdir(parents=True, exist_ok=True)
     shutil.copy2(Path(__file__).with_name("favicon.svg"), args.output / "assets/favicon.svg")
-    for name in ("README.md", "FILM_CUES.md"):
+    for name in ("README.md", "LIVE_DEMO_CUES.md"):
         shutil.copy2(Path(__file__).with_name(name), args.output / name)
     fonts(args.output)
     if not args.skip_evidence:
@@ -445,12 +376,9 @@ def main():
     contact.save(args.output / "slide-overview.jpg", quality=95)
     (args.output / "deck.json").write_text(json.dumps([asdict(slide) for slide in slides], indent=2))
     write_html(slides, args.output)
-    reel_plates(args.output)
-    if args.shot:
-        movie(args.output, args.shot)
     start = 0
     script = "# Branchseed: five minutes, four speakers\n\n"
-    script += "The 60-second film is INCLUDED in Speaker 3's 75 seconds. It is silent for live narration.\n\n"
+    script += "The live Explorer demo runs INSIDE Speaker 3's 75 seconds; no video is played.\n\n"
     for index, slide in enumerate(slides):
         end = start + slide.seconds
         script += (f"## {start // 60}:{start % 60:02}–{end // 60}:{end % 60:02} · Speaker {slide.speaker}"

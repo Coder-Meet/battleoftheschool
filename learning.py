@@ -1,4 +1,4 @@
-"""Train an optional CPU candidate classifier from exported human reviews."""
+"""Train an optional CPU candidate classifier from labelled candidate features."""
 
 import argparse
 from dataclasses import asdict, dataclass
@@ -64,7 +64,7 @@ class CandidateModel:
             raise ValueError("Unsupported model schema or feature order.")
         vectors = [np.asarray(value[key], dtype=float) for key in ("mean", "scale", "weights")]
         if any(v.shape != (len(FEATURE_NAMES),) or not np.isfinite(v).all() for v in vectors):
-            raise ValueError("Model vectors must contain six finite values.")
+            raise ValueError(f"Model vectors must contain {len(FEATURE_NAMES)} finite values.")
         if np.any(vectors[1] <= 0) or not np.isfinite(value["bias"]):
             raise ValueError("Invalid model scale or bias.")
         if not np.isfinite(value["threshold"]) or not 0 <= value["threshold"] <= 1:
@@ -86,18 +86,18 @@ def load_reviews(paths: list[Path]) -> list[dict]:
             raise ValueError("Expected candidate reviews exported by Aorta Explorer.")
         for row in payload["records"]:
             if row["label"] not in ("confirmed", "rejected"):
-                raise ValueError("Every training row needs an explicit confirmed/rejected human review.")
+                raise ValueError("Every training row needs an explicit confirmed/rejected label.")
             if any(not isinstance(row[key], str) or not row[key] for key in ("case_id", "instance_id")):
                 raise ValueError("Case and instance identifiers must be nonempty strings.")
             vector = np.asarray(row["features"], dtype=float)
             if vector.shape != (len(FEATURE_NAMES),) or not np.isfinite(vector).all():
-                raise ValueError("Review features must contain six finite values.")
+                raise ValueError(f"Review features must contain {len(FEATURE_NAMES)} finite values.")
             key = row["case_id"], row["instance_id"]
             if key in rows and rows[key] != row:
                 raise ValueError(f"Conflicting reviews for {key}; resolve them before training.")
             rows[key] = row
     if not rows:
-        raise ValueError("No human-reviewed candidates supplied.")
+        raise ValueError("No labelled candidates supplied.")
     return [rows[key] for key in sorted(rows)]
 
 
@@ -152,7 +152,11 @@ def metrics(labels: FloatArray, scores: FloatArray, threshold: float) -> dict:
     }
 
 
-def train(rows: list[dict], split: dict[str, list[str]]) -> tuple[CandidateModel, dict]:
+def train(
+    rows: list[dict], split: dict[str, list[str]], minimum_training_recall: float = 0.0,
+) -> tuple[CandidateModel, dict]:
+    if not np.isfinite(minimum_training_recall) or not 0 <= minimum_training_recall <= 1:
+        raise ValueError("Minimum training recall must lie between zero and one.")
     split = validate_split(split)
     declared = {case for partition in split.values() for case in partition}
     if declared != {row["case_id"] for row in rows}:
@@ -185,6 +189,14 @@ def train(rows: list[dict], split: dict[str, list[str]]) -> tuple[CandidateModel
     validation_x, validation_y = partitions["validation"]
     validation_scores = model.scores(validation_x)
     thresholds = sorted({0.0, 0.5, 1.0, *validation_scores.tolist()})
+    if minimum_training_recall > 0:
+        training_scores = model.scores(partitions["train"][0])
+        training_y = partitions["train"][1]
+        thresholds = sorted({*thresholds, *training_scores[training_y == 1].tolist()})
+        thresholds = [
+            threshold for threshold in thresholds
+            if metrics(training_y, training_scores, threshold)["recall"] >= minimum_training_recall
+        ]
     model.threshold = max(thresholds, key=lambda t: (
         metrics(validation_y, validation_scores, t)["f1"], -abs(t - 0.5),
     ))
@@ -195,14 +207,20 @@ def train(rows: list[dict], split: dict[str, list[str]]) -> tuple[CandidateModel
             "keep_all_baseline": metrics(y, np.ones(len(y)), 0.5),
         }
     report = {
-        "scope": "Human-reviewed candidates only; misses never proposed by the detector are not measured.",
+        "scope": "Labelled candidates only; misses never proposed by the detector are not measured.",
+        "label_sources": {
+            source: sum(row.get("labeller", "unspecified") == source for row in rows)
+            for source in sorted({row.get("labeller", "unspecified") for row in rows})
+        },
         "limitations": [
+            "AI verdicts are pseudo-labels; synthetic labels are analytic geometry, not clinical validation.",
             "Not a calibrated clinical probability; validate on independent, complete daughter annotations.",
             "Do not tune against the test results. Group repeat scans of one patient into the same partition.",
         ],
         "feature_names": FEATURE_NAMES,
         "split": split,
         "threshold_selected_on": "validation",
+        "minimum_training_recall": minimum_training_recall,
         "threshold": model.threshold,
         "partitions": partition_reports,
     }
@@ -239,13 +257,17 @@ def main() -> None:
     train_parser.add_argument("--split", required=True, type=Path)
     train_parser.add_argument("--model", required=True, type=Path)
     train_parser.add_argument("--report", required=True, type=Path)
+    train_parser.add_argument(
+        "--minimum-training-recall", type=float, default=0.0,
+        help="Optional retention constraint during threshold selection (0 disables it; not a recall guarantee).",
+    )
     args = parser.parse_args()
     try:
         rows = load_reviews(args.reviews)
         if args.command == "split":
             write_json(args.output, split_cases(rows, args.seed, args.test, args.validation))
         else:
-            model, report = train(rows, json.loads(args.split.read_text()))
+            model, report = train(rows, json.loads(args.split.read_text()), args.minimum_training_recall)
             model.save(args.model)
             write_json(args.report, report)
     except (OSError, ValueError, KeyError, TypeError) as error:

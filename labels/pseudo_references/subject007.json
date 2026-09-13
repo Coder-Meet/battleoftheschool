@@ -1,0 +1,87 @@
+{
+  "case_id": "subject007",
+  "parent": {
+    "instance_id": "aorta"
+  },
+  "daughters": [
+    {
+      "instance_id": "branch_001",
+      "parent_instance_id": "aorta",
+      "ostium_xyz_mm": [
+        14.170347039095645,
+        -5.810661013730282,
+        -1158.467705901273
+      ],
+      "seed_xyz_mm": [
+        11.283595693147554,
+        -8.697412359678374,
+        -1161.354457247221
+      ],
+      "radius_mm": 2.488,
+      "direction_xyz": [
+        -0.5773502691896225,
+        -0.5773502691896225,
+        -0.5773502691896324
+      ],
+      "source_candidate": "branch_007"
+    },
+    {
+      "instance_id": "branch_002",
+      "parent_instance_id": "aorta",
+      "ostium_xyz_mm": [
+        19.33661834472318,
+        -7.512999057769775,
+        -1156.6700439453125
+      ],
+      "seed_xyz_mm": [
+        18.64601172368543,
+        -12.3349963291405,
+        -1156.6700439453125
+      ],
+      "radius_mm": 3.52,
+      "direction_xyz": [
+        -0.14177338999850633,
+        -0.9898991392502225,
+        0.0
+      ],
+      "source_candidate": "branch_008"
+    },
+    {
+      "instance_id": "branch_003",
+      "parent_instance_id": "aorta",
+      "ostium_xyz_mm": [
+        21.453723855036543,
+        -4.036455894584371,
+        -1147.6700439453125
+      ],
+      "seed_xyz_mm": [
+        20.968008995056152,
+        -8.977650979150118,
+        -1147.6700439453125
+      ],
+      "radius_mm": 3.488,
+      "direction_xyz": [
+        -0.09782756240357382,
+        -0.9952033802365098,
+        0.0
+      ],
+      "source_candidate": "branch_010"
+    }
+  ],
+  "provenance": {
+    "kind": "pseudo_reference_from_candidate_labels",
+    "labellers": [
+      "claude"
+    ],
+    "confirmed": 3,
+    "rejected": 6,
+    "pool_size": 15,
+    "stale_labels": [],
+    "pool_profile": "review",
+    "generated_at": "2026-09-12T22:51:31.653503+00:00",
+    "limitations": [
+      "Daughters are detector candidates a reviewer confirmed; branches the detector never proposed are absent.",
+      "Geometry is the detector's own measurement, so ostium/radius/direction errors against it are lower bounds."
+    ]
+  }
+}

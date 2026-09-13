@@ -1,0 +1,1679 @@
+{
+  "schema_version": 1,
+  "source": "analytic_synthetic_geometry",
+  "seeds": [
+    3312207072,
+    1971013293,
+    2564826260,
+    148187880,
+    1307838637,
+    3950091766,
+    151593411,
+    1693787424,
+    3138883885,
+    1652308690,
+    3206973561,
+    682800453,
+    2357170090,
+    2966957149,
+    4221511865
+  ],
+  "seed_derivation": "first four SHA256 bytes, big-endian, branchseed-research-cohort-v1:<0..14>",
+  "cases": [
+    {
+      "case_id": "stress_00_tortuous_low_contrast_3312207072",
+      "seed": 3312207072,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_3312207072",
+      "seed": 3312207072,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_3312207072",
+      "seed": 3312207072,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_3312207072",
+      "seed": 3312207072,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_3312207072",
+      "seed": 3312207072,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_3312207072",
+      "seed": 3312207072,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_3312207072",
+      "seed": 3312207072,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_3312207072",
+      "seed": 3312207072,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_3312207072",
+      "seed": 3312207072,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_3312207072",
+      "seed": 3312207072,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_3312207072",
+      "seed": 3312207072,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_3312207072",
+      "seed": 3312207072,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_3312207072",
+      "seed": 3312207072,
+      "family": "curved_daughters",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_3312207072",
+      "seed": 3312207072,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:3312207072",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_1971013293",
+      "seed": 1971013293,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_1971013293",
+      "seed": 1971013293,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_1971013293",
+      "seed": 1971013293,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_1971013293",
+      "seed": 1971013293,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_1971013293",
+      "seed": 1971013293,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_1971013293",
+      "seed": 1971013293,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_1971013293",
+      "seed": 1971013293,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_1971013293",
+      "seed": 1971013293,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_1971013293",
+      "seed": 1971013293,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_1971013293",
+      "seed": 1971013293,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_1971013293",
+      "seed": 1971013293,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_1971013293",
+      "seed": 1971013293,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_1971013293",
+      "seed": 1971013293,
+      "family": "curved_daughters",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_1971013293",
+      "seed": 1971013293,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:1971013293",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_2564826260",
+      "seed": 2564826260,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_2564826260",
+      "seed": 2564826260,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_2564826260",
+      "seed": 2564826260,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_2564826260",
+      "seed": 2564826260,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_2564826260",
+      "seed": 2564826260,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_2564826260",
+      "seed": 2564826260,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_2564826260",
+      "seed": 2564826260,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_2564826260",
+      "seed": 2564826260,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_2564826260",
+      "seed": 2564826260,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_2564826260",
+      "seed": 2564826260,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_2564826260",
+      "seed": 2564826260,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_2564826260",
+      "seed": 2564826260,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_2564826260",
+      "seed": 2564826260,
+      "family": "curved_daughters",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_2564826260",
+      "seed": 2564826260,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:2564826260",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_148187880",
+      "seed": 148187880,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_148187880",
+      "seed": 148187880,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_148187880",
+      "seed": 148187880,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_148187880",
+      "seed": 148187880,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_148187880",
+      "seed": 148187880,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_148187880",
+      "seed": 148187880,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_148187880",
+      "seed": 148187880,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_148187880",
+      "seed": 148187880,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_148187880",
+      "seed": 148187880,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_148187880",
+      "seed": 148187880,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_148187880",
+      "seed": 148187880,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_148187880",
+      "seed": 148187880,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_148187880",
+      "seed": 148187880,
+      "family": "curved_daughters",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_148187880",
+      "seed": 148187880,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:148187880",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_1307838637",
+      "seed": 1307838637,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_1307838637",
+      "seed": 1307838637,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_1307838637",
+      "seed": 1307838637,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_1307838637",
+      "seed": 1307838637,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_1307838637",
+      "seed": 1307838637,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_1307838637",
+      "seed": 1307838637,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_1307838637",
+      "seed": 1307838637,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_1307838637",
+      "seed": 1307838637,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_1307838637",
+      "seed": 1307838637,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_1307838637",
+      "seed": 1307838637,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_1307838637",
+      "seed": 1307838637,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_1307838637",
+      "seed": 1307838637,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_1307838637",
+      "seed": 1307838637,
+      "family": "curved_daughters",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_1307838637",
+      "seed": 1307838637,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:1307838637",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_3950091766",
+      "seed": 3950091766,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_3950091766",
+      "seed": 3950091766,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_3950091766",
+      "seed": 3950091766,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_3950091766",
+      "seed": 3950091766,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_3950091766",
+      "seed": 3950091766,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_3950091766",
+      "seed": 3950091766,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_3950091766",
+      "seed": 3950091766,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_3950091766",
+      "seed": 3950091766,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_3950091766",
+      "seed": 3950091766,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_3950091766",
+      "seed": 3950091766,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_3950091766",
+      "seed": 3950091766,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_3950091766",
+      "seed": 3950091766,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_3950091766",
+      "seed": 3950091766,
+      "family": "curved_daughters",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_3950091766",
+      "seed": 3950091766,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:3950091766",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_151593411",
+      "seed": 151593411,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_151593411",
+      "seed": 151593411,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_151593411",
+      "seed": 151593411,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_151593411",
+      "seed": 151593411,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_151593411",
+      "seed": 151593411,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_151593411",
+      "seed": 151593411,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_151593411",
+      "seed": 151593411,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_151593411",
+      "seed": 151593411,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_151593411",
+      "seed": 151593411,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_151593411",
+      "seed": 151593411,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_151593411",
+      "seed": 151593411,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_151593411",
+      "seed": 151593411,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_151593411",
+      "seed": 151593411,
+      "family": "curved_daughters",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_151593411",
+      "seed": 151593411,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:151593411",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_1693787424",
+      "seed": 1693787424,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_1693787424",
+      "seed": 1693787424,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_1693787424",
+      "seed": 1693787424,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_1693787424",
+      "seed": 1693787424,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_1693787424",
+      "seed": 1693787424,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_1693787424",
+      "seed": 1693787424,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_1693787424",
+      "seed": 1693787424,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_1693787424",
+      "seed": 1693787424,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_1693787424",
+      "seed": 1693787424,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_1693787424",
+      "seed": 1693787424,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_1693787424",
+      "seed": 1693787424,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_1693787424",
+      "seed": 1693787424,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_1693787424",
+      "seed": 1693787424,
+      "family": "curved_daughters",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_1693787424",
+      "seed": 1693787424,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:1693787424",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_3138883885",
+      "seed": 3138883885,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_3138883885",
+      "seed": 3138883885,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_3138883885",
+      "seed": 3138883885,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_3138883885",
+      "seed": 3138883885,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_3138883885",
+      "seed": 3138883885,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_3138883885",
+      "seed": 3138883885,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_3138883885",
+      "seed": 3138883885,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_3138883885",
+      "seed": 3138883885,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_3138883885",
+      "seed": 3138883885,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_3138883885",
+      "seed": 3138883885,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_3138883885",
+      "seed": 3138883885,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_3138883885",
+      "seed": 3138883885,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_3138883885",
+      "seed": 3138883885,
+      "family": "curved_daughters",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_3138883885",
+      "seed": 3138883885,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:3138883885",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_1652308690",
+      "seed": 1652308690,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_1652308690",
+      "seed": 1652308690,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_1652308690",
+      "seed": 1652308690,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_1652308690",
+      "seed": 1652308690,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_1652308690",
+      "seed": 1652308690,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_1652308690",
+      "seed": 1652308690,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_1652308690",
+      "seed": 1652308690,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_1652308690",
+      "seed": 1652308690,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_1652308690",
+      "seed": 1652308690,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_1652308690",
+      "seed": 1652308690,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_1652308690",
+      "seed": 1652308690,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_1652308690",
+      "seed": 1652308690,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_1652308690",
+      "seed": 1652308690,
+      "family": "curved_daughters",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_1652308690",
+      "seed": 1652308690,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:1652308690",
+      "partition": "train"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_3206973561",
+      "seed": 3206973561,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_3206973561",
+      "seed": 3206973561,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_3206973561",
+      "seed": 3206973561,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_3206973561",
+      "seed": 3206973561,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_3206973561",
+      "seed": 3206973561,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_3206973561",
+      "seed": 3206973561,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_3206973561",
+      "seed": 3206973561,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_3206973561",
+      "seed": 3206973561,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_3206973561",
+      "seed": 3206973561,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_3206973561",
+      "seed": 3206973561,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_3206973561",
+      "seed": 3206973561,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_3206973561",
+      "seed": 3206973561,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_3206973561",
+      "seed": 3206973561,
+      "family": "curved_daughters",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_3206973561",
+      "seed": 3206973561,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:3206973561",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_682800453",
+      "seed": 682800453,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_682800453",
+      "seed": 682800453,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_682800453",
+      "seed": 682800453,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_682800453",
+      "seed": 682800453,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_682800453",
+      "seed": 682800453,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_682800453",
+      "seed": 682800453,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_682800453",
+      "seed": 682800453,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_682800453",
+      "seed": 682800453,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_682800453",
+      "seed": 682800453,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_682800453",
+      "seed": 682800453,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_682800453",
+      "seed": 682800453,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_682800453",
+      "seed": 682800453,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_682800453",
+      "seed": 682800453,
+      "family": "curved_daughters",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_682800453",
+      "seed": 682800453,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:682800453",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_2357170090",
+      "seed": 2357170090,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_2357170090",
+      "seed": 2357170090,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_2357170090",
+      "seed": 2357170090,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_2357170090",
+      "seed": 2357170090,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_2357170090",
+      "seed": 2357170090,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_2357170090",
+      "seed": 2357170090,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_2357170090",
+      "seed": 2357170090,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_2357170090",
+      "seed": 2357170090,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_2357170090",
+      "seed": 2357170090,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_2357170090",
+      "seed": 2357170090,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_2357170090",
+      "seed": 2357170090,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_2357170090",
+      "seed": 2357170090,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_2357170090",
+      "seed": 2357170090,
+      "family": "curved_daughters",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_2357170090",
+      "seed": 2357170090,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:2357170090",
+      "partition": "validation"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_2966957149",
+      "seed": 2966957149,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_2966957149",
+      "seed": 2966957149,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_2966957149",
+      "seed": 2966957149,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_2966957149",
+      "seed": 2966957149,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_2966957149",
+      "seed": 2966957149,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_2966957149",
+      "seed": 2966957149,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_2966957149",
+      "seed": 2966957149,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_2966957149",
+      "seed": 2966957149,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_2966957149",
+      "seed": 2966957149,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_2966957149",
+      "seed": 2966957149,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_2966957149",
+      "seed": 2966957149,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_2966957149",
+      "seed": 2966957149,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_2966957149",
+      "seed": 2966957149,
+      "family": "curved_daughters",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_2966957149",
+      "seed": 2966957149,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:2966957149",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_00_tortuous_low_contrast_4221511865",
+      "seed": 4221511865,
+      "family": "tortuous_low_contrast",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_01_thick_slice_anisotropic_4221511865",
+      "seed": 4221511865,
+      "family": "thick_slice_anisotropic",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_02_touching_vein_and_calcification_4221511865",
+      "seed": 4221511865,
+      "family": "touching_vein_and_calcification",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_03_aneurysm_with_mural_thrombus_4221511865",
+      "seed": 4221511865,
+      "family": "aneurysm_with_mural_thrombus",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_04_common_trunk_early_split_4221511865",
+      "seed": 4221511865,
+      "family": "common_trunk_early_split",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_05_daughter_of_daughter_4221511865",
+      "seed": 4221511865,
+      "family": "daughter_of_daughter",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_06_nearby_pair_with_short_stub_4221511865",
+      "seed": 4221511865,
+      "family": "nearby_pair_with_short_stub",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_07_cropped_short_segment_4221511865",
+      "seed": 4221511865,
+      "family": "cropped_short_segment",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_08_imperfect_parent_mask_4221511865",
+      "seed": 4221511865,
+      "family": "imperfect_parent_mask",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_09_dense_branch_field_4221511865",
+      "seed": 4221511865,
+      "family": "dense_branch_field",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_10_negative_controls_only_4221511865",
+      "seed": 4221511865,
+      "family": "negative_controls_only",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_11_high_noise_small_branches_4221511865",
+      "seed": 4221511865,
+      "family": "high_noise_small_branches",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_12_curved_daughters_4221511865",
+      "seed": 4221511865,
+      "family": "curved_daughters",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    },
+    {
+      "case_id": "stress_13_wall_parallel_descending_4221511865",
+      "seed": 4221511865,
+      "family": "wall_parallel_descending",
+      "group_id": "synthetic:4221511865",
+      "partition": "test"
+    }
+  ],
+  "source_sha256": {
+    "research_corpus.py": "344733304025ef3d0338d744aefde9e6c71ac3e341806fcb40aabe57dd2aca42",
+    "stress.py": "1d641e985119538f2a2286718570e026192198e6d646f8f7aec9712c56ed0122",
+    "detector.py": "17495723df18c79e4302edc19bd949bb16f615b902403a88c68d6e74fa200063",
+    "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+    "synthetic_reviews.py": "9189ac56e6def4b4090e6cee3cf768cbebd1af3417994524c6dfd78a8751074d",
+    "evaluate.py": "8436e03091ab2b794b549a37ea11580dd70df84de5e49cd787ab4b191dd57ee6",
+    "learning.py": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+    "nifti_io.py": "d8cd2795046affe798a2c2ed0822dc615f73930b94381c1ef5af0de36127cb02",
+    "research_validation.py": "955f79bde91c3706c2bbc317655d0150167cf943936b91ad98e48a7fbba2b335",
+    "score_references.py": "483d216d6a3a9993a0ca8f6c2d614f7a85702e51ee4894437369e72487b22e38",
+    "tabular_learning.py": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+    "train_trees.py": "49b992307e925cfa5a889e2c22b7193025eff90f03885277622831d543007b6e",
+    "requirements.txt": "5e116a3cdd95e6e2b836aba60de2763db8940f2b20934a35dfdba5212266abb4",
+    "requirements-trees.txt": "c792efbaeb9c7d812e684726faa1dd30d203c4c7f8a7895c36026415b34d3f9d"
+  },
+  "versions": {
+    "numpy": "2.5.3",
+    "scipy": "1.16.2",
+    "SimpleITK": "2.5.6",
+    "scikit-image": "0.26.0"
+  },
+  "python": "3.13.3",
+  "strict_config": {
+    "spacing_mm": 1.0,
+    "margin_mm": 20.0,
+    "shell_inner_mm": 1.5,
+    "shell_outer_mm": 3.5,
+    "cap_margin_mm": 4.0,
+    "minimum_radius_mm": 0.7,
+    "minimum_path_mm": 5.0,
+    "trace_length_mm": 10.0,
+    "vesselness_floor": 0.06,
+    "maximum_candidates": 160,
+    "shell_vesselness_floor": 0.06,
+    "connector_gap_fraction": 0.0,
+    "root_depth_mm": 3.5,
+    "blood_lower_scale": 1.0,
+    "support_contrast_fraction": 0.5,
+    "native_contrast_scale": 1.2,
+    "roots_per_contact": 1,
+    "wall_hug_penalty": 0.0,
+    "broad_contact_mm3": 1200.0,
+    "parallel_clearance_mm": 0.0,
+    "profile": "strict"
+  },
+  "pool_config": {
+    "spacing_mm": 1.0,
+    "margin_mm": 20.0,
+    "shell_inner_mm": 1.5,
+    "shell_outer_mm": 6.0,
+    "cap_margin_mm": 4.0,
+    "minimum_radius_mm": 0.7,
+    "minimum_path_mm": 5.0,
+    "trace_length_mm": 10.0,
+    "vesselness_floor": 0.03,
+    "maximum_candidates": 160,
+    "shell_vesselness_floor": 0.005,
+    "connector_gap_fraction": 0.35,
+    "root_depth_mm": 2.5,
+    "blood_lower_scale": 2.0,
+    "support_contrast_fraction": 0.5,
+    "native_contrast_scale": 1.2,
+    "roots_per_contact": 6,
+    "wall_hug_penalty": 0.8,
+    "broad_contact_mm3": 1000000.0,
+    "parallel_clearance_mm": 0.0,
+    "profile": "review"
+  },
+  "preprocessing": {
+    "version": "physical-candidate-patches-v1",
+    "size": 32,
+    "spacing_mm": 1.0,
+    "channel_names": [
+      "xy_ct",
+      "xy_parent",
+      "xy_vesselness",
+      "xy_path",
+      "xz_ct",
+      "xz_parent",
+      "xz_vesselness",
+      "xz_path",
+      "yz_ct",
+      "yz_parent",
+      "yz_vesselness",
+      "yz_path"
+    ],
+    "extra_feature_names": [
+      "ostium_local_contrast",
+      "patch_vesselness_std",
+      "parent_wall_curvature"
+    ],
+    "physical_axes": [
+      "xy",
+      "xz",
+      "yz"
+    ],
+    "center_pixel": 16,
+    "ct_normalization": "clip((HU-body_median)/max(abs(parent_median-body_median),3*parent_MAD,1),0,1)",
+    "body_min_hu": -300.0,
+    "mad_factor": 1.4826,
+    "samples_per_population": 65536,
+    "sampling": "evenly spaced population indices in native C-order",
+    "ct_interpolation": "linear",
+    "parent_interpolation": "nearest",
+    "padding": 0.0,
+    "halo_mm": 12.0,
+    "smoothing_sigma_mm": 0.6,
+    "sato_sigmas_mm": [
+      0.8,
+      1.5,
+      2.5
+    ],
+    "sato_black_ridges": false,
+    "sato_scaling": "raw response clipped to [0,1]",
+    "path_sigma_mm": 0.75,
+    "path_truncation_sigma": 3.0,
+    "contrast_radii_mm": [
+      3.0,
+      5.0,
+      8.0
+    ],
+    "curvature_fit_radius_mm": 5.0,
+    "curvature_units": "1/mm"
+  },
+  "matching_tolerance_mm": 3.0,
+  "negative_exclusion_mm": 5.0,
+  "experiments": [
+    {
+      "name": "gradient_boosting-base",
+      "algorithm": "gradient_boosting",
+      "features": "base"
+    },
+    {
+      "name": "gradient_boosting-extended",
+      "algorithm": "gradient_boosting",
+      "features": "extended"
+    },
+    {
+      "name": "random_forest-base",
+      "algorithm": "random_forest",
+      "features": "base"
+    },
+    {
+      "name": "random_forest-extended",
+      "algorithm": "random_forest",
+      "features": "extended"
+    }
+  ],
+  "training": {
+    "source_weights": {
+      "analytic": 1.0,
+      "expert": 1.0,
+      "pseudo": 0.0
+    },
+    "minimum_validation_recall": 1.0,
+    "minimum_training_recall": 1.0,
+    "calibration": "none; no separately adequate calibration cohort assumed",
+    "broader_training_profile": null,
+    "few_negatives_policy": "Report actual counts; train-only class weights; no invented negatives.",
+    "legacy_ablation": "not run; synthetic-only first, no new real labels"
+  },
+  "selection": {
+    "partition": "validation",
+    "maximum_induced_misses": 0,
+    "minimum_fp_reduction": 1,
+    "minimum_fp_reduction_fraction": 0.1,
+    "rank": "fewest full-pool FN, then FP, then preregistered model order",
+    "cnn_gate": "Remove >=1 and >=10% pool FP, no pool/strict induced misses, and improve on logistic without more FN, on validation and test.",
+    "test_policy": "No test predictions or labels until all models and selection frozen; never retune."
+  },
+  "bootstrap": {
+    "samples": 2000,
+    "seed": 42,
+    "unit": "synthetic seed group"
+  },
+  "maximum_patch_partition_bytes": 536870912,
+  "limitations": [
+    "Complete analytic synthetic references, not human anatomy or clinical accuracy.",
+    "A filter cannot recover unproposed references; empty cases remain in every denominator.",
+    "Ambiguous unmatched proposals within 5 mm are excluded only from candidate training.",
+    "All 25 supplied real cases have prior inspection/pseudo-training exposure; new expert labels may overlap.",
+    "No new patient labels, no clinical test and no target-Windows timing.",
+    "Additional-paper variants are developed separately on exposed regression seeds, outside this cohort."
+  ]
+}

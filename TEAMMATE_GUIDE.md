@@ -152,6 +152,16 @@ or clinical accuracy. The Explorer can open them with
 
 ## 5. Human reviews and the existing candidate classifier
 
+The former server-side `/review` pages were removed in `7515009`. For an
+independent expert review, use the blinded surveys and worksheets described in
+[ANNOTATION_GUIDE.md](ANNOTATION_GUIDE.md). Candidate-only review cannot
+identify missed arteries.
+
+The replacement `autolabel.py` renders evidence and imports AI verdicts. Its
+`labels/reviews.json` entries identify their `labeller`; AI-generated
+`confirmed` values remain provisional pseudo-labels, not human ground truth.
+Keep them separate from expert annotations and real-accuracy evaluation.
+
 In the Explorer, select a branch, inspect its CT evidence, then Confirm/Reject.
 Use Next unreviewed and filters to work through cases. Export training reviews
 regularly: labels live in that browser's local storage. Changed candidates

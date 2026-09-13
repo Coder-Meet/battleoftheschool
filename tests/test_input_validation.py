@@ -32,3 +32,22 @@ def test_multilabel_or_sheared_inputs_fail_before_detection():
     mask.CopyInformation(image)
     with pytest.raises(ValueError, match="orthonormal"):
         validate_geometry(image, mask)
+
+
+@pytest.mark.parametrize("blood,daughter", [(330, 210), (450, 285), (180, 135)])
+def test_less_enhanced_daughters_remain_connected_without_admitting_separate_vessels(blood, daughter):
+    image, mask = phantom()
+    source = sitk.GetArrayFromImage(image)
+    parent = sitk.GetArrayFromImage(mask) > 0
+    ct = np.where(source > 100, daughter, 20).astype(np.float32)
+    ct[parent] = blood
+    z, y, x = np.indices(ct.shape)
+    ct[((x - 13)**2 + (y - 25)**2 <= 1.5**2) & (z > 12) & (z < 48)] = daughter
+    ct += np.random.default_rng(931).normal(0, 8, ct.shape).astype(np.float32)
+    image = sitk.GetImageFromArray(ct)
+    image.CopyInformation(mask)
+    result = detect(image, mask)
+    assert len(result.branches) == 2
+    for branch, height in zip(result.branches, (20, 39)):
+        assert np.linalg.norm(np.asarray(branch.ostium_xyz_mm) - [33, 25, height]) < 2
+        assert np.linalg.norm(np.asarray(branch.seed_xyz_mm) - [38, 25, height]) < 2
