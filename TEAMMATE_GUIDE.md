@@ -1,5 +1,8 @@
 # Branchseed teammate handoff
 
+For the current detector, algorithm changes, model decisions and evidence limits,
+read the [algorithm review for Steven](STEVEN_ALGORITHM_REVIEW.md).
+
 ## What is committed
 
 The backend and frontend are in this repository's `main` branch:

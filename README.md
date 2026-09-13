@@ -9,6 +9,7 @@ Full problem statement: see the [Branchseed challenge doc](https://docs.google.c
 ## Working agreement
 
 New teammates: start with the [setup, backend API and training handoff guide](TEAMMATE_GUIDE.md).
+For a complete detector and ML walkthrough, read the [algorithm review for Steven](STEVEN_ALGORITHM_REVIEW.md).
 
 Research: see the [ML implementation plan](RESEARCH_IMPLEMENTATION.md) and the
 [three additional paper experiments and measured limitations](ADDITIONAL_PAPERS.md).
@@ -242,7 +243,8 @@ volume). External datasets that could supply independent truth are listed in
 
 Confirmed labels can be turned into reference JSONs and every case run through
 the detector with and without the filter, so the two outputs are scored the
-same way the organiser will score them:
+same way using our local matching proxy. The official evaluator and its overlap
+allowances are still needed to establish organizer scoring:
 
 ```bash
 python labels_to_references.py --cases $(ls data | grep subject) --output-dir labels/pseudo_references
@@ -269,7 +271,8 @@ and export across cases. Export regularly: clearing browser storage removes them
 Review labels do not modify the raw challenge prediction. A changed candidate's
 measurements invalidate its prior review in the UI.
 
-No real daughter annotations or trained weights are included. `learning.py`
+AI candidate reviews and optional trained weights are included; complete expert
+daughter references are not yet available. `learning.py`
 trains an L2-regularized logistic candidate classifier using CPU NumPy/SciPy
 once an expert has reviewed candidates. It consumes thirteen physical/evidence/context features,
 not CT images. It cannot discover vessels missed by the classical proposal stage.
