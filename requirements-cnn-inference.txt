@@ -1,0 +1,3 @@
+# Optional CPU inference only. Install alongside the unchanged requirements.txt.
+# PyPI release 2025-10-22; cp313-cp313-win_amd64 wheel verified.
+onnxruntime==1.23.2
