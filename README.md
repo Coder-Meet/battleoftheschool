@@ -6,6 +6,15 @@ each one as a separate daughter instance.
 
 Full problem statement: see the [Branchseed challenge doc](https://docs.google.com/document/d/1oRb2R9pauvsC-9hDIfr23ojLx90JpCt0jVZjCD5l5Cg/edit).
 
+## Final submission and live demo
+
+Start with **[DEMO_GUIDE.md](DEMO_GUIDE.md)** for exact website/CLI commands,
+Windows offline setup, presentation downloads, speaker timing and recovery.
+The production choice is **deterministic strict, `native_contrast_scale=1.2`**,
+already used by `run.py` and the default Explorer. Do not enable a research
+model or `--review-mode` for the submission. The [final evaluation](FINAL_EVALUATION_RESULTS.md)
+separates the fixed deployment from retrospective model comparisons.
+
 ## Working agreement
 
 New teammates: start with the [setup, backend API and training handoff guide](TEAMMATE_GUIDE.md).

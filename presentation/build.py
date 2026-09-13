@@ -202,11 +202,11 @@ def create_deck():
     s.text(94, 430, 950, "01   Two wall openings: two daughters", 34)
     s.text(94, 531, 950, "02   A common trunk: one direct origin", 34)
     s.text(94, 632, 950, "03   Exclude crop caps and distal children", 34)
-    s.text(95, 815, 890, "70% of the score is discovery + ostium location.", 30, MINT)
+    s.text(95, 815, 890, "2 mm origin diameter. 5 mm visible continuation.", 30, MINT)
     s.text(95, 878, 910, "We concentrated effort where the challenge puts the weight.", 25, MUTED)
     s.text(1450, 506, 355, "Common trunk\n1 aortic origin", 25, CORAL)
     s.text(1135, 900, 650, "Schematic · not patient anatomy", 21, MUTED)
-    s.notes = """The parent mask is a search anchor; it does not label the daughters. Bright structures alone are not enough. Two nearby openings at the wall are two instances. A common trunk has one direct origin even when it divides. Distal children and acquisition crop caps must be excluded. We also cannot guess vessels outside the visible scan. Discovery and origin localization account for seventy percent of the challenge score, so our design concentrates there. It searches locally, checks connection and topology, and preserves physical coordinates. That focus is why we built a geometric detector before claiming a large learned model. Speaker two will show how the measurements work."""
+    s.notes = """The parent mask is a search anchor; it does not label the daughters. Bright structures alone are not enough. Two separate wall openings are two instances, including a vessel that returns to the aorta. A common trunk has one direct origin even when it divides. Distal children and crop caps must be excluded. The judge confirmed a two-millimeter origin diameter and at least five millimeters of visible continuation. Overlapping openings can receive scoring allowances, but the official evaluator was not supplied. Daughter discovery and count are the priority. We search locally, check connection and topology, and preserve physical coordinates. Speaker two will show how the measurements work."""
     slides.append(s)
 
     s = base("Anchor. Trace. Measure.", 3, 2, 40, True)
@@ -273,30 +273,30 @@ def create_deck():
     s = base("Measured progress. Bounded claims.", 7, 4, 30)
     s.text(90, 169, 1720, "Measured progress. Bounded claims.", 76, PAPER, "display")
     s.line(1004, 360, 1004, 895, LINE, 2)
-    s.text(95, 344, 830, "SYNTHETIC DEVELOPMENT · 5 CASES", 24, MINT)
-    s.text(95, 432, 890, "8/10 to 10/10", 92, PAPER, "display")
-    s.text(100, 575, 850, "Direct daughters recovered · 0 false positives", 29)
-    s.text(100, 650, 850, "Additional seed: 9/10 to 10/10, with 0 FP.", 26, MUTED)
-    s.text(100, 719, 850, "Same procedural families; not clinical validation.", 25, CORAL)
-    s.text(1080, 344, 740, "REAL-SCAN EXECUTION · 25 CASES", 24, MINT)
-    s.text(1080, 432, 740, "25/25", 98, PAPER, "display")
-    s.text(1085, 575, 710, "Scans completed", 30)
-    s.text(1085, 650, 710, "1.0–20.4 s / case", 44, PAPER, "display")
-    s.text(1085, 727, 710, "Development machine · numerical threads = 4", 24, MUTED)
-    s.text(95, 900, 1740, "Local scoring: one-to-one ostium matching at 3 mm. Real-scan detection accuracy remains unmeasured.", 24, MUTED)
-    s.notes = """On five synthetic development cases, recovered daughters improved from eight to ten, with zero false positives. Additional variants improved from nine to ten. These simplified families are not clinical validation. Separately, all twenty-five real scans completed in about one to twenty seconds per case, with four numerical threads. That measures execution on our machine, not real detection accuracy or guaranteed organizer performance."""
+    s.text(95, 344, 830, "RELEASED REFERENCES · 5 REUSED CASES", 24, MINT)
+    s.text(95, 432, 890, "F1 0.533", 92, PAPER, "display")
+    s.text(100, 575, 850, "Strict deployment: 8 TP / 3 FP / 11 FN", 29)
+    s.text(100, 650, 850, "19 AI-assisted targets; labels may be incomplete.", 26, MUTED)
+    s.text(100, 719, 850, "Not independent hidden-test accuracy.", 25, CORAL)
+    s.text(1080, 344, 740, "SYNTHETIC TOPOLOGY · 24 CASES", 24, MINT)
+    s.text(1080, 432, 740, "F1 0.968", 92, PAPER, "display")
+    s.text(1085, 575, 710, "46 TP / 0 FP / 3 FN", 30)
+    s.text(1085, 650, 710, "Zero negative-control detections.", 29, PAPER)
+    s.text(1085, 727, 710, "Procedural regression; not clinical evidence.", 24, MUTED)
+    s.text(95, 900, 1740, "Local one-to-one matching at 3 mm. The higher all-five RF score is retrospective and was not promoted.", 24, MUTED)
+    s.notes = """We compared 280 variants without treating repeated tuning as independent accuracy. Strict scored F1 point five three three on nineteen judge-approved, AI-assisted targets from five reused cases. Those annotations may be incomplete. The fold-selected composite scored lower, and the higher random-forest aggregate was retrospective. We therefore kept the fixed strict detector. On twenty-four synthetic topology cases, strict recovered forty-six branches with no false positives and three misses. These are separate development checks, not a clinical or official challenge score."""
     slides.append(s)
 
     s = base("A branch you can inspect.", 8, 4, 20)
     s.text(90, 169, 1700, "A branch you can inspect.", 98, PAPER, "display")
     s.text(95, 333, 1670, "No GPU. No cloud inference. Prepared dependencies required.", 35, MINT)
     s.text(100, 494, 810, "Built for the constraints", 42, PAPER, "display")
-    s.text(100, 574, 800, "Target: 4 CPU cores · 8 GB · offline\n50 tests passed with networking denied.", 28, MUTED)
+    s.text(100, 574, 800, "Target: 4 CPU cores · 8 GB · offline\nCPU inference; no model download at runtime.", 28, MUTED)
     s.text(1050, 494, 780, "Known limits", 42, PAPER, "display")
-    s.text(1050, 574, 770, "Weak contrast · very small vessels · complex junctions\nNext: expert labels + a frozen patient-level test split.", 26, MUTED)
+    s.text(1050, 574, 770, "Weak contrast · small vessels · complex junctions\nNext: complete expert labels + unseen patients.", 26, MUTED)
     s.text(100, 795, 1720, "Find every eligible origin. Keep each daughter separate.\nMake the result possible to verify.", 47, PAPER, "display")
     s.text(100, 943, 1740, "github.com/Coder-Meet/battleoftheschool   ·   prototype, not clinically validated", 23, MUTED)
-    s.notes = """We target four cores, eight gigabytes and offline execution after setup. Fifty tests passed with networking denied. Weak contrast, small vessels and complex junctions remain risks. Next: expert labels and a frozen patient-level test split. We built branch instances you can inspect and verify. Thank you."""
+    s.notes = """The released five-case strict run averaged 3.28 seconds, with a maximum recorded peak of 625 mebibytes on development hardware. Actual organizer Windows timing remains unmeasured. We target four cores, eight gigabytes and offline execution after setup. Weak contrast, small vessels and complex junctions remain risks. Next: complete expert labels and unseen patients. We built branch instances you can inspect and verify. Thank you."""
     slides.append(s)
     return slides
 
