@@ -1,0 +1,251 @@
+{
+  "source_url": "https://drive.google.com/drive/folders/1GoIKqCKIMhtqzHNwLgtNkBhmxT_96ZR6",
+  "manifest_sha256": "78c2cd3af2c451c60a91e947fd32c740704d02f94d63cd566e0b927d50ce4850",
+  "all_manifest_files_verified": 55,
+  "published_checksum_list_matches_manifest": true,
+  "judge_approval": "Confirmed by user in this session; original draft provenance retained.",
+  "official_evaluator_supplied": false,
+  "scoring": "Local maximum-cardinality one-to-one ostium matching at 2/3/5 mm.",
+  "cases": [
+    {
+      "case_id": "subject019",
+      "daughters": 3,
+      "known_radii": 0,
+      "image_sha256": "5e3140eeaa821b6c964620256c1696df6a228564896b1c66d3846f625b7c8c96",
+      "mask_sha256": "c18f4c8f43904e1658164e762984d042b1bc88e789494e6fdeec79ec95d82b0f",
+      "size_xyz": [
+        250,
+        250,
+        169
+      ],
+      "spacing_xyz_mm": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "origin_lps_mm": [
+        177.1337890625,
+        18.6337890625,
+        58.099998474121094
+      ],
+      "direction": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "nifti_geometry_metadata": {
+        "qform_code": "0",
+        "qform_code_name": "NIFTI_XFORM_UNKNOWN",
+        "qoffset_x": "0",
+        "qoffset_y": "0",
+        "qoffset_z": "0",
+        "quatern_b": "0",
+        "quatern_c": "0",
+        "quatern_d": "0",
+        "sform_code": "2",
+        "sform_code_name": "NIFTI_XFORM_ALIGNED_ANAT",
+        "srow_x": "1.5 0 0 -177.134",
+        "srow_y": "0 1.5 0 -18.6338",
+        "srow_z": "0 0 1.5 58.1"
+      }
+    },
+    {
+      "case_id": "subject020",
+      "daughters": 4,
+      "known_radii": 2,
+      "image_sha256": "f9b0ff4e3af19ca8e63cddfcc1a5ec5d5d302b1f7d97e54b7d57b06680cc7d81",
+      "mask_sha256": "dee54f9885040b24bf59e1e11843c4cf08992f12b4ac9479f622a79a279092ca",
+      "size_xyz": [
+        299,
+        299,
+        201
+      ],
+      "spacing_xyz_mm": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "origin_lps_mm": [
+        229.5625,
+        109.0625,
+        83.0
+      ],
+      "direction": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "nifti_geometry_metadata": {
+        "qform_code": "0",
+        "qform_code_name": "NIFTI_XFORM_UNKNOWN",
+        "qoffset_x": "0",
+        "qoffset_y": "0",
+        "qoffset_z": "0",
+        "quatern_b": "0",
+        "quatern_c": "0",
+        "quatern_d": "0",
+        "sform_code": "2",
+        "sform_code_name": "NIFTI_XFORM_ALIGNED_ANAT",
+        "srow_x": "1.5 0 0 -229.562",
+        "srow_y": "0 1.5 0 -109.062",
+        "srow_z": "0 0 1.5 83"
+      }
+    },
+    {
+      "case_id": "subject021",
+      "daughters": 3,
+      "known_radii": 0,
+      "image_sha256": "11e3ce094db5632f7f4df2dbe5849923e9f51a7a17eeeeaf1fa6a296abb48519",
+      "mask_sha256": "0ef0d75f4a912a947ab566da3ef5e614f458f3ee5cba328cf1976b320e7f444b",
+      "size_xyz": [
+        217,
+        217,
+        202
+      ],
+      "spacing_xyz_mm": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "origin_lps_mm": [
+        167.681640625,
+        29.181640625,
+        120.5
+      ],
+      "direction": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "nifti_geometry_metadata": {
+        "qform_code": "0",
+        "qform_code_name": "NIFTI_XFORM_UNKNOWN",
+        "qoffset_x": "0",
+        "qoffset_y": "0",
+        "qoffset_z": "0",
+        "quatern_b": "0",
+        "quatern_c": "0",
+        "quatern_d": "0",
+        "sform_code": "2",
+        "sform_code_name": "NIFTI_XFORM_ALIGNED_ANAT",
+        "srow_x": "1.5 0 0 -167.682",
+        "srow_y": "0 1.5 0 -29.1816",
+        "srow_z": "0 0 1.5 120.5"
+      }
+    },
+    {
+      "case_id": "subject022",
+      "daughters": 6,
+      "known_radii": 1,
+      "image_sha256": "56b888fd4a43396ea38d44c7f3ffa7f4f2972815e8173fa73e47d694f3a3ba81",
+      "mask_sha256": "96fac7941744573e8e14f0e4402d60d00fdd9099f984df76514b929bd52b3d0d",
+      "size_xyz": [
+        247,
+        247,
+        280
+      ],
+      "spacing_xyz_mm": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "origin_lps_mm": [
+        190.1376953125,
+        39.1376953125,
+        -10.899999618530273
+      ],
+      "direction": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "nifti_geometry_metadata": {
+        "qform_code": "0",
+        "qform_code_name": "NIFTI_XFORM_UNKNOWN",
+        "qoffset_x": "0",
+        "qoffset_y": "0",
+        "qoffset_z": "0",
+        "quatern_b": "0",
+        "quatern_c": "0",
+        "quatern_d": "0",
+        "sform_code": "2",
+        "sform_code_name": "NIFTI_XFORM_ALIGNED_ANAT",
+        "srow_x": "1.5 0 0 -190.138",
+        "srow_y": "0 1.5 0 -39.1377",
+        "srow_z": "0 0 1.5 -10.9"
+      }
+    },
+    {
+      "case_id": "subject023",
+      "daughters": 3,
+      "known_radii": 0,
+      "image_sha256": "9e2747d40b4f63ec23d4d4a99dd6d4f4cf0125d608c1e782df6f094af51cbb49",
+      "mask_sha256": "bb10d5cbe26775e76beddf2c3c7d9f447e39784e129fe40f9204e5d48be00cd8",
+      "size_xyz": [
+        244,
+        244,
+        179
+      ],
+      "spacing_xyz_mm": [
+        1.5,
+        1.5,
+        1.5
+      ],
+      "origin_lps_mm": [
+        190.642578125,
+        38.142578125,
+        10.0
+      ],
+      "direction": [
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "nifti_geometry_metadata": {
+        "qform_code": "0",
+        "qform_code_name": "NIFTI_XFORM_UNKNOWN",
+        "qoffset_x": "0",
+        "qoffset_y": "0",
+        "qoffset_z": "0",
+        "quatern_b": "0",
+        "quatern_c": "0",
+        "quatern_d": "0",
+        "sform_code": "2",
+        "sform_code_name": "NIFTI_XFORM_ALIGNED_ANAT",
+        "srow_x": "1.5 0 0 -190.643",
+        "srow_y": "0 1.5 0 -38.1426",
+        "srow_z": "0 0 1.5 10"
+      }
+    }
+  ]
+}
