@@ -1,11 +1,7 @@
 """CPU-only, parent-anchored detection of proximal arterial branches.
 
 Pipeline stages, in order: normalize (grid, smoothing, blood window) -> enhance (tubularity, support, radius)
--> propose (wall-contact roots) -> resolve (trace, filter, measure). See detect() for the orchestration.
-
-The blood window adapts to the scan's native voxel size: on coarse voxels a thin branch shares each voxel
-with tissue and looks dimmer than the aorta, so the cutoff for "blood" is lowered (see blood_support_fraction).
-See DETECTOR_FLOW.md for the full flow and the evidence behind the defaults."""
+-> propose (wall-contact roots) -> resolve (trace, filter, measure). See detect() for the orchestration."""
 
 from dataclasses import asdict, dataclass, field
 from time import perf_counter
@@ -40,7 +36,7 @@ class DetectorConfig:
     root_depth_mm: float = 3.5
     blood_lower_scale: float = 1.0
     support_contrast_fraction: float = 0.5
-    native_contrast_scale: float = 0.9
+    native_contrast_scale: float = 1.2
     roots_per_contact: int = 1
     wall_hug_penalty: float = 0.0
     broad_contact_mm3: float = 1200.0
@@ -663,7 +659,7 @@ def detect(
 
 # ----------------------------------------------------------------------------------------------
 # Stage 1 · normalization: put the scan on a common grid and calibrate it to this patient's blood.
-# The blood cutoff is lowered on coarse native voxels (blood_support_fraction). Nothing here decides branches.
+# Nothing in this stage decides anything about branches.
 # ----------------------------------------------------------------------------------------------
 
 
@@ -692,32 +688,12 @@ def normalize(image: sitk.Image, mask: sitk.Image, config: DetectorConfig) -> No
     return NormalizedScan(grid, parent, smooth, outside, inside, blood, float(max(image.GetSpacing())), warnings)
 
 
-def blood_support_fraction(native_spacing_mm: float, config: DetectorConfig) -> tuple[float, float]:
-    """Fraction of the aorta-to-tissue contrast a voxel must reach to count as blood, adapted to voxel size.
-
-    A branch only a voxel or two wide shares each voxel with the tissue around it, so the scanner reports
-    a mix: the branch looks dimmer than the aorta even though it holds the same blood (partial volume).
-    A Gaussian-blur model of a cylinder of radius r sampled at spacing s keeps about
-    r**2 / (r**2 + (0.6 * s)**2) of the contrast on its axis. The cutoff is native_contrast_scale times
-    that retained fraction for the smallest traceable vessel (minimum_radius_mm), never above
-    support_contrast_fraction. With the defaults the cutoff stays at 0.5 for voxels up to about 1.0 mm
-    and falls to 0.34 at 1.5 mm. A native_contrast_scale of 0 disables the adaptation.
-    Returns (cutoff fraction, modelled retention)."""
-    radius_squared = config.minimum_radius_mm**2
-    retention = radius_squared / (radius_squared + (0.6 * native_spacing_mm)**2)
-    fraction = config.support_contrast_fraction
-    if config.native_contrast_scale:
-        fraction = min(fraction, config.native_contrast_scale * retention)
-    return fraction, retention
-
-
 def blood_window(
     image: sitk.Image, smooth: npt.NDArray, parent: npt.NDArray, outside: npt.NDArray,
     inside: npt.NDArray, config: DetectorConfig,
 ) -> tuple[dict[str, float], list[str]]:
     """Per-patient HU window for contrast-filled blood, measured from the supplied aorta and its surroundings."""
     warnings: list[str] = []
-    native_spacing = float(max(image.GetSpacing()))
     core = smooth[inside >= 2]
     if len(core) < 20:
         core = smooth[parent]
@@ -727,12 +703,11 @@ def blood_window(
     background = smooth[(outside >= 8) & (outside <= 16)]
     background_median = float(np.median(background)) if len(background) else median
     background_mad = float(np.median(np.abs(background - background_median)) * 1.4826) if len(background) else 0.0
-    fraction, retention = blood_support_fraction(native_spacing, config)
-    if fraction < config.support_contrast_fraction:
-        warnings.append(
-            f"Coarse voxels ({native_spacing:.2f} mm): blood cutoff lowered to {fraction:.2f} of aortic contrast"
-            " so partial-volume branches stay traceable."
-        )
+    fraction = config.support_contrast_fraction
+    if config.native_contrast_scale:
+        radius_squared = config.minimum_radius_mm**2
+        retention = radius_squared / (radius_squared + (0.6 * max(image.GetSpacing()))**2)
+        fraction = min(fraction, config.native_contrast_scale * retention)
     if background_median < median:
         partial_volume_level = max(30.0, background_median + fraction * (median - background_median))
         if config.native_contrast_scale:
@@ -749,7 +724,6 @@ def blood_window(
         "median_hu": median, "mad_hu": mad, "lower_hu": lower, "upper_hu": upper,
         "background_median_hu": background_median, "background_mad_hu": background_mad,
         "support_fraction": fraction, "contrast_to_background_mad": contrast_to_background_mad,
-        "native_spacing_mm": native_spacing, "partial_volume_retention": retention,
     }
     return blood, warnings
 
