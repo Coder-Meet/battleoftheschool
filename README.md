@@ -13,6 +13,12 @@ New teammates: start with the [setup, backend API and training handoff guide](TE
 Research: see the [ML implementation plan](RESEARCH_IMPLEMENTATION.md) and the
 [three additional paper experiments and measured limitations](ADDITIONAL_PAPERS.md).
 
+The [latest judge clarifications](SUBMISSION_AUDIT.md#latest-judge-clarifications)
+specify 2 mm minimum **origin size** (diameter versus radius still unresolved),
+one opening for a common trunk, and two openings for a returning vessel.
+Discovery/count accuracy remains the priority within the four-core, 8 GB,
+offline Windows limits. Do not equate the seed-radius CLI setting with origin size.
+
 Presenters: use the [five-minute presentation guide](presentation/README.md)
 and [live demo cues](presentation/LIVE_DEMO_CUES.md). The authoring source builds
 an offline HTML deck, editable PowerPoint and PDF; the Explorer segment runs live.

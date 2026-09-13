@@ -45,7 +45,7 @@ the model in research scoring. No experiment here authorizes changing production
 | `learning.py`: `FEATURE_NAMES`, `CandidateModel`, `load_reviews` | Existing 13-value candidate vectors, NumPy/SciPy inference, JSON weights, review validation, and disjoint case splits are available. Preserve their interfaces. Existing review loading does not itself implement the proposed extended-feature/group protocol. |
 | `synthetic.py`, `synthetic_reviews.py` | Analytic synthetic cases and candidate review generation provide machinery for complete-reference experiments, including unproposed references and ambiguous candidates. Generator realism is a separate question. |
 | `evaluate.py`, `score_references.py` | One-to-one ostium matching, discovery counts, and matched geometry errors are available. Reference completeness and provenance must be supplied by the experiment; the evaluator cannot infer them. |
-| `compare_e2e.py` | Runs plain/filtered detections and reports per-split results. Its current timing is detection time, and memory is process high-water RSS so far. It imports Unix `resource`; it is not the Windows end-to-end timing harness required below. Its generic “test” wording does not establish independent expert evidence. |
+| `compare_e2e.py` | Runs plain/filtered detections and reports per-split results. Its current timing is detection time, and memory is process high-water RSS so far. Windows memory is explicitly unavailable (`null`); it is not the Windows end-to-end timing harness required below. Its generic “test” wording does not establish independent expert evidence. |
 | `run.py`, README | Existing offline Windows entry point and JSON output remain the submission contract. Four CPU cores, 8 GB RAM, Python 3.13.3, no GPU/network, and approximately 60 seconds/case constrain deployment. |
 
 The supplied case collection has 25 CT/aorta-mask pairs. At the inspected
@@ -350,8 +350,12 @@ environment is not a Windows bundle.
 Keep independent geometry fields: `instance_id`, `parent_instance_id`,
 `ostium_xyz_mm`, `seed_xyz_mm`, positive `radius_mm`, and unit `direction_xyz`.
 Directness means an opening into the supplied parent, not eventual ancestry in
-the same vessel tree. Common trunks count once if the organizer confirms that
-definition; indirect branches and nearby veins must not become direct daughters.
+the same vessel tree. The judge confirmed common trunks count once and a vessel
+returning through a second aortic opening counts twice. Overlapping-opening and
+vein scoring allowances still require the official evaluator; see the
+[updated rules](SUBMISSION_AUDIT.md#latest-judge-clarifications).
+Indirect branches and disconnected nearby vessels do not acquire an aortic
+opening through a classifier decision.
 Use geometry/evidence together for gaps: mere proximity does not prove a lumen
 connection, while a conservative one-voxel connectivity test may miss a true
 partial-volume origin.
@@ -567,22 +571,23 @@ Training can use separate hardware; no GPU/network is allowed at inference.
    crop, including accessory renal, lumbar, inferior mesenteric and other unnamed
    branches? Can they provide an eligibility/unknown-region mask and reasons for
    excluded structures?
-2. What minimum diameter, visible length, contrast, and crop visibility determine
-   eligibility? Do clearly enhanced stubs shorter than 5 mm count? Are partial-
-   volume gaps or branches abutting a crop boundary eligible?
+2. Is the confirmed 2 mm minimum origin size a diameter or radius, and how is
+   it measured? The 5 mm visible-length rule is confirmed. How are partial-volume
+   gaps or branches abutting a crop boundary handled?
 3. Does the parent mask represent lumen, wall, or thrombus-inclusive outer aorta?
    Should an apparent origin separated by mural thrombus or plaque be considered
    connected? How should errors in the supplied mask be handled?
-4. Does a common celiac/mesenteric or renal trunk count as one opening, and how
-   are adjacent separate ostia, early bifurcations and daughter-of-daughter
-   detections scored?
+4. Common trunks count once; a second aortic opening of a returning vessel
+   counts separately. How does the evaluator implement the stated allowance
+   for one or two overlapping openings and for some vein predictions?
 5. How are ostium center, seed distance, lumen radius and proximal direction
    defined? What physical coordinate convention, tolerances, direction sign,
    and reference-centerline support are supplied? Are seed/radius/direction
    scored independently of discovery matching?
-6. Are the report's discovery/localization/instance/compute/reproducibility
-   weights (45/25/15/10/5%) and 3 mm ostium rule official? How are duplicates,
-   extra/unknown structures, negative cases and absent predictions penalized?
+6. Presentation is now reported as 5%, with discovery/count emphasized over
+   geometric measurements. What is the revised complete score formula and
+   official ostium matching tolerance? How are duplicates, extra/unknown
+   structures, negative cases and absent predictions penalized?
 7. Which reference cases overlap the 25 already inspected or pseudo-trained
    cases? Can untouched patients be reserved, and are references intended for
    development or a single frozen evaluation? Who annotated/adjudicated them?

@@ -14,6 +14,30 @@ records the latest results and the incomplete final browser checks.
 
 ## Recheck against the organizer's latest brief
 
+### Latest judge clarifications
+
+The team supplied an updated eligibility sentence and the following verbal
+clarifications. The updated text says a contrast-filled lumen must extend at
+least **5 mm beyond the aortic wall**, with a minimum **origin size of 2 mm**.
+It does **not** specify whether 2 mm is a diameter or radius. The detector's
+`--minimum-radius-mm` is a tracing/seed-radius setting, so setting it to 2 is
+not an implementation of this origin-size rule.
+
+| Clarification | Implementation and evaluation consequence |
+|---|---|
+| Two overlapping openings may be accepted as one or two | Preserve evidence for each proposal; await the official evaluator's equivalence rule rather than changing local one-to-one scores to forgive arbitrary duplicates. |
+| A daughter splitting downstream has one aortic opening and counts once | Retain common-trunk handling; do not count downstream children as new origins. |
+| A vessel leaving and returning through a second aortic opening counts twice | Count distinct openings into the supplied parent. Membership of the same external vessel component alone is not a reason to merge them. |
+| Judge verbally allows a vein mistaken for an artery | Exact scope and scoring allowance remain unspecified. Do not add disconnected veins or claim size alone distinguishes arterial from venous blood. |
+| Daughter discovery/count carries the main accuracy emphasis; seed/radius/direction carry less | Prioritize missed and extra openings, report per-case count error alongside one-to-one TP/FP/FN, and retain valid physical geometry. Correct count alone does not prove correct branches. |
+| Presentation is 5% | Keep the existing demonstration usable and direct remaining engineering effort toward discovery and runtime. The revised complete numerical weighting has not been supplied. |
+
+The original weight table and historical results below remain records of the
+earlier brief. They are not an inferred replacement scoring formula. Frozen
+synthetic cohorts retain their preregistered eligibility and source hashes;
+evaluate a changed eligibility policy separately instead of relabelling an
+inspected holdout.
+
 The organizer has confirmed **Windows, four CPU cores, 8 GB RAM, no GPU,
 offline evaluation**. Previous CPU/RAM measurements below were made on
 **Linux**, not Windows. The README now has Windows setup, the exact required run
@@ -46,7 +70,7 @@ reason to omit the other supplied cases.
 | Hidden cases without manual edits | Required CLI is generic; hidden-case accuracy cannot be guaranteed |
 | 5 mm daughter path, up to 10 mm or first downstream split | Implemented for accepted traces; strict candidate search can still miss wall-parallel branches, with the opt-in alternative deliberately unpromoted |
 | Caps, common trunks, adjacent ostia and daughter-of-daughter | Regression coverage exists; exact real-case eligibility needs expert adjudication |
-| Minimum eligible origin size | Not supplied; current minimum-radius setting is not an organizer-confirmed size rule |
+| Minimum eligible origin size | 2 mm confirmed in updated text; diameter versus radius and measurement definition still need confirmation |
 | Runtime | Initial target is average ≤60 s/case; final limit and native Windows measurement outstanding |
 | Ground truth | Five new hard synthetic development cases have 12 analytic daughters; five real-case packets remain unreviewed |
 
@@ -95,8 +119,8 @@ Use the independent five-case review packets for expert adjudication.
 | Five-minute demo | Eight slides, four 75-second speaking slots; 60-second actual Explorer film inside Speaker 3's slot |
 | Team handoff | [TEAMMATE_GUIDE.md](TEAMMATE_GUIDE.md), README, review workflow and presentation script |
 
-The brief leaves minimum eligible origin size and final runtime limit to the
-organizers. The local 3 mm matching threshold is a disclosed proxy, not an
+The origin-size threshold is now 2 mm, with diameter versus radius unresolved;
+the final runtime limit is still pending. The local 3 mm matching threshold is a disclosed proxy, not an
 official tolerance. Terminal iliac division is an optional extension and is
 not claimed as a separately validated feature.
 
@@ -145,8 +169,9 @@ on Devpost or with organizers.
    **Sunday, September 13, 11:00 AM**, as stated in the venue schedule. Check
    organizer updates because the supplied guide is marked WIP. No submission
    has been made on the team's behalf.
-3. Confirm any published minimum origin size, final time limit and upload
-   fields. The 60-second average target is provisional.
+3. Confirm whether the 2 mm origin size is a diameter or radius, the official
+   overlap/vein scoring allowances, final time limit and upload fields.
+   The 60-second average target is provisional.
 4. Copy dependencies, built assets, scans, predictions and extracted
    presentation kit to the demo laptop before going offline. A source clone
    alone does not contain generated presentation media or downloaded LFS data.
