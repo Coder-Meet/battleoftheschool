@@ -10,14 +10,20 @@ import argparse
 from collections import Counter
 from dataclasses import asdict, dataclass
 import hashlib
+import json
 import math
 from pathlib import Path
 import platform
+import shutil
 import sys
 import time
 
 import numpy as np
 from scipy.ndimage import gaussian_filter
+import SimpleITK as sitk
+
+import candidate_patches
+import detector
 
 try:
     import onnx
@@ -35,6 +41,8 @@ from patch_inference import (
     tree_scores, validate_patches,
 )
 from evaluate import evaluate_case, summarize_cases
+from learning import features
+from nifti_io import read_nifti
 from research_corpus import comparisons
 from tabular_learning import TreeModel, json_sha256, read_json, validate_split, write_json
 from train_trees import source_category, validate_row
@@ -120,8 +128,9 @@ def check_group_split(parts: list[Partition], split: dict[str, list[str]]) -> No
             if case in cases and cases[case] != group:
                 raise ValueError("A case has inconsistent group provenance.")
             cases[case] = group
-            image = row["input_sha256"].get("orig.nii.gz", row["input_sha256"].get("ct.nii.gz"))
-            if image is not None:
+            images = [value for name, value in row["input_sha256"].items()
+                      if name.startswith(("orig", "ct."))]
+            for image in images:
                 if image in inputs and inputs[image] != part.name:
                     raise ValueError("CT hash leakage between partitions.")
                 inputs[image] = part.name
@@ -472,6 +481,129 @@ def select_blend(
     })
 
 
+def compatible_splits(tree: dict[str, list[str]], cnn: dict[str, list[str]]) -> bool:
+    return (tree["validation"] == cnn["validation"] and tree["test"] == cnn["test"]
+            and set(tree["train"]) <= set(cnn["train"]))
+
+
+def prepare_mixed_corpus(root: Path, output: Path, data: Path, reviews_path: Path, split_path: Path) -> dict:
+    """Derive a separate cache using only exact historical training fingerprints.
+
+Run with archived source ahead of this repository on PYTHONPATH. Runtime
+detector/extractor hashes must match the immutable parent corpus before CT IO.
+Only the historical real training cases are considered; no labels are changed.
+"""
+    train, validation, split, _ = load_development(root)
+    expected = train.metadata["source_sha256"]
+    if (file_sha256(Path(detector.__file__)) != expected["detector.py"]
+            or file_sha256(Path(candidate_patches.__file__)) != expected["candidate_patches.py"]):
+        raise ValueError("Mixed extraction requires the archive's exact detector/extractor source.")
+    if output.exists():
+        raise ValueError("Mixed corpus output already exists.")
+    real_reviews = read_json(reviews_path)
+    historical_split = validate_split(read_json(split_path))
+    if real_reviews.get("feature_names") != train.metadata["feature_names"]:
+        raise ValueError("Real review feature order differs from frozen cache.")
+    all_reviews = read_json(root / "reviews.json")
+    manifest = read_json(root / "manifest.json")
+    audit: dict = {
+        "parent_manifest_sha256": file_sha256(root / "manifest.json"),
+        "real_reviews_sha256": file_sha256(reviews_path),
+        "historical_split_sha256": file_sha256(split_path), "historical_split": historical_split,
+        "prior_inspected_and_pseudo_trained_cases": sorted(
+            r.name for r in data.iterdir() if r.is_dir() and r.name.startswith("subject")),
+        "real_reference_completeness": "unknown; candidate pseudo-labels only",
+        "cases": [], "new_labels": False,
+    }
+    arrays = [train.patches]
+    sitk.ProcessObject.SetGlobalDefaultNumberOfThreads(4)
+    for case in historical_split["train"]:
+        if any(case in ids for ids in split.values()):
+            raise ValueError("Real/synthetic case ID collision.")
+        records = [r for r in real_reviews["records"] if r["case_id"] == case]
+        if not records:
+            continue
+        source = data / case
+        images, masks = list(source.glob("orig*.nii*")), list(source.glob("mask*.nii*"))
+        if len(images) != 1 or len(masks) != 1:
+            raise ValueError("Real CT/mask files are not uniquely identified.")
+        image, mask = read_nifti(str(images[0])), read_nifti(str(masks[0]))
+        proposal = detector.detect_pool(image, mask, detector.DetectorConfig.review())
+        by_id = {branch.instance_id: (i, branch) for i, branch in enumerate(proposal.branches)}
+        accepted, rejected = [], []
+        for row in records:
+            match = by_id.get(row["instance_id"])
+            if match is None:
+                rejected.append(row["instance_id"])
+                continue
+            index, branch = match
+            vector = features(branch)
+            fingerprint = json.dumps([
+                branch.ostium_xyz_mm, branch.seed_xyz_mm, branch.direction_xyz, branch.radius_mm, vector,
+            ])
+            if fingerprint != row["fingerprint"] or vector != row["features"]:
+                rejected.append(row["instance_id"])
+                continue
+            accepted.append((index, row))
+        audit["cases"].append({"case_id": case, "accepted_ids": [r["instance_id"] for _, r in accepted],
+                               "rejected_fingerprint_ids": rejected, "proposals": len(proposal.branches)})
+        if not accepted:
+            continue
+        extracted = candidate_patches.extract_candidate_data(image, mask, proposal)
+        inputs = {p.name: file_sha256(p) for p in (images[0], masks[0])}
+        info = {"case_id": case, "group_id": f"real:{case}", "partition": "train",
+                "files": inputs, "prior_inspection": True, "prior_pseudo_training": True}
+        manifest["cases"].append(info)
+        split["train"].append(case)
+        all_reviews["cases"].append(info)
+        for index, row in accepted:
+            record = {
+                **row, "group_id": info["group_id"], "input_sha256": inputs,
+                "detector_sha256": expected["detector.py"], "extractor_sha256": expected["candidate_patches.py"],
+                "extra_features": dict(zip(candidate_patches.EXTRA_FEATURE_NAMES,
+                                          extracted.extra_features[index].tolist())),
+                "patch_index": len(train.records), "local_patch_index": index,
+                "prior_inspection": True, "prior_pseudo_training": True,
+            }
+            train.records.append(record)
+            all_reviews["records"].append(record)
+            arrays.append(extracted.patches[index:index + 1])
+    if len(arrays) == 1:
+        raise ValueError("No real training fingerprints match; mixed experiment must remain unrun.")
+    output.mkdir(parents=True)
+    manifest["parent_manifest_sha256"] = audit["parent_manifest_sha256"]
+    manifest["source"] = "analytic_synthetic_geometry_and_historical_candidate_pseudo"
+    write_json(output / "manifest.json", manifest)
+    manifest_hash = file_sha256(output / "manifest.json")
+    all_reviews.update({"manifest_sha256": manifest_hash, "mixed_provenance": audit})
+    train.patches = np.concatenate(arrays).astype(np.float32)
+    for partition in (train, validation):
+        partition.metadata["manifest_sha256"] = manifest_hash
+    check_group_split([train, validation], split)
+    for part in ("train", "validation", "test"):
+        metadata = read_json(root / f"patches-{part}.json")
+        metadata["manifest_sha256"] = manifest_hash
+        if part == "train":
+            np.savez_compressed(output / "patches-train.npz", patches=train.patches)
+            metadata["records"] = train.records
+        else:
+            shutil.copyfile(root / f"patches-{part}.npz", output / f"patches-{part}.npz")
+        metadata["patches_sha256"] = file_sha256(output / f"patches-{part}.npz")
+        write_json(output / f"patches-{part}.json", metadata)
+    write_json(output / "reviews.json", all_reviews)
+    write_json(output / "split.json", split)
+    shutil.copyfile(root / "summary.json", output / "summary.json")
+    shutil.copytree(root / "exports", output / "exports")
+    for record in manifest["cases"]:
+        reference = root / "cases" / record["case_id"] / "reference.json"
+        if reference.exists():
+            destination = output / "cases" / record["case_id"]
+            destination.mkdir(parents=True)
+            shutil.copyfile(reference, destination / "reference.json")
+    write_json(output / "mixed-cache-audit.json", audit)
+    return audit
+
+
 def evaluate_frozen(root: Path, output: Path, tree_path: Path | None) -> dict:
     model = PatchModel.load(output / "model.onnx")
     split = model.split
@@ -529,7 +661,7 @@ def evaluate_references(
     blend = BlendModel.load(output / "blend.json") if tree_path else None
     runs: dict[str, list[dict]] = {name: [] for name in ("pool", "strict", "cnn")}
     if tree_model is not None:
-        if tree_model.split != model.split:
+        if not compatible_splits(tree_model.split, model.split):
             raise ValueError("Tree/CNN split mismatch.")
         runs.update({"tree": [], "blend": []})
     for record in entries:
@@ -589,8 +721,17 @@ def main() -> int:
     parser.add_argument("--pseudo-smoothing", type=float, default=0.1)
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--evaluate-test", action="store_true")
+    parser.add_argument("--prepare-mixed", action="store_true")
+    parser.add_argument("--data-root", type=Path)
+    parser.add_argument("--real-reviews", type=Path)
+    parser.add_argument("--real-split", type=Path)
     args = parser.parse_args()
     try:
+        if args.prepare_mixed:
+            if args.data_root is None or args.real_reviews is None or args.real_split is None or args.evaluate_test:
+                raise ValueError("Mixed preparation needs data-root, real-reviews and real-split.")
+            prepare_mixed_corpus(args.corpus, args.output, args.data_root, args.real_reviews, args.real_split)
+            return 0
         if args.evaluate_test:
             path = args.output / "test-report.json"
             if path.exists():
@@ -616,7 +757,7 @@ def main() -> int:
         report["validation_cnn_scores"] = cnn.scores.tolist()
         if args.tree_model is not None:
             tree_model = TreeModel.load(args.tree_model)
-            if tree_model.split != split:
+            if not compatible_splits(tree_model.split, split):
                 raise ValueError("Tree/CNN train-validation-test splits differ.")
             tree = tree_scores(tree_model, validation.records, validation.metadata, file_sha256(args.tree_model))
             blend = select_blend(tree, cnn, validation.labels, split)
@@ -624,6 +765,7 @@ def main() -> int:
             report["validation_blend"] = metrics(validation.labels, blend.scores(tree, cnn), blend.threshold)
             report["validation_tree"] = metrics(validation.labels, tree.scores, tree_model.threshold)
             report["validation_tree_scores"] = tree.scores.tolist()
+            report["tree_training_split"] = tree_model.split
         report["reference_validation"] = evaluate_references(
             args.corpus, "validation", model, args.output, args.tree_model,
         )

@@ -221,6 +221,14 @@ def test_filter_preserves_geometry_and_never_recovers_unproposed_branches() -> N
         training.filter_scores(original, rows[::-1], np.array([0.1, 0.9]), 0.5)
 
 
+def test_blend_training_subset_requires_identical_heldout_cases() -> None:
+    mixed = {**SPLIT, "train": ["train", "real_prior_train"]}
+    assert training.compatible_splits(SPLIT, mixed)
+    assert not training.compatible_splits(mixed, SPLIT)
+    assert not training.compatible_splits(SPLIT, {**mixed, "test": ["other"]})
+    assert not training.compatible_splits(SPLIT, {**mixed, "validation": ["other"]})
+
+
 @pytest.fixture(scope="module")
 def frozen_model(tmp_path_factory: pytest.TempPathFactory) -> tuple[Path, training.Partition, dict]:
     if not training.TRAINING_AVAILABLE or not inference.INFERENCE_AVAILABLE:
