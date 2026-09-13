@@ -327,11 +327,16 @@ them to Cursor):
 
 - [Local generated outputs — 366 MiB](https://app.devin.ai/attachments/d5248c34-7550-46d7-8786-c2560d9c7e50/local-outputs.tar.gz)
 - [Research, release and submission assets — 465 MiB](https://app.devin.ai/attachments/68c07258-e74c-46f2-9d77-a7b83e436b4c/research-and-submission-assets.tar.gz)
+- [Source and materialized dataset snapshot — 700 MiB](https://app.devin.ai/attachments/7f907237-f9a8-4710-8ae4-2b4c83ef017e/source-snapshot.zip)
 
 `HANDOFF_RECOVERY.json` records exact sizes and SHA-256 hashes. Both gzip streams
 were verified. Extract the first at the repository root. Extract the second into
 a separate recovery directory; its relative paths reflect the original home
 directory. Do not overwrite current source with older bundled submission copies.
+The ZIP captures commit `7781d7cb1ec3df710cb4959ff4707d287251a0eb`, including
+materialized LFS data; its CRC test passed. It has no `.git` directory. Prefer a
+normal clone for continued commits, and use the ZIP as a recovery copy. Later
+worker commits on main supersede this snapshot.
 
 The handoff message supplies recovery archives for local outputs and selected
 outside-repository research artifacts. They supplement Git; they do not replace

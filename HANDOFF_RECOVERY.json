@@ -29,17 +29,27 @@
         "presentation-validation/", "steven-review-office/"
       ],
       "integrity_check": "gzip -t passed"
+    },
+    {
+      "filename": "source-snapshot.zip",
+      "url": "https://app.devin.ai/attachments/7f907237-f9a8-4710-8ae4-2b4c83ef017e/source-snapshot.zip",
+      "bytes": 734001745,
+      "sha256": "586543ecb412a653a121ffb32e3578208b68c095a40fa2d0a9c28af669d21e93",
+      "source_commit": "7781d7cb1ec3df710cb4959ff4707d287251a0eb",
+      "extract_relative_to": "separate recovery directory",
+      "includes": ["tracked source tree under branchseed-source/", "materialized Git LFS data"],
+      "integrity_check": "unzip -t passed",
+      "limitation": "No .git directory or later worker commits. Prefer latest main for continuation."
     }
   ],
   "excluded": [
     "credentials, environment secret files, browser profiles",
     "virtual environments, node_modules, Python caches, .git",
-    "25-case original dataset duplicated from Git LFS",
     "uncommitted future changes on still-running worker machines"
   ],
   "continuation": "Pull latest main and read CURSOR_HANDOFF.md plus every labels/final-eval/*/HANDOFF.md. All five workers have pushed checkpoints; their later commits supersede this static snapshot. Do not duplicate a live worker.",
   "data_recovery": {
-    "original_dataset": "git lfs pull",
+    "original_dataset": "git lfs pull; materialized backup also included in source-snapshot.zip",
     "five_case_release": "https://drive.google.com/drive/folders/1GoIKqCKIMhtqzHNwLgtNkBhmxT_96ZR6",
     "release_copy_in_archive": "attachments/organizer-release-2026-09-13/"
   }
