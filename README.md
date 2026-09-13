@@ -12,6 +12,8 @@ New teammates: start with the [setup, backend API and training handoff guide](TE
 
 Research: see the [ML implementation plan](RESEARCH_IMPLEMENTATION.md) and the
 [three additional paper experiments and measured limitations](ADDITIONAL_PAPERS.md).
+The [research commands below](#optional-ml-research) preserve the submission CLI
+and keep model scores outside the daughter JSON schema.
 
 The [latest judge clarifications](SUBMISSION_AUDIT.md#latest-judge-clarifications)
 specify 2 mm minimum **origin diameter** (confirmed directly with the judge),
@@ -487,3 +489,137 @@ Review the CT evidence before interpreting any result.
 ## Submission deadline
 
 Sunday 11:00 AM. Have the repo pushed and a working demo before then.
+
+## Optional ML research
+
+`run.py` and its legacy `--candidate-model` remain unchanged. No research
+model is enabled by default. `research_run.py` scores a variable number of
+classical proposals using a source-compatible tree, optional CPU ONNX model,
+or frozen probability blend. Synthetic performance and pseudo-label agreement
+are not clinical accuracy. Complete organizer references and measurements on
+the organizer's Windows hardware are still promotion gates.
+
+Install only the extras you need, alongside `requirements.txt`:
+
+```powershell
+python -m pip install -r requirements-trees.txt
+python -m pip install -r requirements-cnn-inference.txt
+python -m pip install -r requirements-resources.txt
+```
+
+Tree *inference* needs no scikit-learn. Tree training uses the first extra;
+CNN training/export additionally uses `requirements-cnn-training.txt` (CPU
+Torch/ONNX). These packages are never added to base submission requirements.
+
+The safe scoring command retains every daughter and writes scores separately:
+
+```powershell
+python research_run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz --tree-model current-tree.json --mode scores-only --proposals strict --output scored.json --diagnostics scores.json --proposals-output unfiltered.json
+```
+
+Use `--proposals review-union` for the existing broad review pool plus any
+strict-only detections. It uses the unchanged strict 2 mm **origin diameter** /
+0.7 mm seed-radius policy and the existing review origin-diameter override
+of zero. Only explicit `--mode filter` removes below-threshold daughters;
+the original proposals are always retained. All three destinations must be new.
+
+Replace `--tree-model` with `--onnx-model model.onnx` for CNN-only scores.
+For combined scores, supply `--tree-model`, `--onnx-model`, and
+`--blend-model blend.json` together. The blend must match both model hashes,
+candidate identities, physical preprocessing, sources and held-out splits.
+No inference flag changes a frozen threshold. All models remain research-only.
+
+Physical features are never zero-filled. If a model is incompatible or an
+extraction fails, exit status is 1 and diagnostics list every unscored candidate
+with the error. Scores-only still writes the original daughters. Filter mode
+withholds the filtered prediction, leaving preserved proposals and the error
+report. Check exit status before consuming results.
+
+Archived cohort/CNN models retain their original source/configuration boundary.
+They cannot be passed silently to current-source image inference. New tree
+training binds detector/extractor/feature sources and physical preprocessing;
+models without this contract require their frozen workflow or fresh extraction
+and training. Do not rewrite archived metadata to bypass the check.
+
+### Reproduce synthetic research with one command
+
+After installing tree requirements (plus CNN training extras only if requested):
+
+```powershell
+python research_reproduce.py --root outputs/current-source-replay --workers 2
+```
+
+This creates a new plan and source snapshot, generates all 210 CTs, exports
+development candidates and numeric patch caches, freezes four trees/logistic
+and validation selection, then exports/evaluates the test partition. The
+seed groups are the **already exposed** historical cohort: this is a
+current-source replay, not a new independent test or official 2 mm eligibility
+validation. `--cnn` runs the optional retrospective synthetic CNN/blend only
+if the unchanged E1 gate permits it. A failed gate is recorded without retuning.
+Never overwrite a frozen root. Each stage is also available through
+`research_corpus.py` for audited resumption; its source/dependency checks must
+still match the original plan.
+
+### Organizer-reference comparison with one command
+
+Prepare an evaluation manifest with prediction directories and explicit
+reference provenance/completeness, then run:
+
+```powershell
+python research_validation.py --manifest comparison-input.json --output comparison-report.json
+```
+
+The minimal manifest shape is:
+
+```json
+{
+  "schema_version": 1,
+  "references": "organizer-references",
+  "reference_provenance": "complete_expert",
+  "references_complete": true,
+  "baseline": "strict-predictions",
+  "variants": {"tree": "tree-predictions"},
+  "proposals": {"tree": "unfiltered-predictions"}
+}
+```
+
+Set `complete_expert`/`true` only after verifying completeness independently.
+For existing candidate-derived labels use `candidate_pseudo` and `false`;
+they cannot support promotion or measure missed unproposed branches.
+Add `histories` for `baseline` and every variant, with `training_cases`,
+`tuning_cases`, `inspected_cases`, `pseudo_trained_cases`, split/group IDs,
+and `history_complete`. Preserve all 25 previously inspected/pseudo-trained
+supplied subjects, including matching renamed/grouped cases. A complete list
+of current training cases alone does not establish historical independence.
+Missing histories or Windows resource evidence conservatively reject promotion.
+
+The report includes one-to-one discovery counts, proposal misses, matched
+geometry and seed-to-polyline errors when references supply geometry,
+2/3/5 mm tolerance sensitivity, seed-group bootstrap intervals, overlap and
+promotion reasons. A valid comparison exits 0 even when promotion is rejected;
+case errors exit 2; configuration/I/O failures exit 1. Do not treat exit 0 as
+permission to activate a model.
+
+### Portable resource command and Windows smoke
+
+Set numerical thread variables **before** Python starts. On PowerShell:
+
+```powershell
+$env:OPENBLAS_NUM_THREADS="4"; $env:OMP_NUM_THREADS="4"; $env:MKL_NUM_THREADS="4"
+python research_resources.py --cores 4 --case-id subject001 --output resources.json -- python run.py --image data/subject001/orig1.nii --aorta-mask data/subject001/mask1.nii --output prediction.json --threads 4
+```
+
+The optional psutil wrapper assigns at most four inherited CPU-affinity cores,
+caps numerical/ITK thread environments, and samples the sum of RSS for the
+wrapper and all live descendants every 10 ms. Shared pages can be counted
+twice and short peaks can be missed; reports state this limitation. Wall time
+includes process startup. It does not impose an 8 GB allocation limit or
+verify GPU use. Normal runs report network status unknown; external
+network-syscall denial is separately tested on Linux.
+
+The manual GitHub Actions input `optional_research=true` runs a bounded,
+20-minute Python 3.13.3 Windows CPU tree/CNN/export/resource smoke job. It
+downloads binary wheels online and installs them from a local wheelhouse.
+The ordinary base jobs remain free of optional Torch dependencies. Successful
+Linux wheel downloads or tests do not prove native Windows execution,
+Windows network denial, or performance on the organizer's machine.
