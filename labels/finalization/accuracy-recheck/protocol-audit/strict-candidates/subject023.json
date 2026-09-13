@@ -1,0 +1,95 @@
+{
+  "case_id": "subject023",
+  "configuration": {
+    "spacing_mm": 1.0,
+    "margin_mm": 20.0,
+    "shell_inner_mm": 1.5,
+    "shell_outer_mm": 3.5,
+    "cap_margin_mm": 4.0,
+    "minimum_radius_mm": 0.7,
+    "minimum_origin_diameter_mm": 2.0,
+    "minimum_path_mm": 5.0,
+    "trace_length_mm": 10.0,
+    "vesselness_floor": 0.06,
+    "maximum_candidates": 160,
+    "shell_vesselness_floor": 0.06,
+    "connector_gap_fraction": 0.0,
+    "root_depth_mm": 3.5,
+    "blood_lower_scale": 1.0,
+    "support_contrast_fraction": 0.5,
+    "native_contrast_scale": 1.2,
+    "roots_per_contact": 1,
+    "wall_hug_penalty": 0.0,
+    "broad_contact_mm3": 1200.0,
+    "parallel_clearance_mm": 0.0,
+    "profile": "strict"
+  },
+  "diagnostics": {
+    "branches": [],
+    "timings": {
+      "prepare_s": 0.106,
+      "enhance_s": 1.205,
+      "trace_s": 0.01,
+      "total_s": 1.322
+    },
+    "blood_model": {
+      "median_hu": 374.0,
+      "mad_hu": 20.7564,
+      "lower_hu": 206.95384615384614,
+      "upper_hu": 494.0,
+      "background_median_hu": 69.0,
+      "background_mad_hu": 118.60799999999999,
+      "support_fraction": 0.4523076923076923,
+      "contrast_to_background_mad": 2.571496020504519
+    },
+    "candidates": 5,
+    "rejections": {
+      "disconnected_ostium": 2,
+      "no_supported_5mm_path": 3
+    },
+    "warnings": [
+      "Experimental detector: evidence scores are not calibrated probabilities.",
+      "No daughter reference labels supplied; clinical accuracy is unmeasured."
+    ],
+    "config": {
+      "spacing_mm": 1.0,
+      "margin_mm": 20.0,
+      "shell_inner_mm": 1.5,
+      "shell_outer_mm": 3.5,
+      "cap_margin_mm": 4.0,
+      "minimum_radius_mm": 0.7,
+      "minimum_origin_diameter_mm": 2.0,
+      "minimum_path_mm": 5.0,
+      "trace_length_mm": 10.0,
+      "vesselness_floor": 0.06,
+      "maximum_candidates": 160,
+      "shell_vesselness_floor": 0.06,
+      "connector_gap_fraction": 0.0,
+      "root_depth_mm": 3.5,
+      "blood_lower_scale": 1.0,
+      "support_contrast_fraction": 0.5,
+      "native_contrast_scale": 1.2,
+      "roots_per_contact": 1,
+      "wall_hug_penalty": 0.0,
+      "broad_contact_mm3": 1200.0,
+      "parallel_clearance_mm": 0.0,
+      "profile": "strict"
+    }
+  },
+  "feature_names": [
+    "radius_mm",
+    "mean_vesselness",
+    "evidence_score",
+    "path_length_mm",
+    "seed_distance_mm",
+    "tortuosity",
+    "path_hu_relative",
+    "bone_distance_mm",
+    "parent_angle_degrees",
+    "arc_position",
+    "native_spacing_mm",
+    "connector_gap",
+    "candidate_volume_mm3"
+  ],
+  "ordered_candidates": []
+}
