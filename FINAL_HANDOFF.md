@@ -77,6 +77,9 @@ No forced dependency downgrade or security-policy exception was applied.
 - Formatted the three frontend files that failed Prettier.
 - Installed the existing pinned resource requirements in CI so final-evaluation
   test collection has `psutil`; runtime inference requirements are unchanged.
+- Fixed Windows checkout line-ending conversion of source/evidence hashes.
+  Code and generated evidence retain LF; imported organizer originals retain
+  their exact bytes, including CRLF. Hash validation was not weakened.
 - Updated slide results and speaker notes to distinguish the five reused
   AI-assisted references from synthetic topology evidence.
 - Added [one complete demo guide](DEMO_GUIDE.md), including Windows offline

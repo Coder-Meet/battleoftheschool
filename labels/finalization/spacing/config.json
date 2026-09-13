@@ -1,0 +1,61 @@
+{
+  "status": "POST-REFERENCE DEVELOPMENT; synthetic regression, not independent accuracy",
+  "configs": {
+    "strict": {
+      "spacing_mm": 1.0,
+      "margin_mm": 20.0,
+      "shell_inner_mm": 1.5,
+      "shell_outer_mm": 3.5,
+      "cap_margin_mm": 4.0,
+      "minimum_radius_mm": 0.7,
+      "minimum_origin_diameter_mm": 2.0,
+      "minimum_path_mm": 5.0,
+      "trace_length_mm": 10.0,
+      "vesselness_floor": 0.06,
+      "maximum_candidates": 160,
+      "shell_vesselness_floor": 0.06,
+      "connector_gap_fraction": 0.0,
+      "root_depth_mm": 3.5,
+      "blood_lower_scale": 1.0,
+      "support_contrast_fraction": 0.5,
+      "native_contrast_scale": 1.2,
+      "roots_per_contact": 1,
+      "wall_hug_penalty": 0.0,
+      "broad_contact_mm3": 1200.0,
+      "parallel_clearance_mm": 0.0,
+      "profile": "strict"
+    },
+    "spacing1.5": {
+      "spacing_mm": 1.5,
+      "margin_mm": 20.0,
+      "shell_inner_mm": 1.5,
+      "shell_outer_mm": 3.5,
+      "cap_margin_mm": 4.0,
+      "minimum_radius_mm": 0.7,
+      "minimum_origin_diameter_mm": 2.0,
+      "minimum_path_mm": 5.0,
+      "trace_length_mm": 10.0,
+      "vesselness_floor": 0.06,
+      "maximum_candidates": 160,
+      "shell_vesselness_floor": 0.06,
+      "connector_gap_fraction": 0.0,
+      "root_depth_mm": 3.5,
+      "blood_lower_scale": 1.0,
+      "support_contrast_fraction": 0.5,
+      "native_contrast_scale": 1.2,
+      "roots_per_contact": 1,
+      "wall_hug_penalty": 0.0,
+      "broad_contact_mm3": 1200.0,
+      "parallel_clearance_mm": 0.0,
+      "profile": "strict"
+    }
+  },
+  "source_sha256": {
+    "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+    "stress.py": "1d641e985119538f2a2286718570e026192198e6d646f8f7aec9712c56ed0122",
+    "synthetic.py": "923e9d4aefdcf57150aa288d526e03eedd3b4c350e36c3eda2f7204bbe44bc41",
+    "evaluate.py": "b5a2c04aa93020ea7034d59844fb7d3a56166985ee2633f0194b5f02ee332092",
+    "final_spacing_check.py": "dd7ae26dd69b769afff60b490fdb71f40b35eff42e36146f5d2922021c143717"
+  },
+  "cohort_sha256": "db719d635fd57f724cc4ede61edcdc1851d1688073c7c2af96f1da338bb96a94"
+}

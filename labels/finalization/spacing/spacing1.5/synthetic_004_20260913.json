@@ -1,0 +1,236 @@
+{
+  "prediction": {
+    "case_id": "synthetic_004_20260913",
+    "parent": {
+      "instance_id": "aorta"
+    },
+    "daughters": [
+      {
+        "instance_id": "branch_001",
+        "parent_instance_id": "aorta",
+        "ostium_xyz_mm": [
+          -65.04933903516599,
+          43.00587201326532,
+          337.5
+        ],
+        "seed_xyz_mm": [
+          -60.179241895316466,
+          41.87354968794027,
+          337.5
+        ],
+        "radius_mm": 2.094,
+        "direction_xyz": [
+          0.9740194279699039,
+          -0.22646446506500978,
+          0.0
+        ]
+      },
+      {
+        "instance_id": "branch_002",
+        "parent_instance_id": "aorta",
+        "ostium_xyz_mm": [
+          -79.65963045471452,
+          46.40283898924049,
+          364.5
+        ],
+        "seed_xyz_mm": [
+          -84.52972759456404,
+          47.53516131456556,
+          364.5
+        ],
+        "radius_mm": 1.556,
+        "direction_xyz": [
+          -0.9740194279699032,
+          0.22646446506501386,
+          0.0
+        ]
+      }
+    ]
+  },
+  "reference": {
+    "case_id": "synthetic_004_20260913",
+    "parent": {
+      "instance_id": "aorta"
+    },
+    "daughters": [
+      {
+        "instance_id": "branch_001",
+        "parent_instance_id": "aorta",
+        "ostium_xyz_mm": [
+          -64.09235999912347,
+          43.81004309243643,
+          337.41197826766535
+        ],
+        "seed_xyz_mm": [
+          -59.222262859273954,
+          42.67772076711137,
+          337.41197826766535
+        ],
+        "radius_mm": 2.4676797682607705,
+        "direction_xyz": [
+          0.9740194279699035,
+          -0.2264644650650121,
+          0.0
+        ],
+        "centerline_xyz_mm": [
+          [
+            -64.09235999912347,
+            43.81004309243643,
+            337.41197826766535
+          ],
+          [
+            -55.32618514739434,
+            41.77186290685132,
+            337.41197826766535
+          ]
+        ]
+      },
+      {
+        "instance_id": "branch_002",
+        "parent_instance_id": "aorta",
+        "ostium_xyz_mm": [
+          -79.67667084664193,
+          47.43347453347662,
+          365.52744432336067
+        ],
+        "seed_xyz_mm": [
+          -84.54676798649145,
+          48.565796858801676,
+          365.52744432336067
+        ],
+        "radius_mm": 2.0521219884561464,
+        "direction_xyz": [
+          -0.9740194279699035,
+          0.22646446506501222,
+          0.0
+        ],
+        "centerline_xyz_mm": [
+          [
+            -79.67667084664193,
+            47.43347453347662,
+            365.52744432336067
+          ],
+          [
+            -100.1310788340099,
+            52.18922829984187,
+            365.52744432336067
+          ]
+        ]
+      }
+    ]
+  },
+  "runtime_s": 0.3491577749999806,
+  "scores": {
+    "2": {
+      "case_id": "synthetic_004_20260913",
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 2,
+        "reference": 2,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 1.2530952977979288,
+          "seed_error_mm": 1.2530952977979197,
+          "radius_error_mm": 0.37367976826077065,
+          "direction_error_degrees": 0.0,
+          "seed_to_reference_centreline_mm": 1.0038664380101279
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 1.455383742387553,
+          "seed_error_mm": 1.4553837423875429,
+          "radius_error_mm": 0.4961219884561463,
+          "direction_error_degrees": 0.0,
+          "seed_to_reference_centreline_mm": 1.433750967778579
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    },
+    "3": {
+      "case_id": "synthetic_004_20260913",
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 2,
+        "reference": 2,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 1.2530952977979288,
+          "seed_error_mm": 1.2530952977979197,
+          "radius_error_mm": 0.37367976826077065,
+          "direction_error_degrees": 0.0,
+          "seed_to_reference_centreline_mm": 1.0038664380101279
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 1.455383742387553,
+          "seed_error_mm": 1.4553837423875429,
+          "radius_error_mm": 0.4961219884561463,
+          "direction_error_degrees": 0.0,
+          "seed_to_reference_centreline_mm": 1.433750967778579
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    },
+    "5": {
+      "case_id": "synthetic_004_20260913",
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 2,
+        "reference": 2,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "matches": [
+        {
+          "prediction_id": "branch_001",
+          "reference_id": "branch_001",
+          "ostium_error_mm": 1.2530952977979288,
+          "seed_error_mm": 1.2530952977979197,
+          "radius_error_mm": 0.37367976826077065,
+          "direction_error_degrees": 0.0,
+          "seed_to_reference_centreline_mm": 1.0038664380101279
+        },
+        {
+          "prediction_id": "branch_002",
+          "reference_id": "branch_002",
+          "ostium_error_mm": 1.455383742387553,
+          "seed_error_mm": 1.4553837423875429,
+          "radius_error_mm": 0.4961219884561463,
+          "direction_error_degrees": 0.0,
+          "seed_to_reference_centreline_mm": 1.433750967778579
+        }
+      ],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    }
+  }
+}

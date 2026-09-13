@@ -1,0 +1,182 @@
+{
+  "cases": [
+    {
+      "case_id": "subject001",
+      "status": "ok",
+      "branches": 8,
+      "detection_s": 2.417,
+      "end_to_end_s": 2.652
+    },
+    {
+      "case_id": "subject002",
+      "status": "ok",
+      "branches": 4,
+      "detection_s": 3.056,
+      "end_to_end_s": 3.11
+    },
+    {
+      "case_id": "subject003",
+      "status": "ok",
+      "branches": 4,
+      "detection_s": 5.233,
+      "end_to_end_s": 5.509
+    },
+    {
+      "case_id": "subject004",
+      "status": "ok",
+      "branches": 4,
+      "detection_s": 2.942,
+      "end_to_end_s": 3.033
+    },
+    {
+      "case_id": "subject005",
+      "status": "ok",
+      "branches": 13,
+      "detection_s": 3.722,
+      "end_to_end_s": 3.801
+    },
+    {
+      "case_id": "subject006",
+      "status": "ok",
+      "branches": 4,
+      "detection_s": 5.401,
+      "end_to_end_s": 5.466
+    },
+    {
+      "case_id": "subject007",
+      "status": "ok",
+      "branches": 8,
+      "detection_s": 2.656,
+      "end_to_end_s": 2.744
+    },
+    {
+      "case_id": "subject008",
+      "status": "ok",
+      "branches": 7,
+      "detection_s": 5.364,
+      "end_to_end_s": 5.598
+    },
+    {
+      "case_id": "subject009",
+      "status": "ok",
+      "branches": 4,
+      "detection_s": 3.782,
+      "end_to_end_s": 3.878
+    },
+    {
+      "case_id": "subject010",
+      "status": "ok",
+      "branches": 9,
+      "detection_s": 6.299,
+      "end_to_end_s": 6.401
+    },
+    {
+      "case_id": "subject011",
+      "status": "ok",
+      "branches": 5,
+      "detection_s": 2.806,
+      "end_to_end_s": 2.913
+    },
+    {
+      "case_id": "subject012",
+      "status": "ok",
+      "branches": 5,
+      "detection_s": 3.308,
+      "end_to_end_s": 3.548
+    },
+    {
+      "case_id": "subject013",
+      "status": "ok",
+      "branches": 8,
+      "detection_s": 2.936,
+      "end_to_end_s": 3.138
+    },
+    {
+      "case_id": "subject014",
+      "status": "ok",
+      "branches": 4,
+      "detection_s": 3.122,
+      "end_to_end_s": 3.278
+    },
+    {
+      "case_id": "subject015",
+      "status": "ok",
+      "branches": 3,
+      "detection_s": 4.495,
+      "end_to_end_s": 4.72
+    },
+    {
+      "case_id": "subject016",
+      "status": "ok",
+      "branches": 6,
+      "detection_s": 5.814,
+      "end_to_end_s": 6.009
+    },
+    {
+      "case_id": "subject017",
+      "status": "ok",
+      "branches": 0,
+      "detection_s": 1.039,
+      "end_to_end_s": 1.309
+    },
+    {
+      "case_id": "subject018",
+      "status": "ok",
+      "branches": 16,
+      "detection_s": 20.787,
+      "end_to_end_s": 21.55
+    },
+    {
+      "case_id": "subject019",
+      "status": "ok",
+      "branches": 0,
+      "detection_s": 1.561,
+      "end_to_end_s": 1.766
+    },
+    {
+      "case_id": "subject020",
+      "status": "ok",
+      "branches": 1,
+      "detection_s": 1.755,
+      "end_to_end_s": 2.081
+    },
+    {
+      "case_id": "subject021",
+      "status": "ok",
+      "branches": 3,
+      "detection_s": 2.986,
+      "end_to_end_s": 3.163
+    },
+    {
+      "case_id": "subject022",
+      "status": "ok",
+      "branches": 7,
+      "detection_s": 5.844,
+      "end_to_end_s": 6.199
+    },
+    {
+      "case_id": "subject023",
+      "status": "ok",
+      "branches": 0,
+      "detection_s": 1.185,
+      "end_to_end_s": 1.395
+    },
+    {
+      "case_id": "subject024",
+      "status": "ok",
+      "branches": 11,
+      "detection_s": 6.307,
+      "end_to_end_s": 6.416
+    },
+    {
+      "case_id": "subject025",
+      "status": "ok",
+      "branches": 16,
+      "detection_s": 22.692,
+      "end_to_end_s": 23.212
+    }
+  ],
+  "failures": 0,
+  "accuracy": null,
+  "note": "Runtime smoke test only. Daughter reference annotations are required to measure accuracy."
+}

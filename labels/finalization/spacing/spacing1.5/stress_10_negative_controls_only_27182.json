@@ -1,0 +1,73 @@
+{
+  "prediction": {
+    "case_id": "stress_10_negative_controls_only_27182",
+    "parent": {
+      "instance_id": "aorta"
+    },
+    "daughters": []
+  },
+  "reference": {
+    "case_id": "stress_10_negative_controls_only_27182",
+    "parent": {
+      "instance_id": "aorta"
+    },
+    "daughters": []
+  },
+  "runtime_s": 0.39384382000002915,
+  "scores": {
+    "2": {
+      "case_id": "stress_10_negative_controls_only_27182",
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 0,
+        "reference": 0,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "matches": [],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    },
+    "3": {
+      "case_id": "stress_10_negative_controls_only_27182",
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 0,
+        "reference": 0,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "matches": [],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    },
+    "5": {
+      "case_id": "stress_10_negative_controls_only_27182",
+      "true_positives": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "daughter_counts": {
+        "predicted": 0,
+        "reference": 0,
+        "signed_error": 0,
+        "absolute_error": 0
+      },
+      "precision": null,
+      "recall": null,
+      "f1": null,
+      "matches": [],
+      "unmatched_prediction_ids": [],
+      "unmatched_reference_ids": []
+    }
+  }
+}
