@@ -6,7 +6,7 @@ import pytest
 
 from candidate_patches import EXTRA_FEATURE_NAMES, preprocessing_metadata
 from final_eval_cnn import (
-    MODELS, TREE, inventory, read_fingerprint, reference_losses, replay_values, require_source,
+    MODELS, TREE, inventory, paired_bootstrap, read_fingerprint, reference_losses, replay_values, require_source,
 )
 from final_evaluation import CASES, filtered, read_json, score_variant
 from patch_inference import PatchModel, blend_scores, score_batch
@@ -127,6 +127,21 @@ def test_actual_onnx_cpu_empty_and_batched_parity():
 def test_fingerprint_rejects_wrong_structure():
     with pytest.raises(ValueError):
         read_fingerprint("{}")
+
+
+def test_paired_bootstrap_same_predictions_have_zero_difference():
+    predictions = {
+        case: {"case_id": case, "parent": {"instance_id": "aorta"}, "daughters": []} for case in CASES
+    }
+    scores = score_variant(predictions)
+    result = paired_bootstrap(scores, scores)
+    assert all(
+        row["paired_f1_difference_percentile_95"] == [0, 0] for row in result["intervals"].values()
+    )
+    other = copy.deepcopy(scores)
+    other["3"]["cases"].reverse()
+    with pytest.raises(ValueError, match="paired cases"):
+        paired_bootstrap(scores, other)
 
 
 def test_preserved_artifacts_replay_when_available():

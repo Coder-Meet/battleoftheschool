@@ -1,24 +1,23 @@
 # CNN final-evaluation handoff
 
-## Checkpoint status: PARTIAL — do not present as a completed comparison
+## Status: CNN family complete; parent-wide integration still required
 
-Implementation commit: `546daa1` (main). This checkpoint adds the preserved
-candidate receipts, source inventory, and continuation support. No training on
-released cases, model edits, production changes, branches, or PRs.
+Implementation commit: `37b129f` (main after rebase). Priority partial checkpoint
+was pushed at `2cca3fb08c9739ec6b0b62ef99b50f019c899b71`. The later completion
+commit contains all results described below. No training on released cases,
+model edits, production changes, branches, or PRs.
 
 - Current synthetic CNN + synthetic gradient-boosting + frozen blend extraction:
   all five cases completed on strict and review-union candidates.
-- Historical synthetic CNN: all five strict cases completed; review-union
-  extraction underway at checkpoint.
-- Historical mixed CNN: extraction still pending at checkpoint.
-- A running sequential extraction process may finish more cases after this
-  checkpoint; the committed receipts are the authoritative completion inventory.
-- `report.json`, when present, includes only complete five-case family/pool
-  combinations. Its `failures` records missing/failed combinations. It is partial
-  until all six combinations have succeeded. Never fill missing cases with empty
-  predictions; valid zero-candidate outputs are explicitly preserved.
-- Final text interpretation, complete report verification and final push remain
-  pending.
+- Historical synthetic and mixed CNNs: both pools and all five cases completed
+  using matching frozen extraction source. All 30 workers succeeded.
+- `report.json` contains 112 complete five-case variants and no execution
+  failures. The two historical blends remain explicitly excluded for their
+  invalid tree contract; historical CNN rows are ineligible for clean selection.
+- `predictions/` contains all 560 required prediction JSONs. Repository-wide
+  ignore rules omit this directory, so add it explicitly with `git add -f`.
+- `RESULTS.md` describes findings, bounds and remaining parent integration:
+  cross-family selection and deployment decisions. No CNN-family run is pending.
 
 ## Continue on main
 
@@ -49,6 +48,7 @@ export NUMEXPR_NUM_THREADS=4 ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=4 VECLIB_MAXIM
   tests/test_research_run.py tests/test_final_evaluation.py \
   tests/test_detector.py tests/test_candidate_patches.py tests/test_patch_learning.py -rs
 git add final_eval_cnn.py tests/test_final_eval_cnn.py labels/final-eval/cnn
+git add -f labels/final-eval/cnn/predictions
 git commit -m "Complete frozen CNN five-case comparison"
 git pull --rebase
 git push origin main
@@ -110,10 +110,11 @@ parent's entire model matrix. Native Windows performance is unverified.
 - `outputs/final-cnn-frozen/` is ignored, recreated by the archive commands above.
 - `outputs/cnn-*.log` are local network syscall traces. Portable proof is the
   committed per-worker `network_denied` and measurement command/evidence.
-- Running extraction shell at checkpoint: `2c3dbc` on the original session VM.
-- Initial Ruff/mypy passed. Focused checks: 26 passed, 3 skipped before the full
-  matrix existed. Detector/patch regressions: 91 passed, 7 optional Torch/ONNX
-  training-package tests skipped. Actual ONNX CPU inference and batching tests
-  passed with installed ONNX Runtime; no Torch is needed for this evaluation.
+- Extraction shell `2c3dbc` completed successfully; no background evaluation
+  process is required. Resume was tested against all 30 saved workers.
+- Ruff/mypy passed. Detector/patch regressions: 91 passed, 7 optional Torch/ONNX
+  training-package tests skipped. Focused checks and final artifact verification
+  are listed in RESULTS.md. Actual ONNX CPU inference and batching tests passed
+  with installed ONNX Runtime; no Torch is needed for this evaluation.
 - Direct notification to parent through session MCP returned 403; structured
   output and pushed repository artifacts are the supported handoff.

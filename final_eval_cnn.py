@@ -5,6 +5,7 @@ from dataclasses import asdict
 from importlib.metadata import version
 import json
 from pathlib import Path
+import subprocess
 import sys
 from time import perf_counter
 
@@ -51,8 +52,11 @@ def require_source(model: PatchModel, sources: dict) -> None:
 def inventory() -> dict:
     sources = source_hashes()
     rows = []
-    found = sorted(ROOT.glob("**/*.onnx"))
-    found = [p for p in found if not any(part in (".git", ".venv313", "outputs") for part in p.parts)]
+    found = [
+        ROOT / name for name in subprocess.check_output(
+            ["git", "ls-files", "-z", "--", "*.onnx"], cwd=ROOT, text=True,
+        ).split("\0") if name
+    ]
     for path in found:
         model = PatchModel.load(path)
         report_path = path.with_name("training-report.json")
@@ -331,6 +335,12 @@ def make_variant(
                              "hash checks and diagnostics writing. Shared across replay thresholds/weights. "
                              "Unfiltered and weight endpoints conservatively include unused model costs.",
             "post_reference_algorithm": False,
+            "eligibility_scope": "Synthetic-only frozen-family research selection; not deployment approval.",
+            "origin_policy": (
+                "Strict current 2-mm origin-diameter policy."
+                if current and configuration["proposals"] == "strict"
+                else "Research review override or historical source; final origin eligibility is not certified."
+            ),
         },
         "eligible_for_selection": current,
         "ineligible_reason": "" if current else (
@@ -405,8 +415,10 @@ def replay(output: Path) -> dict:
                         f"{prefix}-t{threshold:.16g}", receipts, resources, configuration,
                         output / "predictions", threshold=threshold,
                     ))
+    selection = select_folds(variants)
     report = {
         "schema_version": 1, "family": "cnn", "variants": variants, "failures": failures,
+        "status": "complete" if not failures else "partial",
         "exclusions": audit["exclusions"], "inventory_path": relative(output / "inventory.json"),
         "inventory_sha256": digest(output / "inventory.json"),
         "scoring_source_sha256": digest(ROOT / "final_evaluation.py"),
@@ -415,7 +427,8 @@ def replay(output: Path) -> dict:
         },
         "reference_counts": {case: len(load_reference(case)["daughters"]) for case in CASES},
         "limitations": audit["limitations"],
-        "selection": select_folds(variants),
+        "selection": selection,
+        "comparisons": comparison_summary(variants, selection),
     }
     write_json(output / "report.json", report)
     return report
@@ -448,6 +461,56 @@ def select_folds(variants: list[dict]) -> dict:
             for name in sorted({row["selected_variant"] for row in folds})
         },
         "held_out_scores": {key: {"summary": summarize(rows), "cases": rows} for key, rows in held_out.items()},
+    }
+
+
+def paired_bootstrap(left: dict, right: dict) -> dict:
+    if [r["case_id"] for r in left["3"]["cases"]] != [r["case_id"] for r in right["3"]["cases"]]:
+        raise ValueError("Bootstrap must resample identical paired cases.")
+    indices = np.random.default_rng(42).integers(0, len(CASES), size=(10000, len(CASES)))
+    intervals = {}
+    for tolerance in ("2", "3", "5"):
+        estimates = []
+        for scores in (left, right):
+            counts = np.array([
+                [r["true_positives"], r["false_positives"], r["false_negatives"]]
+                for r in scores[tolerance]["cases"]
+            ])
+            totals = counts[indices].sum(axis=1)
+            tp, fp, fn = totals.T
+            estimates.append(2 * tp / (2 * tp + fp + fn))
+        intervals[tolerance] = {
+            "left_f1_percentile_95": np.quantile(estimates[0], [0.025, 0.975]).tolist(),
+            "paired_f1_difference_percentile_95": np.quantile(
+                estimates[0] - estimates[1], [0.025, 0.975],
+            ).tolist(),
+        }
+    return {
+        "resamples": 10000, "seed": 42, "unit": "whole case", "intervals": intervals,
+        "limitation": "Five reused cases; percentile intervals do not remove model-selection bias. "
+                      "Selections are fixed during bootstrap, not refit for each resample.",
+    }
+
+
+def comparison_summary(variants: list[dict], selection: dict) -> dict:
+    eligible = [row for row in variants if row["eligible_for_selection"]]
+    if not eligible:
+        return {"status": "no eligible variants"}
+    best = min(eligible, key=lambda row: (
+        -row["scores"]["3"]["summary"]["f1"], row["scores"]["3"]["summary"]["count_mae"],
+        0 if row["configuration"]["unfiltered"] else 1 if row["configuration"]["cnn_weight"] == 0 else 2,
+        sum(r["runtime_s"] for r in row["runtime"].values()), row["name"],
+    ))
+    baseline = next((row for row in eligible if row["name"] == "cnn-current-strict-unfiltered"), None)
+    if baseline is None:
+        return {"development_winner": best["name"], "status": "baseline unavailable", "deployment_selected": False}
+    return {
+        "development_winner": best["name"], "baseline": baseline["name"],
+        "development_winner_vs_baseline": paired_bootstrap(best["scores"], baseline["scores"]),
+        "within_family_held_out_vs_baseline": paired_bootstrap(
+            selection["held_out_scores"], baseline["scores"],
+        ),
+        "deployment_selected": False,
     }
 
 
