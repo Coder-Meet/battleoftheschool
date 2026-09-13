@@ -16,6 +16,7 @@ files = [
     "compare_e2e.py", "paper_methods.py", "candidate_patches.py", "tabular_learning.py",
     "train_trees.py", "patch_learning.py", "patch_inference.py", "research_corpus.py",
     "research_validation.py", "research_run.py", "research_resources.py", "research_reproduce.py",
+    "review_analytics.py",
 ]
 
 [tool.pytest.ini_options]

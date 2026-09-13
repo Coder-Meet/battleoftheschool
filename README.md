@@ -11,6 +11,17 @@ Full problem statement: see the [Branchseed challenge doc](https://docs.google.c
 New teammates: start with the [setup, backend API and training handoff guide](TEAMMATE_GUIDE.md).
 For a complete detector and ML walkthrough, read the [algorithm review for Steven](STEVEN_ALGORITHM_REVIEW.md).
 
+To audit Steven's frozen candidate reviews and compare them with current proposals:
+
+```bash
+python review_analytics.py --tree-model labels/research/current-source-v1/models/gradient_boosting-base.json --output-dir outputs/review-analytics
+```
+
+Use a fresh output directory and the prepared `data/subject*` cases. This writes
+CSV scores, exact candidate-identity coverage, charts, input/source hashes and
+untouched strict/review-union predictions. It does not train or enable a model,
+transfer labels by branch number, or measure accuracy against complete references.
+
 Research: see the [ML implementation plan](RESEARCH_IMPLEMENTATION.md) and the
 [three additional paper experiments and measured limitations](ADDITIONAL_PAPERS.md).
 The [research commands below](#optional-ml-research) preserve the submission CLI
