@@ -99,6 +99,30 @@ def test_content_and_split_integrity_fail_closed(planned: Path) -> None:
         corpus.load_plan(planned)
 
 
+def test_optional_training_dependencies_are_locked_without_requiring_installation(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    installed_version = corpus.importlib.metadata.version
+    optional = {"scikit-learn", "joblib", "threadpoolctl"}
+
+    def absent(name: str) -> str:
+        if name in optional:
+            raise corpus.importlib.metadata.PackageNotFoundError(name)
+        return installed_version(name)
+
+    monkeypatch.setattr(corpus.importlib.metadata, "version", absent)
+    root = tmp_path / "without-training"
+    corpus.make_plan(root)
+    assert all(corpus.load_plan(root)["versions"][name] == "not-installed" for name in optional)
+
+    def changed(name: str) -> str:
+        return "1.7.2" if name == "scikit-learn" else absent(name)
+
+    monkeypatch.setattr(corpus.importlib.metadata, "version", changed)
+    with pytest.raises(ValueError, match="dependency integrity drift"):
+        corpus.load_plan(root)
+
+
 def test_case_resume_rejects_changed_and_incomplete_transactions(tmp_path: Path) -> None:
     directory = tmp_path / "case"
     directory.mkdir()

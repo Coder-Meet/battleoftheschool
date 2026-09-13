@@ -50,7 +50,7 @@ SOURCE_FILES = (
     "research_validation.py", "score_references.py", "tabular_learning.py", "train_trees.py",
     "requirements.txt", "requirements-trees.txt",
 )
-VERSIONS = ("numpy", "scipy", "SimpleITK", "scikit-image")
+VERSIONS = ("numpy", "scipy", "SimpleITK", "scikit-image", "scikit-learn", "joblib", "threadpoolctl")
 FORBIDDEN_SEEDS = {4001, 731927, 582743, 904117, 864203, 557891}
 LIMITATIONS = [
     "Complete analytic synthetic references, not human anatomy or clinical accuracy.",
@@ -102,7 +102,13 @@ def source_hashes() -> dict[str, str]:
 
 
 def versions() -> dict[str, str]:
-    return {name: importlib.metadata.version(name) for name in VERSIONS}
+    result = {}
+    for name in VERSIONS:
+        try:
+            result[name] = importlib.metadata.version(name)
+        except importlib.metadata.PackageNotFoundError:
+            result[name] = "not-installed"
+    return result
 
 
 def new_seeds() -> list[int]:
@@ -206,7 +212,7 @@ def thread_limit(threads: int) -> None:
 
 
 def peak_mib() -> float | None:
-    if resource is None or platform.system() != "Linux":
+    if sys.platform != "linux" or resource is None:
         return None
     return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
 
@@ -627,6 +633,7 @@ def train_baselines(root: Path, evaluate_test: bool = False) -> None:
         "files": {p.name: digest(p) for p in sorted(directory.iterdir())},
         "inputs": {name: digest(root / name) for name in (
             "reviews-development.json", "split.json", "patches-train.json", "patches-validation.json",
+            "patches-train.npz", "patches-validation.npz", "manifest.json",
         )},
     })
     save(root / "development-report.json", evaluate_partition(root, "train", models))
