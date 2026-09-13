@@ -1,0 +1,68 @@
+{
+  "case_id": "audit_control",
+  "parent": {
+    "instance_id": "aorta"
+  },
+  "daughters": [
+    {
+      "instance_id": "control_0",
+      "parent_instance_id": "aorta",
+      "ostium_xyz_mm": [
+        10.0,
+        20.0,
+        0.0
+      ],
+      "seed_xyz_mm": [
+        10.0,
+        25.0,
+        0.0
+      ],
+      "direction_xyz": [
+        0,
+        1,
+        0
+      ],
+      "radius_mm": 2.0
+    },
+    {
+      "instance_id": "control_1",
+      "parent_instance_id": "aorta",
+      "ostium_xyz_mm": [
+        20.0,
+        20.0,
+        0.0
+      ],
+      "seed_xyz_mm": [
+        20.0,
+        25.0,
+        0.0
+      ],
+      "direction_xyz": [
+        0,
+        1,
+        0
+      ],
+      "radius_mm": 2.0
+    },
+    {
+      "instance_id": "control_2",
+      "parent_instance_id": "aorta",
+      "ostium_xyz_mm": [
+        30.0,
+        20.0,
+        0.0
+      ],
+      "seed_xyz_mm": [
+        30.0,
+        25.0,
+        0.0
+      ],
+      "direction_xyz": [
+        0,
+        1,
+        0
+      ],
+      "radius_mm": 2.0
+    }
+  ]
+}
