@@ -1,5 +1,7 @@
 # Final five-case development evaluation
 
+Handoff note: wait on the workers.
+
 Frozen before model benchmarking. Baseline implementation: `4a43dd4`.
 
 ## Authority, data and metrics
