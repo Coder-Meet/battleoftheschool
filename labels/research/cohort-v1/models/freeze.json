@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "plan_sha256": "be2c173628e543546c76cc51f9b1ff763c5e5fafe43c5e2a0f5ba09e8a30690a",
+  "selected_model": "gradient_boosting-base",
+  "validation_gate": {
+    "gradient_boosting-base": true,
+    "gradient_boosting-extended": false,
+    "random_forest-base": true,
+    "random_forest-extended": true
+  },
+  "test_status": "no_test_proposals_or_labels_computed",
+  "files": {
+    "gradient_boosting-base-training.json": "644bceb947e8bbce8392f6e24353dde60f20646df682cddc7deb86c3c0fe04f7",
+    "gradient_boosting-base.json": "2962ed0ffc6da1d390770ee4fe42f29a4412f2fd5ec3b287e95e88700a1a9793",
+    "gradient_boosting-extended-training.json": "8b28f1d2cc9dd91aafcdae776b839c20eb7938be2f8e0730ca43a1d5d8c81d48",
+    "gradient_boosting-extended.json": "b930c6250f95e490114a9d79f72605504fea9fc16bc35bfe94c7ef71eb359032",
+    "logistic.json": "e9f864956aa65c3f05c038b13b0c8ca9e7289e4a44f6f0eb7837ab85814c730e",
+    "random_forest-base-training.json": "e06a01d36976b42d4222b2bc9d057c18ee27414e28c4f40decda6d8e25a9951e",
+    "random_forest-base.json": "c02f2507916c2a85d6a5bd548c4acb08d33814eb6e9c971f6a91d9a7d02994bb",
+    "random_forest-extended-training.json": "f322511e3a253abde56497a19a67f235963349e476776a5234a4b45e9c5c91c3",
+    "random_forest-extended.json": "611c1e5f42594bb148135cafe9fc951c43ec2a68402046724d5671553056f501",
+    "validation-report.json": "0618a2e32edc0f8a901c03a48248bc93088b7a46f18cdaa1a6f4ef6748d8ba61",
+    "validation-report.json.sha256": "3e1be5d22bf5f37d7e39874adcf434deff1b35117eda6c36ef414073102b206f"
+  },
+  "inputs": {
+    "reviews-development.json": "b96e09dbdf777ebe1b0b0fecfb7e034ce8cd7795bc29114de87cf62d9bf39a6f",
+    "split.json": "280f900884fdef534d60cea0ae3e978b0ba9d8a4587b3c0571839e6b78b5c588",
+    "patches-train.json": "3aeb3775f947d2891cceb2e9e6ee6640b6207d24111a6a893fbd0b2e39a9cd8b",
+    "patches-validation.json": "1836096484b9ff2e55836022e022d31a61b09943430121ca060c12b98fa69747"
+  }
+}
