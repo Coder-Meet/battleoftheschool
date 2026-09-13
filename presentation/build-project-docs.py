@@ -1,6 +1,7 @@
 """Render the public entry and team briefing as offline HTML and editable Word."""
 
 import argparse
+import hashlib
 from html import escape
 from pathlib import Path
 import re
@@ -20,7 +21,11 @@ from markdown_it.token import Token
 ROOT = Path(__file__).resolve().parents[1]
 REPO = "https://github.com/Coder-Meet/battleoftheschool/blob/main/"
 DOCUMENTS = ("README", "DEVPOST_SUBMISSION", "PRESENTER_BRIEFING", "DEMO_GUIDE")
-TITLES = {"DEVPOST_SUBMISSION": "Devpost submission", "PRESENTER_BRIEFING": "Presenter briefing"}
+TITLES = {
+    "DEVPOST_SUBMISSION": "Devpost submission",
+    "PRESENTER_BRIEFING": "Presenter briefing",
+    "SPEAKER_SCRIPT": "Five-minute presentation script",
+}
 STYLE = """
 body { margin:0; background:#f4f0e7; color:#172b33; font:17px/1.65 Arial,sans-serif; }
 main { max-width:1120px; margin:0 auto; padding:55px 60px 90px; }
@@ -100,7 +105,7 @@ def build_word(stem: str, tokens: list[Token], output: Path) -> Path:
         doc.styles[name].font.color.rgb = RGBColor.from_string("176A59")
     section.header.paragraphs[0].text = "BRANCHSEED  /  TORALIS LABS HEALTHCARE"
     footer = section.footer.paragraphs[0]
-    footer.add_run("Research prototype  •  Strict release  |  ")
+    footer.add_run("Research prototype  •  Fusion release  |  ")
     page = OxmlElement("w:fldSimple")
     page.set(qn("w:instr"), "PAGE")
     footer._p.append(page)
@@ -160,20 +165,27 @@ def build_word(stem: str, tokens: list[Token], output: Path) -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=ROOT / "outputs/project-submission-pack")
+    parser.add_argument("--output", type=Path, default=ROOT / "outputs/fusion-submission-pack")
     parser.add_argument("--pdf", action="store_true", help="Also convert Word documents with LibreOffice.")
     parser.add_argument("--showcase", type=Path, help="Include the separate product showcase MP4.")
     parser.add_argument("--slides", type=Path, help="Include the current live-presentation PDF.")
+    parser.add_argument("--deck", type=Path, help="Include the complete deck and render its speaking script.")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     for source, name in ((args.showcase, "branchseed-showcase.mp4"), (args.slides, "branchseed-slides.pdf")):
         if source is not None:
             shutil.copy2(source, args.output / name)
     shutil.copytree(ROOT / "docs/media", args.output / "docs/media", dirs_exist_ok=True)
+    shutil.copy2(ROOT / "docs/fusion-restored-validation.json", args.output / "docs/fusion-restored-validation.json")
+    sources = {stem: ROOT / f"{stem}.md" for stem in DOCUMENTS}
+    if args.deck:
+        shutil.copytree(args.deck, args.output / "presentation", dirs_exist_ok=True)
+        sources["SPEAKER_SCRIPT"] = args.deck / "SPEAKER_SCRIPT.md"
+    shutil.copy2(ROOT / "presentation/SHOWCASE.md", args.output / "SHOWCASE.md")
+    shutil.copy2(ROOT / "presentation/SUBMISSION_START.md", args.output / "START_HERE.md")
     markdown = MarkdownIt("commonmark", {"html": True}).enable("table")
     word_paths = []
-    for stem in DOCUMENTS:
-        source = ROOT / f"{stem}.md"
+    for stem, source in sources.items():
         shutil.copy2(source, args.output / source.name)
         tokens = markdown.parse(source.read_text())
         if stem in TITLES:
@@ -190,7 +202,7 @@ def main() -> None:
                 if child.type == "link_open":
                     value = str(child.attrGet("href") or "")
                     name, separator, fragment = value.partition("#")
-                    if name in {f"{item}.md" for item in DOCUMENTS}:
+                    if name in {f"{item}.md" for item in sources}:
                         value = name.removesuffix(".md") + ".html" + (separator + fragment if separator else "")
                     elif not value.startswith("#"):
                         value = absolute_link(value)
@@ -217,6 +229,8 @@ def main() -> None:
         ("README.html", "Public project overview and measured results"),
     ]
     for stem, title in TITLES.items():
+        if stem not in sources:
+            continue
         links.append((f"{stem}.docx", f"{title} — editable Word"))
         if args.pdf:
             links.append((f"{stem}.pdf", f"{title} — PDF"))
@@ -224,6 +238,12 @@ def main() -> None:
         links.append(("branchseed-showcase.mp4", "40-second product showcase — upload separately"))
     if args.slides:
         links.append(("branchseed-slides.pdf", "Five-minute live-demo slides — PDF"))
+    if args.deck:
+        links.extend([
+            ("presentation/branchseed-editable.pptx", "Current fusion presentation — editable PowerPoint"),
+            ("presentation/index.html", "Current fusion presentation — offline HTML"),
+            ("SPEAKER_SCRIPT.html", "Five-minute script — four speakers"),
+        ])
     navigation = "".join(f'<li><a href="{href}">{escape(title)}</a></li>' for href, title in links)
     images = "".join(f'<li><a href="docs/media/{path.name}">{escape(path.stem.replace("-", " ").title())}</a></li>'
                      for path in sorted((args.output / "docs/media").glob("*.png")))
@@ -240,10 +260,19 @@ def main() -> None:
         f"<h2>Cover and gallery</h2><ul>{images}</ul><p>Retain the captions from the submission document. "
         f"Recorded interface views are historical. Reused-reference and synthetic results have different scopes.</p>"
         f'<h2>Technical submission and full editable deck</h2><p><a href="'
-        f'https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-final-2026-09-13">'
-        f"Download the final release</a>. This document pack does not include CT volumes or the inference ZIP.</p>"
+        f'https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-judge-fusion-2026-09-13">'
+        f"Download the selected fusion judge application and evidence</a>. "
+        f"This presentation pack does not include CT volumes or the inference ZIP.</p>"
         f"</main></body></html>"
     )
+    checksums = []
+    manifest = args.output / "SHA256SUMS"
+    for path in sorted(args.output.rglob("*")):
+        if path.is_file() and path != manifest:
+            with path.open("rb") as stream:
+                digest = hashlib.file_digest(stream, "sha256").hexdigest()
+            checksums.append(f"{digest}  {path.relative_to(args.output).as_posix()}")
+    manifest.write_text("\n".join(checksums) + "\n")
     print(f"Built offline HTML and team documents in {args.output}")
 
 

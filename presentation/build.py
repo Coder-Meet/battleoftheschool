@@ -184,12 +184,17 @@ def tree(slide, x, y, scale=1):
 
 
 def create_deck():
+    verification = json.loads((ROOT / "presentation/evidence/judge-fusion-verification.json").read_text())
+    validation = json.loads((ROOT / "docs/fusion-restored-validation.json").read_text())
+    reference = verification["reference_scores_3mm"]
+    topology = validation["synthetic"]["variants"]["score-before-merge"]["scores"]["3"]
+    rss = verification["resource_receipt"]["cases"]["all-25-fusion"]["peak_rss_mib"]
     slides: list[Slide] = []
     s = base("Find the branch. Keep the evidence.", 1, 1, 25)
     s.text(90, 190, 975, "Find the branch.\nKeep the evidence.", 105, PAPER, "display")
     s.text(95, 504, 860, "From a CT and one parent mask\nto inspectable daughter instances.", 36, MUTED)
     s.text(95, 750, 800, "PHYSICAL COORDINATES.  LOCAL COMPUTE.", 23, MINT)
-    s.text(95, 820, 860, "Deterministic strict. Built to run offline.", 29)
+    s.text(95, 820, 860, "Fusion discovery. Built to run offline.", 29)
     s.image(1060, 118, 710, 812, "assets/vessel.png")
     s.text(1118, 924, 650, "Subject001 · parent mask + predicted origins", 21, MUTED)
     s.notes = """Every branch begins with a small opening. The challenge is to find that opening reliably when anatomy and scan coverage change. We built Branchseed: a CPU detector that turns a CT and one aorta mask into individual daughter instances, with an Explorer that lets you inspect the evidence behind each result."""
@@ -211,9 +216,9 @@ def create_deck():
 
     s = base("Anchor. Trace. Measure.", 3, 2, 40, True)
     s.text(90, 176, 1600, "Anchor. Trace. Measure.", 94, INK, "display")
-    s.text(94, 320, 1550, "A local geometric pipeline, with explicit decisions at every step.", 32, "526367")
+    s.text(94, 320, 1550, "Geometry discovers candidates. A small learned filter selects them.", 32, "526367")
     labels = [("01", "Anchor", "Validate the grid.\nSearch around the parent."),
-              ("02", "Discover", "Enhance local vessels.\nFind supported wall contacts."),
+              ("02", "Discover", "Strict + review proposals.\nFind supported wall contacts."),
               ("03", "Trace", "Follow the proximal path.\nStop at the first bifurcation."),
               ("04", "Measure", "Ostium, 5 mm seed,\nradius and unit direction.")]
     for i, (number, title, description) in enumerate(labels):
@@ -224,12 +229,12 @@ def create_deck():
             s.line(x + 72, 521, x + 415, 521, "AABDB3", 3)
         s.text(x, 596, 400, title, 49, INK, "display")
         s.text(x, 695, 402, description, 26, "526367")
-    s.text(95, 880, 1620, "STRICT DEFAULT     /     1 mm working grid     /     native contrast scale 1.2", 28, "1A7465")
-    s.notes = """Our submission is deterministic strict. We validate physical geometry, crop around the parent and work on a one-millimeter grid. Scan-relative contrast and multiscale vesselness propose supported wall contacts. We trace the proximal lumen, checking direct connection, crop caps and downstream branching. Then we output the ostium, five-millimeter seed, radius and unit direction in the original physical frame. The native contrast scale is one point two. The Explorer uses this same default. No learned weights or external inference service are required."""
+    s.text(95, 880, 1620, "FUSION DEFAULT     /     1 mm working grid     /     native contrast scale 0.9", 28, "1A7465")
+    s.notes = """Our submission combines geometric discovery with a small learned filter. We validate physical geometry, crop around the parent and work on a one-millimeter grid. Scan-relative contrast and multiscale vesselness find wall contacts in two automatic passes: strict and broader review proposals. Both use native contrast scale point nine. We trace supported proximal paths, checking connection, crop caps and downstream branching. The result contains an ostium, five-millimeter seed, radius and unit direction in the original physical frame. The Explorer and judge application use this same fusion workflow."""
     slides.append(s)
 
-    s = base("Strict by evidence.", 4, 2, 35, True)
-    s.text(90, 171, 1750, "Strict by evidence.", 94, INK, "display")
+    s = base("Score first. Then merge.", 4, 2, 35, True)
+    s.text(90, 171, 1750, "Score first. Then merge.", 94, INK, "display")
     s.rect(138, 372, 222, 495, "D8E4DC")
     s.line(360, 372, 360, 867, "1A7465", 4)
     s.line(360, 640, 810, 450, "B5DACA", 74)
@@ -244,19 +249,19 @@ def create_deck():
     s.text(677, 595, 230, "Seed + radius", 24, "1A7465")
     s.text(1050, 410, 770, "Keep the physical rules", 40, INK, "display")
     s.text(1050, 479, 770, "2 mm origin diameter. 5 mm continuation.", 27, "526367")
-    s.text(1050, 580, 770, "Test curved-wall recovery", 40, INK, "display")
-    s.text(1050, 649, 770, "F1 improves. Daughter-count error increases.", 27, "526367")
-    s.text(1050, 750, 770, "Keep recovery optional", 40, INK, "display")
-    s.text(1050, 819, 770, "Strict remains the submitted configuration.", 27, "526367")
-    s.notes = """The seed follows five millimeters of vessel, rather than a fixed voxel offset. We also investigated curved wall connections that the straight connector misses. Guarded recovery raised local F1 from point five three three to point five eight one, but count error rose from two to two point two. It introduced no extra errors across eighty synthetic comparisons. That still does not prove a gain on unseen patients. Because the judge emphasizes daughter count, recovery remains optional and strict stays the submission. Now, the live Explorer."""
+    s.text(1050, 580, 770, "Filter each proposal pass", 40, INK, "display")
+    s.text(1050, 649, 770, "Bundled logistic model. Threshold 0.15.", 27, "526367")
+    s.text(1050, 750, 770, "Merge survivors within 3 mm", 40, INK, "display")
+    s.text(1050, 819, 770, "Keep strict survivors first. Export instances.", 27, "526367")
+    s.notes = """The seed follows five millimeters of vessel, not a fixed voxel offset. We score both proposal passes with a bundled thirteen-feature logistic model and filter at point one five before merging. Strict survivors are kept first; review survivors add origins at least three millimeters away. Filtering first prevents a weak overlapping proposal from displacing a surviving strict candidate. This improves our measured reference result, but broader proposals also introduce synthetic false positives. The model runs locally without downloads. Now, the live Explorer."""
     slides.append(s)
 
     s = base("From detection to inspection.", 5, 3, 75)
     s.text(90, 164, 1750, "From detection to inspection.", 78, PAPER, "display")
-    s.text(94, 276, 1650, "Live, 75 seconds, in the real local Explorer.", 29, MUTED)
+    s.text(94, 276, 1650, "Live, 75 seconds. Switch to the Explorer; poster shows historical footage.", 29, MUTED)
     s.image(368, 357, 1184, 596, "assets/explorer-poster.png")
     s.text(95, 949, 1700, "ORBIT  /  SELECT  /  CHECK CT  /  WALL MAP  /  EXPORT JSON", 23, MINT)
-    s.notes = """[0:00–0:05] Switch to the preloaded Explorer using the strict default. [0:05–0:18] Orbit the parent aorta: one CT and one parent mask produce inspectable branch candidates. [0:18–0:30] Select a branch and point to its origin, radius and direction. [0:30–0:46] Open linked CT views and inspect the candidate against the scan. [0:46–0:56] Show the wall map. [0:56–1:03] Briefly show the interior tour if the app is ready; skip it if behind. [1:03–1:10] Export challenge JSON. [1:10–1:15] Return to slide 6. These are predictions, not expert-confirmed anatomy. No video plays in this presentation."""
+    s.notes = """[0:00–0:05] Switch to the preloaded Explorer using the fusion default. [0:05–0:18] Orbit the parent aorta: one CT and one parent mask produce inspectable branch candidates. [0:18–0:30] Select a branch and point to its origin, radius and direction. [0:30–0:46] Open linked CT views and inspect the candidate against the scan. [0:46–0:56] Show the wall map. [0:56–1:03] Briefly show the interior tour if the app is ready; skip it if behind. [1:03–1:10] Export challenge JSON. [1:10–1:15] Return to slide 6. These are predictions, not expert-confirmed anatomy. No video plays in this presentation."""
     slides.append(s)
 
     s = base("Three scans. Traceable evidence.", 6, 4, 25)
@@ -266,7 +271,7 @@ def create_deck():
         x = 100 + index * 594
         s.image(x, 382, 520, 532, f"assets/check-{index + 1:03}.png")
         s.text(x, 337, 510, f"SUBJECT {index + 1:03}", 25, MINT)
-    s.text(94, 947, 1750, "Native-grid coronal MIPs · released strict outputs · visual checks, not ground truth", 24, MUTED)
+    s.text(94, 947, 1750, "Native-grid coronal MIPs · selected fusion outputs · visual checks, not ground truth", 24, MUTED)
     s.notes = """These are three supplied scans, with the parent outline, predicted ostia and direction arrows. Each image links back to an exported result in the kit. They satisfy visual verification, not an accuracy score. We do not have complete expert daughter annotations for these scans, so a plausible overlay is not treated as ground truth."""
     slides.append(s)
 
@@ -274,30 +279,31 @@ def create_deck():
     s.text(90, 169, 1720, "Measured progress. Bounded claims.", 76, PAPER, "display")
     s.line(1004, 360, 1004, 895, LINE, 2)
     s.text(95, 344, 830, "RELEASED REFERENCES · 5 REUSED CASES", 24, MINT)
-    s.text(95, 432, 890, "F1 0.533", 92, PAPER, "display")
-    s.text(100, 575, 850, "Strict deployment: 8 TP / 3 FP / 11 FN", 29)
+    s.text(95, 432, 890, f"F1 {reference['f1']:.3f}", 92, PAPER, "display")
+    s.text(100, 575, 850, f"Fusion: {reference['true_positives']} TP / {reference['false_positives']} FP / {reference['false_negatives']} FN", 29)
     s.text(100, 650, 850, "19 AI-assisted targets; labels may be incomplete.", 26, MUTED)
     s.text(100, 719, 850, "Not independent hidden-test accuracy.", 25, CORAL)
-    s.text(100, 799, 850, "Precision 0.727 · recall 0.421 · count MAE 2.0", 25, MUTED)
+    s.text(100, 799, 850, f"Precision {reference['precision']:.3f} · recall {reference['recall']:.3f} · count MAE {reference['count_mae']:g}", 25, MUTED)
     s.text(1080, 344, 740, "SYNTHETIC TOPOLOGY · 24 CASES", 24, MINT)
-    s.text(1080, 432, 740, "F1 0.968", 92, PAPER, "display")
-    s.text(1085, 575, 710, "46 TP / 0 FP / 3 FN", 30)
-    s.text(1085, 650, 710, "Zero negative-control detections.", 29, PAPER)
+    s.text(1080, 432, 740, f"F1 {topology['f1']:.4f}", 92, PAPER, "display")
+    s.text(1085, 575, 710, f"{topology['true_positives']} TP / {topology['false_positives']} FP / {topology['false_negatives']} FN", 30)
+    s.text(1085, 650, 710, "4 negative-control false positives.", 29, CORAL)
     s.text(1085, 727, 710, "Procedural regression; not clinical evidence.", 24, MUTED)
     s.text(95, 900, 1740, "Local one-to-one matching at 3 mm. Real-reference agreement and synthetic topology are separate measures.", 24, MUTED)
-    s.notes = """These are two different checks. Strict has precision point seven two seven and F1 point five three three on nineteen judge-approved targets from five reused cases. The AI-assisted annotations may omit branches. On twenty-four synthetic topology cases, F1 is point nine six eight, with zero false positives and three misses. Neither result is an official weighted score or independent clinical accuracy. Higher retrospective model scores were not promoted."""
+    s.notes = """Fusion matches fourteen of nineteen targets, with four extras and five misses: F1 point seven five seven, precision seventy-eight percent, and average count error one point eight. These five reused, AI-assisted cases may omit branches. Separately, synthetic F1 is point eight seven eight five, with eleven false positives, including four negative-control detections. This is the tradeoff behind the higher reference score. Neither result establishes hidden-test or clinical accuracy."""
     slides.append(s)
 
     s = base("A branch you can inspect.", 8, 4, 20)
     s.text(90, 169, 1700, "A branch you can inspect.", 98, PAPER, "display")
     s.text(95, 333, 1670, "Local CPU inference. Offline after setup.", 38, MINT)
     s.text(100, 494, 810, "25 of 25 scans completed", 42, PAPER, "display")
-    s.text(100, 574, 800, "23.21 s maximum · 1481 MiB peak RSS\nFour-core Linux run; Windows timing pending.", 28, MUTED)
+    s.text(100, 574, 800, f"{verification['mean_end_to_end_s']:.2f} s mean · {verification['max_end_to_end_s']:.2f} s maximum\n{rss:.0f} MiB sampled RSS · four-core Linux", 28, MUTED)
+    s.text(100, 674, 810, "Organizer-Windows timing remains pending.", 26, CORAL)
     s.text(1050, 494, 780, "Known limits", 42, PAPER, "display")
     s.text(1050, 574, 770, "Weak contrast · small vessels · complex junctions\nNext: complete expert labels + unseen patients.", 26, MUTED)
     s.text(100, 795, 1720, "Find every eligible origin. Keep each daughter separate.\nMake the result possible to verify.", 47, PAPER, "display")
     s.text(100, 943, 1740, "github.com/Coder-Meet/battleoftheschool   ·   prototype, not clinically validated", 23, MUTED)
-    s.notes = """All twenty-five scans completed with four-core Linux affinity: under twenty-four seconds each and about one point five gigabytes peak memory. Organizer-Windows timing remains pending. Weak contrast and complex anatomy still cause misses. Next: complete references and unseen patients. Branch instances you can inspect. Thank you."""
+    s.notes = """All twenty-five scans completed offline: eleven point six seconds average, fifty-two point seven maximum, and about fifteen hundred mebibytes sampled memory on four-core Linux. Organizer-Windows timing remains pending. Next: complete expert labels, fewer false positives, and unseen patients. Branch instances you can inspect. Thank you."""
     slides.append(s)
     return slides
 
@@ -338,8 +344,8 @@ def write_html(slides: list[Slide], output: Path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=ROOT / "outputs/live-presentation-kit")
-    parser.add_argument("--predictions", type=Path, default=ROOT / "outputs/accuracy-real-smoke")
+    parser.add_argument("--output", type=Path, default=ROOT / "outputs/fusion-presentation-kit")
+    parser.add_argument("--predictions", type=Path, default=ROOT / "outputs/fusion-presentation-predictions")
     parser.add_argument("--poster", type=Path)
     parser.add_argument("--skip-evidence", action="store_true")
     args = parser.parse_args()
@@ -348,6 +354,9 @@ def main():
     shutil.copy2(Path(__file__).with_name("favicon.svg"), args.output / "assets/favicon.svg")
     for name in ("README.md", "LIVE_DEMO_CUES.md"):
         shutil.copy2(Path(__file__).with_name(name), args.output / name)
+    for source in (ROOT / "presentation/evidence/judge-fusion-verification.json",
+                   ROOT / "docs/fusion-restored-validation.json"):
+        shutil.copy2(source, args.output / "evidence" / source.name)
     fonts(args.output)
     if not args.skip_evidence:
         evidence(args.output, args.predictions)

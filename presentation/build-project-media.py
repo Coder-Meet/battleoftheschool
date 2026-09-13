@@ -1,4 +1,4 @@
-"""Build public project graphics from recorded UI and frozen evaluation receipts."""
+"""Build public project graphics from recorded UI and fusion evaluation receipts."""
 
 import argparse
 import hashlib
@@ -14,10 +14,8 @@ BG, PANEL, INK, MUTED, MINT, AMBER = (
     "#0D1B22", "#172B33", "#F4F0E7", "#B3C5C8", "#80E3C5", "#F3CA83",
 )
 RECEIPTS = {
-    "references": "presentation/evidence/v2-references-report.json",
-    "topology": "presentation/evidence/v2-topology-report.json",
-    "batch": "presentation/evidence/batch_report.json",
-    "resources": "presentation/evidence/final-batch-resource.json",
+    "verification": "presentation/evidence/judge-fusion-verification.json",
+    "validation": "docs/fusion-restored-validation.json",
 }
 
 
@@ -52,26 +50,28 @@ class Graphic:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--kit", type=Path, default=ROOT / "outputs/live-presentation-kit")
+    parser.add_argument("--kit", type=Path, default=ROOT / "outputs/fusion-presentation-kit")
     parser.add_argument("--source", type=Path, default=ROOT / "outputs/presentation-kit/source-footage.mp4")
     parser.add_argument("--output", type=Path, default=ROOT / "docs/media")
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
     fonts = args.kit / "assets"
     reports = {name: json.loads((ROOT / path).read_text()) for name, path in RECEIPTS.items()}
-    reference = reports["references"]["results"]["strict"]["scores"]["3"]
-    topology = reports["topology"]["results"]["strict"]["scores"]["3"]
-    cases = reports["batch"]["cases"]
+    verification = reports["verification"]
+    reference = verification["reference_scores_3mm"]
+    topology = reports["validation"]["synthetic"]["variants"]["score-before-merge"]["scores"]["3"]
+    resources = verification["resource_receipt"]
+    cases = verification["batch_cases"]
     assert len(cases) == 25 and all(case["status"] == "ok" for case in cases)
     times = [float(case["end_to_end_s"]) for case in cases]
     mean_time, maximum_time = sum(times) / len(times), max(times)
-    rss = float(reports["resources"]["cases"]["all-25"]["peak_rss_mib"])
+    rss = float(resources["cases"]["all-25-fusion"]["peak_rss_mib"])
     for scores in (reference, topology):
         tp, fp, fn = (int(scores[key]) for key in ("true_positives", "false_positives", "false_negatives"))
         assert abs(float(scores["f1"]) - 2 * tp / (2 * tp + fp + fn)) < 1e-12
-    assert reports["resources"]["platform"] == "Linux"
-    assert reports["resources"]["cpu_cores"] == 4
-    assert reports["resources"]["target_Windows_verified"] is False
+    assert resources["platform"] == "Linux"
+    assert resources["cpu_cores"] == 4
+    assert resources["target_Windows_verified"] is False
     source_hash = digest(args.source)
     shutil.copy2(fonts / "explorer-poster.png", args.output / "explorer-overview.png")
     for name, second in (("ct-evidence", 68), ("wall-map", 90), ("interior-tour", 121)):
@@ -105,23 +105,23 @@ def main() -> None:
 
     scorecard = Graphic(fonts)
     scorecard.brand("Evidence you can inspect.")
-    for x, scores, title, cohort in (
-        (80, reference, "LOCAL REFERENCE AGREEMENT", "5 reused cases / 19 AI-assisted targets"),
-        (1010, topology, "SYNTHETIC TOPOLOGY REGRESSION", "24 procedural cases / 49 analytic targets"),
+    for x, scores, title, cohort, digits in (
+        (80, reference, "LOCAL REFERENCE AGREEMENT", "5 reused cases / 19 AI-assisted targets", 3),
+        (1010, topology, "SYNTHETIC TOPOLOGY REGRESSION", "24 procedural cases / 49 analytic targets", 4),
     ):
         scorecard.card((x, 213, x + 830, 846))
         scorecard.text(x + 35, 242, title, 28, MINT, width=760)
         scorecard.text(x + 35, 301, cohort, 28, MUTED, width=760)
-        scorecard.text(x + 35, 371, f"F1 {float(scores['f1']):.3f}", 111, display=True, width=760)
+        scorecard.text(x + 35, 371, f"F1 {float(scores['f1']):.{digits}f}", 111, display=True, width=760)
         scorecard.text(x + 35, 540,
                        f"{scores['true_positives']} TP / {scores['false_positives']} FP / {scores['false_negatives']} FN",
                        40, width=760)
         scorecard.text(x + 35, 626, f"Precision {float(scores['precision']):.3f}   Recall {float(scores['recall']):.3f}",
                        30, MUTED, width=760)
-        scorecard.text(x + 35, 693, f"Count MAE: {float(scores['count_mae']):g} daughters / case", 30, width=760)
+        scorecard.text(x + 35, 693, f"Count MAE: {float(scores['count_mae']):.4g} daughters / case", 30, width=760)
     scorecard.text(115, 781, "References may omit eligible branches.", 27, AMBER, width=760)
-    scorecard.text(1045, 781, "Regression evidence, not patient accuracy.", 27, AMBER, width=760)
-    scorecard.text(80, 889, "SUBMITTED CONFIGURATION / deterministic strict / 1 mm grid / native contrast 1.2", 27, MINT)
+    scorecard.text(1045, 781, "Includes 4 negative-control false positives.", 27, AMBER, width=760)
+    scorecard.text(80, 889, "SUBMITTED / fusion / native contrast 0.9 / logistic filter 0.15 / merge 3 mm", 27, MINT)
     scorecard.text(80, 948, "Both use local 3 mm one-to-one ostium matching. These are separate evaluations.", 29)
     scorecard.text(80, 1000, "No independent hidden-test score or clinical validation is available.", 29, MUTED)
     scorecard.save(args.output / "evidence-scorecard.png")
@@ -135,15 +135,16 @@ def main() -> None:
         runtime.text(x + 25, 220, value, 65, MINT, width=495)
         runtime.text(x + 25, 312, label, 24, width=495)
     left, top, bottom, plot_width = 150, 470, 855, 1650
-    for tick in range(0, 26, 5):
-        y = bottom - round((bottom - top) * tick / 25)
+    ceiling = (int(maximum_time) // 10 + 1) * 10
+    for tick in range(0, ceiling + 1, 10):
+        y = bottom - round((bottom - top) * tick / ceiling)
         runtime.draw.line((left, y, left + plot_width, y), fill="#34515C", width=1)
         runtime.text(82, y - 18, str(tick), 24, MUTED, width=60)
     runtime.text(80, 411, "SECONDS / PER-CASE END-TO-END TIME", 25, MUTED)
     step = plot_width / len(cases)
     for index, seconds in enumerate(times):
         x = round(left + step * index + 12)
-        y = bottom - round((bottom - top) * seconds / 25)
+        y = bottom - round((bottom - top) * seconds / ceiling)
         runtime.draw.rectangle((x, y, x + 39, bottom), fill=AMBER if seconds == maximum_time else MINT)
         runtime.text(x - 5, 868, cases[index]["case_id"].removeprefix("subject"), 21, MUTED, width=60)
     runtime.text(80, 943, "Four-core Linux affinity + thread limits. Per-case batch times; sampled RSS can miss peaks.", 28)
@@ -154,9 +155,9 @@ def main() -> None:
     pipeline.brand("One parent mask. Explicit geometric decisions.")
     stages = (
         ("01 / ANCHOR", "Validate + normalize", ("CT and parent geometry", "Physical 1 mm working grid")),
-        ("02 / DISCOVER", "Find wall contacts", ("Scan-relative contrast", "Multiscale tubular support")),
+        ("02 / DISCOVER", "Two proposal passes", ("Strict + broader review", "Native contrast scale 0.9")),
         ("03 / TRACE", "Connect + measure", ("Supported proximal paths", "Size and origin checks")),
-        ("04 / INSPECT", "Review + export", ("3D / CT / wall map", "Physical-coordinate JSON")),
+        ("04 / FUSE", "Score + merge", ("Logistic filter at 0.15", "Strict-first merge: 3 mm")),
     )
     for index, (label, title, lines) in enumerate(stages):
         x = 80 + 455 * index
@@ -168,20 +169,20 @@ def main() -> None:
         if index < 3:
             pipeline.draw.line((x + 417, 410, x + 445, 410), fill=MINT, width=3)
             pipeline.draw.polygon(((x + 445, 404), (x + 454, 410), (x + 445, 416)), fill=MINT)
-    pipeline.text(80, 620, "Default: deterministic strict. No learned weights or runtime cloud inference.", 31)
+    pipeline.text(80, 620, "Fusion uses bundled logistic weights. Inspect in 3D + CT; export physical-coordinate JSON.", 29)
     pipeline.save(args.output / "pipeline.png")
 
     assert digest(args.source) == source_hash
     manifest = {
-        "strict_reference_3mm": reference,
-        "strict_synthetic_topology_3mm": topology,
+        "fusion_reference_3mm": reference,
+        "fusion_synthetic_topology_3mm": topology,
         "runtime": {"cases": len(cases), "mean_per_case_s": mean_time, "max_per_case_s": maximum_time,
                     "max_sampled_process_tree_rss_mib": rss, "platform": "Linux", "cpu_cores": 4},
         "receipts_sha256": {path: digest(ROOT / path) for path in RECEIPTS.values()},
         "recording_sha256": source_hash,
         "recorded_frame_seconds": {"ct-evidence": 68, "wall-map": 90, "interior-tour": 121},
         "image_sha256": {path.name: digest(path) for path in sorted(args.output.glob("*.png"))},
-        "scope": "Recorded UI is historical; charts use frozen strict receipts. Not clinical or hidden-test accuracy.",
+        "scope": "Recorded UI is historical; charts use fusion receipts. Not clinical or hidden-test accuracy.",
     }
     (args.output / "metrics.json").write_text(json.dumps(manifest, indent=2) + "\n")
     print(f"Built project images in {args.output}; evidence and source hashes recorded.")

@@ -1,4 +1,4 @@
-> These figures and their frozen inputs describe the earlier strict release. The current fusion default has different real-reference and synthetic results; see [current workflow](../../PRODUCTION_WORKFLOW.md). Regenerating from the old frozen inputs does not validate the new workflow.
+> Performance graphics use the selected fusion receipts. Recorded interface screenshots retain their historical counts and timings; see [current workflow](../../PRODUCTION_WORKFLOW.md).
 
 # Project media and provenance
 
@@ -11,7 +11,7 @@ keep the distinction between recorded interface views and measured performance.
   at 68, 90 and 121 seconds of the original capture.
 - `branchseed-cover.png`: brand composition containing the complete scaled
   Explorer screenshot; no simulated scan or fabricated detection.
-- `evidence-scorecard.png`: strict local reference and synthetic topology
+- `evidence-scorecard.png`: fusion local reference and synthetic topology
   results, in separate equally labelled panels.
 - `runtime.png`: all 25 recorded per-case end-to-end times, with mean,
   maximum and sampled process-tree memory.
@@ -21,15 +21,15 @@ keep the distinction between recorded interface views and measured performance.
 
 Visible screenshot counts, scores and timing belong to the historical
 recording; do not use them as current accuracy or runtime evidence. The
-performance graphics use the frozen strict reports named in `metrics.json`.
-Matched geometry summaries are conditional on eight matches; missed branches
+performance graphics use the fusion reports named in `metrics.json`.
+Matched geometry summaries are conditional on fourteen matches; missed branches
 are excluded. No clinical or hidden-test accuracy is claimed.
 
 ## Rebuild
 
 Use the existing project Python dependencies and FFmpeg. Extract the current
-[presentation kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-final-presentation.zip)
-to `outputs/live-presentation-kit/` for its local font files and poster.
+[submission kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-submission-fusion-2026-09-13/branchseed-submission-fusion-kit.zip)
+and use its `presentation/` directory for the local font files and poster.
 The preserved source recording is included in the
 [original presentation kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-presentation-2026-09-12/branchseed-presentation-kit.zip).
 Put its `source-footage.mp4` at `outputs/presentation-kit/source-footage.mp4`.
@@ -37,7 +37,7 @@ Put its `source-footage.mp4` at `outputs/presentation-kit/source-footage.mp4`.
 From the repository root:
 
 ```bash
-.venv313/bin/python presentation/build-project-media.py
+.venv313/bin/python presentation/build-project-media.py --kit outputs/fusion-presentation-kit
 .venv313/bin/python -m ruff check presentation/build-project-media.py
 .venv313/bin/python -m mypy presentation/build-project-media.py
 ```

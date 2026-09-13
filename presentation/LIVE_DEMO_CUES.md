@@ -7,7 +7,7 @@ are cues, not subtitles: look at the screen and leave breathing room.
 
 | Talk clock | Demo clock | On screen | Suggested narration |
 |---|---|---|---|
-| 2:30–2:35 | 0:00–0:05 | Switch from slide 5 to the preloaded Explorer | "Here is the actual local app, using our strict detector." |
+| 2:30–2:35 | 0:00–0:05 | Switch from slide 5 to the preloaded Explorer | "Here is the actual local app, using our fusion detector." |
 | 2:35–2:48 | 0:05–0:18 | Orbit the parent aorta | "One CT and one parent mask produce inspectable daughter candidates." |
 | 2:48–3:00 | 0:18–0:30 | Select a branch and point to measurements | "Each candidate has an origin, a five-millimeter seed, a radius and a direction." |
 | 3:00–3:16 | 0:30–0:46 | Linked CT views | "We check the prediction against the scan. A convincing mesh alone is not evidence." |

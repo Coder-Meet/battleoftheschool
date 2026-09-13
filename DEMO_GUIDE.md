@@ -9,7 +9,7 @@ Judges do not need to install or run the website.
 
 **The current checkout now defaults to score-before-merge fusion, F1 0.75676 on five reused references.** See [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md) for exact commands and evidence. Include `pipeline.py` and `models/production-v1/logistic.json` when packaging this version.
 
-The older final-release bundles, measured resources, presentation and evaluation numbers below describe **strict**. Downloading those ZIPs will not restore fusion. The separately named **judge-fusion** package contains the selected workflow; its verification receipt reports its own resource measurements. Use `--pipeline strict` in this checkout to reproduce the older baseline.
+Use the [current fusion presentation and submission kit](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-submission-fusion-2026-09-13) for slides, script, video and Devpost copy. Older **branchseed-final** bundles are historical strict artifacts. Use `--pipeline strict` only to reproduce that baseline.
 
 For the public entry, use the [ready-to-paste Devpost submission](DEVPOST_SUBMISSION.md).
 For rehearsal, use the [complete presenter briefing and judge Q&A](PRESENTER_BRIEFING.md).
@@ -18,15 +18,15 @@ screenshots and graphics with explicitly scoped accuracy/runtime evidence.
 
 The final download bundles are on the repository's
 [GitHub Releases page](https://github.com/Coder-Meet/battleoftheschool/releases).
-Use the **Final hackathon submission** release for the submission ZIP and
-updated presentation kit. The earlier September 12 deck is historical.
+Use **judge-fusion** for inference and **submission-fusion** for presentation
+and Devpost materials. The older final release and September 12 deck are historical.
 
 | Download | Purpose |
 |---|---|
 | `branchseed-judge-fusion-windows-x64.zip` | Selected fusion inference and Windows offline runtime only; no website |
 | `branchseed-judge-fusion-source.zip` | Same selected fusion code/model without platform wheels |
 | `branchseed-final-submission.zip` | Historical strict source, predictions, visual checks and built website for the earlier demo |
-| `branchseed-final-presentation.zip` | Updated five-minute live-demo deck, editable PowerPoint, PDF, speaker script and CT evidence; no video |
+| `branchseed-submission-fusion-kit.zip` | Current five-minute deck, editable PowerPoint, PDF, speaker script, Devpost copy, gallery and separate showcase |
 | `branchseed-showcase.mp4` | Separate edited product showcase for Drive and sharing |
 | `branchseed-film.mp4` | Unchanged original 60-second UI film, preserved separately |
 
@@ -36,31 +36,16 @@ accuracy. **Present the Explorer live at slide 5; no video plays in the deck.**
 The original film remains available. Upload the showcase to Drive or other
 destinations as needed; organizer/Devpost uploads remain a team action.
 
-## Fastest website launch: downloaded submission
+## Separate the judge application from the website
 
-Install **64-bit Python 3.13.3** before the event. Extract the submission ZIP
-fully; do not run files inside Windows' ZIP viewer. In PowerShell, open the
-extracted `source` folder:
+Install **64-bit Python 3.13.3** before the event. Extract the judge ZIP fully
+and follow [application/START_HERE.md](application/START_HERE.md) for offline
+inference. It intentionally contains no website or Node dependencies.
 
-```powershell
-python --version
-python -m venv .venv313
-.\.venv313\Scripts\python.exe -m pip install --no-index --find-links ..\windows-wheelhouse -r requirements.txt
-$env:OPENBLAS_NUM_THREADS="4"
-$env:OMP_NUM_THREADS="4"
-$env:MKL_NUM_THREADS="4"
-$env:ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS="4"
-.\.venv313\Scripts\python.exe explorer.py --data-root "C:\path\to\data" --port 8000
-```
-
-Replace the data path with your real case directory. **On that same laptop**,
-open **http://127.0.0.1:8000** in Chrome or Edge. Keep the terminal running.
-The built website is included: no Node install, Vite server, API key, cloud
-service or internet connection is needed to serve it.
-
-The Windows wheels require x64 CPython 3.13; they cannot be installed on
-macOS/Linux, Windows ARM or another Python minor version. Python itself and
-the supplied scans are not included.
+For the live Explorer, prepare the current Git checkout below. Build the
+frontend once while online. Python then serves the built assets and analysis
+API locally; no external service is required. Supply the organizer scans
+separately. Do not use the historical strict website ZIP as a fusion demo.
 
 ## Launch from a Git checkout
 
@@ -171,16 +156,17 @@ python run.py --image data/subject001/orig1.nii --aorta-mask data/subject001/mas
 Coordinates are the original SimpleITK LPS physical millimetres. Each daughter
 has an ID, parent ID, ostium, 5 mm seed, seed radius and unit direction.
 
-The submission ZIP's `predictions/` folder contains only the 25 challenge
-JSONs from this same strict configuration. Its diagnostics and measurements
-are separate under `verification/`. Do not submit a fold-selected composite,
+The separate **judge-fusion evidence ZIP** contains the 25 challenge
+JSONs from this fusion configuration, visual checks and verification receipts.
+Do not submit a fold-selected composite,
 review pool, synthetic labels or the retrospective RF predictions.
 
 ## Presentation and four-speaker run of show
 
-Extract the **whole final presentation ZIP** and open `index.html` in a
-browser. Keep the `assets` directory beside it. For a Git checkout, the
-generated current kit is under `outputs/live-presentation-kit/`; generated
+Extract the **whole fusion submission ZIP** and open `START_HERE.html`.
+The presentation is at `presentation/index.html`; keep its `assets` directory
+beside it. For a Git checkout, the generated current deck is under
+`outputs/fusion-presentation-kit/`; generated
 media are distributed through Releases rather than committed to Git.
 
 | File | Use |
@@ -209,22 +195,23 @@ another minute after the five-minute talk.
 
 ## What to say about accuracy
 
-The fixed strict detector scored **8 TP / 3 FP / 11 FN**, F1 **0.5333**, at our
+The selected fusion detector scored **14 TP / 4 FP / 5 FN**, F1 **0.75676**, at our
 local 3 mm ostium tolerance on 19 targets across five reused cases. The judge
 approved the package for scoring; its annotations are AI-assisted and may
 omit valid branches. This is development-reference agreement, not hidden-test
 or complete clinical accuracy. Only three reference radii are known.
 
-The RF hybrid's all-five F1 **0.6207** is retrospective. The case-separated
-selection composite scored **0.4444** and is not one deployable algorithm.
-The fixed strict detector remains the defensible submission. Synthetic
-topology F1 **0.9684** is reported separately. No official weighted score was
-available. Avoid converting any of these numbers into “percent accurate.”
+Precision is **0.77778**, recall **0.73684**, and count MAE **1.8**.
+At 2 mm matching, F1 is **0.43243**; at 5 mm it is **0.75676**.
+Synthetic topology F1 **0.8785** is separate: **47 / 11 / 2**, including four
+negative-control detections. Strict had fewer synthetic false positives but
+lower local reference F1. The team selected fusion; no official weighted score
+or independent hidden-test result is available.
 
-The later guarded wall-recovery experiment reached F1 **0.5806** but worsened
-count MAE from **2.0 to 2.2**. It preserved baseline matches across 80 synthetic
-comparisons, but that does not establish better unseen-patient performance.
-Strict is the accepted submission choice; recovery remains opt-in.
+The standalone fusion replay completed all 25 scans: **11.60 s mean**,
+**52.67 s maximum**, **1499 MiB sampled peak RSS**, with four-core Linux affinity.
+These resource measurements are from the full 25-case replay, not the shorter
+five-case competitor comparison. Native organizer-Windows timing remains open.
 
 ## Troubleshooting and the final laptop check
 

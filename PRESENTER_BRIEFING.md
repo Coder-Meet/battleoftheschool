@@ -1,10 +1,9 @@
-> Strict-release material retained from the published presenter kit. The current checkout now defaults to fusion (five-reference F1 0.75676); see [current workflow](PRODUCTION_WORKFLOW.md). Update algorithm, synthetic FP and resource claims before reusing this as current submission copy.
-
 # Branchseed — complete presenter briefing
 
 **Team reference for the five-minute talk, live Explorer demo and judge Q&A.**
 
-The submitted choice is **deterministic strict**, a fixed classical detector.
+The submitted choice is **score-before-merge fusion**: two geometric proposal
+passes, a bundled logistic filter, and strict-first merging.
 This document explains the product, algorithms, experiments, evidence,
 limitations and operational details. Read section 1 before rehearsal; use the
 remaining sections for preparation and questions.
@@ -24,17 +23,19 @@ physical measurements, JSON export and a reproducible evaluation framework.
 visible continuation; one aortic opening per daughter; a common trunk counts
 once; crop caps and daughter-of-daughter vessels are excluded.
 
-**Release:** 1 mm grid; native contrast scale 1.2; strict connection policy;
-four threads; no trained model required.
+**Release:** 1 mm grid; native contrast scale 0.9; strict + review proposals;
+bundled 13-feature logistic filter at 0.15; strict-first merging within 3 mm;
+four threads and offline inference.
 
 **Numbers to remember:**
 
 - Five reused cases / 19 reference targets / local 3 mm matching:
-  **8 TP, 3 FP, 11 FN; precision 0.727; recall 0.421; F1 0.533; count MAE 2.0.**
+  **14 TP, 4 FP, 5 FN; precision 0.778; recall 0.737; F1 0.757; count MAE 1.8.**
 - Twenty-four synthetic topology cases:
-  **46 TP, 0 FP, 3 FN; F1 0.968.** Synthetic regression, not patient accuracy.
-- All 25 supplied scans completed: **5.32 s mean, 23.21 s maximum,
-  1481 MiB maximum sampled process-tree RSS**, under four-core Linux affinity.
+  **47 TP, 11 FP, 2 FN; F1 0.8785.** Includes four negative-control
+  detections. Synthetic regression, not patient accuracy.
+- All 25 supplied scans completed: **11.60 s mean, 52.67 s maximum,
+  1499 MiB maximum sampled process-tree RSS**, under four-core Linux affinity.
 - Hidden-test accuracy, clinical validation and native organizer-Windows
   timing are **not available**.
 
@@ -153,8 +154,9 @@ origin. Confusing those two measurements changes eligibility incorrectly.
 
 ## 5. The production algorithm, step by step
 
-Implementation: [detector.py](detector.py), especially `normalize`, `enhance`,
-`propose`, `_trace` and `resolve`.
+Implementation: [pipeline.py](pipeline.py) orchestrates [detector.py](detector.py)
+and [learning.py](learning.py). The geometric stages below run for both strict
+and broader review proposals; section 5.7 explains the final scoring and merge.
 
 ### 5.1 Validate and normalize
 
@@ -166,7 +168,7 @@ retaining a discrete parent label.
 Estimate blood intensity inside the parent and background around it.
 Scan-relative contrast reduces reliance on one fixed global brightness
 threshold. The native-contrast setting retains sensitivity to original CT
-support; the release uses scale 1.2. Poor contrast cannot be repaired simply
+support; both fusion passes use scale 0.9. Poor contrast cannot be repaired simply
 by normalization.
 
 **Why:** physically defined distances and vessel scales must remain comparable
@@ -199,8 +201,8 @@ be retained within one merged contact component.
 origins and reduces work.
 
 **Limitation:** a missing wall-contact proposal cannot be recovered by a
-classifier applied after proposal generation. Broad review-union pools are
-research alternatives, not the submitted origin policy.
+classifier applied after proposal generation. Fusion adds broader automatic
+review proposals, then filters both passes before merging them.
 
 ### 5.4 Trace a supported proximal path
 
@@ -257,22 +259,42 @@ Diagnostics retain rejection reasons, path evidence, warnings and an
 uncalibrated heuristic evidence score. **A score of 0.8 does not mean an
 80% probability of a true branch.**
 
-## 6. Why the default is strict
+### 5.7 Score before merging
+
+The production workflow runs strict and broader review proposals at native
+contrast scale 0.9. Each pass keeps the geometric tracing and measurement
+framework, while the review policy permits additional candidates. A bundled
+13-feature logistic classifier scores each pass independently; candidates
+below 0.15 are removed. The model is hash-checked and loaded locally.
+
+Strict survivors are retained first. A review survivor is added only when its
+origin is at least 3 mm from every retained origin. Instances receive stable
+IDs before export. Filtering before this merge avoids letting a low-scoring
+review representation displace a surviving strict candidate.
+
+The 3 mm merge radius is separate from the 3 mm evaluation tolerance and the
+2 mm origin-diameter eligibility rule. Distance merging may collapse genuinely
+close openings; broader proposals also admit false positives. Neither a
+logistic score nor the geometric evidence score is a calibrated clinical
+probability. This workflow requires no manual review at inference.
+
+## 6. Why the selected default is fusion
 
 | Configuration / evaluation | TP / FP / FN | Precision | Recall | F1 | Count MAE | Status |
 |---|---:|---:|---:|---:|---:|---|
-| Fixed strict | 8 / 3 / 11 | 0.727 | 0.421 | 0.533 | 2.0 | Submitted default |
+| Selected fusion | 14 / 4 / 5 | 0.778 | 0.737 | 0.757 | 1.8 | Submitted default |
+| Fixed strict | 8 / 3 / 11 | 0.727 | 0.421 | 0.533 | 2.0 | Historical baseline |
 | Leave-one-case-out selection composite | 8 / 9 / 11 | 0.471 | 0.421 | 0.444 | 3.2 | Selection-procedure estimate |
 | Retrospective RF winner | 9 / 1 / 10 | 0.900 | 0.474 | 0.621 | 1.8 | Development only |
 | Guarded 1 mm connection recovery | 9 / 3 / 10 | 0.750 | 0.474 | 0.581 | 2.2 | Opt-in experiment |
 
 All rows use the same five reused reference cases and local 3 mm matching.
-They are not four independently validated deployments.
+They are not independently validated deployments.
 
-Strict has the strongest completed package of fixed configuration, source
-identity, deterministic replay and topology evidence. The RF result used
-reused development references and relaxed review-union proposals. It lacks
-the evidence needed to promote it as the safer unseen-case choice.
+The team selected fusion for its higher measured reference F1 and lower
+count error. The standalone package reproduces all 25 full-checkout outputs.
+That verifies the packaging, not generalization: the synthetic comparison
+finds eleven fusion false positives versus zero for strict.
 
 The later guarded recovery follows bounded parent-connected support around
 curved connections while preserving strict detections. It gains one local
@@ -282,8 +304,9 @@ However, count MAE worsens. A newly correct branch can be found in a case
 where the detector already overcounts, increasing count error even while
 F1 improves.
 
-The judge emphasized daughter counts, so the team accepted strict. That does
-**not** prove strict is optimal or that a score above 0.7 is overfitting.
+The team initially accepted strict, then explicitly selected fusion after
+reviewing its higher development score. That does
+**not** prove fusion is optimal or that a score above 0.7 is overfitting.
 The problem is selecting repeatedly on reused data without independent
 confirmation, not crossing a particular numeric threshold.
 
@@ -292,14 +315,14 @@ Experimental CLI from the current Git checkout, **not the submitted default**:
 ```bash
 python run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz \
   --output experimental.json --diagnostics experimental-diagnostics.json \
-  --threads 4 --recover-connected-origins
+  --threads 4 --pipeline strict --recover-connected-origins
 ```
 
-## 7. Optional ML and research: what exists and why
+## 7. Shipped ML and historical research
 
 | Approach | What it adds | Strength | Drawback / disposition |
 |---|---|---|---|
-| Logistic candidate filter | A small weighted classifier over 13 features | Fast and inspectable | Cannot recover absent proposals; label provenance matters |
+| Logistic candidate filter | A small weighted classifier over 13 features | Shipped in fusion; fast and inspectable | Cannot recover absent proposals; label provenance matters |
 | Random forest | Nonlinear feature interactions | Strong retrospective development score | Reused targets and relaxed proposals; not promoted |
 | Gradient-boosted trees | Sequential nonlinear candidate decisions | Flexible with compact feature inputs | Threshold/model selection can overfit small case sets |
 | Physical CT patches | Candidate-centred intensity/geometry context | Preserves physical scale across cases | Extraction cost and candidate coverage constrain utility |
@@ -311,7 +334,9 @@ python run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz \
 
 Features include physical radius/length, tubularity, contrast relative to blood,
 bone distance, parent angle, longitudinal position and connection support.
-The detailed feature contract and model metadata live in the research tools.
+The shipped feature contract is in `learning.py`; model provenance is in
+`models/production-v1/`. Most research tooling was removed in the repository
+cleanup; the experiments remain in Git history, not in the judge download.
 
 Research used **210 procedural cases** split into **140 train / 42 validation /
 28 test** cases. These cases were inspected, so the partition name “test”
@@ -372,31 +397,31 @@ predictions can therefore become false positives.
 - **Geometry errors:** measured only after matching, with missing reference
   measurements masked out.
 
-Do not say “72.7% accuracy.” The strict precision is 0.727; recall and F1 are
+Do not say “77.8% accuracy.” Fusion precision is 0.778; recall and F1 are
 different, and “accuracy” would need a defined negative population.
 
-### Strict counts by case
+### Fusion counts by case
 
-| Case | Reference targets | Strict predictions | Absolute count error |
+| Case | Reference targets | Fusion predictions | Absolute count error |
 |---|---:|---:|---:|
-| subject019 | 3 | 0 | 3 |
-| subject020 | 4 | 1 | 3 |
-| subject021 | 3 | 3 | 0 |
-| subject022 | 6 | 7 | 1 |
-| subject023 | 3 | 0 | 3 |
-| Total / mean | 19 | 11 | MAE 2.0 |
+| subject019 | 3 | 2 | 1 |
+| subject020 | 4 | 2 | 2 |
+| subject021 | 3 | 4 | 1 |
+| subject022 | 6 | 9 | 3 |
+| subject023 | 3 | 1 | 2 |
+| Total / mean | 19 | 18 | MAE 1.8 |
 
-Zero predictions on two reference cases are a real recall weakness.
-At 3 mm, matches are concentrated in subjects 021 and 022. Do not pick a
-successful case and imply equal performance across all patients.
+The near-correct total hides case-level errors: subject022 overcounts by
+three while subjects020 and 023 each undercount by two. No case has an exact
+count. Do not imply equal performance across all patients from the aggregate F1.
 
 ### Sensitivity to tolerance
 
-| Local ostium tolerance | Strict TP / FP / FN | Strict F1 |
+| Local ostium tolerance | Fusion TP / FP / FN | Fusion F1 |
 |---|---:|---:|
-| 2 mm | 6 / 5 / 13 | 0.400 |
-| 3 mm | 8 / 3 / 11 | 0.533 |
-| 5 mm | 8 / 3 / 11 | 0.533 |
+| 2 mm | 8 / 10 / 11 | 0.432 |
+| 3 mm | 14 / 4 / 5 | 0.757 |
+| 5 mm | 14 / 4 / 5 | 0.757 |
 
 The organizer has not supplied the official evaluator. Local 3 mm matching
 is our declared analysis setting, not a claim about the hidden scorer.
@@ -404,18 +429,18 @@ The broader tolerance did not recover the remaining unmatched references.
 
 ### Geometry: read the sample size
 
-At 3 mm, across the eight strict matches:
+At 3 mm, across the fourteen fusion matches:
 
 | Measurement | Mean error | Number evaluated |
 |---|---:|---:|
-| Ostium location | 1.59 mm | 8 |
-| Seed location | 1.22 mm | 8 |
-| Direction angle | 13.95° | 8 |
-| Seed radius | 0.253 mm | **1** |
+| Ostium location | 1.658 mm | 14 |
+| Seed location | 1.284 mm | 14 |
+| Direction angle | 14.718° | 14 |
+| Seed radius | 0.204 mm | **2** |
 
-Only three of the 19 reference radii are known, and only one is matched by
-strict. A radius headline based on that one point would overstate evidence.
-Matched-error summaries also exclude the 11 missed targets.
+Only three of the 19 reference radii are known, and only two are matched by
+fusion. A radius headline based on two points would overstate evidence.
+Matched-error summaries also exclude the five missed targets.
 
 ### What leave-one-case-out did and did not fix
 
@@ -431,8 +456,10 @@ all scanners and anatomy. The RF all-five score remains retrospective.
 ### Synthetic versus patient evidence
 
 The frozen topology cohort has 24 procedural cases and analytic references.
-Strict produced 46 TP / 0 FP / 3 FN, F1 0.968, with zero negative-control
-detections. These cases exercise known geometric failure modes. Real CT adds
+Fusion produced 47 TP / 11 FP / 2 FN, F1 0.8785, with four negative-control
+detections. The strict baseline had 46 / 0 / 3, F1 0.9684. Seven fusion
+false positives occur in a touching-vein/calcification case and four in a
+negative control. These cases exercise known geometric failure modes. Real CT adds
 contrast variation, disease, acquisition effects and anatomy outside the
 generator's assumptions. Synthetic success does not resolve low real-case recall.
 
@@ -482,7 +509,7 @@ raw challenge prediction. The viewer's geometric evidence score is heuristic
 and uncalibrated.
 
 The product screenshots and 40-second showcase come from a preserved earlier
-recording. Their on-screen branch counts can differ from today's strict
+recording. Their on-screen branch counts can differ from today's fusion
 outputs. Explain them as feature demonstrations; use current JSON and frozen
 receipts for accuracy claims. For example, the recording's subject001 count
 is not the final batch's subject001 count.
@@ -494,12 +521,12 @@ is not the final batch's subject001 count.
 | Time | Owner | Main job | Handoff |
 |---|---|---|---|
 | 0:00–1:15 | Speaker 1 | Explain direct origins and one-opening semantics | “Now we turn that definition into a physical-space detector.” |
-| 1:15–2:30 | Speaker 2 | Explain support, tracing, measurements and strict choice | “Every prediction can then be inspected in the Explorer.” |
+| 1:15–2:30 | Speaker 2 | Explain support, tracing, measurements and fusion | “Every prediction can then be inspected in the Explorer.” |
 | 2:30–3:45 | Speaker 3 | Run the live 75-second Explorer sequence | “Those views help inspect a prediction; here is the measured evidence.” |
 | 3:45–5:00 | Speaker 4 | Show results, runtime, limitations and next step | Close on inspectable evidence and local execution |
 
 The eight-slide deck and script are in the
-[presentation kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-final-presentation.zip).
+[current fusion presentation kit](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-submission-fusion-2026-09-13).
 There is no video playback in the live deck. The separate showcase goes to
 Devpost/Drive.
 
@@ -529,23 +556,24 @@ separate optional upload asset, not a planned live-talk fallback.
 
 ## 13. Judge questions and concise answers
 
-**Why is the real-reference F1 only 0.533?**\
-Strict misses 11 of 19 local targets, largely through proposal/connection
+**What does F1 0.757 mean?**\
+Fusion matches 14 of 19 local targets, with four unmatched predictions and
+five misses. Remaining misses can arise through proposal/connection
 limitations. Synthetic topology checks do not capture all real CT variation.
 The next step is expert-reviewed misses and unused-case validation.
 
-**Isn't 0.727 your accuracy?**\
-It is precision: 8 of 11 predictions matched locally. Recall is 8 of 19,
-or 0.421; F1 is 0.533. The incomplete references further limit interpretation.
+**Isn't 77.8% your accuracy?**\
+It is precision: 14 of 18 predictions matched locally. Recall is 14 of 19,
+or 73.7%; F1 is 0.757. The incomplete references further limit interpretation.
 
-**Why show 0.968?**\
+**Why show synthetic F1 0.8785?**\
 It is the separately labelled synthetic topology F1. It tests known
 geometric behaviors; it is not patient or clinical accuracy.
 
-**Why not submit the random forest at 0.621 F1?**\
-That is a retrospective winner on reused cases with relaxed proposals and
-insufficient independent promotion evidence. The fixed strict path has the
-stronger completed validation package.
+**Why submit fusion instead of strict or the random forest?**\
+Fusion has the highest measured reference result of these candidates and
+lower count error than strict. It also has more synthetic false positives.
+The team selected that tradeoff; hidden-case superiority is not established.
 
 **Why not use the recovery at 0.581?**\
 It improved local matching while worsening count MAE. The judge emphasized
@@ -562,9 +590,9 @@ Sato filtering and minimum-cost paths are established techniques, and we
 credit their libraries and relevant research.
 
 **Is the product an AI model?**\
-The submitted detector is classical image processing and geometry. We also
-built optional learned candidate filters and used AI-assisted development.
-Those facts should not be conflated.
+The submitted detector combines classical image processing and geometry
+with a small learned logistic candidate filter. It is not a large 3D neural
+network. AI-assisted development is a separate fact we also disclose.
 
 **Can it handle a new scan without clicking seed points?**\
 The CLI accepts a new CT and compatible parent mask and runs the fixed
@@ -588,7 +616,7 @@ Voxel size and orientation vary. Millimetres preserve meaningful positions,
 lengths and radii in the original input frame.
 
 **Is radius accurate?**\
-It is an estimate. Only one strict matched reference has a measured radius;
+It is an estimate. Only two fusion matched references have measured radii;
 we cannot make a broad accuracy claim from that sample.
 
 **Does the 2 mm check guarantee eligibility?**\
@@ -608,7 +636,7 @@ installed. Offline installation itself needs predownloaded compatible wheels;
 we include Windows x64/Python 3.13 wheels in the technical bundle.
 
 **Is it proven on the organizer's laptop?**\
-Not yet. The final resource receipt is four-core Linux with 1481 MiB maximum
+Not yet. The final resource receipt is four-core Linux with 1499 MiB maximum
 sampled RSS; native organizer-Windows timing is still required.
 
 **Why not a large 3D network?**\
@@ -616,13 +644,13 @@ The task supplies little trusted annotation and has a CPU/offline budget.
 A heavier network would add data and validation requirements without
 established benefit here.
 
-**Are all 150 exported instances correct?**\
+**Are all exported instances correct?**\
 No such claim is supported. That is an output count across 25 completed
 scans. Only the five-case reference comparison has local matching results.
 
 **Why does the video show a different count?**\
 It is a preserved earlier interface recording. The release JSON and frozen
-strict receipts are the current source for algorithm results.
+fusion receipts are the current source for algorithm results.
 
 **Did AI help build this?**\
 Yes. Devin and any additional tools actually used by the team should be
@@ -636,30 +664,30 @@ exploring candidate detections and their evidence.
 ## 14. Laptop preparation and commands
 
 Use [DEMO_GUIDE.md](DEMO_GUIDE.md) as the canonical operational reference.
-Download the final strict submission and presentation before the event.
-The strict ZIP contains dependencies/wheels, source, built web assets,
-predictions and required static checks; supply the organizer scans separately.
+Download the fusion judge application and current presentation before the
+event. The judge ZIP contains inference source, model and offline wheels.
+Its evidence ZIP contains predictions and static checks. Prepare the Explorer
+separately from current main; it is not included in the minimal judge ZIP.
 
 ### Offline Windows x64 / Python 3.13
 
-From the extracted submission's **`source` directory**, with Python 3.13.3
-x64 installed, use the sibling **`windows-wheelhouse` directory**:
+From the extracted **`branchseed-judge-fusion` directory**, with Python 3.13.3
+x64 installed, use its **`wheelhouse` directory**:
 
 ```powershell
 python --version
 python -m venv .venv313
-.\.venv313\Scripts\python.exe -m pip install --no-index --find-links ..\windows-wheelhouse -r requirements.txt
+.\.venv313\Scripts\python.exe -m pip install --no-index --find-links wheelhouse -r requirements.txt
 $env:OPENBLAS_NUM_THREADS="4"
 $env:OMP_NUM_THREADS="4"
 $env:MKL_NUM_THREADS="4"
 $env:ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS="4"
-.\.venv313\Scripts\python.exe explorer.py --data-root "C:\path\to\data" --port 8000
+.\.venv313\Scripts\python.exe run.py --image "C:\path\to\image.nii" --aorta-mask "C:\path\to\mask.nii" --output prediction.json
 ```
 
-Replace the data path with the actual scan directory. Open
-`http://127.0.0.1:8000` on that laptop. The address is local, not a public
-Devpost link. Node is unnecessary for serving the already-built release
-website. Use the guide's Node commands only when rebuilding the frontend.
+Replace the input paths with the actual matching files. For the website,
+follow the current-checkout setup in `DEMO_GUIDE.md`, build with Node once,
+and run `explorer.py`. Its loopback address is local, not a public Devpost link.
 
 For a new pair:
 
@@ -667,7 +695,7 @@ For a new pair:
 .\.venv313\Scripts\python.exe run.py --image image.nii.gz --aorta-mask aorta_mask.nii.gz --output prediction.json
 ```
 
-Do not replace the submitted strict defaults with an experiment immediately
+Do not replace the submitted fusion defaults with an experiment immediately
 before judging. Do not install optional Torch/ONNX research dependencies just
 to run the release.
 
@@ -685,13 +713,13 @@ record it honestly; a Linux receipt is not a substitute.
 
 | Say | Avoid |
 |---|---|
-| “Local reference precision 0.727, recall 0.421, F1 0.533” | “73% accurate” |
-| “Synthetic topology F1 0.968 across 24 procedural cases” | “97% accurate on patients” |
+| “Local reference precision 0.778, recall 0.737, F1 0.757” | “78% accurate” |
+| “Synthetic topology F1 0.8785 across 24 procedural cases” | “88% accurate on patients” |
 | “All 25 supplied scans completed” | “All branches were detected” |
-| “1.59 mm mean origin error across eight matched branches” | “Every origin is within 1.59 mm” |
-| “Estimated radius; one evaluated strict match” | “Clinically accurate radius measurement” |
-| “Fixed strict is our best-supported release choice” | “We proved this is the best possible algorithm” |
-| “Optional models are research comparisons” | “The shipped model uses an ensemble of all our algorithms” |
+| “1.658 mm mean origin error across fourteen matched branches” | “Every origin is within 1.658 mm” |
+| “Estimated radius; two evaluated fusion matches” | “Clinically accurate radius measurement” |
+| “Fusion is our selected development operating point” | “We proved this is the best possible algorithm” |
+| “Two proposal passes plus a logistic filter” | “The shipped model uses an ensemble of all our algorithms” |
 | “Runs offline after setup” | “Works without installing dependencies or data” |
 | “Four-core Linux resource measurements” | “Validated on the organizer's Windows laptop” |
 | “Prototype for visual verification” | “Ready for autonomous clinical decisions” |
@@ -702,14 +730,14 @@ record it honestly; a Linux receipt is not a substitute.
 |---|---|
 | What exactly should we submit? | [DEVPOST_SUBMISSION.md](DEVPOST_SUBMISSION.md) |
 | How do we run it? | [DEMO_GUIDE.md](DEMO_GUIDE.md) |
-| Where are the downloadable artifacts? | [Final release](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-final-2026-09-13) |
+| Where are the downloadable artifacts? | [Current submission kit](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-submission-fusion-2026-09-13) |
 | How was the current default chosen? | [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md) |
 | Where is the earlier research and strict-release history? | Git history before the 2026-09-13 cleanup commit |
 | What are the exact score and image inputs? | [docs/media/metrics.json](docs/media/metrics.json) |
 | Where is the current validation receipt? | [docs/fusion-restored-validation.json](docs/fusion-restored-validation.json) |
-| What did the strict final batch measure? | [batch report](presentation/evidence/batch_report.json), [resource receipt](presentation/evidence/final-batch-resource.json) |
+| What did the fusion batch measure? | [Judge-package verification receipt](presentation/evidence/judge-fusion-verification.json) |
 
-If an older document, slide or recording conflicts with the accepted strict
+If an older document, slide or recording conflicts with the accepted fusion
 configuration or these current receipts, explain the version difference and
 use the current evidence. Do not silently combine metrics from different
 algorithms, cohorts or timing scopes.

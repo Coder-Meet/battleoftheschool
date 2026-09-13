@@ -14,7 +14,18 @@ or repository clone is needed. [Exact installation and run commands](application
 
 [Watch the showcase](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-showcase.mp4) · [View on Google Drive](https://drive.google.com/file/d/1JvuW4ZvMwT6x4_I_VQ8jplEnPNiR_hV5/view?usp=sharing) · [Devpost copy](DEVPOST_SUBMISSION.md) · [Presenter briefing](PRESENTER_BRIEFING.md)
 
-The showcase, [gallery and chart assets](docs/media/README.md), presenter material and earlier final-release kits describe strict. Recorded counts, scores and runtime figures are historical. Use the separately named **judge-fusion** package for the selected fusion submission; current settings and validation are below.
+**[Download the complete current submission kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-submission-fusion-2026-09-13/branchseed-submission-fusion-kit.zip):** editable PPTX, PDF, five-minute speaking script, showcase video, Devpost copy and gallery. The deck, notes and charts describe the selected fusion workflow. The showcase and interface screenshots retain historical UI footage; their visible counts and timings are not current performance evidence.
+
+| Selected fusion evidence | Result |
+|---|---|
+| Five reused reference cases, local 3 mm matching | **F1 0.757 · precision 77.8% · recall 73.7%** |
+| Reference matches / extras / misses | **14 / 4 / 5**, daughter-count MAE **1.8** |
+| 24 synthetic topology cases | F1 **0.8785**, **47 / 11 / 2**, including four negative-control detections |
+| Standalone offline replay, all 25 scans | **11.60 s mean · 52.67 s maximum · 1499 MiB sampled peak RSS** |
+
+Reference and synthetic scores measure different cohorts. These are development results, not an official weighted score or hidden-test accuracy. Runtime is measured under four-core Linux affinity; organizer-Windows timing remains unmeasured.
+
+![Fusion reference and synthetic results, with evaluation scope.](docs/media/evidence-scorecard.png)
 
 | Start here | Purpose |
 |---|---|

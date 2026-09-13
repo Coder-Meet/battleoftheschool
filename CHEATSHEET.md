@@ -15,7 +15,7 @@ Use [DEMO_GUIDE.md](DEMO_GUIDE.md) for exact setup and [presentation/LIVE_DEMO_C
 | Are those independent test results? | No: 19 judge-approved, AI-assisted/non-exhaustive targets on five reused cases |
 | Synthetic result? | Current 24-case fusion: 47/11/2, F1 0.8785, including 4 negative-control FPs. Previous strict: 46/0/3, F1 0.9684 |
 | Why not recovery by default? | Its fusion combination is unvalidated; retained only with explicit strict mode |
-| Runtime evidence? | Historical strict Linux 25-case run (does not transfer to fusion): 5.316 s average, 23.212 s maximum; sampled process-tree peak 1480.7 MiB. Organizer-Windows acceptance remains open |
+| Runtime evidence? | Fusion offline Linux 25-case run: 11.60 s average, 52.67 s maximum; sampled process-tree peak 1499 MiB. Four cores; organizer-Windows timing remains open |
 | What should run on stage? | Normal Explorer, live at slide 5; the product showcase is separate |
 
 ```bash
@@ -23,4 +23,4 @@ python explorer.py --data-root data --port 8000
 python run.py --image image.nii.gz --aorta-mask mask.nii.gz --output prediction.json
 ```
 
-Use no review/model/experimental flag for the current fusion demo. The existing presentation still describes strict and needs refreshing. Do not call heuristic scores probabilities, proxy scores official challenge accuracy, unknown radii zero, or unmatched predictions clinically proven false positives. See [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md) for the current evidence and [DEMO_GUIDE.md](DEMO_GUIDE.md) for outstanding submission actions.
+Use no review/model/experimental flag for the current fusion demo. Use the current fusion presentation and script from the [submission kit](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-submission-fusion-2026-09-13). Do not call heuristic scores probabilities, proxy scores official challenge accuracy, unknown radii zero, or unmatched predictions clinically proven false positives. See [PRODUCTION_WORKFLOW.md](PRODUCTION_WORKFLOW.md) for the current evidence and [DEMO_GUIDE.md](DEMO_GUIDE.md) for outstanding submission actions.

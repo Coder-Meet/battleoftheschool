@@ -1,0 +1,475 @@
+{
+  "schema_version": 1,
+  "runtime_source_commit": "6e67aca527fac6eaa2e2f1dc97cea3a62a7b5677",
+  "validated_packaging_commit": "75106f3c8ceff5f1f6ad64d8151a9f27acbeba46",
+  "source_sha256": {
+    "run.py": "c0e3d77d5296c75bc2308dac46cde986f7776915b359b0e02589e071af1b5edc",
+    "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+    "nifti_io.py": "d8cd2795046affe798a2c2ed0822dc615f73930b94381c1ef5af0de36127cb02",
+    "learning.py": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+    "origin_recovery.py": "1bddeefff79c881cef0e0678404d6746467ae3649f3db3ea5c35ad7f439ff1c2",
+    "pipeline.py": "ebf9d0ab8ba903e401a5c930d899c5d71cb36229c34ce2efe4bf08fd501582c3",
+    "batch.py": "92fc2c956b71c6411bfd42bac0be8f4e02caed1a8680e2165bb83f6588bfb9b2",
+    "models/production-v1/logistic.json": "e9f864956aa65c3f05c038b13b0c8ca9e7289e4a44f6f0eb7837ab85814c730e"
+  },
+  "artifacts": {
+    "branchseed-judge-fusion-source.zip": {
+      "bytes": 31079,
+      "sha256": "68220554ad76324445b1faf5a7c57cae735c779fdda2a811269e8b28558bb127"
+    },
+    "branchseed-judge-fusion-windows-x64.zip": {
+      "bytes": 90713183,
+      "sha256": "55d8bcc7fbe6346fcf313e4894952f5ed72a5955cf6fed27d5106004751dc304"
+    }
+  },
+  "archive_members": {
+    "branchseed-judge-fusion-windows-x64.zip": [
+      "START_HERE.md",
+      "batch.py",
+      "detector.py",
+      "learning.py",
+      "models/production-v1/logistic.json",
+      "nifti_io.py",
+      "origin_recovery.py",
+      "pipeline.py",
+      "requirements.txt",
+      "run.py",
+      "windows-wheelhouse/imageio-2.37.4-py3-none-any.whl",
+      "windows-wheelhouse/lazy_loader-0.5-py3-none-any.whl",
+      "windows-wheelhouse/networkx-3.6.1-py3-none-any.whl",
+      "windows-wheelhouse/numpy-2.5.3-cp313-cp313-win_amd64.whl",
+      "windows-wheelhouse/packaging-26.3-py3-none-any.whl",
+      "windows-wheelhouse/pillow-12.3.0-cp313-cp313-win_amd64.whl",
+      "windows-wheelhouse/scikit_image-0.26.0-cp313-cp313-win_amd64.whl",
+      "windows-wheelhouse/scipy-1.16.2-cp313-cp313-win_amd64.whl",
+      "windows-wheelhouse/simpleitk-2.5.6-cp311-abi3-win_amd64.whl",
+      "windows-wheelhouse/tifffile-2026.9.9-py3-none-any.whl"
+    ],
+    "branchseed-judge-fusion-source.zip": [
+      "START_HERE.md",
+      "batch.py",
+      "detector.py",
+      "learning.py",
+      "models/production-v1/logistic.json",
+      "nifti_io.py",
+      "origin_recovery.py",
+      "pipeline.py",
+      "requirements.txt",
+      "run.py"
+    ]
+  },
+  "clean_environment_packages": [
+    {
+      "name": "ImageIO",
+      "version": "2.37.4"
+    },
+    {
+      "name": "lazy-loader",
+      "version": "0.5"
+    },
+    {
+      "name": "networkx",
+      "version": "3.6.1"
+    },
+    {
+      "name": "numpy",
+      "version": "2.5.3"
+    },
+    {
+      "name": "packaging",
+      "version": "26.3"
+    },
+    {
+      "name": "pillow",
+      "version": "12.3.0"
+    },
+    {
+      "name": "pip",
+      "version": "25.0.1"
+    },
+    {
+      "name": "scikit-image",
+      "version": "0.26.0"
+    },
+    {
+      "name": "scipy",
+      "version": "1.16.2"
+    },
+    {
+      "name": "simpleitk",
+      "version": "2.5.6"
+    },
+    {
+      "name": "tifffile",
+      "version": "2026.9.9"
+    }
+  ],
+  "offline_install_and_pip_check": "passed",
+  "windows_offline_resolution": "passed",
+  "repeatable_archive_bytes": true,
+  "native_windows_ci_artifact_byte_identity": true,
+  "minimal_windows_linux_ci": "https://github.com/Coder-Meet/battleoftheschool/actions/runs/34760619075",
+  "all_25_prediction_byte_identity_with_checkout": {
+    "subject001": true,
+    "subject002": true,
+    "subject003": true,
+    "subject004": true,
+    "subject005": true,
+    "subject006": true,
+    "subject007": true,
+    "subject008": true,
+    "subject009": true,
+    "subject010": true,
+    "subject011": true,
+    "subject012": true,
+    "subject013": true,
+    "subject014": true,
+    "subject015": true,
+    "subject016": true,
+    "subject017": true,
+    "subject018": true,
+    "subject019": true,
+    "subject020": true,
+    "subject021": true,
+    "subject022": true,
+    "subject023": true,
+    "subject024": true,
+    "subject025": true
+  },
+  "input_sha256": {
+    "data/subject001/mask1.nii": "e0fa932b3188b8742881fa9dc85526f128dc0c73b99ba7c76932870eb8ec34d2",
+    "data/subject001/orig1.nii": "62233818ee9dfe9d6e2f175d1d496378e58b3eb485e7c274c77eb12535d141cf",
+    "data/subject002/mask2.nii": "63660793d4aa69ed875e3bbfd3cce4dde54d33ea153fd440d433607bdea5c5ff",
+    "data/subject002/orig2.nii": "31be427c495e185696a6247906d210832ca5c99ad9b2fd0c475768de920f866e",
+    "data/subject003/mask3.nii": "853e813380f7940c95086d39a3b6848afa97ef479b72444c38bca11bae10e387",
+    "data/subject003/orig3.nii": "4bd4dc06361ebc7fe66b8560d29b2d65c3e1f82aab4e56cc06515867c9548d81",
+    "data/subject004/mask4.nii": "dc37a8786ff2804b829a5e02d14576cb49bd5298d7f904a27cfb8bd18bb5db42",
+    "data/subject004/orig4.nii": "b033e3d1b5eb6c1799f837cdb6050289fff5b5a603ceb84c84b22076b18da38d",
+    "data/subject005/mask5.nii": "948fc2b74c98421a569d6e65971f4bfec6cb0d3a70cd5772d153f430d1b0f336",
+    "data/subject005/orig5.nii": "820f7b6977df83acb045520b8bc9e76035655390bdd9d4aa08783788ef034c2f",
+    "data/subject006/mask6.nii": "d02ab3cb373d78ec45c758ee93d55dcdfac7674c1e231358208213a5ea4a8755",
+    "data/subject006/orig6.nii": "94b50463eadd74a411158456a22bcfecb6ff55044ef3c254af3e0ae1297ab653",
+    "data/subject007/mask7.nii": "bec3f93417d230ab942f97b880ba9e1c3db19c6fd130a6d9a991d60fb7d24b58",
+    "data/subject007/orig7.nii": "8029df9319063e256d682f29bf38fb1aa8a11e24b5850b51e2b51e72958460b0",
+    "data/subject008/mask8.nii": "aa2bd135f5b6d86a554badbfe1eb49a896e01ca8e071d01ec665c7c65875d128",
+    "data/subject008/orig8.nii": "b7c3d7373e63c5e1a7bec535fa7b2d9aea9c59a9b80d6d7580a7f8cd82ae4571",
+    "data/subject009/mask9.nii": "d96d9cc6322834b6b4d712fbd423a7d3b48ea86b24e844b675834cff730526df",
+    "data/subject009/orig9.nii": "dbafc93eb20c0dc7252b168840c87d0ae5cd5390468a26866e419904bb7ca151",
+    "data/subject010/mask10.nii": "d1f97e412e67480810019987c6dd2fe0e9d9b8c2663e1a646a3e147969c371e3",
+    "data/subject010/orig10.nii": "121b8d8c019d7645f9daa94eb88387c546df3f6136ba7c9cdb0f9c9bde997970",
+    "data/subject011/mask11.nii": "a3c80c0ec04cfba7ed73b9572bc81b48096b7bd8e5d356e381064054dd17e4af",
+    "data/subject011/orig11.nii": "dd4ae9c10ac4e93663a367e4db4a4130f3982f13eba21a9f65c980d9ccb51c42",
+    "data/subject012/mask12.nii": "2a57c1762f798d56fab8e11bb718fa93075fc5df91e976f59154d1293ec1db2a",
+    "data/subject012/orig12.nii": "51ed04b693cf82cc69631d3f0e5725647bdf9f5388ce696b4e604557eb4bde2f",
+    "data/subject013/mask13.nii": "456d14686ab521bea1f44849402f6f89ef2cc4e91b34af24ccc5f55ba11f85ea",
+    "data/subject013/orig13.nii": "92bd9147d869a7ac9bd11484f175ebf4b557cc4c3ca0bae52d45371806d93a04",
+    "data/subject014/mask14.nii": "5f7e14ad740f835987b6d61dd7691c21fcb8cf94ac514b350bc6a932d954f854",
+    "data/subject014/orig14.nii": "f9cf57b1aaec3ea5ae20f209bdfc0740fdbee42f307a4b9723a291285fc4b46c",
+    "data/subject015/mask15.nii": "4a5a8a2950eb031193b1fc3e0fbde44279cad916fa8d8be6af2c68bf3693ece6",
+    "data/subject015/orig15.nii": "6b252057bba390abe463529304ea4dea8ab13f15e0786b1b0149c88bcef38cb5",
+    "data/subject016/mask16.nii": "ad406c699fa1d6cf7606468e93161ae03b406e7112280ea6b65d714d1e686608",
+    "data/subject016/orig16.nii": "0be57912e22563ff8a46a5584a9a251c968d62e102b7b59710c4e9c8a7295eb9",
+    "data/subject017/mask17.nii": "2519faf6db06b3960839f8e8bde08a919d52949934e452406c8d268c9786f121",
+    "data/subject017/orig17.nii": "3fba735ef6feda0f6f18bdb1a68fc6557c8e4460564c8438c716126d53148548",
+    "data/subject018/mask18.nii": "12ffdc832ebe3b83661c318f5fac62f09fd50dcd0ed956147f40783259cd7f54",
+    "data/subject018/orig18.nii": "a329285a571c45b0eaaaeeb597e884f5ea2f7a3d8ad275a0e06939ff50a51580",
+    "data/subject019/mask19.nii": "c18f4c8f43904e1658164e762984d042b1bc88e789494e6fdeec79ec95d82b0f",
+    "data/subject019/orig19.nii": "5e3140eeaa821b6c964620256c1696df6a228564896b1c66d3846f625b7c8c96",
+    "data/subject020/mask20.nii": "dee54f9885040b24bf59e1e11843c4cf08992f12b4ac9479f622a79a279092ca",
+    "data/subject020/orig20.nii": "f9b0ff4e3af19ca8e63cddfcc1a5ec5d5d302b1f7d97e54b7d57b06680cc7d81",
+    "data/subject021/mask21.nii": "0ef0d75f4a912a947ab566da3ef5e614f458f3ee5cba328cf1976b320e7f444b",
+    "data/subject021/orig21.nii": "11e3ce094db5632f7f4df2dbe5849923e9f51a7a17eeeeaf1fa6a296abb48519",
+    "data/subject022/mask22.nii": "96fac7941744573e8e14f0e4402d60d00fdd9099f984df76514b929bd52b3d0d",
+    "data/subject022/orig22.nii": "56b888fd4a43396ea38d44c7f3ffa7f4f2972815e8173fa73e47d694f3a3ba81",
+    "data/subject023/mask23.nii": "bb10d5cbe26775e76beddf2c3c7d9f447e39784e129fe40f9204e5d48be00cd8",
+    "data/subject023/orig23.nii": "9e2747d40b4f63ec23d4d4a99dd6d4f4cf0125d608c1e782df6f094af51cbb49",
+    "data/subject024/mask24.nii": "7bfc8ddd995b7f9194e9a0c7fa7ee538ac8806e96334451fa6fd2c8626d8041b",
+    "data/subject024/orig24.nii": "f3bbcfefc20175d22c3e6ccf8e08ee712b96e807889796752c26a85c865f7635",
+    "data/subject025/mask25.nii": "851230970f431325dbacdb807c238bab3d178369bdb593c78e4b51f25c184c1d",
+    "data/subject025/orig25.nii": "625da641775349a11ebffe8002ef880dbdc21513430a7c517ecdd1aa4ab70ff5"
+  },
+  "reference_sha256": {
+    "subject019": "38435a327008a660a826c250dc9ec119ef6eae6cee2bd1ca62dd7f59b1a9dbf2",
+    "subject020": "dd9f3b2d780f04613daf2e114668c4589b6d4971644f4d64a28cd7056ae874f3",
+    "subject021": "9f7e48a9f6be02c032aae5fefd3c77b0376292056eb107ecaad68886ce494029",
+    "subject022": "ea72c9717b11d43f9bef7da748698a9ec72575a03f004f762e7f30baddca14d3",
+    "subject023": "19172eae21cfab45382a88bcf4bd3cfc4743f97b9234f8a588f918ee2601cb5b"
+  },
+  "reference_scores_3mm": {
+    "cases": 5,
+    "true_positives": 14,
+    "false_positives": 4,
+    "false_negatives": 5,
+    "precision": 0.7777777777777778,
+    "recall": 0.7368421052631579,
+    "f1": 0.7567567567567568,
+    "count_mae": 1.8,
+    "exact_count_cases": 0,
+    "errors": {
+      "ostium_error_mm": {
+        "n": 14,
+        "mean": 1.6578013164547227,
+        "median": 1.7401833130189628,
+        "p95": 2.6460405706310755
+      },
+      "seed_error_mm": {
+        "n": 14,
+        "mean": 1.283846988778836,
+        "median": 0.9340113745828187,
+        "p95": 2.816734339158967
+      },
+      "radius_error_mm": {
+        "n": 2,
+        "mean": 0.2039999999999999,
+        "median": 0.2039999999999999,
+        "p95": 0.2543999999999998
+      },
+      "direction_error_degrees": {
+        "n": 14,
+        "mean": 14.718497867078572,
+        "median": 13.055258363091923,
+        "p95": 26.639152057534645
+      },
+      "seed_to_reference_centreline_mm": {
+        "n": 14,
+        "mean": 0.9594320052319665,
+        "median": 0.7972920902112892,
+        "p95": 1.9891561509651432
+      }
+    }
+  },
+  "batch_cases": [
+    {
+      "case_id": "subject001",
+      "status": "ok",
+      "branches": 9,
+      "detection_s": 4.941,
+      "end_to_end_s": 5.112
+    },
+    {
+      "case_id": "subject002",
+      "status": "ok",
+      "branches": 5,
+      "detection_s": 6.367,
+      "end_to_end_s": 6.407
+    },
+    {
+      "case_id": "subject003",
+      "status": "ok",
+      "branches": 8,
+      "detection_s": 10.483,
+      "end_to_end_s": 10.669
+    },
+    {
+      "case_id": "subject004",
+      "status": "ok",
+      "branches": 6,
+      "detection_s": 7.464,
+      "end_to_end_s": 7.534
+    },
+    {
+      "case_id": "subject005",
+      "status": "ok",
+      "branches": 13,
+      "detection_s": 9.542,
+      "end_to_end_s": 9.608
+    },
+    {
+      "case_id": "subject006",
+      "status": "ok",
+      "branches": 9,
+      "detection_s": 13.196,
+      "end_to_end_s": 13.24
+    },
+    {
+      "case_id": "subject007",
+      "status": "ok",
+      "branches": 11,
+      "detection_s": 6.732,
+      "end_to_end_s": 6.79
+    },
+    {
+      "case_id": "subject008",
+      "status": "ok",
+      "branches": 7,
+      "detection_s": 16.568,
+      "end_to_end_s": 16.767
+    },
+    {
+      "case_id": "subject009",
+      "status": "ok",
+      "branches": 5,
+      "detection_s": 7.599,
+      "end_to_end_s": 7.698
+    },
+    {
+      "case_id": "subject010",
+      "status": "ok",
+      "branches": 12,
+      "detection_s": 18.968,
+      "end_to_end_s": 19.05
+    },
+    {
+      "case_id": "subject011",
+      "status": "ok",
+      "branches": 5,
+      "detection_s": 5.763,
+      "end_to_end_s": 5.843
+    },
+    {
+      "case_id": "subject012",
+      "status": "ok",
+      "branches": 5,
+      "detection_s": 6.559,
+      "end_to_end_s": 6.729
+    },
+    {
+      "case_id": "subject013",
+      "status": "ok",
+      "branches": 8,
+      "detection_s": 7.154,
+      "end_to_end_s": 7.307
+    },
+    {
+      "case_id": "subject014",
+      "status": "ok",
+      "branches": 4,
+      "detection_s": 8.104,
+      "end_to_end_s": 8.247
+    },
+    {
+      "case_id": "subject015",
+      "status": "ok",
+      "branches": 4,
+      "detection_s": 8.919,
+      "end_to_end_s": 9.105
+    },
+    {
+      "case_id": "subject016",
+      "status": "ok",
+      "branches": 8,
+      "detection_s": 11.716,
+      "end_to_end_s": 11.931
+    },
+    {
+      "case_id": "subject017",
+      "status": "ok",
+      "branches": 0,
+      "detection_s": 2.018,
+      "end_to_end_s": 2.281
+    },
+    {
+      "case_id": "subject018",
+      "status": "ok",
+      "branches": 19,
+      "detection_s": 42.172,
+      "end_to_end_s": 42.929
+    },
+    {
+      "case_id": "subject019",
+      "status": "ok",
+      "branches": 2,
+      "detection_s": 2.906,
+      "end_to_end_s": 3.116
+    },
+    {
+      "case_id": "subject020",
+      "status": "ok",
+      "branches": 2,
+      "detection_s": 3.56,
+      "end_to_end_s": 3.926
+    },
+    {
+      "case_id": "subject021",
+      "status": "ok",
+      "branches": 4,
+      "detection_s": 7.038,
+      "end_to_end_s": 7.237
+    },
+    {
+      "case_id": "subject022",
+      "status": "ok",
+      "branches": 9,
+      "detection_s": 12.209,
+      "end_to_end_s": 12.724
+    },
+    {
+      "case_id": "subject023",
+      "status": "ok",
+      "branches": 1,
+      "detection_s": 2.291,
+      "end_to_end_s": 2.528
+    },
+    {
+      "case_id": "subject024",
+      "status": "ok",
+      "branches": 7,
+      "detection_s": 10.523,
+      "end_to_end_s": 10.644
+    },
+    {
+      "case_id": "subject025",
+      "status": "ok",
+      "branches": 17,
+      "detection_s": 52.187,
+      "end_to_end_s": 52.67
+    }
+  ],
+  "mean_end_to_end_s": 11.60368,
+  "max_end_to_end_s": 52.67,
+  "resource_receipt": {
+    "schema_version": 1,
+    "platform": "Linux",
+    "platform_detail": "Linux-5.15.200-x86_64-with-glibc2.35",
+    "python": "3.13.3",
+    "cpu_cores": 4,
+    "cpu_affinity": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "cpu_limit_method": "os_affinity_and_thread_environment",
+    "gpu": null,
+    "network": false,
+    "network_evidence": "socket creation denied",
+    "target_Windows_verified": false,
+    "command": [
+      "/home/ubuntu/repos/battleoftheschool/outputs/judge-fusion-env/bin/python",
+      "/home/ubuntu/judge-fusion-isolated/branchseed-judge-fusion/batch.py",
+      "--data-root",
+      "/home/ubuntu/repos/battleoftheschool/data",
+      "--output-dir",
+      "/home/ubuntu/judge-fusion-isolated/predictions"
+    ],
+    "exit_code": 0,
+    "thread_environment": {
+      "OPENBLAS_NUM_THREADS": "4",
+      "OMP_NUM_THREADS": "4",
+      "MKL_NUM_THREADS": "4",
+      "NUMEXPR_NUM_THREADS": "4",
+      "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4",
+      "VECLIB_MAXIMUM_THREADS": "4"
+    },
+    "cases": {
+      "all-25-fusion": {
+        "runtime_s": 290.9814099060004,
+        "peak_rss_mb": 1571.807232,
+        "peak_rss_mib": 1498.9921875,
+        "samples": 7173,
+        "max_processes": 2
+      }
+    },
+    "measurement": {
+      "scope": "sum of sampled RSS for wrapper and all live descendants, excluding outer sampler",
+      "interval_s": 0.01,
+      "limitations": "Sampling can miss short peaks; shared pages may be counted more than once. Wall time includes process startup. GPU use is not verified by this generic wrapper. OS process affinity and cooperative library thread ceilings were applied."
+    }
+  },
+  "limitations": [
+    "Five reused AI-assisted, potentially incomplete references; not independent accuracy.",
+    "Fusion has 11 false positives on the existing 24-case synthetic comparison.",
+    "Resource timing is Linux; actual organizer Windows hardware remains unmeasured.",
+    "Sampled RSS can miss short peaks; no hard memory cap was applied."
+  ]
+}

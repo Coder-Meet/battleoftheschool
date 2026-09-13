@@ -1,9 +1,7 @@
-> Strict-release material retained from the published presenter kit. The current checkout now defaults to fusion (five-reference F1 0.75676); see [current workflow](PRODUCTION_WORKFLOW.md). Update algorithm, synthetic FP and resource claims before reusing this as current submission copy.
-
 # Devpost submission — ready-to-paste copy
 
-[Download the complete copy, gallery and presenter kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-devpost-kit.zip).
-Extract it and open `START_HERE.html`; PDF and editable Word versions are included.
+[Download the current fusion submission kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-submission-fusion-2026-09-13/branchseed-submission-fusion-kit.zip).
+Extract it and open `START_HERE.html`; PPTX, PDF, editable Word, the speaking script and video are included.
 
 ## 1. What to submit
 
@@ -27,7 +25,7 @@ Best Slide Aesthetics side-quest.
 | Project story | Copy section 3 |
 | Built with | Copy section 4; distinguish runtime from research tools |
 | Demo video | Upload the [40-second showcase](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-showcase.mp4) to YouTube/Vimeo, or use a public Drive link if accepted by the form |
-| Slides | Link the [five-minute presentation kit](https://github.com/Coder-Meet/battleoftheschool/releases/download/branchseed-final-2026-09-13/branchseed-final-presentation.zip); upload its PDF if the form accepts files |
+| Slides | Use the [current fusion PPTX/PDF and script](https://github.com/Coder-Meet/battleoftheschool/releases/tag/branchseed-submission-fusion-2026-09-13); upload the PDF if the form accepts files |
 | Technical deliverables | [Standalone fusion judge download](application/README.md): selected inference code/model and offline Windows wheels, without the website. Do not substitute the older strict ZIP. |
 | Cover and gallery | Images and captions in section 5 |
 | Team | Add every teammate's real Devpost account; complete your team name and school |
@@ -60,7 +58,7 @@ From CT to a map you can inspect: discover aortic branch origins, verify predict
 ### Short project description
 
 Branchseed turns a CT scan and a parent-aorta mask into inspectable daughter-vessel
-instances. A deterministic CPU pipeline proposes direct aortic openings and
+instances. A CPU fusion pipeline proposes direct aortic openings and
 estimates each origin, a seed 5 mm along its proximal path, radius and direction.
 The Explorer connects those predictions to a 3D reconstruction, linked CT planes,
 a wall map and an interior tour. Challenge JSON stays in physical millimetres,
@@ -105,13 +103,21 @@ measurements connected rather than leaving a reviewer with an isolated score.
 
 ### How we built it
 
-The submitted detector uses classical image processing and geometry. We
+The submitted detector combines classical image processing with a small
+bundled logistic candidate filter. We
 validate physical coordinates, crop around the parent, work on a 1 mm grid,
 estimate scan-relative contrast, enhance tubular structures at multiple
 scales, propose wall contacts and trace supported proximal paths. Connection,
 length, size and shared-path checks help reject crop caps and duplicate
 openings. The current origin-diameter policy uses the judge's 2 mm minimum
 with an explicit allowance for native-voxel uncertainty.
+
+We generate strict and broader review proposals at native contrast scale
+0.9, score both with the bundled 13-feature logistic model at threshold
+0.15, then merge survivors within 3 mm while retaining strict proposals
+first. Scoring before merging prevents a weak overlapping proposal from
+displacing a stronger representation before filtering. These are automatic
+proposal passes; no manual review or model download is required at inference.
 
 Python, SimpleITK, NumPy, SciPy and scikit-image power the detector. TypeScript
 and Three.js power the Explorer; Vite builds its local assets. The Python
@@ -141,37 +147,38 @@ synthetic regression results.
 ### Accomplishments we're proud of
 
 We built a complete path from new CT/mask inputs to valid physical-coordinate
-JSON and an interactive evidence viewer. The final strict batch completed
-**all 25 supplied scans**, averaging **5.32 seconds per case**, with a
-**23.21-second maximum** and **1481 MiB maximum sampled process-tree RSS**
+JSON and an interactive evidence viewer. The standalone fusion batch completed
+**all 25 supplied scans**, averaging **11.60 seconds per case**, with a
+**52.67-second maximum** and **1499 MiB maximum sampled process-tree RSS**
 under four-core Linux affinity. These are development measurements;
 organizer-Windows timing remains to be measured.
 
 We also made the performance claims inspectable:
 
-| Evidence | Submitted strict result | What it measures |
+| Evidence | Selected fusion result | What it measures |
 |---|---|---|
-| Five reused reference cases, 19 targets | Precision **0.727**, recall **0.421**, F1 **0.533**; count MAE **2.0** | Local one-to-one ostium agreement at 3 mm |
-| Twenty-four synthetic topology cases | **46 TP / 0 FP / 3 FN**, F1 **0.968** | Procedural topology regression at 3 mm |
-| Twenty-five supplied scans | **25 completed**, 150 predicted instances | Execution and output coverage, not detection accuracy |
+| Five reused reference cases, 19 targets | **14 TP / 4 FP / 5 FN**; precision **0.778**, recall **0.737**, F1 **0.757**; count MAE **1.8** | Local one-to-one ostium agreement at 3 mm |
+| Twenty-four synthetic topology cases | **47 TP / 11 FP / 2 FN**, F1 **0.8785**; four negative-control detections | Procedural topology regression at 3 mm |
+| Twenty-five supplied scans | **25 completed**, all outputs identical to the full-checkout replay | Execution and output coverage, not detection accuracy |
 
-The local reference result includes 11 missed targets. Synthetic F1 is not
+The local reference result includes five missed targets. Synthetic F1 is not
 real-patient accuracy, and neither result establishes hidden-test or clinical
 performance. We would rather show the evidence and its limits than attach an
 unsupported “accuracy” percentage to the product.
 
 ### What we learned
 
-A more complicated model is useful only if its evidence supports the change.
-Our frozen selection replay covered 280 variants, with 180 eligible for the
-case-separated comparison. The retrospective random-forest winner scored
-higher on the reused cases, but lacked independent promotion evidence. The
-case-separated selection composite was less reliable than fixed strict.
+Proposal coverage and filtering order matter. The selected fusion workflow
+raises local reference F1 from the earlier strict baseline's **0.533 to
+0.757**, while reducing daughter-count error from **2.0 to 1.8**.
+This improvement has a cost: on the same synthetic cohort, strict had zero
+false positives while fusion has eleven, including four in negative controls.
 
-A later guarded connection recovery raised local F1 from 0.533 to 0.581,
-but increased daughter-count error from 2.0 to 2.2. Since the judge emphasized
-counts, we kept strict as the submitted default. The research remains available
-for future evaluation.
+The team selected fusion for its higher measured reference result. This is
+a development decision, not an independently validated generalization claim.
+Repeated selection on five reused cases can overfit even without training
+new weights. Complete expert annotations and unused patients are the next
+test of whether the improvement transfers.
 
 ### What's next for Branchseed
 
@@ -191,7 +198,8 @@ full distal tree or provide a clinically validated diagnosis.
 SciPy, scikit-image, Matplotlib.
 
 **Research/authoring:** scikit-learn, PyTorch, ONNX Runtime, FFmpeg, Pillow.
-Tree/CNN models are experimental; the submitted detector uses no learned weights.
+The shipped learned component is the bundled logistic filter. Tree/CNN models
+remain experimental; their training frameworks are excluded from the judge ZIP.
 
 **Credits to include:** Toralis Labs for the challenge and supplied CT/mask
 data; the referenced research papers and open-source libraries; local
@@ -218,7 +226,7 @@ evaluation receipts.
 | 2 | `ct-evidence.png` | Inspect linked axial, coronal and sagittal CT evidence for the selected candidate. Recorded interface view. |
 | 3 | `wall-map.png` | Organize predicted origins on an aortic wall map. Recorded interface view. |
 | 4 | `interior-tour.png` | Explore the reconstructed lumen from within. Recorded interface view. |
-| 5 | `evidence-scorecard.png` | Strict results: five reused reference cases and 24 synthetic topology cases are separate evaluations. Local 3 mm matching; not hidden-test or clinical accuracy. |
+| 5 | `evidence-scorecard.png` | Fusion results: five reused reference cases and 24 synthetic topology cases are separate evaluations. Local 3 mm matching; not hidden-test or clinical accuracy. |
 | 6 | `runtime.png` | All 25 scans completed under four-core Linux affinity. Windows-laptop timing remains unverified. |
 | Optional | `pipeline.png` | A physical-space pipeline from CT and parent mask to direct-origin instances and inspectable JSON. |
 
@@ -227,14 +235,14 @@ evaluation receipts.
 - [ ] Paste the title, elevator pitch and project story; preview formatting.
 - [ ] Select Toralis Labs Healthcare and add every teammate.
 - [ ] Confirm team registration, team name and represented school.
-- [ ] Add the public repository and strict technical-download link.
+- [ ] Add the public repository and selected fusion technical-download link.
 - [ ] Upload the showcase and test its public link while signed out.
 - [ ] Add the cover and gallery; retain the scope in metric-image captions.
 - [ ] Add the optional presentation PDF/link for the slide side-quest.
 - [ ] Credit libraries, the sponsor dataset, papers and actual AI tools.
 - [ ] Use **Submit**, then verify the project is entered in this hackathon;
       saving a portfolio draft alone is not proof of entry.
-- [ ] Keep the strict ZIP, full deck and scans on the presentation laptop.
+- [ ] Keep the fusion judge ZIP, current deck, prepared Explorer and scans on the presentation laptop.
 - [ ] Run the laptop's offline check and preload the Explorer before judging.
 
 Do not enter a local loopback address as a public “try it” URL. This product

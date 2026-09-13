@@ -38,7 +38,7 @@ approximately -25 LUFS.
 
 This is an edited historical interface recording, not a new inference run.
 Do not use the footage's old instance counts or displayed timing as current
-strict performance. Current results live in the deck and evaluation reports.
+fusion performance. Current results live in the deck and evaluation reports.
 
 ## Rebuild
 
