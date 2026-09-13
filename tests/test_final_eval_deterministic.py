@@ -6,7 +6,7 @@ import pytest
 
 from detector import DetectorConfig, detect, detect_pool
 from final_eval_deterministic import CandidateAudit, ceiling, matrix, selection, size_status
-from final_evaluation import CASES, score_variant
+from final_evaluation import CASES, score_prediction, score_variant
 from synthetic import generate_case
 
 
@@ -72,6 +72,23 @@ def test_shared_scoring_keeps_all_empty_cases_and_unknown_radius_mask():
         assert score["summary"]["errors"]["radius_error_mm"]["n"] == 0
     with pytest.raises(ValueError, match="all five"):
         score_variant({CASES[0]: predictions[CASES[0]]})
+
+
+def test_matched_unknown_radius_is_masked_and_seed_guide_distance_is_measured():
+    branch = {
+        "instance_id": "reference", "parent_instance_id": "aorta",
+        "ostium_xyz_mm": [0, 0, 0], "seed_xyz_mm": [5, 0, 0],
+        "direction_xyz": [1, 0, 0], "radius_mm": None,
+        "centerline_xyz_mm": [[0, 0, 0], [10, 0, 0]],
+    }
+    reference = {"case_id": "synthetic", "parent": {"instance_id": "aorta"}, "daughters": [branch]}
+    prediction = {
+        **reference, "daughters": [{**branch, "radius_mm": 7, "seed_xyz_mm": [5, 2, 0]}],
+    }
+    match = score_prediction(prediction, reference)["matches"][0]
+    assert match["radius_error_mm"] is None
+    assert match["seed_to_reference_centreline_mm"] == pytest.approx(2)
+    assert branch["radius_mm"] is None
 
 
 def test_loco_selection_excludes_held_out_outcomes_and_ineligible_ceiling():
