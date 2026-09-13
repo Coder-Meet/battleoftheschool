@@ -49,6 +49,11 @@ SCALARS = (
 )
 
 
+# Detector defaults at the frozen baseline 4a43dd4; the production default native_contrast_scale is now 0.9.
+FROZEN_STRICT = DetectorConfig(native_contrast_scale=1.2)
+FROZEN_REVIEW = DetectorConfig.review(native_contrast_scale=1.2)
+
+
 @dataclass(frozen=True)
 class Specification:
     name: str
@@ -61,7 +66,7 @@ class Specification:
         return {
             "engine": self.engine, "detector_config": asdict(self.config),
             "paper_method": self.method, "model_hashes": {},
-            "strict_union_config": asdict(DetectorConfig()) if self.engine == "union" else None,
+            "strict_union_config": asdict(FROZEN_STRICT) if self.engine == "union" else None,
             "category": self.category, "trained_on_reference_cases": False,
             "post_reference_new_algorithm": False,
             "origin_size_eligibility_disabled": self.config.minimum_origin_diameter_mm == 0,
@@ -70,7 +75,7 @@ class Specification:
 
 
 def matrix() -> list[Specification]:
-    strict, review = DetectorConfig(), DetectorConfig.review()
+    strict, review = FROZEN_STRICT, FROZEN_REVIEW
     specs = [
         Specification("deterministic-strict", "detect", strict),
         Specification("deterministic-review", "detect", review),
