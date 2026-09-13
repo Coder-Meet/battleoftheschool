@@ -1,0 +1,219 @@
+{
+  "scope": "AI candidate-review agreement only; no expert accuracy or promotion",
+  "code_commit": "e8303e597c226c5b6f45b7eb7f73d924b0dadc23",
+  "source_sha256": {
+    "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+    "candidate_patches.py": "568d8bd9f0d417768cb22fdd56d054a26ca215cc1741d3d9914ff4052eaa534a",
+    "learning.py": "d7acdaa6f78ea9f3b6703d0b457880de37804ee0fc06ff6aeb4c9bfe7fe82c1e",
+    "tabular_learning.py": "c0ce6347cf2193d59c1bb1245bc2a35f0049ea49d70205bd3fffc637ca125848",
+    "patch_inference.py": "e539d4f8e080a4a219d9c49dda247e2576d19c8269daf638d031116c43c81188",
+    "nifti_io.py": "d8cd2795046affe798a2c2ed0822dc615f73930b94381c1ef5af0de36127cb02",
+    "research_run.py": "b02739a64608d51c39909a6dcaf3d6772f15b2bd7606ced9d7f82f8654727ca1",
+    "review_analytics.py": "319115608d4deee9fe37c55a8af8049ca4f64d12dae1ffec746ddefe6a274930"
+  },
+  "reviews_sha256": "319138ab8e6778f4378d5938901e934d5997dc303adc01f54e3ed7be901a7b5f",
+  "models": {
+    "steven_logistic": {
+      "sha256": "a45747a0382ae41d0a37f2104f2348190905c847a1b89347f9c9703448ddccc6",
+      "threshold": 0.37631433544133275
+    },
+    "augmented_logistic": {
+      "sha256": "9d7026550b834b5f427d4b6404cd6ff02b182b9db7ffd207f0f24b802a83e2f1",
+      "threshold": 0.5
+    },
+    "synthetic_tree": {
+      "sha256": "7e37a395f6ee376c76e68be177b5992259945758fc4c382040db06921fe2380f",
+      "threshold": 0.5630076829578097
+    }
+  },
+  "labels": {
+    "confirmed": 92,
+    "rejected": 145
+  },
+  "labellers": {
+    "claude": 237
+  },
+  "reviewed_cases": 23,
+  "historical_agreement": {
+    "steven_logistic": {
+      "train": {
+        "reviewed_candidates": 122,
+        "confirmed_retained": 46,
+        "confirmed_removed": 4,
+        "rejected_retained": 9,
+        "rejected_removed": 63,
+        "agreement": 0.8934426229508197,
+        "confirmed_retention": 0.92,
+        "rejected_removal": 0.875,
+        "confirmed_share_of_retained": 0.8363636363636363
+      },
+      "validation": {
+        "reviewed_candidates": 47,
+        "confirmed_retained": 17,
+        "confirmed_removed": 4,
+        "rejected_retained": 3,
+        "rejected_removed": 23,
+        "agreement": 0.851063829787234,
+        "confirmed_retention": 0.8095238095238095,
+        "rejected_removal": 0.8846153846153846,
+        "confirmed_share_of_retained": 0.85
+      },
+      "test": {
+        "reviewed_candidates": 68,
+        "confirmed_retained": 20,
+        "confirmed_removed": 1,
+        "rejected_retained": 2,
+        "rejected_removed": 45,
+        "agreement": 0.9558823529411765,
+        "confirmed_retention": 0.9523809523809523,
+        "rejected_removal": 0.9574468085106383,
+        "confirmed_share_of_retained": 0.9090909090909091
+      },
+      "all": {
+        "reviewed_candidates": 237,
+        "confirmed_retained": 83,
+        "confirmed_removed": 9,
+        "rejected_retained": 14,
+        "rejected_removed": 131,
+        "agreement": 0.9029535864978903,
+        "confirmed_retention": 0.9021739130434783,
+        "rejected_removal": 0.903448275862069,
+        "confirmed_share_of_retained": 0.8556701030927835
+      }
+    },
+    "augmented_logistic": {
+      "train": {
+        "reviewed_candidates": 122,
+        "confirmed_retained": 47,
+        "confirmed_removed": 3,
+        "rejected_retained": 7,
+        "rejected_removed": 65,
+        "agreement": 0.9180327868852459,
+        "confirmed_retention": 0.94,
+        "rejected_removal": 0.9027777777777778,
+        "confirmed_share_of_retained": 0.8703703703703703
+      },
+      "validation": {
+        "reviewed_candidates": 47,
+        "confirmed_retained": 17,
+        "confirmed_removed": 4,
+        "rejected_retained": 2,
+        "rejected_removed": 24,
+        "agreement": 0.8723404255319149,
+        "confirmed_retention": 0.8095238095238095,
+        "rejected_removal": 0.9230769230769231,
+        "confirmed_share_of_retained": 0.8947368421052632
+      },
+      "test": {
+        "reviewed_candidates": 68,
+        "confirmed_retained": 20,
+        "confirmed_removed": 1,
+        "rejected_retained": 2,
+        "rejected_removed": 45,
+        "agreement": 0.9558823529411765,
+        "confirmed_retention": 0.9523809523809523,
+        "rejected_removal": 0.9574468085106383,
+        "confirmed_share_of_retained": 0.9090909090909091
+      },
+      "all": {
+        "reviewed_candidates": 237,
+        "confirmed_retained": 84,
+        "confirmed_removed": 8,
+        "rejected_retained": 11,
+        "rejected_removed": 134,
+        "agreement": 0.919831223628692,
+        "confirmed_retention": 0.9130434782608695,
+        "rejected_removal": 0.9241379310344827,
+        "confirmed_share_of_retained": 0.8842105263157894
+      }
+    }
+  },
+  "current_coverage": {
+    "strict": {
+      "proposals": 150,
+      "exact_confirmed": 4,
+      "exact_rejected": 5,
+      "unlabelled_or_changed": 141,
+      "origin_unresolved": 82
+    },
+    "review_union": {
+      "proposals": 304,
+      "exact_confirmed": 67,
+      "exact_rejected": 87,
+      "unlabelled_or_changed": 150,
+      "origin_unresolved": 203
+    }
+  },
+  "current_agreement": {
+    "strict": {
+      "steven_logistic": {
+        "reviewed_candidates": 9,
+        "confirmed_retained": 4,
+        "confirmed_removed": 0,
+        "rejected_retained": 1,
+        "rejected_removed": 4,
+        "agreement": 0.8888888888888888,
+        "confirmed_retention": 1.0,
+        "rejected_removal": 0.8,
+        "confirmed_share_of_retained": 0.8
+      },
+      "augmented_logistic": {
+        "reviewed_candidates": 9,
+        "confirmed_retained": 4,
+        "confirmed_removed": 0,
+        "rejected_retained": 1,
+        "rejected_removed": 4,
+        "agreement": 0.8888888888888888,
+        "confirmed_retention": 1.0,
+        "rejected_removal": 0.8,
+        "confirmed_share_of_retained": 0.8
+      },
+      "synthetic_tree": {
+        "reviewed_candidates": 9,
+        "confirmed_retained": 4,
+        "confirmed_removed": 0,
+        "rejected_retained": 1,
+        "rejected_removed": 4,
+        "agreement": 0.8888888888888888,
+        "confirmed_retention": 1.0,
+        "rejected_removal": 0.8,
+        "confirmed_share_of_retained": 0.8
+      }
+    },
+    "review_union": {
+      "steven_logistic": {
+        "reviewed_candidates": 154,
+        "confirmed_retained": 63,
+        "confirmed_removed": 4,
+        "rejected_retained": 6,
+        "rejected_removed": 81,
+        "agreement": 0.935064935064935,
+        "confirmed_retention": 0.9402985074626866,
+        "rejected_removal": 0.9310344827586207,
+        "confirmed_share_of_retained": 0.9130434782608695
+      },
+      "augmented_logistic": {
+        "reviewed_candidates": 154,
+        "confirmed_retained": 63,
+        "confirmed_removed": 4,
+        "rejected_retained": 6,
+        "rejected_removed": 81,
+        "agreement": 0.935064935064935,
+        "confirmed_retention": 0.9402985074626866,
+        "rejected_removal": 0.9310344827586207,
+        "confirmed_share_of_retained": 0.9130434782608695
+      },
+      "synthetic_tree": {
+        "reviewed_candidates": 154,
+        "confirmed_retained": 47,
+        "confirmed_removed": 20,
+        "rejected_retained": 36,
+        "rejected_removed": 51,
+        "agreement": 0.6363636363636364,
+        "confirmed_retention": 0.7014925373134329,
+        "rejected_removal": 0.5862068965517241,
+        "confirmed_share_of_retained": 0.5662650602409639
+      }
+    }
+  }
+}

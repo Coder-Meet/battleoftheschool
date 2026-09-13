@@ -21,6 +21,7 @@ Use a fresh output directory and the prepared `data/subject*` cases. This writes
 CSV scores, exact candidate-identity coverage, charts, input/source hashes and
 untouched strict/review-union predictions. It does not train or enable a model,
 transfer labels by branch number, or measure accuracy against complete references.
+The frozen findings and review priorities are in [Steven's label analytics](STEVEN_LABEL_ANALYTICS.md).
 
 Research: see the [ML implementation plan](RESEARCH_IMPLEMENTATION.md) and the
 [three additional paper experiments and measured limitations](ADDITIONAL_PAPERS.md).

@@ -2,6 +2,8 @@
 
 For the current detector, algorithm changes, model decisions and evidence limits,
 read the [algorithm review for Steven](STEVEN_ALGORITHM_REVIEW.md).
+The follow-up [label analytics](STEVEN_LABEL_ANALYTICS.md) records model disagreements
+and candidate-identity checks on all supplied cases.
 
 ## What is committed
 

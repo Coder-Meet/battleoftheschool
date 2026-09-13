@@ -76,7 +76,7 @@ def write_json(path: Path, value: object) -> None:
 def write_csv(path: Path, rows: list[dict]) -> None:
     if rows:
         with path.open("w", newline="") as handle:
-            writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+            writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
             writer.writeheader()
             writer.writerows(rows)
 
@@ -197,11 +197,17 @@ def charts(output: Path, historical: list[dict], current: list[dict]) -> None:
         counts = [sum(r["profile"] == profile and r["label"] == label for r in current) for profile in profiles]
         axis.bar(profiles, counts, bottom=bottom, color=color, label=legend)
         for index, value in enumerate(counts):
-            if value:
+            if value >= 12:
                 axis.text(index, bottom[index] + value / 2, str(value), ha="center", va="center", color="white")
+            elif value:
+                axis.annotate(
+                    str(value), (index - 0.4, bottom[index] + value / 2),
+                    xytext=(-20, 12 if label == "rejected" else -12), textcoords="offset points",
+                    ha="right", va="center", arrowprops={"arrowstyle": "-", "color": color},
+                )
         bottom += counts
     axis.set(title="Current proposals cannot inherit labels from branch numbers",
-             ylabel="Current proposals across 25 cases")
+             ylabel="Current proposals")
     axis.legend(loc="upper left")
     figure.savefig(output / "current-identity-coverage.png", dpi=170)
 
@@ -283,6 +289,8 @@ def main() -> None:
     parser.add_argument("--tree-model", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     args = parser.parse_args()
+    if not any(path.is_dir() for path in args.data_root.glob("subject*")):
+        parser.error("--data-root must contain prepared subject directories.")
     reviews = load_reviews([args.reviews])
     raw_count = len(json.loads(args.reviews.read_text())["records"])
     if raw_count != len(reviews):
