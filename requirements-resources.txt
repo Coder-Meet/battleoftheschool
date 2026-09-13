@@ -1,0 +1,2 @@
+# Optional portable research measurements; never required by run.py.
+psutil==7.1.0

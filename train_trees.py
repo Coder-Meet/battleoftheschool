@@ -28,6 +28,7 @@ try:
     from scipy.optimize import minimize
     from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
     from sklearn.metrics import average_precision_score, roc_auc_score
+    from candidate_patches import preprocessing_metadata
 except ImportError:
     TRAINING_AVAILABLE = False
 else:
@@ -247,6 +248,23 @@ def arrays(rows: list[dict], feature_set: str) -> tuple[FloatArray, FloatArray]:
     )
 
 
+def inference_contract(rows: list[dict]) -> dict | None:
+    keys = ("detector_sha256", "extractor_sha256")
+    if not any(key in row for row in rows for key in keys):
+        return None
+    sources = {
+        name: hashlib.sha256(Path(__file__).with_name(name).read_bytes()).hexdigest()
+        for name in ("detector.py", "candidate_patches.py", "learning.py")
+    }
+    if any(
+        row.get(key) != sources[name]
+        for row in rows
+        for key, name in zip(keys, ("detector.py", "candidate_patches.py"))
+    ):
+        raise ValueError("Training candidate extraction source drift; re-extract with the frozen source.")
+    return {"source_sha256": sources, "preprocessing": preprocessing_metadata()}
+
+
 def source_counts(rows: list[dict]) -> dict:
     return {
         source: {
@@ -456,6 +474,7 @@ def train(
     all_weights = training_weights(partitions["train"], source_weights)
     active = all_weights > 0
     fit_rows = [row for row, keep in zip(partitions["train"], active) if keep]
+    extraction_contract = inference_contract(fit_rows + validation_rows + calibration_rows)
     train_x, train_y = arrays(fit_rows, feature_set)
     fit_weights = all_weights[active]
     val_x, val_y = arrays(validation_rows, feature_set)
@@ -481,6 +500,7 @@ def train(
         "minimum_training_recall": minimum_training_recall,
         "threshold_case_ids": sorted(set(split["validation"]) - set(calibration_cases)),
         "prior_exposure": prior_exposure or {},
+        "inference_contract": extraction_contract,
     })
     verification_x = np.concatenate((train_x, val_x))
     exported = model.raw_scores(verification_x)

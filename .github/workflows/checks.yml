@@ -1,11 +1,23 @@
 name: Prototype regression checks
-on: [push, pull_request]
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      optional_research:
+        description: Run bounded Windows optional tree/CNN CPU smoke tests
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
   checks:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '4'
+      OMP_NUM_THREADS: '4'
+      ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS: '4'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -62,3 +74,32 @@ jobs:
         with:
           name: windows-python-results
           path: windows-results.xml
+  optional-research-windows:
+    if: github.event_name == 'workflow_dispatch' && inputs.optional_research
+    runs-on: windows-latest
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '4'
+      OMP_NUM_THREADS: '4'
+      MKL_NUM_THREADS: '4'
+      ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS: '4'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.3'
+      - name: Download pinned base and optional Windows wheels
+        run: |
+          python -m pip download --only-binary=:all: -r requirements-dev.txt -r requirements-trees.txt -r requirements-cnn-training.txt -r requirements-resources.txt --dest wheelhouse
+      - name: Install CPU packages from the wheelhouse
+        run: |
+          python -m pip install --no-index --find-links wheelhouse -r requirements-dev.txt -r requirements-trees.txt -r requirements-cnn-inference.txt -r requirements-resources.txt onnx==1.19.0 torch==2.8.0+cpu
+      - run: python -m mypy
+      - name: Bound training/export, physical inference, resource and parity smoke
+        run: |
+          python -m pytest -q tests/test_tabular_learning.py tests/test_patch_learning.py tests/test_research_run.py tests/test_research_resources.py --junitxml=optional-windows-results.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: optional-windows-research-results
+          path: optional-windows-results.xml
