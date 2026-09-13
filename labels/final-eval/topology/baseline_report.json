@@ -1,0 +1,1611 @@
+{
+  "family": "topology",
+  "stage": "initial_diagnosis",
+  "variants": [
+    {
+      "name": "topology-strict-audit",
+      "prediction_dir": "labels/final-eval/topology/topology-strict-audit",
+      "configuration": {
+        "spacing_mm": 1.0,
+        "margin_mm": 20.0,
+        "shell_inner_mm": 1.5,
+        "shell_outer_mm": 3.5,
+        "cap_margin_mm": 4.0,
+        "minimum_radius_mm": 0.7,
+        "minimum_origin_diameter_mm": 2.0,
+        "minimum_path_mm": 5.0,
+        "trace_length_mm": 10.0,
+        "vesselness_floor": 0.06,
+        "maximum_candidates": 160,
+        "shell_vesselness_floor": 0.06,
+        "connector_gap_fraction": 0.0,
+        "root_depth_mm": 3.5,
+        "blood_lower_scale": 1.0,
+        "support_contrast_fraction": 0.5,
+        "native_contrast_scale": 1.2,
+        "roots_per_contact": 1,
+        "wall_hug_penalty": 0.0,
+        "broad_contact_mm3": 1200.0,
+        "parallel_clearance_mm": 0.0,
+        "profile": "strict"
+      },
+      "eligible_for_selection": false,
+      "ineligible_reason": "Topology diagnosis family; not submitted as a clean frozen-family selection candidate.",
+      "scores": {
+        "2": {
+          "summary": {
+            "cases": 5,
+            "true_positives": 6,
+            "false_positives": 5,
+            "false_negatives": 13,
+            "precision": 0.5454545454545454,
+            "recall": 0.3157894736842105,
+            "f1": 0.4,
+            "count_mae": 2.0,
+            "exact_count_cases": 1,
+            "errors": {
+              "ostium_error_mm": {
+                "n": 6,
+                "mean": 1.2243251532740407,
+                "median": 1.525960537044845,
+                "p95": 1.55569403911363
+              },
+              "seed_error_mm": {
+                "n": 6,
+                "mean": 0.8889689491382561,
+                "median": 0.8672874429622258,
+                "p95": 1.1968544373633323
+              },
+              "radius_error_mm": {
+                "n": 1,
+                "mean": 0.2529999999999999,
+                "median": 0.2529999999999999,
+                "p95": 0.2529999999999999
+              },
+              "direction_error_degrees": {
+                "n": 6,
+                "mean": 14.432178628291254,
+                "median": 13.356095475072049,
+                "p95": 19.771005509345382
+              },
+              "seed_to_reference_centreline_mm": {
+                "n": 6,
+                "mean": 0.7433273792983112,
+                "median": 0.6875351073495513,
+                "p95": 1.1767517709797424
+              }
+            }
+          },
+          "cases": [
+            {
+              "case_id": "subject019",
+              "true_positives": 0,
+              "false_positives": 0,
+              "false_negatives": 3,
+              "daughter_counts": {
+                "predicted": 0,
+                "reference": 3,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": null,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003"
+              ]
+            },
+            {
+              "case_id": "subject020",
+              "true_positives": 0,
+              "false_positives": 1,
+              "false_negatives": 4,
+              "daughter_counts": {
+                "predicted": 1,
+                "reference": 4,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [
+                "branch_001"
+              ],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003",
+                "branch_004"
+              ]
+            },
+            {
+              "case_id": "subject021",
+              "true_positives": 1,
+              "false_positives": 2,
+              "false_negatives": 2,
+              "daughter_counts": {
+                "predicted": 3,
+                "reference": 3,
+                "signed_error": 0,
+                "absolute_error": 0
+              },
+              "precision": 0.3333333333333333,
+              "recall": 0.3333333333333333,
+              "f1": 0.3333333333333333,
+              "matches": [
+                {
+                  "prediction_id": "branch_002",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 1.5384539223393714,
+                  "seed_error_mm": 0.949675749337103,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 13.015861659724159,
+                  "seed_to_reference_centreline_mm": 0.9493508694681312
+                }
+              ],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_003"
+              ],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_003"
+              ]
+            },
+            {
+              "case_id": "subject022",
+              "true_positives": 5,
+              "false_positives": 2,
+              "false_negatives": 1,
+              "daughter_counts": {
+                "predicted": 7,
+                "reference": 6,
+                "signed_error": 1,
+                "absolute_error": 1
+              },
+              "precision": 0.7142857142857143,
+              "recall": 0.8333333333333334,
+              "f1": 0.7692307692307693,
+              "matches": [
+                {
+                  "prediction_id": "branch_002",
+                  "reference_id": "branch_006",
+                  "ostium_error_mm": 1.5359534087406372,
+                  "seed_error_mm": 0.8162278860959171,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 21.28384874480707,
+                  "seed_to_reference_centreline_mm": 0.6381174798469682
+                },
+                {
+                  "prediction_id": "branch_004",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 0.45083174114421926,
+                  "seed_error_mm": 0.7377975851878719,
+                  "radius_error_mm": 0.2529999999999999,
+                  "direction_error_degrees": 13.69632929041994,
+                  "seed_to_reference_centreline_mm": 0.7369527348521344
+                },
+                {
+                  "prediction_id": "branch_005",
+                  "reference_id": "branch_003",
+                  "ostium_error_mm": 1.5614407447050496,
+                  "seed_error_mm": 0.6325181410080337,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 15.232475802960323,
+                  "seed_to_reference_centreline_mm": 0.3522486470763273
+                },
+                {
+                  "prediction_id": "branch_006",
+                  "reference_id": "branch_004",
+                  "ostium_error_mm": 1.5159676653490526,
+                  "seed_error_mm": 0.9183469998285345,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 12.046391204633915,
+                  "seed_to_reference_centreline_mm": 0.530742473062693
+                },
+                {
+                  "prediction_id": "branch_007",
+                  "reference_id": "branch_005",
+                  "ostium_error_mm": 0.7433034373659145,
+                  "seed_error_mm": 1.2792473333720755,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 11.31816506720212,
+                  "seed_to_reference_centreline_mm": 1.2525520714836127
+                }
+              ],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_003"
+              ],
+              "unmatched_reference_ids": [
+                "branch_001"
+              ]
+            },
+            {
+              "case_id": "subject023",
+              "true_positives": 0,
+              "false_positives": 0,
+              "false_negatives": 3,
+              "daughter_counts": {
+                "predicted": 0,
+                "reference": 3,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": null,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003"
+              ]
+            }
+          ]
+        },
+        "3": {
+          "summary": {
+            "cases": 5,
+            "true_positives": 8,
+            "false_positives": 3,
+            "false_negatives": 11,
+            "precision": 0.7272727272727273,
+            "recall": 0.42105263157894735,
+            "f1": 0.5333333333333333,
+            "count_mae": 2.0,
+            "exact_count_cases": 1,
+            "errors": {
+              "ostium_error_mm": {
+                "n": 8,
+                "mean": 1.59178112941638,
+                "median": 1.5372036655400043,
+                "p95": 2.7692011347197343
+              },
+              "seed_error_mm": {
+                "n": 8,
+                "mean": 1.2209813783770556,
+                "median": 0.9340113745828187,
+                "p95": 2.324175988777208
+              },
+              "radius_error_mm": {
+                "n": 1,
+                "mean": 0.2529999999999999,
+                "median": 0.2529999999999999,
+                "p95": 0.2529999999999999
+              },
+              "direction_error_degrees": {
+                "n": 8,
+                "mean": 13.950859351453497,
+                "median": 13.356095475072049,
+                "p95": 19.958400881494697
+              },
+              "seed_to_reference_centreline_mm": {
+                "n": 8,
+                "mean": 1.027251944281762,
+                "median": 0.8431518021601327,
+                "p95": 1.918412160114005
+              }
+            }
+          },
+          "cases": [
+            {
+              "case_id": "subject019",
+              "true_positives": 0,
+              "false_positives": 0,
+              "false_negatives": 3,
+              "daughter_counts": {
+                "predicted": 0,
+                "reference": 3,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": null,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003"
+              ]
+            },
+            {
+              "case_id": "subject020",
+              "true_positives": 0,
+              "false_positives": 1,
+              "false_negatives": 4,
+              "daughter_counts": {
+                "predicted": 1,
+                "reference": 4,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [
+                "branch_001"
+              ],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003",
+                "branch_004"
+              ]
+            },
+            {
+              "case_id": "subject021",
+              "true_positives": 3,
+              "false_positives": 0,
+              "false_negatives": 0,
+              "daughter_counts": {
+                "predicted": 3,
+                "reference": 3,
+                "signed_error": 0,
+                "absolute_error": 0
+              },
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "matches": [
+                {
+                  "prediction_id": "branch_001",
+                  "reference_id": "branch_001",
+                  "ostium_error_mm": 2.4439754682556116,
+                  "seed_error_mm": 1.8598275904809396,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 7.516948192251578,
+                  "seed_to_reference_centreline_mm": 1.7477372362924801
+                },
+                {
+                  "prediction_id": "branch_002",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 1.5384539223393714,
+                  "seed_error_mm": 0.949675749337103,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 13.015861659724159,
+                  "seed_to_reference_centreline_mm": 0.9493508694681312
+                },
+                {
+                  "prediction_id": "branch_003",
+                  "reference_id": "branch_003",
+                  "ostium_error_mm": 2.9443226474311857,
+                  "seed_error_mm": 2.5742097417059684,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 17.496854849628864,
+                  "seed_to_reference_centreline_mm": 2.0103140421717494
+                }
+              ],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": []
+            },
+            {
+              "case_id": "subject022",
+              "true_positives": 5,
+              "false_positives": 2,
+              "false_negatives": 1,
+              "daughter_counts": {
+                "predicted": 7,
+                "reference": 6,
+                "signed_error": 1,
+                "absolute_error": 1
+              },
+              "precision": 0.7142857142857143,
+              "recall": 0.8333333333333334,
+              "f1": 0.7692307692307693,
+              "matches": [
+                {
+                  "prediction_id": "branch_002",
+                  "reference_id": "branch_006",
+                  "ostium_error_mm": 1.5359534087406372,
+                  "seed_error_mm": 0.8162278860959171,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 21.28384874480707,
+                  "seed_to_reference_centreline_mm": 0.6381174798469682
+                },
+                {
+                  "prediction_id": "branch_004",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 0.45083174114421926,
+                  "seed_error_mm": 0.7377975851878719,
+                  "radius_error_mm": 0.2529999999999999,
+                  "direction_error_degrees": 13.69632929041994,
+                  "seed_to_reference_centreline_mm": 0.7369527348521344
+                },
+                {
+                  "prediction_id": "branch_005",
+                  "reference_id": "branch_003",
+                  "ostium_error_mm": 1.5614407447050496,
+                  "seed_error_mm": 0.6325181410080337,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 15.232475802960323,
+                  "seed_to_reference_centreline_mm": 0.3522486470763273
+                },
+                {
+                  "prediction_id": "branch_006",
+                  "reference_id": "branch_004",
+                  "ostium_error_mm": 1.5159676653490526,
+                  "seed_error_mm": 0.9183469998285345,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 12.046391204633915,
+                  "seed_to_reference_centreline_mm": 0.530742473062693
+                },
+                {
+                  "prediction_id": "branch_007",
+                  "reference_id": "branch_005",
+                  "ostium_error_mm": 0.7433034373659145,
+                  "seed_error_mm": 1.2792473333720755,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 11.31816506720212,
+                  "seed_to_reference_centreline_mm": 1.2525520714836127
+                }
+              ],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_003"
+              ],
+              "unmatched_reference_ids": [
+                "branch_001"
+              ]
+            },
+            {
+              "case_id": "subject023",
+              "true_positives": 0,
+              "false_positives": 0,
+              "false_negatives": 3,
+              "daughter_counts": {
+                "predicted": 0,
+                "reference": 3,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": null,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003"
+              ]
+            }
+          ]
+        },
+        "5": {
+          "summary": {
+            "cases": 5,
+            "true_positives": 8,
+            "false_positives": 3,
+            "false_negatives": 11,
+            "precision": 0.7272727272727273,
+            "recall": 0.42105263157894735,
+            "f1": 0.5333333333333333,
+            "count_mae": 2.0,
+            "exact_count_cases": 1,
+            "errors": {
+              "ostium_error_mm": {
+                "n": 8,
+                "mean": 1.59178112941638,
+                "median": 1.5372036655400043,
+                "p95": 2.7692011347197343
+              },
+              "seed_error_mm": {
+                "n": 8,
+                "mean": 1.2209813783770556,
+                "median": 0.9340113745828187,
+                "p95": 2.324175988777208
+              },
+              "radius_error_mm": {
+                "n": 1,
+                "mean": 0.2529999999999999,
+                "median": 0.2529999999999999,
+                "p95": 0.2529999999999999
+              },
+              "direction_error_degrees": {
+                "n": 8,
+                "mean": 13.950859351453497,
+                "median": 13.356095475072049,
+                "p95": 19.958400881494697
+              },
+              "seed_to_reference_centreline_mm": {
+                "n": 8,
+                "mean": 1.027251944281762,
+                "median": 0.8431518021601327,
+                "p95": 1.918412160114005
+              }
+            }
+          },
+          "cases": [
+            {
+              "case_id": "subject019",
+              "true_positives": 0,
+              "false_positives": 0,
+              "false_negatives": 3,
+              "daughter_counts": {
+                "predicted": 0,
+                "reference": 3,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": null,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003"
+              ]
+            },
+            {
+              "case_id": "subject020",
+              "true_positives": 0,
+              "false_positives": 1,
+              "false_negatives": 4,
+              "daughter_counts": {
+                "predicted": 1,
+                "reference": 4,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [
+                "branch_001"
+              ],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003",
+                "branch_004"
+              ]
+            },
+            {
+              "case_id": "subject021",
+              "true_positives": 3,
+              "false_positives": 0,
+              "false_negatives": 0,
+              "daughter_counts": {
+                "predicted": 3,
+                "reference": 3,
+                "signed_error": 0,
+                "absolute_error": 0
+              },
+              "precision": 1.0,
+              "recall": 1.0,
+              "f1": 1.0,
+              "matches": [
+                {
+                  "prediction_id": "branch_001",
+                  "reference_id": "branch_001",
+                  "ostium_error_mm": 2.4439754682556116,
+                  "seed_error_mm": 1.8598275904809396,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 7.516948192251578,
+                  "seed_to_reference_centreline_mm": 1.7477372362924801
+                },
+                {
+                  "prediction_id": "branch_002",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 1.5384539223393714,
+                  "seed_error_mm": 0.949675749337103,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 13.015861659724159,
+                  "seed_to_reference_centreline_mm": 0.9493508694681312
+                },
+                {
+                  "prediction_id": "branch_003",
+                  "reference_id": "branch_003",
+                  "ostium_error_mm": 2.9443226474311857,
+                  "seed_error_mm": 2.5742097417059684,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 17.496854849628864,
+                  "seed_to_reference_centreline_mm": 2.0103140421717494
+                }
+              ],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": []
+            },
+            {
+              "case_id": "subject022",
+              "true_positives": 5,
+              "false_positives": 2,
+              "false_negatives": 1,
+              "daughter_counts": {
+                "predicted": 7,
+                "reference": 6,
+                "signed_error": 1,
+                "absolute_error": 1
+              },
+              "precision": 0.7142857142857143,
+              "recall": 0.8333333333333334,
+              "f1": 0.7692307692307693,
+              "matches": [
+                {
+                  "prediction_id": "branch_002",
+                  "reference_id": "branch_006",
+                  "ostium_error_mm": 1.5359534087406372,
+                  "seed_error_mm": 0.8162278860959171,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 21.28384874480707,
+                  "seed_to_reference_centreline_mm": 0.6381174798469682
+                },
+                {
+                  "prediction_id": "branch_004",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 0.45083174114421926,
+                  "seed_error_mm": 0.7377975851878719,
+                  "radius_error_mm": 0.2529999999999999,
+                  "direction_error_degrees": 13.69632929041994,
+                  "seed_to_reference_centreline_mm": 0.7369527348521344
+                },
+                {
+                  "prediction_id": "branch_005",
+                  "reference_id": "branch_003",
+                  "ostium_error_mm": 1.5614407447050496,
+                  "seed_error_mm": 0.6325181410080337,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 15.232475802960323,
+                  "seed_to_reference_centreline_mm": 0.3522486470763273
+                },
+                {
+                  "prediction_id": "branch_006",
+                  "reference_id": "branch_004",
+                  "ostium_error_mm": 1.5159676653490526,
+                  "seed_error_mm": 0.9183469998285345,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 12.046391204633915,
+                  "seed_to_reference_centreline_mm": 0.530742473062693
+                },
+                {
+                  "prediction_id": "branch_007",
+                  "reference_id": "branch_005",
+                  "ostium_error_mm": 0.7433034373659145,
+                  "seed_error_mm": 1.2792473333720755,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 11.31816506720212,
+                  "seed_to_reference_centreline_mm": 1.2525520714836127
+                }
+              ],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_003"
+              ],
+              "unmatched_reference_ids": [
+                "branch_001"
+              ]
+            },
+            {
+              "case_id": "subject023",
+              "true_positives": 0,
+              "false_positives": 0,
+              "false_negatives": 3,
+              "daughter_counts": {
+                "predicted": 0,
+                "reference": 3,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": null,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003"
+              ]
+            }
+          ]
+        }
+      },
+      "runtime": {
+        "subject019": {
+          "runtime_s": 1.4489431690000174,
+          "peak_rss_mb": null
+        },
+        "subject020": {
+          "runtime_s": 1.7716614479999748,
+          "peak_rss_mb": null
+        },
+        "subject021": {
+          "runtime_s": 3.1329930009999885,
+          "peak_rss_mb": null
+        },
+        "subject022": {
+          "runtime_s": 5.742140898000002,
+          "peak_rss_mb": null
+        },
+        "subject023": {
+          "runtime_s": 1.197441040000001,
+          "peak_rss_mb": null
+        }
+      }
+    },
+    {
+      "name": "topology-review-origin2-audit",
+      "prediction_dir": "labels/final-eval/topology/topology-review-origin2-audit",
+      "configuration": {
+        "spacing_mm": 1.0,
+        "margin_mm": 20.0,
+        "shell_inner_mm": 1.5,
+        "shell_outer_mm": 6.0,
+        "cap_margin_mm": 4.0,
+        "minimum_radius_mm": 0.7,
+        "minimum_origin_diameter_mm": 2,
+        "minimum_path_mm": 5.0,
+        "trace_length_mm": 10.0,
+        "vesselness_floor": 0.03,
+        "maximum_candidates": 160,
+        "shell_vesselness_floor": 0.005,
+        "connector_gap_fraction": 0.35,
+        "root_depth_mm": 2.5,
+        "blood_lower_scale": 2.0,
+        "support_contrast_fraction": 0.5,
+        "native_contrast_scale": 1.2,
+        "roots_per_contact": 6,
+        "wall_hug_penalty": 0.8,
+        "broad_contact_mm3": 1000000.0,
+        "parallel_clearance_mm": 0.0,
+        "profile": "review"
+      },
+      "eligible_for_selection": false,
+      "ineligible_reason": "Topology diagnosis family; not submitted as a clean frozen-family selection candidate.",
+      "scores": {
+        "2": {
+          "summary": {
+            "cases": 5,
+            "true_positives": 7,
+            "false_positives": 16,
+            "false_negatives": 12,
+            "precision": 0.30434782608695654,
+            "recall": 0.3684210526315789,
+            "f1": 0.3333333333333333,
+            "count_mae": 3.6,
+            "exact_count_cases": 0,
+            "errors": {
+              "ostium_error_mm": {
+                "n": 7,
+                "mean": 1.1131306101478995,
+                "median": 1.0526629198603388,
+                "p95": 1.7262498345900201
+              },
+              "seed_error_mm": {
+                "n": 7,
+                "mean": 0.8105524758916032,
+                "median": 0.7442449620276397,
+                "p95": 1.2851475602072675
+              },
+              "radius_error_mm": {
+                "n": 1,
+                "mean": 0.2709999999999999,
+                "median": 0.2709999999999999,
+                "p95": 0.2709999999999999
+              },
+              "direction_error_degrees": {
+                "n": 7,
+                "mean": 15.115232692924991,
+                "median": 15.232475802960323,
+                "p95": 21.598190083155295
+              },
+              "seed_to_reference_centreline_mm": {
+                "n": 7,
+                "mean": 0.716261016109424,
+                "median": 0.7015598884551578,
+                "p95": 1.282451661013665
+              }
+            }
+          },
+          "cases": [
+            {
+              "case_id": "subject019",
+              "true_positives": 0,
+              "false_positives": 0,
+              "false_negatives": 3,
+              "daughter_counts": {
+                "predicted": 0,
+                "reference": 3,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": null,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003"
+              ]
+            },
+            {
+              "case_id": "subject020",
+              "true_positives": 0,
+              "false_positives": 2,
+              "false_negatives": 4,
+              "daughter_counts": {
+                "predicted": 2,
+                "reference": 4,
+                "signed_error": -2,
+                "absolute_error": 2
+              },
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_002"
+              ],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003",
+                "branch_004"
+              ]
+            },
+            {
+              "case_id": "subject021",
+              "true_positives": 0,
+              "false_positives": 4,
+              "false_negatives": 3,
+              "daughter_counts": {
+                "predicted": 4,
+                "reference": 3,
+                "signed_error": 1,
+                "absolute_error": 1
+              },
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003",
+                "branch_004"
+              ],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003"
+              ]
+            },
+            {
+              "case_id": "subject022",
+              "true_positives": 6,
+              "false_positives": 10,
+              "false_negatives": 0,
+              "daughter_counts": {
+                "predicted": 16,
+                "reference": 6,
+                "signed_error": 10,
+                "absolute_error": 10
+              },
+              "precision": 0.375,
+              "recall": 1.0,
+              "f1": 0.5454545454545454,
+              "matches": [
+                {
+                  "prediction_id": "branch_002",
+                  "reference_id": "branch_001",
+                  "ostium_error_mm": 1.796882301683579,
+                  "seed_error_mm": 0.2894230089542438,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 20.13038498828101,
+                  "seed_to_reference_centreline_mm": 0.28581072704048915
+                },
+                {
+                  "prediction_id": "branch_003",
+                  "reference_id": "branch_006",
+                  "ostium_error_mm": 1.0526629198603388,
+                  "seed_error_mm": 1.0693650981447846,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 22.22724940952999,
+                  "seed_to_reference_centreline_mm": 1.0626963126810098
+                },
+                {
+                  "prediction_id": "branch_008",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 0.5681255182653779,
+                  "seed_error_mm": 0.7144223811661912,
+                  "radius_error_mm": 0.2709999999999999,
+                  "direction_error_degrees": 11.317330141961373,
+                  "seed_to_reference_centreline_mm": 0.7015598884551578
+                },
+                {
+                  "prediction_id": "branch_010",
+                  "reference_id": "branch_003",
+                  "ostium_error_mm": 1.5614407447050496,
+                  "seed_error_mm": 0.6325181410080337,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 15.232475802960323,
+                  "seed_to_reference_centreline_mm": 0.3522486470763273
+                },
+                {
+                  "prediction_id": "branch_011",
+                  "reference_id": "branch_004",
+                  "ostium_error_mm": 1.3098453977032154,
+                  "seed_error_mm": 0.8462679817062826,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 11.388493043520983,
+                  "seed_to_reference_centreline_mm": 0.490793554721221
+                },
+                {
+                  "prediction_id": "branch_014",
+                  "reference_id": "branch_005",
+                  "ostium_error_mm": 0.8544825485842499,
+                  "seed_error_mm": 0.7442449620276397,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 6.135227645734713,
+                  "seed_to_reference_centreline_mm": 0.7440854582069598
+                }
+              ],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_004",
+                "branch_005",
+                "branch_006",
+                "branch_007",
+                "branch_009",
+                "branch_012",
+                "branch_013",
+                "branch_015",
+                "branch_016"
+              ],
+              "unmatched_reference_ids": []
+            },
+            {
+              "case_id": "subject023",
+              "true_positives": 1,
+              "false_positives": 0,
+              "false_negatives": 2,
+              "daughter_counts": {
+                "predicted": 1,
+                "reference": 3,
+                "signed_error": -2,
+                "absolute_error": 2
+              },
+              "precision": 1.0,
+              "recall": 0.3333333333333333,
+              "f1": 0.5,
+              "matches": [
+                {
+                  "prediction_id": "branch_001",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 0.6484748402334851,
+                  "seed_error_mm": 1.377625758234046,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 19.37546781848656,
+                  "seed_to_reference_centreline_mm": 1.376632524584803
+                }
+              ],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_003"
+              ]
+            }
+          ]
+        },
+        "3": {
+          "summary": {
+            "cases": 5,
+            "true_positives": 9,
+            "false_positives": 14,
+            "false_negatives": 10,
+            "precision": 0.391304347826087,
+            "recall": 0.47368421052631576,
+            "f1": 0.42857142857142855,
+            "count_mae": 3.6,
+            "exact_count_cases": 0,
+            "errors": {
+              "ostium_error_mm": {
+                "n": 9,
+                "mean": 1.4703758904168784,
+                "median": 1.3098453977032154,
+                "p95": 2.776086151978844
+              },
+              "seed_error_mm": {
+                "n": 9,
+                "mean": 1.1213932945699252,
+                "median": 0.8462679817062826,
+                "p95": 2.279237873836675
+              },
+              "radius_error_mm": {
+                "n": 1,
+                "mean": 0.2709999999999999,
+                "median": 0.2709999999999999,
+                "p95": 0.2709999999999999
+              },
+              "direction_error_degrees": {
+                "n": 9,
+                "mean": 14.720272922334983,
+                "median": 15.232475802960323,
+                "p95": 21.388503641030397
+              },
+              "seed_to_reference_centreline_mm": {
+                "n": 9,
+                "mean": 0.973889052949047,
+                "median": 0.7440854582069598,
+                "p95": 1.9011571710067772
+              }
+            }
+          },
+          "cases": [
+            {
+              "case_id": "subject019",
+              "true_positives": 0,
+              "false_positives": 0,
+              "false_negatives": 3,
+              "daughter_counts": {
+                "predicted": 0,
+                "reference": 3,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": null,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003"
+              ]
+            },
+            {
+              "case_id": "subject020",
+              "true_positives": 0,
+              "false_positives": 2,
+              "false_negatives": 4,
+              "daughter_counts": {
+                "predicted": 2,
+                "reference": 4,
+                "signed_error": -2,
+                "absolute_error": 2
+              },
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_002"
+              ],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003",
+                "branch_004"
+              ]
+            },
+            {
+              "case_id": "subject021",
+              "true_positives": 2,
+              "false_positives": 2,
+              "false_negatives": 1,
+              "daughter_counts": {
+                "predicted": 4,
+                "reference": 3,
+                "signed_error": 1,
+                "absolute_error": 1
+              },
+              "precision": 0.5,
+              "recall": 0.6666666666666666,
+              "f1": 0.5714285714285714,
+              "matches": [
+                {
+                  "prediction_id": "branch_003",
+                  "reference_id": "branch_001",
+                  "ostium_error_mm": 2.4439754682556116,
+                  "seed_error_mm": 1.8598275904809396,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 7.516948192251578,
+                  "seed_to_reference_centreline_mm": 1.7477372362924801
+                },
+                {
+                  "prediction_id": "branch_004",
+                  "reference_id": "branch_003",
+                  "ostium_error_mm": 2.9974932744609992,
+                  "seed_error_mm": 2.558844729407166,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 19.15887925828833,
+                  "seed_to_reference_centreline_mm": 2.003437127482975
+                }
+              ],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_002"
+              ],
+              "unmatched_reference_ids": [
+                "branch_002"
+              ]
+            },
+            {
+              "case_id": "subject022",
+              "true_positives": 6,
+              "false_positives": 10,
+              "false_negatives": 0,
+              "daughter_counts": {
+                "predicted": 16,
+                "reference": 6,
+                "signed_error": 10,
+                "absolute_error": 10
+              },
+              "precision": 0.375,
+              "recall": 1.0,
+              "f1": 0.5454545454545454,
+              "matches": [
+                {
+                  "prediction_id": "branch_002",
+                  "reference_id": "branch_001",
+                  "ostium_error_mm": 1.796882301683579,
+                  "seed_error_mm": 0.2894230089542438,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 20.13038498828101,
+                  "seed_to_reference_centreline_mm": 0.28581072704048915
+                },
+                {
+                  "prediction_id": "branch_003",
+                  "reference_id": "branch_006",
+                  "ostium_error_mm": 1.0526629198603388,
+                  "seed_error_mm": 1.0693650981447846,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 22.22724940952999,
+                  "seed_to_reference_centreline_mm": 1.0626963126810098
+                },
+                {
+                  "prediction_id": "branch_008",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 0.5681255182653779,
+                  "seed_error_mm": 0.7144223811661912,
+                  "radius_error_mm": 0.2709999999999999,
+                  "direction_error_degrees": 11.317330141961373,
+                  "seed_to_reference_centreline_mm": 0.7015598884551578
+                },
+                {
+                  "prediction_id": "branch_010",
+                  "reference_id": "branch_003",
+                  "ostium_error_mm": 1.5614407447050496,
+                  "seed_error_mm": 0.6325181410080337,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 15.232475802960323,
+                  "seed_to_reference_centreline_mm": 0.3522486470763273
+                },
+                {
+                  "prediction_id": "branch_011",
+                  "reference_id": "branch_004",
+                  "ostium_error_mm": 1.3098453977032154,
+                  "seed_error_mm": 0.8462679817062826,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 11.388493043520983,
+                  "seed_to_reference_centreline_mm": 0.490793554721221
+                },
+                {
+                  "prediction_id": "branch_014",
+                  "reference_id": "branch_005",
+                  "ostium_error_mm": 0.8544825485842499,
+                  "seed_error_mm": 0.7442449620276397,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 6.135227645734713,
+                  "seed_to_reference_centreline_mm": 0.7440854582069598
+                }
+              ],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_004",
+                "branch_005",
+                "branch_006",
+                "branch_007",
+                "branch_009",
+                "branch_012",
+                "branch_013",
+                "branch_015",
+                "branch_016"
+              ],
+              "unmatched_reference_ids": []
+            },
+            {
+              "case_id": "subject023",
+              "true_positives": 1,
+              "false_positives": 0,
+              "false_negatives": 2,
+              "daughter_counts": {
+                "predicted": 1,
+                "reference": 3,
+                "signed_error": -2,
+                "absolute_error": 2
+              },
+              "precision": 1.0,
+              "recall": 0.3333333333333333,
+              "f1": 0.5,
+              "matches": [
+                {
+                  "prediction_id": "branch_001",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 0.6484748402334851,
+                  "seed_error_mm": 1.377625758234046,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 19.37546781848656,
+                  "seed_to_reference_centreline_mm": 1.376632524584803
+                }
+              ],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_003"
+              ]
+            }
+          ]
+        },
+        "5": {
+          "summary": {
+            "cases": 5,
+            "true_positives": 9,
+            "false_positives": 14,
+            "false_negatives": 10,
+            "precision": 0.391304347826087,
+            "recall": 0.47368421052631576,
+            "f1": 0.42857142857142855,
+            "count_mae": 3.6,
+            "exact_count_cases": 0,
+            "errors": {
+              "ostium_error_mm": {
+                "n": 9,
+                "mean": 1.4703758904168784,
+                "median": 1.3098453977032154,
+                "p95": 2.776086151978844
+              },
+              "seed_error_mm": {
+                "n": 9,
+                "mean": 1.1213932945699252,
+                "median": 0.8462679817062826,
+                "p95": 2.279237873836675
+              },
+              "radius_error_mm": {
+                "n": 1,
+                "mean": 0.2709999999999999,
+                "median": 0.2709999999999999,
+                "p95": 0.2709999999999999
+              },
+              "direction_error_degrees": {
+                "n": 9,
+                "mean": 14.720272922334983,
+                "median": 15.232475802960323,
+                "p95": 21.388503641030397
+              },
+              "seed_to_reference_centreline_mm": {
+                "n": 9,
+                "mean": 0.973889052949047,
+                "median": 0.7440854582069598,
+                "p95": 1.9011571710067772
+              }
+            }
+          },
+          "cases": [
+            {
+              "case_id": "subject019",
+              "true_positives": 0,
+              "false_positives": 0,
+              "false_negatives": 3,
+              "daughter_counts": {
+                "predicted": 0,
+                "reference": 3,
+                "signed_error": -3,
+                "absolute_error": 3
+              },
+              "precision": null,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003"
+              ]
+            },
+            {
+              "case_id": "subject020",
+              "true_positives": 0,
+              "false_positives": 2,
+              "false_negatives": 4,
+              "daughter_counts": {
+                "predicted": 2,
+                "reference": 4,
+                "signed_error": -2,
+                "absolute_error": 2
+              },
+              "precision": 0.0,
+              "recall": 0.0,
+              "f1": 0.0,
+              "matches": [],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_002"
+              ],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_002",
+                "branch_003",
+                "branch_004"
+              ]
+            },
+            {
+              "case_id": "subject021",
+              "true_positives": 2,
+              "false_positives": 2,
+              "false_negatives": 1,
+              "daughter_counts": {
+                "predicted": 4,
+                "reference": 3,
+                "signed_error": 1,
+                "absolute_error": 1
+              },
+              "precision": 0.5,
+              "recall": 0.6666666666666666,
+              "f1": 0.5714285714285714,
+              "matches": [
+                {
+                  "prediction_id": "branch_003",
+                  "reference_id": "branch_001",
+                  "ostium_error_mm": 2.4439754682556116,
+                  "seed_error_mm": 1.8598275904809396,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 7.516948192251578,
+                  "seed_to_reference_centreline_mm": 1.7477372362924801
+                },
+                {
+                  "prediction_id": "branch_004",
+                  "reference_id": "branch_003",
+                  "ostium_error_mm": 2.9974932744609992,
+                  "seed_error_mm": 2.558844729407166,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 19.15887925828833,
+                  "seed_to_reference_centreline_mm": 2.003437127482975
+                }
+              ],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_002"
+              ],
+              "unmatched_reference_ids": [
+                "branch_002"
+              ]
+            },
+            {
+              "case_id": "subject022",
+              "true_positives": 6,
+              "false_positives": 10,
+              "false_negatives": 0,
+              "daughter_counts": {
+                "predicted": 16,
+                "reference": 6,
+                "signed_error": 10,
+                "absolute_error": 10
+              },
+              "precision": 0.375,
+              "recall": 1.0,
+              "f1": 0.5454545454545454,
+              "matches": [
+                {
+                  "prediction_id": "branch_002",
+                  "reference_id": "branch_001",
+                  "ostium_error_mm": 1.796882301683579,
+                  "seed_error_mm": 0.2894230089542438,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 20.13038498828101,
+                  "seed_to_reference_centreline_mm": 0.28581072704048915
+                },
+                {
+                  "prediction_id": "branch_003",
+                  "reference_id": "branch_006",
+                  "ostium_error_mm": 1.0526629198603388,
+                  "seed_error_mm": 1.0693650981447846,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 22.22724940952999,
+                  "seed_to_reference_centreline_mm": 1.0626963126810098
+                },
+                {
+                  "prediction_id": "branch_008",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 0.5681255182653779,
+                  "seed_error_mm": 0.7144223811661912,
+                  "radius_error_mm": 0.2709999999999999,
+                  "direction_error_degrees": 11.317330141961373,
+                  "seed_to_reference_centreline_mm": 0.7015598884551578
+                },
+                {
+                  "prediction_id": "branch_010",
+                  "reference_id": "branch_003",
+                  "ostium_error_mm": 1.5614407447050496,
+                  "seed_error_mm": 0.6325181410080337,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 15.232475802960323,
+                  "seed_to_reference_centreline_mm": 0.3522486470763273
+                },
+                {
+                  "prediction_id": "branch_011",
+                  "reference_id": "branch_004",
+                  "ostium_error_mm": 1.3098453977032154,
+                  "seed_error_mm": 0.8462679817062826,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 11.388493043520983,
+                  "seed_to_reference_centreline_mm": 0.490793554721221
+                },
+                {
+                  "prediction_id": "branch_014",
+                  "reference_id": "branch_005",
+                  "ostium_error_mm": 0.8544825485842499,
+                  "seed_error_mm": 0.7442449620276397,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 6.135227645734713,
+                  "seed_to_reference_centreline_mm": 0.7440854582069598
+                }
+              ],
+              "unmatched_prediction_ids": [
+                "branch_001",
+                "branch_004",
+                "branch_005",
+                "branch_006",
+                "branch_007",
+                "branch_009",
+                "branch_012",
+                "branch_013",
+                "branch_015",
+                "branch_016"
+              ],
+              "unmatched_reference_ids": []
+            },
+            {
+              "case_id": "subject023",
+              "true_positives": 1,
+              "false_positives": 0,
+              "false_negatives": 2,
+              "daughter_counts": {
+                "predicted": 1,
+                "reference": 3,
+                "signed_error": -2,
+                "absolute_error": 2
+              },
+              "precision": 1.0,
+              "recall": 0.3333333333333333,
+              "f1": 0.5,
+              "matches": [
+                {
+                  "prediction_id": "branch_001",
+                  "reference_id": "branch_002",
+                  "ostium_error_mm": 0.6484748402334851,
+                  "seed_error_mm": 1.377625758234046,
+                  "radius_error_mm": null,
+                  "direction_error_degrees": 19.37546781848656,
+                  "seed_to_reference_centreline_mm": 1.376632524584803
+                }
+              ],
+              "unmatched_prediction_ids": [],
+              "unmatched_reference_ids": [
+                "branch_001",
+                "branch_003"
+              ]
+            }
+          ]
+        }
+      },
+      "runtime": {
+        "subject019": {
+          "runtime_s": 1.4910226659999921,
+          "peak_rss_mb": null
+        },
+        "subject020": {
+          "runtime_s": 1.7567574509999986,
+          "peak_rss_mb": null
+        },
+        "subject021": {
+          "runtime_s": 3.400386846999993,
+          "peak_rss_mb": null
+        },
+        "subject022": {
+          "runtime_s": 5.990079835000017,
+          "peak_rss_mb": null
+        },
+        "subject023": {
+          "runtime_s": 1.178786773000013,
+          "peak_rss_mb": null
+        }
+      }
+    }
+  ],
+  "failures": [],
+  "source_hashes": {
+    "detector.py": "9f96f3eb3c06f5e06d5b7db79b199be70e742130fc3885243d25d066adc1c92e",
+    "final_eval_topology.py": "b7de4488c0b5771dbf9a10223c008e3e03f22b068bd26c16afcd2eb45aad7fbe",
+    "final_evaluation.py": "be2488c1123e0f3ae7cbff7a319ac360fab60c9502ebe5ce490bd7c918d7c990",
+    "evaluate.py": "b5a2c04aa93020ea7034d59844fb7d3a56166985ee2633f0194b5f02ee332092",
+    "nifti_io.py": "d8cd2795046affe798a2c2ed0822dc615f73930b94381c1ef5af0de36127cb02",
+    "research_validation.py": "955f79bde91c3706c2bbc317655d0150167cf943936b91ad98e48a7fbba2b335",
+    "score_references.py": "483d216d6a3a9993a0ca8f6c2d614f7a85702e51ee4894437369e72487b22e38",
+    "synthetic.py": "923e9d4aefdcf57150aa288d526e03eedd3b4c350e36c3eda2f7204bbe44bc41",
+    "requirements.txt": "5e116a3cdd95e6e2b836aba60de2763db8940f2b20934a35dfdba5212266abb4",
+    "requirements-dev.txt": "01192f3022d4d032dbc75f3556c46bf948b4e7c4655580cb79b59e30a85c3bab",
+    "requirements-resources.txt": "9b4b319c8bf8229de435aace9c3a68e833fd7a4e5861071d030655f17e2d2f3b",
+    "stress.py": "1d641e985119538f2a2286718570e026192198e6d646f8f7aec9712c56ed0122",
+    "research_resources.py": "bb5bcb63bb1e6200fdd7cd21bb2708650799deb6da03f461ee5dfb0948ac3b49"
+  },
+  "models": [],
+  "method": "Frozen detector stages with instrumented faithful resolver; references used after inference.",
+  "input_hashes": {
+    "subject019": {
+      "image": "5e3140eeaa821b6c964620256c1696df6a228564896b1c66d3846f625b7c8c96",
+      "mask": "c18f4c8f43904e1658164e762984d042b1bc88e789494e6fdeec79ec95d82b0f"
+    },
+    "subject020": {
+      "image": "f9b0ff4e3af19ca8e63cddfcc1a5ec5d5d302b1f7d97e54b7d57b06680cc7d81",
+      "mask": "dee54f9885040b24bf59e1e11843c4cf08992f12b4ac9479f622a79a279092ca"
+    },
+    "subject021": {
+      "image": "11e3ce094db5632f7f4df2dbe5849923e9f51a7a17eeeeaf1fa6a296abb48519",
+      "mask": "0ef0d75f4a912a947ab566da3ef5e614f458f3ee5cba328cf1976b320e7f444b"
+    },
+    "subject022": {
+      "image": "56b888fd4a43396ea38d44c7f3ffa7f4f2972815e8173fa73e47d694f3a3ba81",
+      "mask": "96fac7941744573e8e14f0e4402d60d00fdd9099f984df76514b929bd52b3d0d"
+    },
+    "subject023": {
+      "image": "9e2747d40b4f63ec23d4d4a99dd6d4f4cf0125d608c1e782df6f094af51cbb49",
+      "mask": "bb10d5cbe26775e76beddf2c3c7d9f447e39784e129fe40f9204e5d48be00cd8"
+    }
+  },
+  "reference_hashes": {
+    "subject019": "38435a327008a660a826c250dc9ec119ef6eae6cee2bd1ca62dd7f59b1a9dbf2",
+    "subject020": "dd9f3b2d780f04613daf2e114668c4589b6d4971644f4d64a28cd7056ae874f3",
+    "subject021": "9f7e48a9f6be02c032aae5fefd3c77b0376292056eb107ecaad68886ce494029",
+    "subject022": "ea72c9717b11d43f9bef7da748698a9ec72575a03f004f762e7f30baddca14d3",
+    "subject023": "19172eae21cfab45382a88bcf4bd3cfc4743f97b9234f8a588f918ee2601cb5b"
+  },
+  "diagnosis_files": {
+    "topology-strict-audit": [
+      "labels/final-eval/topology/diagnosis/topology-strict-audit/subject019.json",
+      "labels/final-eval/topology/diagnosis/topology-strict-audit/subject020.json",
+      "labels/final-eval/topology/diagnosis/topology-strict-audit/subject021.json",
+      "labels/final-eval/topology/diagnosis/topology-strict-audit/subject022.json",
+      "labels/final-eval/topology/diagnosis/topology-strict-audit/subject023.json"
+    ],
+    "topology-review-origin2-audit": [
+      "labels/final-eval/topology/diagnosis/topology-review-origin2-audit/subject019.json",
+      "labels/final-eval/topology/diagnosis/topology-review-origin2-audit/subject020.json",
+      "labels/final-eval/topology/diagnosis/topology-review-origin2-audit/subject021.json",
+      "labels/final-eval/topology/diagnosis/topology-review-origin2-audit/subject022.json",
+      "labels/final-eval/topology/diagnosis/topology-review-origin2-audit/subject023.json"
+    ]
+  },
+  "metrics": "Local one-to-one 2/3/5 mm comparison, not an official weighted score.",
+  "environment": {
+    "python": "3.13.3 (main, May 30 2025, 05:38:56) [Clang 20.1.4 ]",
+    "platform": "Linux-5.15.200-x86_64-with-glibc2.35",
+    "threads": {
+      "OMP_NUM_THREADS": "4",
+      "OPENBLAS_NUM_THREADS": "4",
+      "MKL_NUM_THREADS": "4",
+      "ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS": "4"
+    }
+  },
+  "runtime_definition": "In-process normalize/enhance/propose/resolve; excludes NIfTI loading, diagnostics and scoring. RSS not sampled."
+}
